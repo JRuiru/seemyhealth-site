@@ -1,0 +1,41 @@
+---
+const GCS = "https://storage.googleapis.com/seemyhealth-email-assets";
+---
+
+<section id="contact" class="relative py-32 sm:py-40 overflow-hidden">
+  <!-- Background lifestyle image -->
+  <div class="absolute inset-0">
+    <img
+      src={`${GCS}/ring-peekaboo.jpg`}
+      alt="Woman with SeeMyHealth Ring"
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-brand-black/70"></div>
+  </div>
+
+  <div class="relative max-w-3xl mx-auto px-6 lg:px-8 text-center">
+    <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-400 mb-6">Start Your Journey</p>
+    <h2 class="font-display text-4xl sm:text-5xl lg:text-7xl font-300 uppercase leading-[0.95] mb-6">
+      Wear the Ring.<br />
+      <span class="font-500">Keep the Clarity.</span>
+    </h2>
+    <p class="text-brand-gray-400 leading-relaxed mb-10 max-w-lg mx-auto">
+      Join thousands of people who've chosen medical-grade health monitoring
+      that fits their real life. Free shipping on every order.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a
+        href="https://shop.seemyhealth.ai"
+        class="inline-flex items-center justify-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+      >
+        Shop Now
+      </a>
+      <a
+        href="mailto:support@seemyhealth.ai"
+        class="inline-flex items-center justify-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
+      >
+        Contact Us
+      </a>
+    </div>
+  </div>
+</section>

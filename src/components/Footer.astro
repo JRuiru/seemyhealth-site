@@ -1,0 +1,62 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-white/5 bg-brand-black">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <!-- Brand -->
+      <div>
+        <a href="/" class="flex items-center gap-3 mb-4">
+          <img
+            src="https://storage.googleapis.com/seemyhealth-email-assets/logo.png"
+            alt="SeeMyHealth"
+            class="w-8 h-8 rounded-lg"
+          />
+          <span class="text-base font-semibold text-white">SeeMyHealth</span>
+        </a>
+        <p class="text-sm text-brand-gray-600 leading-relaxed">
+          Medical-grade health devices designed for the life you actually live.
+        </p>
+      </div>
+
+      <!-- Product -->
+      <div>
+        <h4 class="text-[11px] uppercase tracking-[2px] text-brand-gray-500 mb-5">Product</h4>
+        <ul class="space-y-3">
+          <li><a href="/products/ring-one" class="text-sm text-brand-gray-600 hover:text-white transition-colors">Ring One</a></li>
+          <li><a href="/products/scale" class="text-sm text-brand-gray-600 hover:text-white transition-colors">Smart Scale</a></li>
+          <li><a href="/products/bp-monitor" class="text-sm text-brand-gray-600 hover:text-white transition-colors">BP Monitor</a></li>
+          <li><a href="/products/hydra-one" class="text-sm text-brand-gray-600 hover:text-white transition-colors">Hydra One</a></li>
+          <li><a href="/products/hema-one" class="text-sm text-brand-gray-600 hover:text-white transition-colors">Hema One</a></li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div>
+        <h4 class="text-[11px] uppercase tracking-[2px] text-brand-gray-500 mb-5">Company</h4>
+        <ul class="space-y-3">
+          <li><a href="/about" class="text-sm text-brand-gray-600 hover:text-white transition-colors">About</a></li>
+          <li><a href="https://shop.seemyhealth.ai" class="text-sm text-brand-gray-600 hover:text-white transition-colors">Shop</a></li>
+          <li><a href="/support" class="text-sm text-brand-gray-600 hover:text-white transition-colors">Support</a></li>
+          <li><a href="/privacy" class="text-sm text-brand-gray-600 hover:text-white transition-colors">Privacy</a></li>
+          <li><a href="/terms" class="text-sm text-brand-gray-600 hover:text-white transition-colors">Terms</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h4 class="text-[11px] uppercase tracking-[2px] text-brand-gray-500 mb-5">Contact</h4>
+        <ul class="space-y-3">
+          <li><a href="mailto:support@seemyhealth.ai" class="text-sm text-brand-gray-600 hover:text-white transition-colors">support@seemyhealth.ai</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-white/5 mt-12 pt-8">
+      <p class="text-[12px] text-brand-gray-700">
+        &copy; {year} SeeMyHealth. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>

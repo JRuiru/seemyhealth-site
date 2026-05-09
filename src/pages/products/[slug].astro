@@ -1,0 +1,158 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { products, productSlugs } from '../../data/products';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return productSlugs.map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const product = products[slug as string];
+---
+
+<Layout title={`${product.name} — SeeMyHealth`} description={product.description}>
+  <Navbar />
+
+  <!-- Hero -->
+  <section class="relative min-h-screen flex items-end pb-20 pt-24">
+    <div class="absolute inset-0">
+      <img
+        src={product.image}
+        alt={product.name}
+        class="w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/50 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-brand-black/60 to-transparent"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-6 lg:px-8 w-full">
+      <div class="max-w-2xl">
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-400 mb-4">{product.tagline}</p>
+        <h1 class="font-display text-5xl sm:text-6xl lg:text-8xl font-300 uppercase leading-[0.95] mb-6 whitespace-pre-line">
+          {product.headline}
+        </h1>
+        <p class="text-lg text-brand-gray-300 leading-relaxed max-w-lg mb-8">
+          {product.description}
+        </p>
+        <div class="flex items-center gap-6">
+          <a
+            href="https://shop.seemyhealth.ai"
+            class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+          >
+            Shop — {product.price}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="mb-16">
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">What It Does</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
+          Built for <span class="font-500">Real Life</span>
+        </h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-px bg-white/5 rounded-2xl overflow-hidden">
+        {product.features.map((feature) => (
+          <div class="bg-brand-black p-8 sm:p-10 hover:bg-brand-gray-900 transition-colors duration-300 group">
+            <svg
+              class="w-8 h-8 text-brand-gray-600 group-hover:text-white transition-colors mb-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d={feature.icon} />
+            </svg>
+            <h3 class="font-display text-xl uppercase mb-3">{feature.title}</h3>
+            <p class="text-sm text-brand-gray-500 leading-relaxed">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Specs -->
+  <section class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      <div class="mb-16">
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Technical</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
+          Specifications
+        </h2>
+      </div>
+
+      <div class="border-t border-white/10">
+        {product.specs.map((spec) => (
+          <div class="flex items-center justify-between py-5 border-b border-white/5">
+            <span class="text-sm text-brand-gray-500 uppercase tracking-wider">{spec.label}</span>
+            <span class="text-sm text-white">{spec.value}</span>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-12 text-center">
+        <a
+          href="https://shop.seemyhealth.ai"
+          class="inline-flex items-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+        >
+          Shop {product.name} — {product.price}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lifestyle Gallery (if images exist) -->
+  {product.lifestyleImages.length > 0 && (
+    <section class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {product.lifestyleImages.map((img) => (
+            <div class="relative h-72 sm:h-96 rounded-2xl overflow-hidden">
+              <img
+                src={img.src}
+                alt={img.alt}
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Video placeholder -->
+  <section class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8 text-center">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">See It in Action</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-10">
+        Watch the <span class="font-500">Video</span>
+      </h2>
+      <!-- Video embed placeholder — replace with YouTube/Vimeo embed -->
+      <div class="relative aspect-video rounded-2xl overflow-hidden bg-brand-gray-900 border border-white/5">
+        <div class="absolute inset-0 flex items-center justify-center z-10">
+          <div class="w-20 h-20 rounded-full border-2 border-white/20 flex items-center justify-center hover:border-white/40 transition-colors cursor-pointer">
+            <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+        </div>
+        <img
+          src={product.image}
+          alt={`${product.name} video`}
+          class="w-full h-full object-cover opacity-30"
+        />
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

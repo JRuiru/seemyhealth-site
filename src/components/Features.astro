@@ -1,0 +1,67 @@
+---
+const features = [
+  {
+    icon: "sleep",
+    title: "Sleep",
+    description: "Advanced sleep staging, recovery scores, and overnight HRV. Understand your rest, not just your hours.",
+  },
+  {
+    icon: "heart",
+    title: "Recovery",
+    description: "Real-time recovery metrics so you know when to push harder and when to take it easy.",
+  },
+  {
+    icon: "balance",
+    title: "Balance",
+    description: "Stress tracking and mindfulness prompts to help you stay centered throughout the day.",
+  },
+  {
+    icon: "trends",
+    title: "Trends",
+    description: "Long-term patterns, not single scores. See how your health evolves week over week.",
+  },
+];
+
+const iconPaths: Record<string, string> = {
+  sleep: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
+  heart: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
+  balance: "M12 3v18M3 12h18M5.5 5.5l13 13M18.5 5.5l-13 13",
+  trends: "M3 17l6-6 4 4 8-8M14 7h7v7",
+};
+---
+
+<section id="about" class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="max-w-2xl mb-20">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Live in Clarity</p>
+      <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95] mb-6">
+        Patterns, Not <span class="font-500">Single Scores</span>
+      </h2>
+      <p class="text-brand-gray-400 leading-relaxed">
+        We built SeeMyHealth around one idea: health data should be
+        actionable, not abstract. Every metric is designed to help you
+        make better decisions about the life you're already living.
+      </p>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5 rounded-2xl overflow-hidden">
+      {features.map((feature) => (
+        <div class="bg-brand-dark p-8 sm:p-10 hover:bg-brand-gray-900 transition-colors duration-300 group">
+          <svg
+            class="w-8 h-8 text-brand-gray-500 group-hover:text-white transition-colors duration-300 mb-6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d={iconPaths[feature.icon]} />
+          </svg>
+          <h3 class="font-display text-lg uppercase tracking-wide mb-3">{feature.title}</h3>
+          <p class="text-sm text-brand-gray-500 leading-relaxed">{feature.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,82 @@
+---
+const navLinks = [
+  { label: "Ring One", href: "/products/ring-one" },
+  { label: "Scale", href: "/products/scale" },
+  { label: "BP Monitor", href: "/products/bp-monitor" },
+  { label: "Hydra One", href: "/products/hydra-one" },
+  { label: "Hema One", href: "/products/hema-one" },
+];
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-brand-black/80 backdrop-blur-lg border-b border-white/5" id="navbar">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 sm:h-20">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3">
+        <img
+          src="https://storage.googleapis.com/seemyhealth-email-assets/logo.png"
+          alt="SeeMyHealth"
+          class="w-8 h-8 rounded-lg"
+        />
+        <span class="text-base font-semibold text-white tracking-wide">SeeMyHealth</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-10">
+        {navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="text-[13px] uppercase tracking-[2px] text-brand-gray-400 hover:text-white transition-colors duration-300"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+
+      <!-- CTA -->
+      <div class="flex items-center gap-4">
+        <a
+          href="https://shop.seemyhealth.ai"
+          class="hidden sm:inline-flex items-center px-6 py-2.5 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+        >
+          Shop Now
+        </a>
+        <button
+          class="md:hidden p-2 text-brand-gray-400 hover:text-white"
+          id="mobile-menu-btn"
+          aria-label="Menu"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="hidden md:hidden bg-brand-black border-t border-white/5" id="mobile-menu">
+    <div class="px-6 py-4 space-y-1">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="block py-3 text-[13px] uppercase tracking-[2px] text-brand-gray-400 hover:text-white transition-colors"
+        >
+          {link.label}
+        </a>
+      ))}
+      <a
+        href="https://shop.seemyhealth.ai"
+        class="block py-3 mt-2 text-[13px] uppercase tracking-[1.5px] font-medium text-white"
+      >
+        Shop Now
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+</script>

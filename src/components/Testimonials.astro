@@ -1,0 +1,46 @@
+---
+const testimonials = [
+  {
+    quote: "The Ring One completely changed how I understand my sleep. I never realized how much my late-night screen time was affecting my recovery.",
+    author: "Sarah M.",
+    role: "Fitness Enthusiast",
+  },
+  {
+    quote: "Having all my family's health data in one app gives me peace of mind. The sharing controls are exactly what we needed.",
+    author: "James K.",
+    role: "Father of Three",
+  },
+  {
+    quote: "As a doctor, I appreciate the medical-grade accuracy. I recommend SeeMyHealth to my patients who want to track vitals at home.",
+    author: "Dr. Amina N.",
+    role: "General Practitioner",
+  },
+];
+---
+
+<section class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="mb-16">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">What People Say</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
+        Real <span class="font-500">Stories</span>
+      </h2>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="grid lg:grid-cols-3 gap-8">
+      {testimonials.map((t) => (
+        <div class="border-t border-white/10 pt-8">
+          <p class="text-lg text-brand-gray-300 leading-relaxed mb-8 italic">
+            &ldquo;{t.quote}&rdquo;
+          </p>
+          <div>
+            <div class="text-sm font-medium text-white">{t.author}</div>
+            <div class="text-[12px] text-brand-gray-500 uppercase tracking-wider mt-1">{t.role}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+---
+const GCS = "https://storage.googleapis.com/seemyhealth-email-assets";
+
+const steps = [
+  {
+    number: "01",
+    verb: "Wear",
+    title: "Choose your devices",
+    description: "Pick the devices that fit your goals. Start with one or build a full ecosystem — they all work together.",
+  },
+  {
+    number: "02",
+    verb: "Sync",
+    title: "Download the app",
+    description: "Get the free SeeMyHealth app. Create your account and pair your devices in under a minute.",
+  },
+  {
+    number: "03",
+    verb: "Review",
+    title: "See your health",
+    description: "Access your data, trends, and insights instantly. Patterns, not single scores. Clarity, not noise.",
+  },
+];
+---
+
+<section id="app" class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center mb-20">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Getting Started</p>
+      <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95]">
+        Wear. Sync. <span class="font-500">Review.</span>
+      </h2>
+    </div>
+
+    <!-- Steps -->
+    <div class="grid lg:grid-cols-3 gap-px bg-white/5 rounded-2xl overflow-hidden max-w-5xl mx-auto">
+      {steps.map((step) => (
+        <div class="bg-brand-black p-10 sm:p-12 text-center group hover:bg-brand-gray-900 transition-colors duration-300">
+          <span class="font-display text-5xl font-200 text-brand-gray-800 group-hover:text-brand-gray-600 transition-colors block mb-4">
+            {step.number}
+          </span>
+          <h3 class="font-display text-2xl uppercase font-400 mb-2">{step.verb}</h3>
+          <p class="text-sm text-brand-gray-400 mb-4">{step.title}</p>
+          <p class="text-sm text-brand-gray-600 leading-relaxed">{step.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

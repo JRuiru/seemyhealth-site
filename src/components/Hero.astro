@@ -1,0 +1,59 @@
+---
+const GCS = "https://storage.googleapis.com/seemyhealth-email-assets";
+---
+
+<section class="relative min-h-screen flex items-end pb-20 pt-24 overflow-hidden">
+  <!-- Background image — lifestyle shot placeholder -->
+  <div class="absolute inset-0">
+    <img
+      src={`${GCS}/ring-one.jpg`}
+      alt="Person wearing Ring One"
+      class="w-full h-full object-cover"
+    />
+    <!-- Dark overlay for readability -->
+    <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/60 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-brand-black/50 to-transparent"></div>
+  </div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-8 w-full">
+    <div class="max-w-2xl">
+      <!-- Label -->
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-400 mb-6 fade-up">
+        Sensing, Made Human
+      </p>
+
+      <!-- Title -->
+      <h1 class="font-display text-5xl sm:text-6xl lg:text-8xl font-300 uppercase leading-[0.95] mb-6 fade-up fade-up-delay-1">
+        See Your<br />
+        <span class="font-500">Health</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-lg sm:text-xl text-brand-gray-300 leading-relaxed max-w-lg mb-10 fade-up fade-up-delay-2">
+        Five beautifully designed devices. One powerful app.
+        Medical-grade clarity for the life you actually live.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap gap-4 fade-up fade-up-delay-3">
+        <a
+          href="https://shop.seemyhealth.ai"
+          class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+        >
+          Shop Devices
+        </a>
+        <a
+          href="#products"
+          class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
+        >
+          Explore
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 fade-up fade-up-delay-4">
+    <div class="w-[1px] h-12 bg-gradient-to-b from-transparent to-white/30"></div>
+  </div>
+</section>
