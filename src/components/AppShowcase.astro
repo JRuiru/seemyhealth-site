@@ -1,0 +1,140 @@
+---
+const appFeatures = [
+  {
+    title: "Unified Dashboard",
+    description: "Every device, every metric — one screen. See your complete health picture at a glance without switching between apps.",
+    icon: "M4 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5z",
+  },
+  {
+    title: "Cross-Device Insights",
+    description: "Your ring data informs your scale readings. Your hydration correlates with your sleep. The app finds patterns across devices that single-device apps can't.",
+    icon: "M13.828 10.172a4 4 0 0 0-5.656 0l-4 4a4 4 0 1 0 5.656 5.656l1.102-1.101M10.172 13.828a4 4 0 0 0 5.656 0l4-4a4 4 0 0 0-5.656-5.656l-1.1 1.1",
+  },
+  {
+    title: "Smart Sharing",
+    description: "Grant your doctor authenticated access with a single toggle. No PDFs, no emails — they see your real-time data securely. Revoke anytime.",
+    icon: "M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z",
+  },
+  {
+    title: "Journalling & Logging",
+    description: "Mood tracking, meal logging, recipes, and wellness content — all included with your subscription. No device required for these features.",
+    icon: "M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
+  },
+];
+---
+
+<section class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <!-- Left: App mockup -->
+      <div class="relative" data-scroll-reveal>
+        <!-- Phone frame -->
+        <div class="relative mx-auto w-[280px] sm:w-[320px]">
+          <div class="rounded-[2.5rem] border-2 border-white/10 bg-brand-gray-900 p-3 shadow-2xl shadow-black/50">
+            <div class="rounded-[2rem] bg-brand-black overflow-hidden">
+              <!-- Status bar -->
+              <div class="flex items-center justify-between px-6 pt-4 pb-2">
+                <span class="text-[10px] text-brand-gray-500">9:41</span>
+                <div class="flex gap-1">
+                  <div class="w-4 h-2 rounded-sm bg-brand-gray-700"></div>
+                  <div class="w-4 h-2 rounded-sm bg-brand-gray-700"></div>
+                </div>
+              </div>
+              <!-- App content mockup -->
+              <div class="px-5 pb-6 space-y-4">
+                <div>
+                  <p class="text-[10px] uppercase tracking-[2px] text-brand-gray-600 mb-1">Good Morning</p>
+                  <p class="text-lg font-display font-400">Your Health Today</p>
+                </div>
+                <!-- Metric cards -->
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="rounded-xl bg-brand-gray-900 p-3">
+                    <div class="w-5 h-5 rounded-full bg-orange-500/20 flex items-center justify-center mb-2">
+                      <div class="w-2 h-2 rounded-full bg-orange-500"></div>
+                    </div>
+                    <p class="text-[9px] text-brand-gray-500 uppercase">Heart Rate</p>
+                    <p class="text-lg font-display font-400">72 <span class="text-[10px] text-brand-gray-500">bpm</span></p>
+                  </div>
+                  <div class="rounded-xl bg-brand-gray-900 p-3">
+                    <div class="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center mb-2">
+                      <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                    </div>
+                    <p class="text-[9px] text-brand-gray-500 uppercase">Weight</p>
+                    <p class="text-lg font-display font-400">74.2 <span class="text-[10px] text-brand-gray-500">kg</span></p>
+                  </div>
+                  <div class="rounded-xl bg-brand-gray-900 p-3">
+                    <div class="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center mb-2">
+                      <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                    </div>
+                    <p class="text-[9px] text-brand-gray-500 uppercase">Blood Pressure</p>
+                    <p class="text-lg font-display font-400">118/76</p>
+                  </div>
+                  <div class="rounded-xl bg-brand-gray-900 p-3">
+                    <div class="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center mb-2">
+                      <div class="w-2 h-2 rounded-full bg-cyan-500"></div>
+                    </div>
+                    <p class="text-[9px] text-brand-gray-500 uppercase">Hydration</p>
+                    <p class="text-lg font-display font-400">1.8 <span class="text-[10px] text-brand-gray-500">L</span></p>
+                  </div>
+                </div>
+                <!-- Sleep bar -->
+                <div class="rounded-xl bg-brand-gray-900 p-3">
+                  <p class="text-[9px] text-brand-gray-500 uppercase mb-2">Last Night's Sleep</p>
+                  <div class="flex gap-1 h-4">
+                    <div class="flex-1 rounded bg-indigo-900/60"></div>
+                    <div class="flex-[2] rounded bg-indigo-700/60"></div>
+                    <div class="flex-1 rounded bg-indigo-500/60"></div>
+                    <div class="flex-[1.5] rounded bg-indigo-700/60"></div>
+                    <div class="flex-1 rounded bg-indigo-900/60"></div>
+                  </div>
+                  <div class="flex justify-between mt-1">
+                    <span class="text-[8px] text-brand-gray-600">11:30 PM</span>
+                    <span class="text-[8px] text-brand-gray-600">7h 12m</span>
+                    <span class="text-[8px] text-brand-gray-600">6:42 AM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Glow effect -->
+          <div class="absolute -inset-10 bg-gradient-to-b from-white/[0.02] to-transparent rounded-full blur-3xl pointer-events-none"></div>
+        </div>
+      </div>
+
+      <!-- Right: Feature list -->
+      <div>
+        <div class="mb-10" data-scroll-reveal>
+          <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">The App</p>
+          <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
+            Where It All <span class="font-500">Comes Together</span>
+          </h2>
+          <p class="text-brand-gray-400 leading-relaxed">
+            Every device feeds into one app. No switching, no silos. Just your complete health picture, updated in real time.
+          </p>
+        </div>
+
+        <div class="space-y-8" data-scroll-stagger>
+          {appFeatures.map((feature) => (
+            <div class="flex gap-5 group">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-white/20 transition-colors">
+                <svg
+                  class="w-5 h-5 text-brand-gray-500 group-hover:text-white transition-colors"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d={feature.icon} />
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-display text-base uppercase mb-1">{feature.title}</h3>
+                <p class="text-sm text-brand-gray-500 leading-relaxed">{feature.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

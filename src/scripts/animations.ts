@@ -214,9 +214,37 @@ export function initStickyFeatures() {
   });
 }
 
+// --- Navbar scroll (transparent → opaque) ---
+export function initNavbarScroll() {
+  const navbar = document.querySelector('[data-navbar-variant="transparent"]') as HTMLElement;
+  if (!navbar) return;
+
+  const trigger = document.querySelector("[data-hero]") || document.querySelector("section");
+  if (!trigger) return;
+
+  ScrollTrigger.create({
+    trigger,
+    start: "top top",
+    end: "bottom top",
+    onLeave: () => {
+      navbar.classList.add("bg-brand-black/80", "backdrop-blur-lg");
+      navbar.classList.remove("bg-transparent");
+      navbar.style.borderColor = "rgba(255,255,255,0.05)";
+    },
+    onEnterBack: () => {
+      const menu = document.getElementById("mobile-menu");
+      if (menu && !menu.classList.contains("hidden")) return; // keep opaque if menu open
+      navbar.classList.remove("bg-brand-black/80", "backdrop-blur-lg");
+      navbar.classList.add("bg-transparent");
+      navbar.style.borderColor = "transparent";
+    },
+  });
+}
+
 // --- Init all ---
 export function initAllAnimations() {
   initSmoothScroll();
+  initNavbarScroll();
   initHeroReveal();
   initScrollReveals();
   initImageReveals();

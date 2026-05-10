@@ -1,15 +1,36 @@
 ---
+interface Props {
+  variant?: 'default' | 'transparent' | 'product';
+  productName?: string;
+  productColor?: string;
+}
+
+const { variant = 'default', productName, productColor } = Astro.props;
+
 const navLinks = [
   { label: "Ring One", href: "/products/ring-one" },
-  { label: "Scale", href: "/products/scale" },
+  { label: "The Scale", href: "/products/scale" },
   { label: "BP Monitor", href: "/products/bp-monitor" },
   { label: "Hydra One", href: "/products/hydra-one" },
   { label: "Hema One", href: "/products/hema-one" },
+  { label: "App", href: "/app" },
 ];
+
+const isTransparent = variant === 'transparent';
+const isProduct = variant === 'product';
 ---
 
-<nav class="fixed top-0 left-0 right-0 z-50 bg-brand-black/80 backdrop-blur-lg border-b border-white/5" id="navbar">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+<nav
+  class:list={[
+    "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+    isTransparent
+      ? "bg-transparent border-b border-transparent"
+      : "bg-brand-black/80 backdrop-blur-lg border-b border-white/5"
+  ]}
+  id="navbar"
+  data-navbar-variant={variant}
+>
+  <div class="px-6 lg:px-12">
     <div class="flex items-center justify-between h-16 sm:h-20">
       <!-- Logo -->
       <a href="/" class="flex items-center gap-3">
@@ -19,10 +40,19 @@ const navLinks = [
           class="w-8 h-8 rounded-lg"
         />
         <span class="text-base font-semibold text-white tracking-wide">SeeMyHealth</span>
+        {isProduct && productName && (
+          <span class="hidden sm:flex items-center gap-2 ml-2 pl-4 border-l border-white/10">
+            <span
+              class="w-2 h-2 rounded-full"
+              style={`background-color: ${productColor || '#fff'}`}
+            ></span>
+            <span class="text-[12px] uppercase tracking-[2px] text-brand-gray-400">{productName}</span>
+          </span>
+        )}
       </a>
 
       <!-- Desktop Nav -->
-      <div class="hidden md:flex items-center gap-10">
+      <div class="hidden lg:flex items-center gap-10">
         {navLinks.map((link) => (
           <a
             href={link.href}
@@ -36,13 +66,13 @@ const navLinks = [
       <!-- CTA -->
       <div class="flex items-center gap-4">
         <a
-          href="https://shop.seemyhealth.ai"
+          href="/shop"
           class="hidden sm:inline-flex items-center px-6 py-2.5 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
         >
           Shop Now
         </a>
         <button
-          class="md:hidden p-2 text-brand-gray-400 hover:text-white"
+          class="lg:hidden p-2 text-brand-gray-400 hover:text-white"
           id="mobile-menu-btn"
           aria-label="Menu"
         >
@@ -55,7 +85,7 @@ const navLinks = [
   </div>
 
   <!-- Mobile Menu -->
-  <div class="hidden md:hidden bg-brand-black border-t border-white/5" id="mobile-menu">
+  <div class="hidden lg:hidden bg-brand-black border-t border-white/5" id="mobile-menu">
     <div class="px-6 py-4 space-y-1">
       {navLinks.map((link) => (
         <a
@@ -66,7 +96,7 @@ const navLinks = [
         </a>
       ))}
       <a
-        href="https://shop.seemyhealth.ai"
+        href="/shop"
         class="block py-3 mt-2 text-[13px] uppercase tracking-[1.5px] font-medium text-white"
       >
         Shop Now
@@ -78,5 +108,14 @@ const navLinks = [
 <script>
   const btn = document.getElementById('mobile-menu-btn');
   const menu = document.getElementById('mobile-menu');
-  btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+  const navbar = document.getElementById('navbar');
+
+  btn?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+    // Force opaque background when mobile menu is open (especially for transparent variant)
+    if (navbar?.dataset.navbarVariant === 'transparent' && menu && !menu.classList.contains('hidden')) {
+      navbar.classList.add('bg-brand-black/80', 'backdrop-blur-lg', 'border-white/5');
+      navbar.classList.remove('bg-transparent', 'border-transparent');
+    }
+  });
 </script>

@@ -1,0 +1,156 @@
+---
+const GCS = "https://storage.googleapis.com/seemyhealth-email-assets";
+
+const devices = [
+  { name: "Ring One", slug: "ring-one", image: `${GCS}/ring-aurora-gold.jpg`, metric: "Heart Rate · SpO2 · Sleep", color: "#F97316" },
+  { name: "The Scale", slug: "scale", image: `${GCS}/scale-black-pack.jpg`, metric: "Body Composition · Weight", color: "#3B82F6" },
+  { name: "BP Monitor", slug: "bp-monitor", image: `${GCS}/bp-black.jpg`, metric: "Blood Pressure · Pulse", color: "#EF4444" },
+  { name: "Hydra One", slug: "hydra-one", image: `${GCS}/bottle-studio-wet.jpg`, metric: "Hydration · Intake", color: "#06B6D4" },
+  { name: "Hema One", slug: "hema-one", image: `${GCS}/hema-one-web.jpg`, metric: "Blood Markers · Glucose", color: "#A855F7" },
+];
+---
+
+<section class="py-32 sm:py-40 bg-brand-dark border-t border-white/5 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-24" data-scroll-reveal>
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-6">One Ecosystem</p>
+      <h2 class="font-display text-4xl sm:text-5xl lg:text-7xl font-300 uppercase leading-[0.95] mb-6">
+        Five Devices.<br />
+        <span class="font-500">One Complete Picture.</span>
+      </h2>
+      <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto">
+        Each device captures a layer of your health. Together, they reveal the full story — patterns you'd never see with just one.
+      </p>
+    </div>
+
+    <!-- Hub & spoke layout -->
+    <div class="relative" data-ecosystem>
+      <!-- Central app hub -->
+      <div class="flex justify-center mb-12 lg:mb-0 lg:absolute lg:inset-0 lg:items-center lg:justify-center lg:z-20 lg:pointer-events-none">
+        <a href="/app" class="ecosystem-hub lg:pointer-events-auto group relative">
+          <!-- Pulsing rings -->
+          <div class="absolute inset-0 -m-4 rounded-full border border-white/5 ecosystem-pulse-1"></div>
+          <div class="absolute inset-0 -m-10 rounded-full border border-white/[0.03] ecosystem-pulse-2"></div>
+          <div class="absolute inset-0 -m-16 rounded-full border border-white/[0.02] ecosystem-pulse-3 hidden lg:block"></div>
+
+          <!-- Hub circle -->
+          <div class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-brand-gray-900 border border-white/10 group-hover:border-white/20 flex items-center justify-center transition-colors shadow-2xl shadow-black/50">
+            <div class="text-center">
+              <div class="w-14 h-14 mx-auto mb-2 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+                <img
+                  src={`${GCS}/logo.png`}
+                  alt="SeeMyHealth"
+                  class="w-10 h-10 rounded-xl"
+                />
+              </div>
+              <p class="text-[10px] uppercase tracking-[2px] text-brand-gray-400 group-hover:text-white transition-colors">The App</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Device cards — split into top row and bottom row around the center on desktop -->
+      <!-- Mobile: simple grid. Desktop: 3 top, 2 bottom with center gap -->
+      <div class="grid grid-cols-2 gap-4 sm:gap-6 lg:hidden" data-scroll-stagger>
+        {devices.map((device) => (
+          <a
+            href={`/products/${device.slug}`}
+            class="group relative rounded-2xl overflow-hidden bg-brand-gray-900 border border-white/5 hover:border-white/15 transition-all duration-500"
+          >
+            <div class="h-[2px] w-full" style={`background: linear-gradient(90deg, transparent, ${device.color}, transparent)`}></div>
+            <div class="relative h-40 overflow-hidden">
+              <img src={device.image} alt={device.name} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div class="absolute inset-0 bg-gradient-to-t from-brand-gray-900 via-brand-gray-900/30 to-transparent"></div>
+            </div>
+            <div class="p-4">
+              <h3 class="font-display text-sm uppercase mb-1">{device.name}</h3>
+              <p class="text-[10px] text-brand-gray-500">{device.metric}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- Desktop: radial layout -->
+      <div class="hidden lg:block">
+        <!-- Top row: 3 devices -->
+        <div class="grid grid-cols-3 gap-6 mb-6" data-scroll-stagger>
+          {devices.slice(0, 3).map((device) => (
+            <a
+              href={`/products/${device.slug}`}
+              class="ecosystem-device group relative rounded-2xl overflow-hidden bg-brand-gray-900 border border-white/5 hover:border-white/15 transition-all duration-500"
+            >
+              <div class="h-[2px] w-full" style={`background: linear-gradient(90deg, transparent, ${device.color}, transparent)`}></div>
+              <div class="relative h-52 overflow-hidden">
+                <img src={device.image} alt={device.name} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-gray-900 via-brand-gray-900/30 to-transparent"></div>
+              </div>
+              <div class="p-5 relative">
+                <h3 class="font-display text-base uppercase mb-1">{device.name}</h3>
+                <p class="text-[11px] text-brand-gray-500 leading-relaxed">{device.metric}</p>
+                <!-- Connector line going down toward center -->
+                <div class="absolute -bottom-6 left-1/2 w-px h-6 ecosystem-connector" style={`background: linear-gradient(to bottom, ${device.color}40, transparent)`}></div>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <!-- Spacer for the central hub -->
+        <div class="h-44"></div>
+
+        <!-- Bottom row: 2 devices centered -->
+        <div class="grid grid-cols-3 gap-6" data-scroll-stagger>
+          <div class="col-start-1">
+            <a
+              href={`/products/${devices[3].slug}`}
+              class="ecosystem-device group relative rounded-2xl overflow-hidden bg-brand-gray-900 border border-white/5 hover:border-white/15 transition-all duration-500 block"
+            >
+              <div class="h-[2px] w-full" style={`background: linear-gradient(90deg, transparent, ${devices[3].color}, transparent)`}></div>
+              <div class="relative h-52 overflow-hidden">
+                <img src={devices[3].image} alt={devices[3].name} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-gray-900 via-brand-gray-900/30 to-transparent"></div>
+              </div>
+              <div class="p-5 relative">
+                <h3 class="font-display text-base uppercase mb-1">{devices[3].name}</h3>
+                <p class="text-[11px] text-brand-gray-500 leading-relaxed">{devices[3].metric}</p>
+                <div class="absolute -top-6 left-1/2 w-px h-6 ecosystem-connector" style={`background: linear-gradient(to top, ${devices[3].color}40, transparent)`}></div>
+              </div>
+            </a>
+          </div>
+          <div class="col-start-3">
+            <a
+              href={`/products/${devices[4].slug}`}
+              class="ecosystem-device group relative rounded-2xl overflow-hidden bg-brand-gray-900 border border-white/5 hover:border-white/15 transition-all duration-500 block"
+            >
+              <div class="h-[2px] w-full" style={`background: linear-gradient(90deg, transparent, ${devices[4].color}, transparent)`}></div>
+              <div class="relative h-52 overflow-hidden">
+                <img src={devices[4].image} alt={devices[4].name} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-gray-900 via-brand-gray-900/30 to-transparent"></div>
+              </div>
+              <div class="p-5 relative">
+                <h3 class="font-display text-base uppercase mb-1">{devices[4].name}</h3>
+                <p class="text-[11px] text-brand-gray-500 leading-relaxed">{devices[4].metric}</p>
+                <div class="absolute -top-6 left-1/2 w-px h-6 ecosystem-connector" style={`background: linear-gradient(to top, ${devices[4].color}40, transparent)`}></div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom tagline -->
+      <div class="flex justify-center mt-10" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-600">All data flows into one app</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes ecosystem-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.05); }
+  }
+  .ecosystem-pulse-1 { animation: ecosystem-pulse 3s ease-in-out infinite; }
+  .ecosystem-pulse-2 { animation: ecosystem-pulse 3s ease-in-out infinite 0.5s; }
+  .ecosystem-pulse-3 { animation: ecosystem-pulse 3s ease-in-out infinite 1s; }
+</style>

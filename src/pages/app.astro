@@ -1,0 +1,437 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+export const prerender = true;
+
+const GCS = "https://storage.googleapis.com/seemyhealth-email-assets";
+
+const coreFeatures = [
+  {
+    title: "Unified Dashboard",
+    description: "Every device, every metric — one screen. Heart rate from your ring, weight from your scale, blood pressure, hydration, and blood markers all in a single view. No app-switching, no silos.",
+    icon: "M4 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5z",
+    color: "#F97316",
+  },
+  {
+    title: "Cross-Device Insights",
+    description: "The app connects the dots between devices. How did last night's sleep affect your morning heart rate? Is your hydration impacting your blood pressure? Patterns you'd never see with a single device.",
+    icon: "M13.828 10.172a4 4 0 0 0-5.656 0l-4 4a4 4 0 1 0 5.656 5.656l1.102-1.101M10.172 13.828a4 4 0 0 0 5.656 0l4-4a4 4 0 0 0-5.656-5.656l-1.1 1.1",
+    color: "#3B82F6",
+  },
+  {
+    title: "Sleep Intelligence",
+    description: "Advanced sleep staging — light, deep, REM — plus overnight HRV, skin temperature trends, and a morning recovery score. Understand your rest, not just your hours.",
+    icon: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
+    color: "#6366F1",
+  },
+  {
+    title: "Trends Over Time",
+    description: "Daily numbers fluctuate. The app focuses on what matters — weekly and monthly trends. See how your health evolves, not just where it is today.",
+    icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
+    color: "#06B6D4",
+  },
+];
+
+const lifestyleFeatures = [
+  {
+    title: "Meal Logging",
+    description: "Log meals with photos, search our food database, or scan barcodes. See how nutrition affects your energy, sleep, and body composition.",
+    icon: "M12 6v6l4 2M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z",
+  },
+  {
+    title: "Mood Tracking",
+    description: "Quick daily check-ins. Track how you feel and discover connections between mood, sleep quality, activity, and hydration.",
+    icon: "M14.828 14.828a4 4 0 0 1-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z",
+  },
+  {
+    title: "Journalling",
+    description: "Free-form daily journal with prompts. Reflect on your day, track habits, and build a personal health narrative over time.",
+    icon: "M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
+  },
+  {
+    title: "Recipes & Wellness",
+    description: "Curated recipes and wellness content tailored to your health goals. Practical guidance, not generic advice.",
+    icon: "M4.318 6.318a4.5 4.5 0 0 0 0 6.364L12 20.364l7.682-7.682a4.5 4.5 0 0 0-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 0 0-6.364 0z",
+  },
+];
+
+const securityFeatures = [
+  {
+    title: "Toggle-Based Sharing",
+    description: "Grant your doctor, family, or coach access with a single switch. They're authenticated, they see your data in real-time, and you revoke access just as easily.",
+  },
+  {
+    title: "End-to-End Encryption",
+    description: "TLS 1.3 in transit, AES-256 at rest. Your health data is encrypted at every stage. We never sell your data and we never run ads.",
+  },
+  {
+    title: "In-App Data Deletion",
+    description: "Request deletion of all your data directly through the app. Your data, your control — always.",
+  },
+];
+---
+
+<Layout title="The App — SeeMyHealth" description="The SeeMyHealth app connects all your devices in one unified dashboard. Sleep intelligence, cross-device insights, meal logging, mood tracking, and secure sharing.">
+  <Navbar />
+
+  <!-- Hero -->
+  <section class="relative pt-32 pb-24 sm:pt-40 sm:pb-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-brand-dark to-brand-black"></div>
+
+    <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <!-- Text -->
+        <div data-scroll-reveal>
+          <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-6">The App</p>
+          <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-300 uppercase leading-[0.95] mb-6">
+            Where It All <span class="font-500">Comes Together</span>
+          </h1>
+          <p class="text-lg text-brand-gray-400 leading-relaxed mb-8">
+            Five devices, one app. The SeeMyHealth app is the single place where every metric, every trend, and every insight converges. Works with or without devices — journalling, mood tracking, and meal logging are built right in.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a
+              href="#"
+              class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+            >
+              Download on iOS
+            </a>
+            <a
+              href="#"
+              class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
+            >
+              Get on Android
+            </a>
+          </div>
+          <p class="text-[12px] text-brand-gray-600 mt-4">1-month free trial included with every device purchase.</p>
+        </div>
+
+        <!-- Phone mockup -->
+        <div class="relative" data-scroll-reveal>
+          <div class="relative mx-auto w-[300px] sm:w-[340px]">
+            <div class="rounded-[2.5rem] border-2 border-white/10 bg-brand-gray-900 p-3 shadow-2xl shadow-black/50">
+              <div class="rounded-[2rem] bg-brand-black overflow-hidden">
+                <!-- Status bar -->
+                <div class="flex items-center justify-between px-6 pt-4 pb-2">
+                  <span class="text-[10px] text-brand-gray-500">9:41</span>
+                  <div class="flex gap-1">
+                    <div class="w-4 h-2 rounded-sm bg-brand-gray-700"></div>
+                    <div class="w-4 h-2 rounded-sm bg-brand-gray-700"></div>
+                  </div>
+                </div>
+                <!-- Dashboard -->
+                <div class="px-5 pb-6 space-y-4">
+                  <div>
+                    <p class="text-[10px] uppercase tracking-[2px] text-brand-gray-600 mb-1">Good Morning</p>
+                    <p class="text-xl font-display font-400">Your Health Today</p>
+                  </div>
+                  <!-- Recovery score -->
+                  <div class="rounded-xl bg-brand-gray-900 p-4 text-center">
+                    <div class="relative w-20 h-20 mx-auto mb-2">
+                      <svg class="w-20 h-20 -rotate-90" viewBox="0 0 80 80">
+                        <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="4" />
+                        <circle cx="40" cy="40" r="35" fill="none" stroke="#22c55e" stroke-width="4" stroke-dasharray="176" stroke-dashoffset="30" stroke-linecap="round" />
+                      </svg>
+                      <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-2xl font-display font-400">83</span>
+                      </div>
+                    </div>
+                    <p class="text-[9px] uppercase tracking-[2px] text-brand-gray-500">Recovery Score</p>
+                  </div>
+                  <!-- Metric cards -->
+                  <div class="grid grid-cols-2 gap-2">
+                    <div class="rounded-xl bg-brand-gray-900 p-3">
+                      <div class="w-4 h-4 rounded-full bg-orange-500/20 flex items-center justify-center mb-2">
+                        <div class="w-1.5 h-1.5 rounded-full bg-orange-500"></div>
+                      </div>
+                      <p class="text-[9px] text-brand-gray-500 uppercase">Heart Rate</p>
+                      <p class="text-lg font-display font-400">72 <span class="text-[10px] text-brand-gray-500">bpm</span></p>
+                    </div>
+                    <div class="rounded-xl bg-brand-gray-900 p-3">
+                      <div class="w-4 h-4 rounded-full bg-cyan-500/20 flex items-center justify-center mb-2">
+                        <div class="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>
+                      </div>
+                      <p class="text-[9px] text-brand-gray-500 uppercase">Hydration</p>
+                      <p class="text-lg font-display font-400">1.8 <span class="text-[10px] text-brand-gray-500">L</span></p>
+                    </div>
+                  </div>
+                  <!-- Sleep bar -->
+                  <div class="rounded-xl bg-brand-gray-900 p-3">
+                    <p class="text-[9px] text-brand-gray-500 uppercase mb-2">Sleep — 7h 12m</p>
+                    <div class="flex gap-0.5 h-3">
+                      <div class="flex-1 rounded-sm bg-indigo-900/60"></div>
+                      <div class="flex-[2] rounded-sm bg-indigo-700/60"></div>
+                      <div class="flex-1 rounded-sm bg-indigo-500/60"></div>
+                      <div class="flex-[1.5] rounded-sm bg-indigo-700/60"></div>
+                      <div class="flex-1 rounded-sm bg-indigo-900/60"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Glow -->
+            <div class="absolute -inset-16 bg-gradient-to-b from-white/[0.02] to-transparent rounded-full blur-3xl pointer-events-none"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Features -->
+  <section class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="mb-16" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Core Features</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
+          More Than a <span class="font-500">Dashboard</span>
+        </h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-px bg-white/5 rounded-2xl overflow-hidden" data-scroll-stagger>
+        {coreFeatures.map((feature) => (
+          <div class="bg-brand-black p-8 sm:p-10 hover:bg-brand-gray-900 transition-colors duration-300 group">
+            <div class="flex items-center gap-3 mb-6">
+              <svg
+                class="w-8 h-8 text-brand-gray-600 group-hover:text-white transition-colors"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d={feature.icon} />
+              </svg>
+              <div class="w-2 h-2 rounded-full" style={`background-color: ${feature.color}`}></div>
+            </div>
+            <h3 class="font-display text-xl uppercase mb-3">{feature.title}</h3>
+            <p class="text-sm text-brand-gray-500 leading-relaxed">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Device-Free Features -->
+  <section class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+        <div>
+          <div class="mb-10" data-scroll-reveal>
+            <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">No Device Required</p>
+            <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
+              Built-In <span class="font-500">Wellness Tools</span>
+            </h2>
+            <p class="text-brand-gray-400 leading-relaxed">
+              The app isn't just a device companion — it's a complete wellness platform. These features work on their own, no hardware needed.
+            </p>
+          </div>
+
+          <div class="space-y-6" data-scroll-stagger>
+            {lifestyleFeatures.map((feature) => (
+              <div class="flex gap-5 group">
+                <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-white/20 transition-colors">
+                  <svg
+                    class="w-5 h-5 text-brand-gray-500 group-hover:text-white transition-colors"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" d={feature.icon} />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-display text-base uppercase mb-1">{feature.title}</h3>
+                  <p class="text-sm text-brand-gray-500 leading-relaxed">{feature.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Second phone mockup — journalling view -->
+        <div class="relative" data-scroll-reveal>
+          <div class="relative mx-auto w-[280px] sm:w-[320px]">
+            <div class="rounded-[2.5rem] border-2 border-white/10 bg-brand-gray-900 p-3 shadow-2xl shadow-black/50">
+              <div class="rounded-[2rem] bg-brand-black overflow-hidden">
+                <div class="flex items-center justify-between px-6 pt-4 pb-2">
+                  <span class="text-[10px] text-brand-gray-500">2:15 PM</span>
+                  <div class="flex gap-1">
+                    <div class="w-4 h-2 rounded-sm bg-brand-gray-700"></div>
+                    <div class="w-4 h-2 rounded-sm bg-brand-gray-700"></div>
+                  </div>
+                </div>
+                <div class="px-5 pb-6 space-y-4">
+                  <div>
+                    <p class="text-[10px] uppercase tracking-[2px] text-brand-gray-600 mb-1">Journal</p>
+                    <p class="text-lg font-display font-400">How Are You Today?</p>
+                  </div>
+                  <!-- Mood selector -->
+                  <div class="flex justify-between px-2">
+                    {["😴", "😐", "🙂", "😊", "🤩"].map((emoji, i) => (
+                      <div class:list={[
+                        "w-12 h-12 rounded-full flex items-center justify-center text-xl",
+                        i === 3 ? "bg-white/10 ring-2 ring-white/20" : "bg-brand-gray-900"
+                      ]}>
+                        {emoji}
+                      </div>
+                    ))}
+                  </div>
+                  <!-- Meal log -->
+                  <div class="rounded-xl bg-brand-gray-900 p-4">
+                    <p class="text-[9px] uppercase tracking-[2px] text-brand-gray-500 mb-3">Today's Meals</p>
+                    <div class="space-y-2">
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                          <div class="w-6 h-6 rounded bg-orange-500/10 flex items-center justify-center text-[10px]">🥣</div>
+                          <span class="text-[11px] text-brand-gray-400">Breakfast</span>
+                        </div>
+                        <span class="text-[11px] text-brand-gray-600">420 cal</span>
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                          <div class="w-6 h-6 rounded bg-green-500/10 flex items-center justify-center text-[10px]">🥗</div>
+                          <span class="text-[11px] text-brand-gray-400">Lunch</span>
+                        </div>
+                        <span class="text-[11px] text-brand-gray-600">580 cal</span>
+                      </div>
+                      <div class="flex items-center justify-between opacity-40">
+                        <div class="flex items-center gap-2">
+                          <div class="w-6 h-6 rounded bg-white/5 flex items-center justify-center">
+                            <span class="text-[11px] text-brand-gray-600">+</span>
+                          </div>
+                          <span class="text-[11px] text-brand-gray-600">Add dinner</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Journal entry -->
+                  <div class="rounded-xl bg-brand-gray-900 p-4">
+                    <p class="text-[9px] uppercase tracking-[2px] text-brand-gray-500 mb-2">Today's Note</p>
+                    <p class="text-[12px] text-brand-gray-400 leading-relaxed italic">Slept better after cutting screen time before bed. Energy was solid through the afternoon...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="absolute -inset-16 bg-gradient-to-b from-white/[0.02] to-transparent rounded-full blur-3xl pointer-events-none"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security & Privacy -->
+  <section class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-16" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Privacy & Security</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
+          Your Data, Your <span class="font-500">Control</span>
+        </h2>
+        <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto">
+          We don't sell your data. We don't run ads. The app exists to serve you — and only you.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-8" data-scroll-stagger>
+        {securityFeatures.map((feature) => (
+          <div class="text-center">
+            <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+              <svg class="w-6 h-6 text-brand-gray-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z" />
+              </svg>
+            </div>
+            <h3 class="font-display text-base uppercase mb-2">{feature.title}</h3>
+            <p class="text-sm text-brand-gray-500 leading-relaxed">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-16" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Subscription</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
+          Simple, <span class="font-500">Honest Pricing</span>
+        </h2>
+        <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto">
+          One plan. Every feature. No paywalls, no hidden tiers, no ads.
+        </p>
+      </div>
+
+      <div class="rounded-2xl border border-white/10 bg-brand-gray-900 p-8 sm:p-12 text-center" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-2">SeeMyHealth App</p>
+        <div class="flex items-baseline justify-center gap-1 mb-2">
+          <span class="font-display text-5xl sm:text-6xl font-300">$9.99</span>
+          <span class="text-brand-gray-500 text-lg">/month</span>
+        </div>
+        <p class="text-brand-gray-500 text-sm mb-8">1-month free trial with every device. Cancel anytime.</p>
+
+        <div class="grid sm:grid-cols-2 gap-4 text-left max-w-lg mx-auto mb-10">
+          {[
+            "All device integrations",
+            "Unified health dashboard",
+            "Cross-device insights",
+            "Sleep intelligence",
+            "Meal logging & recipes",
+            "Mood tracking & journalling",
+            "Secure doctor sharing",
+            "Unlimited data history",
+          ].map((item) => (
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span class="text-sm text-brand-gray-400">{item}</span>
+            </div>
+          ))}
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="#"
+            class="inline-flex items-center justify-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+          >
+            Start Free Trial
+          </a>
+          <a
+            href="/shop"
+            class="inline-flex items-center justify-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
+          >
+            Shop Devices
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Compatibility -->
+  <section class="bg-brand-black border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center" data-scroll-stagger>
+        <div>
+          <p class="font-display text-2xl sm:text-3xl font-300 mb-1">iOS & Android</p>
+          <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">Platform Support</p>
+        </div>
+        <div>
+          <p class="font-display text-2xl sm:text-3xl font-300 mb-1">Apple Health</p>
+          <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">Integration</p>
+        </div>
+        <div>
+          <p class="font-display text-2xl sm:text-3xl font-300 mb-1">Google Fit</p>
+          <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">Integration</p>
+        </div>
+        <div>
+          <p class="font-display text-2xl sm:text-3xl font-300 mb-1">BLE 5.0+</p>
+          <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">Connectivity</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
