@@ -163,7 +163,7 @@ export const products: Record<string, Product> = {
       },
       {
         title: "Doctor Sharing",
-        description: "Export your BP history as a PDF or share directly from the app. Your doctor sees the full picture, not just one reading.",
+        description: "Toggle access for your doctor directly in the app. They get authenticated, see your full BP history in real time, and you can revoke access with a single switch.",
         icon: "M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13",
       },
       {
@@ -258,7 +258,7 @@ export const products: Record<string, Product> = {
       },
       {
         title: "Share with Doctor",
-        description: "Export your history as a report or share directly. Give your healthcare provider the longitudinal data they rarely get to see.",
+        description: "Grant your healthcare provider secure, authenticated access to your blood marker history with a single toggle. They see the longitudinal data they rarely get — and you stay in full control.",
         icon: "M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13",
       },
     ],
