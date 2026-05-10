@@ -1,5 +1,4 @@
 const GCS = "https://storage.googleapis.com/seemyhealth-email-assets";
-const GCS_WEB = GCS; // Web-optimized images also live in same bucket
 
 export interface ProductFeature {
   title: string;
@@ -36,7 +35,7 @@ export const products: Record<string, Product> = {
     tagline: "Sensing, Made Human",
     headline: "Health clarity\non your finger",
     description: "24/7 heart rate, SpO2, sleep stages, activity tracking, and stress monitoring — all from a ring designed for daily wear. Medical-grade sensors wrapped in titanium, rated IP68 for showers, workouts, and everything in between.",
-    image: `${GCS_WEB}/ring-one.jpg`,
+    image: `${GCS}/ring-hero-hands.jpg`,
     price: "$149.99",
     color: "#F97316",
     specs: [
@@ -72,9 +71,18 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
-      { src: `${GCS_WEB}/ring-one.jpg`, alt: "Ring One on hand" },
-      { src: `${GCS_WEB}/ring-bedroom-night-web.jpg`, alt: "Ring One in bedroom setting" },
-      { src: `${GCS_WEB}/ring-bedroom-web.jpg`, alt: "Ring One lifestyle" },
+      { src: `${GCS}/ring-cocktails.jpg`, alt: "Ring One at a social evening" },
+      { src: `${GCS}/ring-face-closeup.jpg`, alt: "Ring One close-up portrait" },
+      { src: `${GCS}/ring-sleeping.jpg`, alt: "Tracking sleep with Ring One" },
+      { src: `${GCS}/ring-working.jpg`, alt: "Ring One while working" },
+      { src: `${GCS}/ring-yoga.jpg`, alt: "Ring One during yoga" },
+      { src: `${GCS}/ring-dining.jpg`, alt: "Ring One at dinner" },
+      { src: `${GCS}/ring-hand-detail.jpg`, alt: "Ring One hand detail" },
+      { src: `${GCS}/ring-fitness-body.jpg`, alt: "Ring One fitness tracking" },
+      { src: `${GCS}/ring-app-phone.jpg`, alt: "SeeMyHealth app with Ring One" },
+      { src: `${GCS}/ring-unboxing.jpg`, alt: "Ring One unboxing" },
+      { src: `${GCS}/ring-all-finishes.jpg`, alt: "All Ring One finishes" },
+      { src: `${GCS}/ring-aurora-studio.jpg`, alt: "Aurora Gold studio shot" },
     ],
   },
   "scale": {
@@ -82,7 +90,7 @@ export const products: Record<string, Product> = {
     tagline: "Beyond the Number",
     headline: "The whole picture,\nnot just weight",
     description: "Full body composition analysis — weight, body fat percentage, muscle mass, bone density, water percentage, BMI, and more. Step on, and see everything in the app instantly.",
-    image: `${GCS_WEB}/scale-web.jpg`,
+    image: `${GCS}/scale-black-pack.jpg`,
     price: "$79.99",
     color: "#3B82F6",
     specs: [
@@ -118,9 +126,10 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
-      { src: `${GCS_WEB}/scale-web.jpg`, alt: "Smart Scale" },
-      { src: `${GCS_WEB}/scale-white-web.jpg`, alt: "Scale white finish" },
-      { src: `${GCS_WEB}/scale-lifestyle-web.jpg`, alt: "Scale lifestyle" },
+      { src: `${GCS}/scale-white-pack.jpg`, alt: "Smart Scale white finish" },
+      { src: `${GCS}/scale-pro-hero.jpg`, alt: "Scale Pro with handle" },
+      { src: `${GCS}/scale-pro-lifestyle.jpg`, alt: "Using the Scale Pro at home" },
+      { src: `${GCS}/scale-pro-using.jpg`, alt: "Scale Pro body composition reading" },
     ],
   },
   "bp-monitor": {
@@ -128,7 +137,7 @@ export const products: Record<string, Product> = {
     tagline: "Blood Pressure, Simplified",
     headline: "Clinical accuracy,\nhome comfort",
     description: "Accurate blood pressure readings with irregular heartbeat detection. Validated against clinical standards. Share results directly with your doctor from the app.",
-    image: `${GCS_WEB}/bp-monitor-web.jpg`,
+    image: `${GCS}/bp-black.jpg`,
     price: "$89.99",
     color: "#EF4444",
     specs: [
@@ -164,7 +173,7 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
-      { src: `${GCS_WEB}/bp-monitor-web.jpg`, alt: "BP Monitor device" },
+      { src: `${GCS}/bp-white.jpg`, alt: "BP Monitor white finish" },
     ],
   },
   "hydra-one": {
@@ -172,7 +181,7 @@ export const products: Record<string, Product> = {
     tagline: "Stay Perfectly Hydrated",
     headline: "Drink smarter,\nnot harder",
     description: "Smart water bottle that tracks your daily intake automatically. LED ring shows your progress. Gentle reminders keep you on track without being annoying.",
-    image: `${GCS_WEB}/hydra-one-web.jpg`,
+    image: `${GCS}/bottle-studio-wet.jpg`,
     price: "$59.99",
     color: "#06B6D4",
     specs: [
@@ -208,8 +217,9 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
-      { src: `${GCS_WEB}/hydra-one-web.jpg`, alt: "Hydra One on tree bark" },
-      { src: `${GCS_WEB}/kitchen-lifestyle-web.jpg`, alt: "Kitchen lifestyle scene" },
+      { src: `${GCS}/bottle-trio-studio.jpg`, alt: "Hydra One all colors" },
+      { src: `${GCS}/bottle-office-scene.jpg`, alt: "Hydra One on desk" },
+      { src: `${GCS}/kitchen-lifestyle-web.jpg`, alt: "Hydra One in kitchen" },
     ],
   },
   "hema-one": {
@@ -217,7 +227,7 @@ export const products: Record<string, Product> = {
     tagline: "Your Blood, Your Data",
     headline: "Lab results,\nno lab visit",
     description: "At-home blood analysis for key health markers. A small sample from your fingertip gives you lab-quality results in minutes, right in the app.",
-    image: `${GCS_WEB}/hema-one-web.jpg`,
+    image: `${GCS}/hema-one-web.jpg`,
     price: "$99.99",
     color: "#A855F7",
     specs: [
@@ -253,8 +263,7 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
-      { src: `${GCS_WEB}/hema-one-web.jpg`, alt: "Hema One in living room" },
-      { src: `${GCS_WEB}/hema-one-device-web.jpg`, alt: "Hema One device" },
+      { src: `${GCS}/hema-one-device-web.jpg`, alt: "Hema One device" },
     ],
   },
 };

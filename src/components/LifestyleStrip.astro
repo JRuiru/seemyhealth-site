@@ -1,0 +1,52 @@
+---
+const GCS = "https://storage.googleapis.com/seemyhealth-email-assets";
+
+const images = [
+  { src: `${GCS}/ring-sleeping.jpg`, alt: "Sleep tracking with Ring One", aspect: "tall" },
+  { src: `${GCS}/lifestyle-athlete.jpg`, alt: "Fitness tracking", aspect: "wide" },
+  { src: `${GCS}/ring-cocktails.jpg`, alt: "Ring One at a social evening", aspect: "tall" },
+  { src: `${GCS}/scale-pro-lifestyle.jpg`, alt: "Using Scale Pro", aspect: "square" },
+  { src: `${GCS}/bottle-office-scene.jpg`, alt: "Hydra One on desk", aspect: "wide" },
+  { src: `${GCS}/lifestyle-sun-portrait.jpg`, alt: "Living well", aspect: "tall" },
+];
+---
+
+<section class="py-24 sm:py-32 bg-brand-black overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="mb-16" data-scroll-reveal>
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Lifestyle</p>
+      <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95]">
+        Designed to <span class="font-500">Disappear</span>
+      </h2>
+      <p class="text-brand-gray-400 mt-4 max-w-lg">
+        Our devices fade into your routine — quietly tracking what matters while you live your life.
+      </p>
+    </div>
+  </div>
+
+  <!-- Full-bleed masonry grid -->
+  <div class="max-w-[1400px] mx-auto px-4">
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+      {images.map((img, i) => (
+        <div
+          class:list={[
+            "relative overflow-hidden rounded-xl sm:rounded-2xl group",
+            img.aspect === "tall" ? "row-span-2 h-[400px] sm:h-[600px]" :
+            img.aspect === "wide" ? "h-[200px] sm:h-[290px]" :
+            "h-[200px] sm:h-[290px]"
+          ]}
+          data-image-reveal
+        >
+          <img
+            src={img.src}
+            alt={img.alt}
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            data-parallax={i % 2 === 0 ? "-0.05" : "0.05"}
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-brand-black/0 group-hover:bg-brand-black/20 transition-colors duration-500"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

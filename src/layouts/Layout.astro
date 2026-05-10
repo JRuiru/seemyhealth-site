@@ -23,5 +23,9 @@ const { title, description = "Medical-grade health monitoring devices — Ring O
   </head>
   <body class="bg-brand-black text-white font-sans antialiased overflow-x-hidden">
     <slot />
+    <script>
+      import { initAllAnimations } from '../scripts/animations';
+      document.addEventListener('DOMContentLoaded', initAllAnimations);
+    </script>
   </body>
 </html>
