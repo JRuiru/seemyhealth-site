@@ -1,0 +1,226 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+export const prerender = true;
+
+const GCS = "https://storage.googleapis.com/seemyhealth-email-assets";
+
+const values = [
+  {
+    title: "Clarity Over Complexity",
+    description: "Health data should help you make better decisions — not overwhelm you with numbers. Every metric we track is designed to be understood at a glance.",
+    icon: "M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z",
+  },
+  {
+    title: "Medical-Grade, Human-Centered",
+    description: "We don't compromise on accuracy. Our sensors meet clinical standards — but our designs are made for real life, not a lab.",
+    icon: "M4.318 6.318a4.5 4.5 0 0 0 0 6.364L12 20.364l7.682-7.682a4.5 4.5 0 0 0-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 0 0-6.364 0z",
+  },
+  {
+    title: "Privacy by Design",
+    description: "Your health data belongs to you. We encrypt everything end-to-end, never sell your data, and give you full control to export or delete at any time.",
+    icon: "M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z",
+  },
+  {
+    title: "One Ecosystem, No Silos",
+    description: "Every SeeMyHealth device feeds into a single app. Your ring talks to your scale, your bottle correlates with your sleep. The full picture, always.",
+    icon: "M13.828 10.172a4 4 0 0 0-5.656 0l-4 4a4 4 0 1 0 5.656 5.656l1.102-1.101M10.172 13.828a4 4 0 0 0 5.656 0l4-4a4 4 0 0 0-5.656-5.656l-1.1 1.1",
+  },
+];
+
+const timeline = [
+  { year: "2023", event: "SeeMyHealth founded with a mission to make health monitoring accessible and beautiful" },
+  { year: "2024", event: "Ring One and Smart Scale enter development — medical-grade sensors, consumer-grade design" },
+  { year: "2025", event: "Full ecosystem launches — Ring One, Smart Scale, BP Monitor, Hydra One, and Hema One" },
+  { year: "2026", event: "Expanding globally with the SeeMyHealth app connecting all devices in one platform" },
+];
+---
+
+<Layout title="About — SeeMyHealth" description="We build medical-grade health monitoring devices designed for real life. Learn about our mission, values, and the team behind SeeMyHealth.">
+  <Navbar />
+
+  <!-- Hero -->
+  <section class="relative pt-32 pb-24 sm:pt-40 sm:pb-32 overflow-hidden">
+    <div class="absolute inset-0">
+      <img
+        src={`${GCS}/lifestyle-friends-bar.jpg`}
+        alt="Friends enjoying life with SeeMyHealth"
+        class="w-full h-full object-cover opacity-30"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-brand-black via-brand-black/80 to-brand-black"></div>
+    </div>
+
+    <div class="relative max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-6" data-scroll-reveal>Our Story</p>
+      <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-300 uppercase leading-[0.95] mb-8" data-scroll-reveal>
+        Health Should Be<br /><span class="font-500">Seen, Not Guessed</span>
+      </h1>
+      <p class="text-lg sm:text-xl text-brand-gray-400 leading-relaxed max-w-2xl mx-auto" data-scroll-reveal>
+        We started SeeMyHealth because we believed health monitoring shouldn't require a hospital visit or a complicated dashboard. It should be as natural as wearing a ring.
+      </p>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div data-scroll-reveal>
+          <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Mission</p>
+          <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-6">
+            Medical-Grade Clarity for <span class="font-500">Everyday Life</span>
+          </h2>
+          <p class="text-brand-gray-400 leading-relaxed mb-6">
+            Most health devices give you data. We give you understanding. Every sensor in every SeeMyHealth device meets clinical accuracy standards — but you'd never know it from how naturally they fit into your day.
+          </p>
+          <p class="text-brand-gray-400 leading-relaxed">
+            We design for the person who wants to know their body better without becoming a data scientist. Patterns over single scores. Trends over snapshots. Clarity over complexity.
+          </p>
+        </div>
+        <div class="relative h-[400px] sm:h-[500px] rounded-2xl overflow-hidden" data-image-reveal>
+          <img
+            src={`${GCS}/ring-face-closeup.jpg`}
+            alt="Ring One close-up"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="mb-16" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">What We Believe</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
+          Our <span class="font-500">Values</span>
+        </h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-px bg-white/5 rounded-2xl overflow-hidden" data-scroll-stagger>
+        {values.map((value) => (
+          <div class="bg-brand-black p-8 sm:p-10 hover:bg-brand-gray-900 transition-colors duration-300 group">
+            <svg
+              class="w-8 h-8 text-brand-gray-600 group-hover:text-white transition-colors mb-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d={value.icon} />
+            </svg>
+            <h3 class="font-display text-xl uppercase mb-3">{value.title}</h3>
+            <p class="text-sm text-brand-gray-500 leading-relaxed">{value.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8">
+      <div class="mb-16" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Our Journey</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
+          Building the <span class="font-500">Future</span>
+        </h2>
+      </div>
+
+      <div class="relative">
+        <!-- Vertical line -->
+        <div class="absolute left-[27px] top-0 bottom-0 w-px bg-white/10"></div>
+
+        <div class="space-y-12" data-scroll-stagger>
+          {timeline.map((item) => (
+            <div class="flex gap-8 items-start">
+              <div class="relative flex-shrink-0">
+                <div class="w-[55px] h-[55px] rounded-full border border-white/10 flex items-center justify-center bg-brand-dark">
+                  <span class="font-display text-sm font-400">{item.year}</span>
+                </div>
+              </div>
+              <div class="pt-3">
+                <p class="text-brand-gray-400 leading-relaxed">{item.event}</p>
+                <div class="h-px bg-white/5 mt-6" data-line-wipe></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lifestyle image break -->
+  <section class="relative h-[50vh] sm:h-[60vh] overflow-hidden">
+    <img
+      src={`${GCS}/ring-working.jpg`}
+      alt="Using SeeMyHealth in daily life"
+      class="w-full h-full object-cover"
+      data-parallax="-0.15"
+    />
+    <div class="absolute inset-0 bg-brand-black/30"></div>
+  </section>
+
+  <!-- The Ecosystem -->
+  <section class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <div data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Five Devices, One App</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-6">
+          The <span class="font-500">Ecosystem</span>
+        </h2>
+        <p class="text-brand-gray-400 leading-relaxed max-w-2xl mx-auto mb-12">
+          Ring One tracks your heart and sleep. The Smart Scale reads your body composition. The BP Monitor catches what others miss. Hydra One keeps you hydrated. Hema One analyzes your blood. Together, they give you the full picture — all in one app.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-6 sm:gap-8" data-scroll-stagger>
+        {[
+          { name: "Ring One", slug: "ring-one", image: `${GCS}/ring-aurora-gold.jpg` },
+          { name: "Smart Scale", slug: "scale", image: `${GCS}/scale-black-pack.jpg` },
+          { name: "BP Monitor", slug: "bp-monitor", image: `${GCS}/bp-black.jpg` },
+          { name: "Hydra One", slug: "hydra-one", image: `${GCS}/bottle-studio-wet.jpg` },
+          { name: "Hema One", slug: "hema-one", image: `${GCS}/hema-one-web.jpg` },
+        ].map((device) => (
+          <a href={`/products/${device.slug}`} class="group text-center">
+            <div class="relative w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full overflow-hidden border border-white/10 group-hover:border-white/30 transition-colors mb-3">
+              <img src={device.image} alt={device.name} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+            </div>
+            <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-500 group-hover:text-white transition-colors">{device.name}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center" data-scroll-reveal>
+      <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-6">
+        Join the <span class="font-500">Movement</span>
+      </h2>
+      <p class="text-brand-gray-400 leading-relaxed mb-10 max-w-lg mx-auto">
+        Thousands of people are already seeing their health differently. Medical-grade monitoring, beautifully designed for the life you live.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="https://shop.seemyhealth.ai"
+          class="inline-flex items-center justify-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+        >
+          Shop Devices
+        </a>
+        <a
+          href="mailto:support@seemyhealth.ai"
+          class="inline-flex items-center justify-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
+        >
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
