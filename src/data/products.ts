@@ -1,4 +1,5 @@
 const GCS = "https://storage.googleapis.com/seemyhealth-email-assets";
+const GCS_WEB = GCS; // Web-optimized images also live in same bucket
 
 export interface ProductFeature {
   title: string;
@@ -35,7 +36,7 @@ export const products: Record<string, Product> = {
     tagline: "Sensing, Made Human",
     headline: "Health clarity\non your finger",
     description: "24/7 heart rate, SpO2, sleep stages, activity tracking, and stress monitoring — all from a ring designed for daily wear. Medical-grade sensors wrapped in titanium, rated IP68 for showers, workouts, and everything in between.",
-    image: `${GCS}/ring-one.jpg`,
+    image: `${GCS_WEB}/ring-one.jpg`,
     price: "$149.99",
     color: "#F97316",
     specs: [
@@ -71,9 +72,9 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
-      { src: `${GCS}/ring-one.jpg`, alt: "Ring One on hand" },
-      { src: `${GCS}/challenge-fitness.jpg`, alt: "Working out with Ring One" },
-      { src: `${GCS}/ring-peekaboo.jpg`, alt: "Ring One lifestyle" },
+      { src: `${GCS_WEB}/ring-one.jpg`, alt: "Ring One on hand" },
+      { src: `${GCS_WEB}/ring-bedroom-night-web.jpg`, alt: "Ring One in bedroom setting" },
+      { src: `${GCS_WEB}/ring-bedroom-web.jpg`, alt: "Ring One lifestyle" },
     ],
   },
   "scale": {
@@ -81,7 +82,7 @@ export const products: Record<string, Product> = {
     tagline: "Beyond the Number",
     headline: "The whole picture,\nnot just weight",
     description: "Full body composition analysis — weight, body fat percentage, muscle mass, bone density, water percentage, BMI, and more. Step on, and see everything in the app instantly.",
-    image: `${GCS}/scale.jpg`,
+    image: `${GCS_WEB}/scale-web.jpg`,
     price: "$79.99",
     color: "#3B82F6",
     specs: [
@@ -117,7 +118,9 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
-      { src: `${GCS}/scale.jpg`, alt: "Smart Scale" },
+      { src: `${GCS_WEB}/scale-web.jpg`, alt: "Smart Scale" },
+      { src: `${GCS_WEB}/scale-white-web.jpg`, alt: "Scale white finish" },
+      { src: `${GCS_WEB}/scale-lifestyle-web.jpg`, alt: "Scale lifestyle" },
     ],
   },
   "bp-monitor": {
@@ -125,7 +128,7 @@ export const products: Record<string, Product> = {
     tagline: "Blood Pressure, Simplified",
     headline: "Clinical accuracy,\nhome comfort",
     description: "Accurate blood pressure readings with irregular heartbeat detection. Validated against clinical standards. Share results directly with your doctor from the app.",
-    image: "https://placehold.co/800x600/141414/ef4444?text=BP+Monitor",
+    image: `${GCS_WEB}/bp-monitor-web.jpg`,
     price: "$89.99",
     color: "#EF4444",
     specs: [
@@ -160,14 +163,16 @@ export const products: Record<string, Product> = {
         icon: "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z",
       },
     ],
-    lifestyleImages: [],
+    lifestyleImages: [
+      { src: `${GCS_WEB}/bp-monitor-web.jpg`, alt: "BP Monitor device" },
+    ],
   },
   "hydra-one": {
     name: "Hydra One",
     tagline: "Stay Perfectly Hydrated",
     headline: "Drink smarter,\nnot harder",
     description: "Smart water bottle that tracks your daily intake automatically. LED ring shows your progress. Gentle reminders keep you on track without being annoying.",
-    image: `${GCS}/hydra-one.png`,
+    image: `${GCS_WEB}/hydra-one-web.jpg`,
     price: "$59.99",
     color: "#06B6D4",
     specs: [
@@ -202,14 +207,17 @@ export const products: Record<string, Product> = {
         icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
       },
     ],
-    lifestyleImages: [],
+    lifestyleImages: [
+      { src: `${GCS_WEB}/hydra-one-web.jpg`, alt: "Hydra One on tree bark" },
+      { src: `${GCS_WEB}/kitchen-lifestyle-web.jpg`, alt: "Kitchen lifestyle scene" },
+    ],
   },
   "hema-one": {
     name: "Hema One",
     tagline: "Your Blood, Your Data",
     headline: "Lab results,\nno lab visit",
     description: "At-home blood analysis for key health markers. A small sample from your fingertip gives you lab-quality results in minutes, right in the app.",
-    image: `${GCS}/hema-one.jpg`,
+    image: `${GCS_WEB}/hema-one-web.jpg`,
     price: "$99.99",
     color: "#A855F7",
     specs: [
@@ -244,7 +252,10 @@ export const products: Record<string, Product> = {
         icon: "M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13",
       },
     ],
-    lifestyleImages: [],
+    lifestyleImages: [
+      { src: `${GCS_WEB}/hema-one-web.jpg`, alt: "Hema One in living room" },
+      { src: `${GCS_WEB}/hema-one-device-web.jpg`, alt: "Hema One device" },
+    ],
   },
 };
 
