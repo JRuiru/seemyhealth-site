@@ -1,0 +1,237 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { products } from '../data/products';
+
+export const prerender = true;
+
+const GCS = "https://storage.googleapis.com/seemyhealth-email-assets";
+
+const shopProducts = [
+  {
+    ...products["ring-one"],
+    slug: "ring-one",
+    badge: "Best Seller",
+    shortFeatures: ["24/7 Heart Rate", "SpO2", "Sleep Stages", "7-Day Battery"],
+    secondImage: `${GCS}/ring-all-finishes.jpg`,
+    finishes: ["Midnight Black", "Aurora Gold"],
+  },
+  {
+    ...products["scale"],
+    slug: "scale",
+    badge: null,
+    shortFeatures: ["13 Body Metrics", "BIA Sensors", "Wi-Fi Sync", "Multi-User"],
+    secondImage: `${GCS}/scale-white-pack.jpg`,
+    finishes: ["Black", "White"],
+  },
+  {
+    ...products["bp-monitor"],
+    slug: "bp-monitor",
+    badge: "FDA Cleared",
+    shortFeatures: ["Clinical Accuracy", "Irregular HB Detection", "30s Reading", "Rechargeable"],
+    secondImage: `${GCS}/bp-white.jpg`,
+    finishes: ["Black", "White"],
+  },
+  {
+    ...products["hydra-one"],
+    slug: "hydra-one",
+    badge: null,
+    shortFeatures: ["Auto Tracking", "LED Progress Ring", "30-Day Battery", "750ml"],
+    secondImage: `${GCS}/bottle-trio-studio.jpg`,
+    finishes: ["Black", "White", "Purple"],
+  },
+  {
+    ...products["hema-one"],
+    slug: "hema-one",
+    badge: "Coming Soon",
+    shortFeatures: ["Fingertip Sample", "5-Min Results", "4 Key Markers", "10 Cartridges"],
+    secondImage: `${GCS}/hema-one-device-web.jpg`,
+    finishes: null,
+  },
+];
+---
+
+<Layout title="Shop — SeeMyHealth" description="Shop medical-grade health monitoring devices. Ring One, Smart Scale, BP Monitor, Hydra One, and Hema One.">
+  <Navbar />
+
+  <!-- Hero -->
+  <section class="pt-32 pb-16 sm:pt-40 sm:pb-20 bg-brand-black">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="max-w-2xl" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Shop</p>
+        <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-300 uppercase leading-[0.95] mb-6">
+          Choose Your <span class="font-500">Devices</span>
+        </h1>
+        <p class="text-lg text-brand-gray-400 leading-relaxed">
+          Medical-grade sensors. Designed for daily wear. Free shipping on all orders.
+          Start with one device or build your complete health ecosystem.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Free trial banner -->
+  <section class="bg-brand-dark border-y border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-center">
+      <span class="text-[11px] uppercase tracking-[2px] text-brand-gray-400">
+        <span class="text-white">Free shipping</span> on all orders
+      </span>
+      <span class="hidden sm:inline text-brand-gray-800">|</span>
+      <span class="text-[11px] uppercase tracking-[2px] text-brand-gray-400">
+        <span class="text-white">1-month free trial</span> of the app
+      </span>
+      <span class="hidden sm:inline text-brand-gray-800">|</span>
+      <span class="text-[11px] uppercase tracking-[2px] text-brand-gray-400">
+        <span class="text-white">30-day returns</span> no questions asked
+      </span>
+    </div>
+  </section>
+
+  <!-- Product Grid -->
+  <section class="py-16 sm:py-24 bg-brand-black">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="space-y-8">
+        {shopProducts.map((product, i) => (
+          <div
+            class="group rounded-2xl bg-brand-gray-900 overflow-hidden border border-white/5 hover:border-white/10 transition-colors duration-300"
+            data-scroll-reveal
+          >
+            <div class="grid lg:grid-cols-2">
+              <!-- Image side -->
+              <div class="relative h-[350px] sm:h-[450px] lg:h-auto overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 product-image-primary"
+                />
+                {product.secondImage && (
+                  <img
+                    src={product.secondImage}
+                    alt={`${product.name} alternate view`}
+                    class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  />
+                )}
+                {product.badge && (
+                  <div class="absolute top-6 left-6">
+                    <span class:list={[
+                      "text-[10px] uppercase tracking-[2px] font-medium px-4 py-2 rounded-full",
+                      product.badge === "Coming Soon"
+                        ? "bg-white/10 text-white backdrop-blur-sm"
+                        : "bg-white text-brand-black"
+                    ]}>
+                      {product.badge}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <!-- Details side -->
+              <div class="flex flex-col justify-center p-8 sm:p-10 lg:p-14">
+                <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-3">{product.tagline}</p>
+                <h2 class="font-display text-3xl sm:text-4xl font-400 uppercase mb-2">{product.name}</h2>
+                <p class="font-display text-2xl font-300 text-brand-gray-300 mb-6">{product.price}</p>
+
+                <p class="text-sm text-brand-gray-500 leading-relaxed mb-8">{product.description}</p>
+
+                <!-- Quick features -->
+                <div class="grid grid-cols-2 gap-3 mb-8">
+                  {product.shortFeatures.map((f) => (
+                    <div class="flex items-center gap-2">
+                      <svg class="w-4 h-4 text-brand-gray-600 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span class="text-[12px] text-brand-gray-400">{f}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <!-- Finishes -->
+                {product.finishes && (
+                  <div class="mb-8">
+                    <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600 mb-3">Available Finishes</p>
+                    <div class="flex gap-2">
+                      {product.finishes.map((finish) => (
+                        <span class="text-[11px] uppercase tracking-[1.5px] px-3 py-1.5 border border-white/10 rounded-full text-brand-gray-400">
+                          {finish}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <!-- Actions -->
+                <div class="flex flex-wrap gap-3">
+                  {product.badge === "Coming Soon" ? (
+                    <span class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-gray-500 bg-white/5 rounded-full cursor-default">
+                      Notify Me When Available
+                    </span>
+                  ) : (
+                    <a
+                      href="https://shop.seemyhealth.ai"
+                      class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+                    >
+                      Buy Now
+                    </a>
+                  )}
+                  <a
+                    href={`/products/${product.slug}`}
+                    class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
+                  >
+                    Learn More
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Bundle CTA -->
+  <section class="py-20 sm:py-28 bg-brand-dark border-t border-white/5">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center" data-scroll-reveal>
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Complete Ecosystem</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-6">
+        Better <span class="font-500">Together</span>
+      </h2>
+      <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto mb-10">
+        Every SeeMyHealth device feeds into a single app. Your ring informs your scale readings.
+        Your hydration data correlates with your sleep. The more devices, the clearer the picture.
+      </p>
+      <a
+        href="https://shop.seemyhealth.ai"
+        class="inline-flex items-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+      >
+        Shop All Devices
+      </a>
+    </div>
+  </section>
+
+  <!-- Trust bar -->
+  <section class="bg-brand-black border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center" data-scroll-stagger>
+        <div>
+          <p class="font-display text-2xl sm:text-3xl font-300 mb-1">Free</p>
+          <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">Shipping Worldwide</p>
+        </div>
+        <div>
+          <p class="font-display text-2xl sm:text-3xl font-300 mb-1">30 Days</p>
+          <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">Return Policy</p>
+        </div>
+        <div>
+          <p class="font-display text-2xl sm:text-3xl font-300 mb-1">1 Year</p>
+          <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">Warranty</p>
+        </div>
+        <div>
+          <p class="font-display text-2xl sm:text-3xl font-300 mb-1">Secure</p>
+          <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">Encrypted Checkout</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
