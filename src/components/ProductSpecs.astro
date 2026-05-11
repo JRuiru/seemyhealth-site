@@ -1,5 +1,6 @@
 ---
 import type { ProductSpec } from '../data/products';
+import PriceTag from './commerce/PriceTag';
 
 interface Props {
   slug: string;
@@ -34,7 +35,7 @@ const { slug, name, price, specs } = Astro.props;
         href={`/configure/${slug}`}
         class="inline-flex items-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
       >
-        Shop {name} — {price}
+        Shop {name} — <PriceTag handle={slug} mode="from" prefix="From " fallback={price} client:idle />
       </a>
     </div>
   </div>

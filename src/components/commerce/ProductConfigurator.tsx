@@ -40,6 +40,42 @@ function ModelViewerSlot({ src, alt, poster }: { src: string; alt: string; poste
   return <div ref={ref} className="w-full h-full bg-brand-gray-900" />;
 }
 
+function VideoWithPoster({ src, poster }: { src: string; poster?: string }) {
+  const [playing, setPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const onPlay = () => setPlaying(true);
+    v.addEventListener("playing", onPlay);
+    return () => v.removeEventListener("playing", onPlay);
+  }, []);
+
+  return (
+    <div className="relative w-full h-full">
+      <video
+        ref={videoRef}
+        src={src}
+        className="w-full h-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+      {poster && (
+        <img
+          src={poster}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 pointer-events-none ${
+            playing ? "opacity-0" : "opacity-100"
+          }`}
+          alt=""
+        />
+      )}
+    </div>
+  );
+}
+
 function MediaViewer({ item, name, colorName, index }: {
   item: MediaItem;
   name: string;
@@ -50,18 +86,7 @@ function MediaViewer({ item, name, colorName, index }: {
   const key = `${colorName}-${index}`;
 
   if (item.type === "video") {
-    return (
-      <video
-        key={key}
-        src={item.url}
-        poster={item.poster}
-        className="w-full h-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-      />
-    );
+    return <VideoWithPoster key={key} src={item.url} poster={item.poster} />;
   }
 
   if (item.type === "model") {
@@ -85,12 +110,61 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
 
   const isSingleVariant = data.variants.length === 1 && data.optionNames.length === 0;
 
+  // Live data from Shopify — overrides static availability and prices
+  const [liveVariantData, setLiveVariantData] = useState<Record<string, { available: boolean; price: string; currency: string }> | null>(null);
+  const [detectedCountry, setDetectedCountry] = useState<string | null>(null);
+
+  const fetchLiveProduct = (countryOverride?: string) => {
+    const BFF_BASE = (import.meta as any).env?.PUBLIC_BFF_URL || "/api";
+    const stored = localStorage.getItem("smh-country");
+    const country = countryOverride || stored || "";
+    const qs = country ? `?country=${country}` : "";
+    fetch(`${BFF_BASE}/products/${data.handle}${qs}`)
+      .then((r) => r.ok ? r.json() : null)
+      .then((json) => {
+        if (!json?.product?.variants?.edges) return;
+        const map: Record<string, { available: boolean; price: string; currency: string }> = {};
+        for (const { node } of json.product.variants.edges) {
+          map[node.id] = {
+            available: node.availableForSale,
+            price: node.price.amount,
+            currency: node.price.currencyCode,
+          };
+        }
+        setLiveVariantData(map);
+        if (json.country) setDetectedCountry(json.country);
+      })
+      .catch(() => {});
+  };
+
+  useEffect(() => {
+    fetchLiveProduct();
+
+    // Re-fetch when country changes
+    const handler = (e: Event) => {
+      const code = (e as CustomEvent).detail?.country;
+      if (code) fetchLiveProduct(code);
+    };
+    window.addEventListener("country:changed", handler);
+    return () => window.removeEventListener("country:changed", handler);
+  }, [data.handle]);
+
+  // Merge live data into variant data
+  const variants = useMemo(() => {
+    if (!liveVariantData) return data.variants;
+    return data.variants.map((v) => {
+      const live = liveVariantData[v.id];
+      if (!live) return v;
+      return { ...v, available: live.available, price: live.price, currency: live.currency };
+    });
+  }, [data.variants, liveVariantData]);
+
   const optionValues = useMemo(() => {
     const map: Record<string, string[]> = {};
     for (const name of data.optionNames) {
       const seen = new Set<string>();
       const values: string[] = [];
-      for (const v of data.variants) {
+      for (const v of variants) {
         const val = v.options[name];
         if (val && !seen.has(val)) {
           seen.add(val);
@@ -100,7 +174,7 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
       map[name] = values;
     }
     return map;
-  }, [data]);
+  }, [data, variants]);
 
   const [selected, setSelected] = useState<Record<string, string>>(() => {
     const defaults: Record<string, string> = {};
@@ -117,11 +191,11 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
   const isRing = slug === "ring-one";
 
   const activeVariant = useMemo<Variant | undefined>(() => {
-    if (isSingleVariant) return data.variants[0];
-    return data.variants.find((v) =>
+    if (isSingleVariant) return variants[0];
+    return variants.find((v) =>
       data.optionNames.every((name) => v.options[name] === selected[name])
     );
-  }, [selected, data, isSingleVariant]);
+  }, [selected, data, variants, isSingleVariant]);
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
@@ -146,6 +220,17 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
     }
   }, [ambientColor]);
 
+  const currencyCode = activeVariant?.currency || "USD";
+  const formatPrice = (amount: string | number) => {
+    const num = typeof amount === "string" ? parseFloat(amount) : amount;
+    try {
+      return new Intl.NumberFormat(undefined, { style: "currency", currency: currencyCode }).format(num);
+    } catch {
+      return `$${num.toFixed(2)}`;
+    }
+  };
+  const totalPrice = activeVariant ? parseFloat(activeVariant.price) * quantity : 0;
+
   // Dispatch variant info for the sticky bar
   useEffect(() => {
     window.dispatchEvent(
@@ -155,12 +240,12 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
           quantity,
           productName: data.name,
           totalPrice: activeVariant
-            ? (parseFloat(activeVariant.price) * quantity).toFixed(2)
-            : "0.00",
+            ? formatPrice(parseFloat(activeVariant.price) * quantity)
+            : "—",
         },
       })
     );
-  }, [activeVariant, quantity, data.name]);
+  }, [activeVariant, quantity, data.name, currencyCode]);
 
   // Observe the add-to-cart button visibility for sticky bar
   useEffect(() => {
@@ -206,8 +291,6 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
     (window as any).__configuratorAddToCart = handleAddToCart;
     return () => { delete (window as any).__configuratorAddToCart; };
   }, [activeVariant, quantity]);
-
-  const totalPrice = activeVariant ? (parseFloat(activeVariant.price) * quantity).toFixed(2) : "0.00";
 
   return (
     <section className="py-10 sm:py-16">
@@ -331,7 +414,7 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
               {slug === "hema-one" && "Lab-quality blood analysis at home."}
             </p>
             <p className="text-3xl sm:text-4xl font-display font-400 mb-10" style={{ color: accentColor }}>
-              ${activeVariant?.price || "—"}
+              {activeVariant ? formatPrice(activeVariant.price) : "—"}
             </p>
 
             {/* Option selectors */}
@@ -385,7 +468,7 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
                   <div className="flex flex-wrap gap-2.5">
                     {optionValues[optionName]?.map((value) => {
                       const isActive = selected[optionName] === value;
-                      const variantForOption = data.variants.find((v) =>
+                      const variantForOption = variants.find((v) =>
                         v.options[optionName] === value &&
                         data.optionNames
                           .filter((n) => n !== optionName)
@@ -473,7 +556,7 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
                     ? "Added to Cart ✓"
                     : status === "error"
                       ? "Something went wrong — Try again"
-                      : `Add to Cart — $${totalPrice}`
+                      : `Add to Cart — ${formatPrice(totalPrice)}`
               }
             </button>
 

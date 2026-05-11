@@ -80,20 +80,26 @@ const CART_FRAGMENT = `
 
 export async function cartCreate(
   config: ShopifyConfig,
-  lines: { merchandiseId: string; quantity: number }[]
+  lines: { merchandiseId: string; quantity: number }[],
+  countryCode?: string
 ) {
   const data = await storefrontFetch<{
     cartCreate: { cart: unknown; userErrors: { field: string; message: string }[] };
   }>(
     config,
     `${CART_FRAGMENT}
-    mutation ($lines: [CartLineInput!]!) {
-      cartCreate(input: { lines: $lines }) {
+    mutation ($input: CartInput!) {
+      cartCreate(input: $input) {
         cart { ...CartFields }
         userErrors { field message }
       }
     }`,
-    { lines }
+    {
+      input: {
+        lines,
+        ...(countryCode ? { buyerIdentity: { countryCode } } : {}),
+      },
+    }
   );
 
   if (data.cartCreate.userErrors.length) {
@@ -189,17 +195,19 @@ export async function cartGet(config: ShopifyConfig, cartId: string) {
   return data.cart;
 }
 
-export async function getProductByHandle(config: ShopifyConfig, handle: string) {
+export async function getProductByHandle(config: ShopifyConfig, handle: string, country?: string) {
+  const contextDirective = country ? `@inContext(country: ${country})` : "";
   const data = await storefrontFetch<{ product: unknown }>(
     config,
-    `query ($handle: String!) {
+    `query ($handle: String!) ${contextDirective} {
       product(handle: $handle) {
         id title handle availableForSale
-        variants(first: 20) {
+        variants(first: 50) {
           edges {
             node {
               id title availableForSale
               price { amount currencyCode }
+              compareAtPrice { amount currencyCode }
               selectedOptions { name value }
             }
           }
@@ -209,4 +217,56 @@ export async function getProductByHandle(config: ShopifyConfig, handle: string) 
     { handle }
   );
   return data.product;
+}
+
+export async function getLocalization(config: ShopifyConfig, country?: string) {
+  const contextDirective = country ? `@inContext(country: ${country})` : "";
+  const data = await storefrontFetch<{
+    localization: {
+      country: { isoCode: string; name: string; currency: { isoCode: string; name: string; symbol: string } };
+      availableCountries: { isoCode: string; name: string; currency: { isoCode: string; name: string; symbol: string } }[];
+    };
+  }>(
+    config,
+    `query ${contextDirective} {
+      localization {
+        country {
+          isoCode
+          name
+          currency { isoCode name symbol }
+        }
+        availableCountries {
+          isoCode
+          name
+          currency { isoCode name symbol }
+        }
+      }
+    }`
+  );
+  return data.localization;
+}
+
+export async function cartBuyerIdentityUpdate(
+  config: ShopifyConfig,
+  cartId: string,
+  countryCode: string
+) {
+  const data = await storefrontFetch<{
+    cartBuyerIdentityUpdate: { cart: unknown; userErrors: { field: string; message: string }[] };
+  }>(
+    config,
+    `${CART_FRAGMENT}
+    mutation ($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
+      cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
+        cart { ...CartFields }
+        userErrors { field message }
+      }
+    }`,
+    { cartId, buyerIdentity: { countryCode } }
+  );
+
+  if (data.cartBuyerIdentityUpdate.userErrors.length) {
+    throw new Error(data.cartBuyerIdentityUpdate.userErrors.map((e) => e.message).join(", "));
+  }
+  return data.cartBuyerIdentityUpdate.cart;
 }

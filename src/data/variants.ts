@@ -49,8 +49,8 @@ export const productVariants: Record<string, ProductVariantData> = {
     },
     media: {
       "Phantom Black": [
-        { type: "video", url: `${CF_STREAM}/2ddd23875de627bd1410a4d251735cbe/downloads/default.mp4`, poster: `${CF_IMG}/ring-hero-hands/public`, alt: "Ring One Phantom Black reveal" },
-        { type: "model", url: "/models/ring-phantom-black-3d.glb", poster: `${CF_IMG}/ring-hero-hands/public`, alt: "Ring One Phantom Black 3D" },
+        { type: "video", url: `${CF_STREAM}/2ddd23875de627bd1410a4d251735cbe/downloads/default.mp4`, poster: `${CF_IMG}/ring-phantom-black-poster/public`, alt: "Ring One Phantom Black reveal" },
+        { type: "model", url: "/models/ring-phantom-black-3d.glb", poster: `${CF_IMG}/ring-phantom-black-poster/public`, alt: "Ring One Phantom Black 3D" },
         { type: "image", url: `${CF_IMG}/ring-hero-hands/public`, alt: "Ring One Phantom Black on hand" },
         { type: "image", url: `${CF_IMG}/ring-photo-05/public`, alt: "Ring One Phantom Black — cocktails" },
         { type: "image", url: `${CF_IMG}/ring-photo-06/public`, alt: "Ring One Phantom Black — unboxing" },
@@ -59,8 +59,8 @@ export const productVariants: Record<string, ProductVariantData> = {
         { type: "image", url: `${CF_IMG}/ring-aurora-phantom-multi/public`, alt: "Ring One all finishes" },
       ],
       "Aurora Gold": [
-        { type: "video", url: `${CF_STREAM}/7ffce116e3e526dae52d54e873f2b2be/downloads/default.mp4`, poster: `${CF_IMG}/ring-aurora-studio/public`, alt: "Ring One Aurora Gold reveal" },
-        { type: "model", url: "/models/ring-aurora-gold-3d.glb", poster: `${CF_IMG}/ring-aurora-studio/public`, alt: "Ring One Aurora Gold 3D" },
+        { type: "video", url: `${CF_STREAM}/7ffce116e3e526dae52d54e873f2b2be/downloads/default.mp4`, poster: `${CF_IMG}/ring-aurora-gold-poster/public`, alt: "Ring One Aurora Gold reveal" },
+        { type: "model", url: "/models/ring-aurora-gold-3d.glb", poster: `${CF_IMG}/ring-aurora-gold-poster/public`, alt: "Ring One Aurora Gold 3D" },
         { type: "image", url: `${CF_IMG}/ring-aurora-studio/public`, alt: "Ring One Aurora Gold studio" },
         { type: "image", url: `${CF_IMG}/ring-aurora-pink-studio/public`, alt: "Ring One Aurora Gold studio angle" },
         { type: "image", url: `${CF_IMG}/ring-photo-01/public`, alt: "Ring One Aurora Gold — sleeping" },
@@ -123,8 +123,8 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Frost White": "#121210",
     },
     variants: [
-      { id: "gid://shopify/ProductVariant/43225637814385", title: "Obsidian Black", price: "99.99", currency: "USD", options: { Color: "Obsidian Black" }, available: false },
-      { id: "gid://shopify/ProductVariant/43225637847153", title: "Frost White", price: "99.99", currency: "USD", options: { Color: "Frost White" }, available: false },
+      { id: "gid://shopify/ProductVariant/43225637814385", title: "Obsidian Black", price: "99.99", currency: "USD", options: { Color: "Obsidian Black" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225637847153", title: "Frost White", price: "99.99", currency: "USD", options: { Color: "Frost White" }, available: true },
     ],
   },
   "scale-pro": {
@@ -157,8 +157,8 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Frost White": "#121210",
     },
     variants: [
-      { id: "gid://shopify/ProductVariant/43225637879921", title: "Obsidian Black", price: "199.99", currency: "USD", options: { Color: "Obsidian Black" }, available: false },
-      { id: "gid://shopify/ProductVariant/43225637912689", title: "Frost White", price: "199.99", currency: "USD", options: { Color: "Frost White" }, available: false },
+      { id: "gid://shopify/ProductVariant/43225637879921", title: "Obsidian Black", price: "199.99", currency: "USD", options: { Color: "Obsidian Black" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225637912689", title: "Frost White", price: "199.99", currency: "USD", options: { Color: "Frost White" }, available: true },
     ],
   },
   "bp-monitor": {
@@ -219,8 +219,8 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Glacier White": "#0e1012",
     },
     variants: [
-      { id: "gid://shopify/ProductVariant/43225874825329", title: "Abyss Black", price: "59.99", currency: "USD", options: { Color: "Abyss Black" }, available: false },
-      { id: "gid://shopify/ProductVariant/43225874858097", title: "Glacier White", price: "59.99", currency: "USD", options: { Color: "Glacier White" }, available: false },
+      { id: "gid://shopify/ProductVariant/43225874825329", title: "Abyss Black", price: "59.99", currency: "USD", options: { Color: "Abyss Black" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225874858097", title: "Glacier White", price: "59.99", currency: "USD", options: { Color: "Glacier White" }, available: true },
     ],
   },
   "hema-one": {

@@ -1,4 +1,6 @@
 ---
+import PriceTag from './commerce/PriceTag';
+
 interface Props {
   slug: string;
   name: string;
@@ -52,7 +54,7 @@ const videoSrc = streamId ? `https://customer-5zjora8ha9v60sg3.cloudflarestream.
           href={`/configure/${slug}`}
           class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
         >
-          Shop Now — {price}
+          Shop Now — <PriceTag handle={slug} mode="from" prefix="From " fallback={price} client:idle />
         </a>
       </div>
     </div>

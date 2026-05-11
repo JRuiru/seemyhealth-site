@@ -6,6 +6,7 @@ import WhatsInTheBox from '../../components/commerce/WhatsInTheBox';
 import CustomerReviews from '../../components/commerce/CustomerReviews';
 import StickyAddToCart from '../../components/commerce/StickyAddToCart';
 import CartDrawer from '../../components/commerce/CartDrawer';
+import PriceTag from '../../components/commerce/PriceTag';
 import Footer from '../../components/Footer.astro';
 import { products, productSlugs } from '../../data/products';
 import { productVariants } from '../../data/variants';
@@ -99,7 +100,9 @@ const otherProducts = productSlugs
               <div class="p-6">
                 <p class="text-[10px] uppercase tracking-[3px] mb-2" style={`color: ${p.color}`}>{p.tagline}</p>
                 <h3 class="font-display text-xl font-400 uppercase mb-1">{p.name}</h3>
-                <p class="text-sm text-brand-gray-400 mb-4">{p.price}</p>
+                <p class="text-sm text-brand-gray-400 mb-4">
+                  <PriceTag handle={p.slug} mode="from" prefix="From " fallback={p.price} client:idle />
+                </p>
                 <span
                   class="inline-flex items-center text-[11px] uppercase tracking-[1.5px] font-medium transition-colors"
                   style={`color: ${p.color}`}

@@ -9,6 +9,8 @@ import {
   cartLinesRemove,
   cartGet,
   getProductByHandle,
+  getLocalization,
+  cartBuyerIdentityUpdate,
   type ShopifyConfig,
 } from "./shopify";
 
@@ -106,7 +108,22 @@ export default {
       redirectUri: `${SITE_ORIGIN}/api/auth/callback`,
     };
 
+    // Detect buyer country from Cloudflare header or explicit query param
+    const cfCountry = request.headers.get("cf-ipcountry") || undefined;
+    const queryCountry = url.searchParams.get("country") || undefined;
+    const buyerCountry = queryCountry || cfCountry; // explicit override wins
+
     try {
+      // ============================================================
+      // LOCALIZATION
+      // ============================================================
+
+      // GET /api/localization — detected country + available markets
+      if (path === "/api/localization" && request.method === "GET") {
+        const localization = await getLocalization(shopify, buyerCountry);
+        return json({ ...localization, detectedCountry: cfCountry || null }, 200, cors);
+      }
+
       // ============================================================
       // AUTH ROUTES — Shopify Customer Account API (OAuth 2.0 PKCE)
       // ============================================================
@@ -258,13 +275,30 @@ export default {
       if (path === "/api/cart/create" && request.method === "POST") {
         const body = (await request.json()) as {
           lines: { merchandiseId: string; quantity: number }[];
+          countryCode?: string;
         };
 
         if (!body.lines?.length) {
           return error("lines[] required", 400, cors);
         }
 
-        const cart = await cartCreate(shopify, body.lines);
+        const country = body.countryCode || buyerCountry;
+        const cart = await cartCreate(shopify, body.lines, country);
+        return json({ cart }, 200, cors);
+      }
+
+      // POST /api/cart/buyer-identity — update buyer country on existing cart
+      if (path === "/api/cart/buyer-identity" && request.method === "POST") {
+        const body = (await request.json()) as {
+          cartId: string;
+          countryCode: string;
+        };
+
+        if (!body.cartId || !body.countryCode) {
+          return error("cartId and countryCode required", 400, cors);
+        }
+
+        const cart = await cartBuyerIdentityUpdate(shopify, body.cartId, body.countryCode);
         return json({ cart }, 200, cors);
       }
 
@@ -328,15 +362,15 @@ export default {
       // PRODUCT ROUTES
       // ============================================================
 
-      // GET /api/products/:handle
+      // GET /api/products/:handle?country=XX
       if (path.startsWith("/api/products/") && request.method === "GET") {
         const handle = path.replace("/api/products/", "");
         if (!handle) return error("Product handle required", 400, cors);
 
-        const product = await getProductByHandle(shopify, handle);
+        const product = await getProductByHandle(shopify, handle, buyerCountry);
         if (!product) return error("Product not found", 404, cors);
 
-        return json({ product }, 200, cors);
+        return json({ product, country: buyerCountry || null }, 200, cors);
       }
 
       // ============================================================

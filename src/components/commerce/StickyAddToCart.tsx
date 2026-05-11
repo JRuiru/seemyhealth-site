@@ -55,7 +55,7 @@ export default function StickyAddToCart({ accentColor }: Props) {
         <div className="min-w-0">
           <p className="text-sm font-medium text-white truncate">{info.productName}</p>
           <p className="text-sm font-display" style={{ color: accentColor }}>
-            ${info.totalPrice}
+            {info.totalPrice}
           </p>
         </div>
 

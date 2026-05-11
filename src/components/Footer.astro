@@ -1,4 +1,5 @@
 ---
+import CountrySelector from './commerce/CountrySelector';
 const year = new Date().getFullYear();
 ---
 
@@ -88,6 +89,8 @@ const year = new Date().getFullYear();
         &copy; {year} SeeMyHealth Inc. All rights reserved.
       </p>
       <div class="flex items-center gap-6">
+        <CountrySelector client:idle />
+        <span class="text-brand-gray-800">|</span>
         <a href="/privacy" class="text-[11px] text-brand-gray-700 hover:text-brand-gray-500 transition-colors">Privacy</a>
         <a href="/terms" class="text-[11px] text-brand-gray-700 hover:text-brand-gray-500 transition-colors">Terms</a>
         <a href="/shipping" class="text-[11px] text-brand-gray-700 hover:text-brand-gray-500 transition-colors">Shipping</a>

@@ -3,6 +3,7 @@
 
 const BFF_BASE = import.meta.env.PUBLIC_BFF_URL || "/api";
 const CART_KEY = "smh-cart-id";
+const COUNTRY_KEY = "smh-country";
 
 export function getStoredCartId(): string | null {
   try {
@@ -67,11 +68,28 @@ export interface CartResponse {
   };
 }
 
+export function getStoredCountry(): string | null {
+  try {
+    return localStorage.getItem(COUNTRY_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function storeCountry(code: string) {
+  try {
+    localStorage.setItem(COUNTRY_KEY, code);
+  } catch {
+    // localStorage unavailable
+  }
+}
+
 export async function addToCart(
   variantId: string,
   quantity = 1
 ): Promise<CartResponse["cart"]> {
   const cartId = getStoredCartId();
+  const countryCode = getStoredCountry() || undefined;
 
   const lines = [{ merchandiseId: variantId, quantity }];
 
@@ -85,10 +103,27 @@ export async function addToCart(
   } else {
     result = await bffFetch<CartResponse>("/cart/create", {
       lines,
+      countryCode,
     });
   }
 
   storeCartId(result.cart.id);
+  window.dispatchEvent(new CustomEvent("cart:updated", { detail: result.cart }));
+  return result.cart;
+}
+
+export async function updateBuyerCountry(
+  countryCode: string
+): Promise<CartResponse["cart"] | null> {
+  storeCountry(countryCode);
+  const cartId = getStoredCartId();
+  if (!cartId) return null;
+
+  const result = await bffFetch<CartResponse>("/cart/buyer-identity", {
+    cartId,
+    countryCode,
+  });
+
   window.dispatchEvent(new CustomEvent("cart:updated", { detail: result.cart }));
   return result.cart;
 }
