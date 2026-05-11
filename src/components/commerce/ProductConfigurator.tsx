@@ -20,24 +20,37 @@ function loadModelViewer() {
 
 function ModelViewerSlot({ src, alt, poster }: { src: string; alt: string; poster?: string }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     loadModelViewer();
-    // Create the element imperatively to avoid SSR issues with custom elements
     const mv = document.createElement("model-viewer") as any;
     mv.src = src;
     mv.alt = alt;
     mv.autoRotate = true;
     mv.cameraControls = true;
     mv.shadowIntensity = "1";
-    if (poster) mv.poster = poster;
     mv.style.width = "100%";
     mv.style.height = "100%";
+    mv.addEventListener("load", () => setLoaded(true));
     ref.current?.appendChild(mv);
     return () => { mv.remove(); };
-  }, [src, alt, poster]);
+  }, [src, alt]);
 
-  return <div ref={ref} className="w-full h-full bg-brand-gray-900" />;
+  return (
+    <div className="relative w-full h-full bg-brand-gray-900">
+      <div ref={ref} className="w-full h-full" />
+      {poster && (
+        <img
+          src={poster}
+          alt=""
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 pointer-events-none ${
+            loaded ? "opacity-0" : "opacity-100"
+          }`}
+        />
+      )}
+    </div>
+  );
 }
 
 function VideoWithPoster({ src, poster }: { src: string; poster?: string }) {

@@ -12,7 +12,15 @@ export default defineConfig({
   integrations: [react(), sitemap()],
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    server: {
+      proxy: {
+        '/api': {
+          target: 'https://www.seemyhealth.ai',
+          changeOrigin: true,
+        },
+      },
+    },
   },
 
   adapter: cloudflare()
