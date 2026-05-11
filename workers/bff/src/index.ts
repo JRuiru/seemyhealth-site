@@ -1,0 +1,389 @@
+// SeeMyHealth BFF Worker
+// Sits between the Astro frontend and Shopify/analytics APIs
+// Deployed as a separate Cloudflare Worker at /api/* routes
+
+import {
+  cartCreate,
+  cartLinesAdd,
+  cartLinesUpdate,
+  cartLinesRemove,
+  cartGet,
+  getProductByHandle,
+  type ShopifyConfig,
+} from "./shopify";
+
+import {
+  buildAuthorizationUrl,
+  exchangeCodeForTokens,
+  refreshAccessToken,
+  buildLogoutUrl,
+  type CustomerAuthConfig,
+} from "./customer-auth";
+
+interface Env {
+  SHOPIFY_STORE_DOMAIN: string;
+  SHOPIFY_STOREFRONT_TOKEN: string;
+  SHOPIFY_ADMIN_TOKEN: string;
+  SHOPIFY_CUSTOMER_CLIENT_ID: string;
+  SHOPIFY_SHOP_ID: string;
+  WEBHOOK_SECRET: string;
+  ALLOWED_ORIGINS: string;
+}
+
+const SITE_ORIGIN = "https://www.seemyhealth.ai";
+const ACCOUNT_ORIGIN = "https://account.seemyhealth.ai";
+
+function corsHeaders(request: Request, env: Env): HeadersInit {
+  const origin = request.headers.get("Origin") || "";
+  const allowed = env.ALLOWED_ORIGINS.split(",").map((s) => s.trim());
+
+  const isAllowed =
+    allowed.includes(origin) || origin.startsWith("http://localhost");
+
+  return {
+    "Access-Control-Allow-Origin": isAllowed ? origin : allowed[0],
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Max-Age": "86400",
+  };
+}
+
+function json(data: unknown, status = 200, headers: HeadersInit = {}): Response {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { "Content-Type": "application/json", ...headers },
+  });
+}
+
+function error(message: string, status = 400, headers: HeadersInit = {}): Response {
+  return json({ error: message }, status, headers);
+}
+
+function redirect(url: string, cookies?: string[]): Response {
+  const headers = new Headers({ Location: url });
+  if (cookies) {
+    for (const cookie of cookies) {
+      headers.append("Set-Cookie", cookie);
+    }
+  }
+  return new Response(null, { status: 302, headers });
+}
+
+function cookie(name: string, value: string, maxAge = 600): string {
+  return `${name}=${value}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`;
+}
+
+function clearCookie(name: string): string {
+  return `${name}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`;
+}
+
+function getCookie(request: Request, name: string): string | null {
+  const header = request.headers.get("Cookie") || "";
+  const match = header.match(new RegExp(`(?:^|;\\s*)${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const cors = corsHeaders(request, env);
+
+    if (request.method === "OPTIONS") {
+      return new Response(null, { status: 204, headers: cors });
+    }
+
+    const url = new URL(request.url);
+    const path = url.pathname;
+
+    const shopify: ShopifyConfig = {
+      storeDomain: env.SHOPIFY_STORE_DOMAIN,
+      storefrontToken: env.SHOPIFY_STOREFRONT_TOKEN,
+    };
+
+    const customerAuth: CustomerAuthConfig = {
+      clientId: env.SHOPIFY_CUSTOMER_CLIENT_ID,
+      shopId: env.SHOPIFY_SHOP_ID,
+      redirectUri: `${SITE_ORIGIN}/api/auth/callback`,
+    };
+
+    try {
+      // ============================================================
+      // AUTH ROUTES — Shopify Customer Account API (OAuth 2.0 PKCE)
+      // ============================================================
+
+      // GET /api/auth/login — Redirects to Shopify login
+      if (path === "/api/auth/login" && request.method === "GET") {
+        const state = crypto.randomUUID();
+        const { url: authUrl, codeVerifier, nonce } = await buildAuthorizationUrl(customerAuth, state);
+
+        return redirect(authUrl, [
+          cookie("smh_auth_state", state),
+          cookie("smh_code_verifier", codeVerifier),
+          cookie("smh_nonce", nonce),
+        ]);
+      }
+
+      // GET /api/auth/callback — Shopify redirects back here with code
+      if (path === "/api/auth/callback" && request.method === "GET") {
+        const code = url.searchParams.get("code");
+        const state = url.searchParams.get("state");
+        const storedState = getCookie(request, "smh_auth_state");
+        const codeVerifier = getCookie(request, "smh_code_verifier");
+
+        if (!code || !state || !storedState || !codeVerifier) {
+          return redirect(`${SITE_ORIGIN}/account?error=missing_params`);
+        }
+
+        if (state !== storedState) {
+          return redirect(`${SITE_ORIGIN}/account?error=state_mismatch`);
+        }
+
+        const tokens = await exchangeCodeForTokens(customerAuth, code, codeVerifier);
+
+        // Store tokens in secure httpOnly cookies
+        // Access token is short-lived, refresh token is long-lived
+        return redirect(`${SITE_ORIGIN}/account`, [
+          cookie("smh_access_token", tokens.access_token, tokens.expires_in),
+          cookie("smh_refresh_token", tokens.refresh_token, 60 * 60 * 24 * 30), // 30 days
+          cookie("smh_id_token", tokens.id_token, 60 * 60 * 24 * 30),
+          clearCookie("smh_auth_state"),
+          clearCookie("smh_code_verifier"),
+          clearCookie("smh_nonce"),
+        ]);
+      }
+
+      // POST /api/auth/refresh — Refresh access token
+      if (path === "/api/auth/refresh" && request.method === "POST") {
+        const refreshToken = getCookie(request, "smh_refresh_token");
+        if (!refreshToken) {
+          return error("No refresh token", 401, cors);
+        }
+
+        const tokens = await refreshAccessToken(customerAuth, refreshToken);
+
+        const headers = new Headers({ "Content-Type": "application/json" });
+        headers.append("Set-Cookie", cookie("smh_access_token", tokens.access_token, tokens.expires_in));
+        headers.append("Set-Cookie", cookie("smh_refresh_token", tokens.refresh_token, 60 * 60 * 24 * 30));
+        // Add CORS headers
+        for (const [key, value] of Object.entries(cors)) {
+          headers.set(key, value as string);
+        }
+
+        return new Response(JSON.stringify({ ok: true }), { status: 200, headers });
+      }
+
+      // GET /api/auth/logout — Clear tokens and redirect to Shopify logout
+      if (path === "/api/auth/logout" && request.method === "GET") {
+        const idToken = getCookie(request, "smh_id_token");
+
+        const cookies = [
+          clearCookie("smh_access_token"),
+          clearCookie("smh_refresh_token"),
+          clearCookie("smh_id_token"),
+        ];
+
+        if (idToken) {
+          const logoutUrl = buildLogoutUrl(customerAuth, idToken);
+          return redirect(logoutUrl, cookies);
+        }
+
+        return redirect(SITE_ORIGIN, cookies);
+      }
+
+      // GET /api/auth/me — Get current customer info (proxied to Customer Account API)
+      if (path === "/api/auth/me" && request.method === "GET") {
+        const accessToken = getCookie(request, "smh_access_token");
+        if (!accessToken) {
+          return json({ customer: null }, 200, cors);
+        }
+
+        const res = await fetch(
+          `https://shopify.com/${env.SHOPIFY_SHOP_ID}/account/customer/api/2025-04/graphql`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+              query: `{
+                customer {
+                  id
+                  firstName
+                  lastName
+                  emailAddress { emailAddress }
+                  defaultAddress {
+                    address1
+                    city
+                    country
+                    province
+                    zip
+                  }
+                  orders(first: 10) {
+                    edges {
+                      node {
+                        id
+                        number
+                        processedAt
+                        totalPrice { amount currencyCode }
+                        fulfillments(first: 1) {
+                          status
+                        }
+                      }
+                    }
+                  }
+                }
+              }`,
+            }),
+          }
+        );
+
+        if (!res.ok) {
+          // Token might be expired
+          if (res.status === 401) {
+            return json({ customer: null, expired: true }, 200, cors);
+          }
+          throw new Error(`Customer API ${res.status}`);
+        }
+
+        const data = await res.json();
+        return json(data, 200, cors);
+      }
+
+      // ============================================================
+      // CART ROUTES
+      // ============================================================
+
+      // POST /api/cart/create
+      if (path === "/api/cart/create" && request.method === "POST") {
+        const body = (await request.json()) as {
+          lines: { merchandiseId: string; quantity: number }[];
+        };
+
+        if (!body.lines?.length) {
+          return error("lines[] required", 400, cors);
+        }
+
+        const cart = await cartCreate(shopify, body.lines);
+        return json({ cart }, 200, cors);
+      }
+
+      // POST /api/cart/add
+      if (path === "/api/cart/add" && request.method === "POST") {
+        const body = (await request.json()) as {
+          cartId: string;
+          lines: { merchandiseId: string; quantity: number }[];
+        };
+
+        if (!body.cartId || !body.lines?.length) {
+          return error("cartId and lines[] required", 400, cors);
+        }
+
+        const cart = await cartLinesAdd(shopify, body.cartId, body.lines);
+        return json({ cart }, 200, cors);
+      }
+
+      // POST /api/cart/update
+      if (path === "/api/cart/update" && request.method === "POST") {
+        const body = (await request.json()) as {
+          cartId: string;
+          lines: { id: string; quantity: number }[];
+        };
+
+        if (!body.cartId || !body.lines?.length) {
+          return error("cartId and lines[] required", 400, cors);
+        }
+
+        const cart = await cartLinesUpdate(shopify, body.cartId, body.lines);
+        return json({ cart }, 200, cors);
+      }
+
+      // POST /api/cart/remove
+      if (path === "/api/cart/remove" && request.method === "POST") {
+        const body = (await request.json()) as {
+          cartId: string;
+          lineIds: string[];
+        };
+
+        if (!body.cartId || !body.lineIds?.length) {
+          return error("cartId and lineIds[] required", 400, cors);
+        }
+
+        const cart = await cartLinesRemove(shopify, body.cartId, body.lineIds);
+        return json({ cart }, 200, cors);
+      }
+
+      // GET /api/cart/:id
+      if (path.startsWith("/api/cart/") && request.method === "GET") {
+        const cartId = decodeURIComponent(path.replace("/api/cart/", ""));
+        if (!cartId) return error("Cart ID required", 400, cors);
+
+        const cart = await cartGet(shopify, cartId);
+        if (!cart) return error("Cart not found", 404, cors);
+
+        return json({ cart }, 200, cors);
+      }
+
+      // ============================================================
+      // PRODUCT ROUTES
+      // ============================================================
+
+      // GET /api/products/:handle
+      if (path.startsWith("/api/products/") && request.method === "GET") {
+        const handle = path.replace("/api/products/", "");
+        if (!handle) return error("Product handle required", 400, cors);
+
+        const product = await getProductByHandle(shopify, handle);
+        if (!product) return error("Product not found", 404, cors);
+
+        return json({ product }, 200, cors);
+      }
+
+      // ============================================================
+      // WEBHOOKS
+      // ============================================================
+
+      // POST /api/webhooks/shopify
+      if (path === "/api/webhooks/shopify" && request.method === "POST") {
+        const hmac = request.headers.get("X-Shopify-Hmac-SHA256");
+        if (!hmac) return error("Missing HMAC", 401, cors);
+
+        const rawBody = await request.text();
+        const key = await crypto.subtle.importKey(
+          "raw",
+          new TextEncoder().encode(env.WEBHOOK_SECRET),
+          { name: "HMAC", hash: "SHA-256" },
+          false,
+          ["sign"]
+        );
+        const sig = await crypto.subtle.sign(
+          "HMAC",
+          key,
+          new TextEncoder().encode(rawBody)
+        );
+        const computed = btoa(String.fromCharCode(...new Uint8Array(sig)));
+
+        if (computed !== hmac) {
+          return error("Invalid webhook signature", 401, cors);
+        }
+
+        const topic = request.headers.get("X-Shopify-Topic") || "";
+        const payload = JSON.parse(rawBody);
+        console.log(`Webhook received: ${topic}`, payload.id);
+
+        return json({ received: true }, 200, cors);
+      }
+
+      // Health check
+      if (path === "/api/health") {
+        return json({ status: "ok", timestamp: Date.now() }, 200, cors);
+      }
+
+      return error("Not found", 404, cors);
+    } catch (err) {
+      console.error("BFF error:", err);
+      const message = err instanceof Error ? err.message : "Internal error";
+      return error(message, 500, cors);
+    }
+  },
+} satisfies ExportedHandler<Env>;

@@ -5,7 +5,21 @@ import Footer from '../components/Footer.astro';
 
 export const prerender = true;
 
-const GCS = "https://storage.googleapis.com/seemyhealth-email-assets";
+const appSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "SeeMyHealth",
+  operatingSystem: "iOS, Android",
+  applicationCategory: "HealthApplication",
+  description: "The SeeMyHealth app unifies all your health devices into one dashboard. Track heart rate, sleep, body composition, blood pressure, hydration, blood markers, mood, journalling, community challenges, and more.",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
 
 const coreFeatures = [
   {
@@ -73,7 +87,7 @@ const securityFeatures = [
 ];
 ---
 
-<Layout title="The App — SeeMyHealth" description="The SeeMyHealth app connects all your devices in one unified dashboard. Sleep intelligence, cross-device insights, meal logging, mood tracking, and secure sharing.">
+<Layout title="The App — SeeMyHealth" description="The SeeMyHealth app connects all your health devices in one dashboard. Sleep tracking, mood tracking, journalling, meal logging, community challenges, food tracking, recipes, and health insights — no data sold, no ads." canonicalPath="/app" jsonLd={appSchema}>
   <Navbar />
 
   <!-- Hero -->

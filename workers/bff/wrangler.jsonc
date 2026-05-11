@@ -1,0 +1,27 @@
+{
+	"name": "seemyhealth-bff",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-05-09",
+	"compatibility_flags": ["global_fetch_strictly_public"],
+	"observability": {
+		"enabled": true
+	},
+	"routes": [
+		{
+			"pattern": "www.seemyhealth.ai/api/*",
+			"zone_name": "seemyhealth.ai"
+		},
+		{
+			"pattern": "seemyhealth.ai/api/*",
+			"zone_name": "seemyhealth.ai"
+		}
+	],
+	// Secrets (set via `npx wrangler secret put <NAME>`):
+	// - SHOPIFY_STORE_DOMAIN (shop.seemyhealth.ai)
+	// - SHOPIFY_STOREFRONT_TOKEN (public storefront access token)
+	// - SHOPIFY_ADMIN_TOKEN (private admin API token)
+	// - WEBHOOK_SECRET (Shopify webhook HMAC secret)
+	"vars": {
+		"ALLOWED_ORIGINS": "https://www.seemyhealth.ai,https://seemyhealth.ai,https://account.seemyhealth.ai"
+	}
+}

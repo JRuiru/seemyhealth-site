@@ -1,0 +1,105 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+export const prerender = true;
+---
+
+<Layout title="Shipping & Returns — SeeMyHealth" description="Free shipping on orders over $150. 30-day hassle-free returns on all SeeMyHealth devices." canonicalPath="/shipping">
+  <Navbar />
+
+  <section class="pt-32 pb-16 sm:pt-40 sm:pb-20 bg-brand-black">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Shipping & Returns</p>
+      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95] mb-6">
+        Fast Shipping.<br /><span class="font-500">Easy Returns.</span>
+      </h1>
+      <p class="text-lg text-brand-gray-400 leading-relaxed">
+        We ship worldwide and stand behind every device. If you're not satisfied, send it back within 30 days.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-24 bg-brand-dark border-t border-white/5">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 space-y-16">
+
+      <!-- Shipping -->
+      <div>
+        <h2 class="font-display text-2xl sm:text-3xl font-400 uppercase mb-8">Shipping</h2>
+        <div class="space-y-6 text-brand-gray-400 leading-relaxed">
+          <div class="border-b border-white/5 pb-6">
+            <h3 class="text-white font-medium mb-2">Free Standard Shipping</h3>
+            <p>Orders over $150 ship free worldwide. Standard delivery takes 5–10 business days depending on your location.</p>
+          </div>
+          <div class="border-b border-white/5 pb-6">
+            <h3 class="text-white font-medium mb-2">Express Shipping</h3>
+            <p>Need it faster? Express shipping (2–4 business days) is available at checkout for $14.99. Available in US, Canada, UK, EU, and select Asian markets.</p>
+          </div>
+          <div class="border-b border-white/5 pb-6">
+            <h3 class="text-white font-medium mb-2">Order Tracking</h3>
+            <p>Every order includes tracking. You'll receive a confirmation email with your tracking number as soon as your order ships.</p>
+          </div>
+          <div class="border-b border-white/5 pb-6">
+            <h3 class="text-white font-medium mb-2">International Orders</h3>
+            <p>We ship to over 50 countries. Import duties and taxes may apply depending on your country's regulations and are the responsibility of the buyer.</p>
+          </div>
+          <div>
+            <h3 class="text-white font-medium mb-2">Shipping Locations</h3>
+            <p>Orders are fulfilled from our warehouses in the United States, Qatar, Nairobi, and Shenzhen — we ship from the location closest to you for the fastest delivery.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Returns -->
+      <div>
+        <h2 class="font-display text-2xl sm:text-3xl font-400 uppercase mb-8">Returns</h2>
+        <div class="space-y-6 text-brand-gray-400 leading-relaxed">
+          <div class="border-b border-white/5 pb-6">
+            <h3 class="text-white font-medium mb-2">30-Day Return Policy</h3>
+            <p>Not satisfied? Return any device within 30 days of delivery for a full refund. No questions asked. Items must be in original packaging and in good condition.</p>
+          </div>
+          <div class="border-b border-white/5 pb-6">
+            <h3 class="text-white font-medium mb-2">How to Return</h3>
+            <p>Email <a href="mailto:support@seemyhealth.ai" class="text-white hover:underline">support@seemyhealth.ai</a> with your order number. We'll send you a prepaid return label within 24 hours.</p>
+          </div>
+          <div class="border-b border-white/5 pb-6">
+            <h3 class="text-white font-medium mb-2">Refund Timeline</h3>
+            <p>Once we receive your return, refunds are processed within 5 business days. The refund will appear on your original payment method within 5–10 business days after processing.</p>
+          </div>
+          <div>
+            <h3 class="text-white font-medium mb-2">Exchanges</h3>
+            <p>Want a different size or color? Contact us and we'll arrange an exchange at no additional cost. We cover return shipping for exchanges.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hema One cartridges -->
+      <div>
+        <h2 class="font-display text-2xl sm:text-3xl font-400 uppercase mb-8">Consumables</h2>
+        <div class="text-brand-gray-400 leading-relaxed">
+          <div>
+            <h3 class="text-white font-medium mb-2">Hema One Cartridges</h3>
+            <p>Hema One cartridges are non-returnable once opened due to the nature of blood analysis consumables. Unopened cartridge packs can be returned within 30 days.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 sm:py-20 bg-brand-black border-t border-white/5">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+      <p class="text-brand-gray-500 mb-6">Have a question about an order?</p>
+      <a
+        href="mailto:support@seemyhealth.ai"
+        class="inline-flex items-center px-8 py-3.5 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+      >
+        Contact Support
+      </a>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

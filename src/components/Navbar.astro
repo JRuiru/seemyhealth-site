@@ -1,4 +1,6 @@
 ---
+import CartIcon from './commerce/CartIcon';
+
 interface Props {
   variant?: 'default' | 'transparent' | 'product';
   productName?: string;
@@ -35,7 +37,7 @@ const isProduct = variant === 'product';
       <!-- Logo -->
       <a href="/" class="flex items-center gap-3">
         <img
-          src="https://storage.googleapis.com/seemyhealth-email-assets/logo.png"
+          src="https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/logo/public"
           alt="SeeMyHealth"
           class="w-8 h-8 rounded-lg"
         />
@@ -71,6 +73,7 @@ const isProduct = variant === 'product';
         >
           Shop Now
         </a>
+        <CartIcon client:load />
         <button
           class="lg:hidden p-2 text-brand-gray-400 hover:text-white"
           id="mobile-menu-btn"

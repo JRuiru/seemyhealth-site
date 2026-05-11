@@ -2,12 +2,13 @@
 import type { ProductSpec } from '../data/products';
 
 interface Props {
+  slug: string;
   name: string;
   price: string;
   specs: ProductSpec[];
 }
 
-const { name, price, specs } = Astro.props;
+const { slug, name, price, specs } = Astro.props;
 ---
 
 <section class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
@@ -30,7 +31,7 @@ const { name, price, specs } = Astro.props;
 
     <div class="mt-12 text-center" data-scroll-reveal>
       <a
-        href="/shop"
+        href={`/configure/${slug}`}
         class="inline-flex items-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
       >
         Shop {name} — {price}

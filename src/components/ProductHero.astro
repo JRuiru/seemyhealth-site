@@ -1,24 +1,39 @@
 ---
 interface Props {
+  slug: string;
   name: string;
   tagline: string;
   headline: string;
   description: string;
   image: string;
+  streamId?: string;
   price: string;
 }
 
-const { name, tagline, headline, description, image, price } = Astro.props;
+const { slug, name, tagline, headline, description, image, streamId, price } = Astro.props;
+const videoSrc = streamId ? `https://customer-5zjora8ha9v60sg3.cloudflarestream.com/${streamId}/downloads/default.mp4` : null;
 ---
 
 <section class="relative min-h-screen flex items-end pb-20 pt-24">
   <div class="absolute inset-0">
-    <img
-      src={image}
-      alt={name}
-      class="w-full h-full object-cover"
-      data-image-reveal
-    />
+    {videoSrc ? (
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        poster={image}
+        class="w-full h-full object-cover"
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
+    ) : (
+      <img
+        src={image}
+        alt={name}
+        class="w-full h-full object-cover"
+      />
+    )}
     <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/50 to-transparent"></div>
     <div class="absolute inset-0 bg-gradient-to-r from-brand-black/60 to-transparent"></div>
   </div>
@@ -34,10 +49,10 @@ const { name, tagline, headline, description, image, price } = Astro.props;
       </p>
       <div class="flex items-center gap-6">
         <a
-          href="/shop"
+          href={`/configure/${slug}`}
           class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
         >
-          Shop — {price}
+          Shop Now — {price}
         </a>
       </div>
     </div>

@@ -13,12 +13,48 @@ import CTA from '../components/CTA.astro';
 import Footer from '../components/Footer.astro';
 
 export const prerender = true;
+
+const orgSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "SeeMyHealth",
+  url: "https://www.seemyhealth.ai",
+  logo: "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/logo/public",
+  sameAs: [],
+  description: "Medical-grade health monitoring devices for home use. Track body composition, blood pressure, hydration, blood markers, heart rate, SpO2, and sleep.",
+};
+
+const webSiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "SeeMyHealth",
+  url: "https://www.seemyhealth.ai",
+};
 ---
 
-<Layout title="SeeMyHealth — Medical-Grade Health Monitoring Devices">
+<Layout
+  title="SeeMyHealth — Medical-Grade Health Monitoring Devices"
+  canonicalPath="/"
+  jsonLd={[orgSchema, webSiteSchema]}
+>
   <Navbar variant="transparent" />
   <Hero />
   <EcosystemVision />
+
+  <!-- Bridge between ecosystem and products -->
+  <section class="relative bg-brand-dark py-20 sm:py-28 overflow-hidden">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4" data-scroll-reveal>Meet the Lineup</p>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-6xl font-300 uppercase leading-[0.95] mb-6" data-scroll-reveal>
+        Every device.<br />
+        <span class="font-500">Built for real life.</span>
+      </h2>
+      <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto" data-scroll-reveal>
+        Medical-grade precision meets everyday design. Pick one to start, or build your complete ecosystem.
+      </p>
+    </div>
+  </section>
+
   <Products />
   <Stats />
   <AppShowcase />

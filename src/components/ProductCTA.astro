@@ -1,0 +1,36 @@
+---
+interface Props {
+  slug: string;
+  name: string;
+  price: string;
+  color: string;
+}
+
+const { slug, name, price, color } = Astro.props;
+---
+
+<section class="py-20 sm:py-28 bg-brand-dark border-t border-white/5">
+  <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center" data-scroll-reveal>
+    <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-300 uppercase leading-[0.95] mb-4">
+      Ready for <span class="font-500">{name}?</span>
+    </h2>
+    <p class="text-brand-gray-400 mb-10 max-w-md mx-auto">
+      Medical-grade precision meets everyday design. Start your health journey today.
+    </p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a
+        href={`/configure/${slug}`}
+        class="inline-flex items-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black rounded-full hover:opacity-90 transition-opacity"
+        style={`background: ${color}`}
+      >
+        Shop Now — {price}
+      </a>
+      <a
+        href="/shop"
+        class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
+      >
+        View All Devices
+      </a>
+    </div>
+  </div>
+</section>

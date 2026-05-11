@@ -1,10 +1,14 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import Lenis from "lenis";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 // --- Smooth Scroll (Lenis) ---
+let lenisInstance: Lenis | null = null;
+export function getLenis() { return lenisInstance; }
+
 export function initSmoothScroll() {
   const lenis = new Lenis({
     duration: 1.2,
@@ -16,6 +20,7 @@ export function initSmoothScroll() {
   gsap.ticker.add((time) => lenis.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
 
+  lenisInstance = lenis;
   return lenis;
 }
 
@@ -30,11 +35,11 @@ export function initHeroReveal() {
   if (heroImage) {
     gsap.fromTo(
       heroImage,
-      { clipPath: "polygon(20% 30%, 80% 30%, 80% 70%, 20% 70%)", scale: 1.3 },
+      { clipPath: "circle(12% at 55% 45%)", scale: 1.3 },
       {
-        clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+        clipPath: "circle(75% at 50% 50%)",
         scale: 1,
-        duration: 1.6,
+        duration: 1.8,
         ease: "power3.inOut",
         delay: 0.3,
       }
@@ -241,11 +246,212 @@ export function initNavbarScroll() {
   });
 }
 
+// --- Ecosystem scroll reveal (Pin + Snap approach) ---
+export function initEcosystemReveal() {
+  const section = document.querySelector("[data-ecosystem-section]") as HTMLElement;
+  if (!section) return;
+
+  const flipperWrap = section.querySelector("[data-ecosystem-flipper-wrap]") as HTMLElement;
+  const circle = section.querySelector("[data-ecosystem-circle]") as HTMLElement;
+  const intro = section.querySelector("[data-ecosystem-intro]") as HTMLElement;
+  if (!flipperWrap || !circle || !intro) return;
+
+  const pulseRings = Array.from(section.querySelectorAll("[data-pulse-ring]")) as HTMLElement[];
+
+  // --- Position satellite circles at their orbit radius ---
+  const orbitScale = section.querySelector("[data-orbit-scale]") as HTMLElement;
+  const satellites = Array.from(section.querySelectorAll("[data-satellite]")) as HTMLElement[];
+  const circleRect = circle.getBoundingClientRect();
+  const mainRadius = circleRect.width / 2;
+  const satSize = satellites[0]?.getBoundingClientRect().width || 64;
+  const orbitRadius = mainRadius + satSize * 0.8;
+
+  const angles = [-90, -18, 54, 126, 198];
+  satellites.forEach((sat, i) => {
+    const angle = angles[i] * (Math.PI / 180);
+    const x = Math.cos(angle) * orbitRadius;
+    const y = Math.sin(angle) * orbitRadius;
+    sat.style.marginLeft = `${x}px`;
+    sat.style.marginTop = `${y}px`;
+  });
+
+  const slugOrder = ["app", "scale", "bp-monitor", "hydra-one", "hema-one", "ring-one"];
+  const deviceColors = ["#ffffff", "#3B82F6", "#EF4444", "#06B6D4", "#A855F7", "#F97316"];
+
+  const allFaces = slugOrder.map(
+    (s) => section.querySelector(`[data-flip-face="${s}"]`) as HTMLElement
+  );
+  const allCards = slugOrder.map(
+    (s) => section.querySelector(`[data-flip-header="${s}"]`) as HTMLElement
+  );
+  const allLabels = slugOrder.map(
+    (s) => section.querySelector(`[data-flip-label="${s}"]`) as HTMLElement
+  );
+
+  // Normalize scroll for mobile — prevents touch stutter fighting with pin
+  ScrollTrigger.normalizeScroll(true);
+
+  // --- Build a single scrubbed + snapped timeline ---
+  // Each segment has a FIXED duration S so snap points align exactly with settled states.
+  // Steps: entrance | intro | app | scale | bp-monitor | hydra-one | hema-one | ring-one | exit
+  const numSteps = 9;
+  const S = 1; // uniform segment duration
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: section,
+      start: "top top",
+      end: () => `+=${numSteps * window.innerHeight * 0.6}`,
+      pin: true,
+      pinSpacing: true,
+      scrub: 0.8,
+      snap: {
+        snapTo: 1 / (numSteps - 1),
+        duration: { min: 0.2, max: 0.5 },
+        ease: "power2.inOut",
+      },
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    },
+  });
+
+  // --- Initial hidden state ---
+  gsap.set(intro, { opacity: 0, y: 40 });
+  gsap.set(circle, { scale: 0.3, opacity: 0 });
+  if (orbitScale) gsap.set(orbitScale, { scale: 0, opacity: 0 });
+  pulseRings.forEach((ring) => gsap.set(ring, { scale: 0.5, opacity: 0 }));
+
+  // --- Segment 0 → 1: Entrance (text + circle + orbit phase in) ---
+  tl.to(intro, { opacity: 1, y: 0, duration: S * 0.35, ease: "power2.out" }, 0);
+  tl.to(circle, { scale: 1, opacity: 1, duration: S * 0.35, ease: "back.out(1.4)" }, S * 0.25);
+  pulseRings.forEach((ring, idx) => {
+    tl.to(ring, { scale: 1, opacity: 1, duration: S * 0.15, ease: "power2.out" }, S * 0.45 + idx * 0.05);
+  });
+  if (orbitScale) {
+    tl.to(orbitScale, { scale: 1, opacity: 1, duration: S * 0.25, ease: "back.out(1.2)" }, S * 0.6);
+  }
+
+  // --- Segment 1 → 2: Hold intro (pause) ---
+
+  // --- Segment 2 → 3: Collapse to app (first flip via scaleX) ---
+  const seg2 = S * 2;
+  tl.to(intro, { opacity: 0, y: -20, duration: S * 0.3, ease: "power2.inOut" }, seg2);
+  if (orbitScale) {
+    tl.to(orbitScale, { scale: 0, opacity: 0, duration: S * 0.35, ease: "power2.inOut" }, seg2);
+  }
+  pulseRings.forEach((ring) => {
+    tl.to(ring, { opacity: 0, duration: S * 0.3 }, seg2);
+  });
+  // Squish to line (scaleX 1 → 0)
+  tl.to(circle, { scaleX: 0, duration: S * 0.3, ease: "power2.in" }, seg2 + S * 0.3);
+  // Swap face at zero-width
+  if (allCards[0]) tl.set(allCards[0], { opacity: 1 }, seg2 + S * 0.6);
+  // Expand back (scaleX 0 → 1)
+  tl.to(circle, { scaleX: 1, duration: S * 0.3, ease: "power2.out" }, seg2 + S * 0.6);
+
+  // --- Segments 3–7: Each device with scaleX flip ---
+  for (let i = 1; i < slugOrder.length; i++) {
+    const color = deviceColors[i];
+    const segStart = S * (2 + i);
+
+    // Fade out previous header + label
+    if (allCards[i - 1]) tl.to(allCards[i - 1], { opacity: 0, duration: S * 0.2, ease: "power2.in" }, segStart);
+    if (allLabels[i - 1]) tl.to(allLabels[i - 1], { opacity: 0, duration: S * 0.2, ease: "power2.in" }, segStart);
+
+    // Squish to line
+    tl.to(circle, { scaleX: 0, duration: S * 0.3, ease: "power2.in" }, segStart + S * 0.15);
+
+    // At zero-width: swap face content
+    if (allFaces[i - 1]) tl.set(allFaces[i - 1], { opacity: 0 }, segStart + S * 0.45);
+    if (allFaces[i]) tl.set(allFaces[i], { opacity: 1 }, segStart + S * 0.45);
+
+    // Expand back
+    tl.to(circle, { scaleX: 1, duration: S * 0.3, ease: "power2.out" }, segStart + S * 0.45);
+
+    // Fade in new header + label + color
+    if (allCards[i]) tl.to(allCards[i], { opacity: 1, duration: S * 0.2, ease: "power2.out" }, segStart + S * 0.7);
+    if (allLabels[i]) tl.to(allLabels[i], { opacity: 1, duration: S * 0.2, ease: "power2.out" }, segStart + S * 0.7);
+
+    // Color change
+    tl.to(circle, { borderColor: color + "60", duration: S * 0.2, ease: "power2.out" }, segStart + S * 0.7);
+    pulseRings.forEach((ring) => {
+      tl.to(ring, { borderColor: color + "30", duration: S * 0.2, ease: "power2.out" }, segStart + S * 0.7);
+    });
+  }
+
+  // --- Segment 8: Exit — fade out ---
+  const exitStart = S * 8;
+  tl.to(flipperWrap, { opacity: 0, duration: S * 0.5, ease: "power2.in" }, exitStart);
+
+  // Pad to exact total duration so snap math is correct
+  tl.to({}, { duration: 0.01 }, S * numSteps);
+}
+
+// --- Horizontal scroll products ---
+export function initProductsHorizontal() {
+  const section = document.querySelector("[data-products-horizontal]") as HTMLElement;
+  if (!section) return;
+
+  const trackWrap = section.querySelector("[data-products-track-wrap]") as HTMLElement;
+  const track = section.querySelector("[data-products-track]") as HTMLElement;
+  const progress = section.querySelector("[data-products-progress]") as HTMLElement;
+  const panels = section.querySelectorAll("[data-product-panel]");
+  if (!trackWrap || !track || !panels.length) return;
+
+  // Total horizontal distance to scroll
+  const getScrollDistance = () => track.scrollWidth - window.innerWidth;
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: trackWrap,
+      start: "top top",
+      end: () => `+=${getScrollDistance()}`,
+      pin: true,
+      scrub: 0.6,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    },
+  });
+
+  tl.to(track, {
+    x: () => -getScrollDistance(),
+    ease: "none",
+  });
+
+  // Progress bar
+  if (progress) {
+    tl.to(progress, { scaleX: 1, ease: "none" }, 0);
+  }
+
+  // Fade in each panel as it enters
+  panels.forEach((panel, i) => {
+    if (i === 0) return; // first panel is already visible
+    gsap.fromTo(
+      panel.querySelector("a"),
+      { opacity: 0, x: 80 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 0.4,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: panel,
+          containerAnimation: tl,
+          start: "left 80%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+  });
+}
+
 // --- Init all ---
 export function initAllAnimations() {
   initSmoothScroll();
   initNavbarScroll();
   initHeroReveal();
+  initEcosystemReveal();
+  initProductsHorizontal();
   initScrollReveals();
   initImageReveals();
   initParallax();

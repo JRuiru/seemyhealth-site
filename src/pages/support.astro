@@ -188,9 +188,30 @@ const faqSections = [
     ]
   }
 ];
+
+// Build FAQ schema from all sections
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqSections.flatMap((section) =>
+    section.questions.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.a,
+      },
+    }))
+  ),
+};
 ---
 
-<Layout title="Support & FAQ — SeeMyHealth">
+<Layout
+  title="Support & FAQ — SeeMyHealth"
+  description="Get help with your SeeMyHealth smart ring, smart scale, blood pressure monitor, smart water bottle, and blood analyzer. FAQs on setup, pairing, warranty, shipping, and returns."
+  canonicalPath="/support"
+  jsonLd={faqSchema}
+>
   <Navbar />
 
   <!-- Hero -->

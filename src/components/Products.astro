@@ -1,5 +1,5 @@
 ---
-const GCS = "https://storage.googleapis.com/seemyhealth-email-assets";
+const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
 
 const products = [
   {
@@ -7,118 +7,123 @@ const products = [
     slug: "ring-one",
     tagline: "Sensing, made human",
     description: "24/7 heart rate, SpO2, sleep, activity, and stress — from your finger. Medical-grade sensors in a ring designed for daily wear.",
-    image: `${GCS}/ring-hero-hands.jpg`,
+    image: `${CF_IMG}/ring-hero-hands/public`,
     price: "From $179.99",
     features: ["Heart Rate", "SpO2", "Sleep Stages", "Stress"],
+    color: "#F97316",
   },
   {
     name: "The Scale",
     slug: "scale",
     tagline: "Beyond the number",
     description: "Full body composition — The Scale for essentials, Scale Pro for segmental analysis. Both in Black and White.",
-    image: `${GCS}/scale-black-pack.jpg`,
+    image: `${CF_IMG}/scale-black-pack/public`,
     price: "From $99.99",
     features: ["Body Composition", "Multi-User", "Wi-Fi Sync", "Segmental (Pro)"],
+    color: "#3B82F6",
   },
   {
     name: "BP Monitor",
     slug: "bp-monitor",
     tagline: "Blood pressure, simplified",
     description: "Accurate blood pressure with irregular heartbeat detection. Clinical-grade monitoring made effortless.",
-    image: `${GCS}/bp-black.jpg`,
+    image: `${CF_IMG}/bp-black/public`,
     price: "$89.99",
     features: ["Systolic", "Diastolic", "Pulse", "Irregular HB"],
+    color: "#EF4444",
   },
   {
     name: "Hydra One",
     slug: "hydra-one",
     tagline: "Stay perfectly hydrated",
     description: "Smart water bottle that tracks intake and reminds you to drink. LED indicators sync with the app.",
-    image: `${GCS}/bottle-studio-wet.jpg`,
+    image: `${CF_IMG}/bottle-studio-wet/public`,
     price: "$59.99",
     features: ["Intake", "Reminders", "LED Sync", "750ml"],
+    color: "#06B6D4",
   },
   {
     name: "Hema One",
     slug: "hema-one",
     tagline: "Your blood, your data",
     description: "At-home blood analysis for key health markers. Lab-quality results in minutes, from your fingertip.",
-    image: `${GCS}/hema-one-web.jpg`,
+    image: `${CF_IMG}/hema-one-web/public`,
     price: "$99.99",
     features: ["Hemoglobin", "Glucose", "Cholesterol", "Iron"],
+    color: "#A855F7",
   },
 ];
 ---
 
-<section id="products" class="py-24 sm:py-32 bg-brand-black">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
-    <!-- Section Header -->
-    <div class="mb-20" data-scroll-reveal>
-      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Our Devices</p>
-      <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95]">
-        The <span class="font-500">Ecosystem</span>
-      </h2>
+<section id="products" class="relative bg-brand-black overflow-hidden" data-products-horizontal>
+  <!-- Section header (visible before pin) -->
+  <div class="pt-24 sm:pt-32 pb-12 max-w-7xl mx-auto px-6 lg:px-8" data-scroll-reveal>
+    <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Our Devices</p>
+    <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95]">
+      The <span class="font-500">Ecosystem</span>
+    </h2>
+  </div>
+
+  <!-- Horizontal scroll track -->
+  <div class="relative" data-products-track-wrap>
+    <!-- Progress bar -->
+    <div class="sticky top-0 z-10 px-6 lg:px-8 pt-4 pb-6">
+      <div class="max-w-7xl mx-auto">
+        <div class="h-[1px] bg-white/10 rounded-full overflow-hidden">
+          <div class="h-full bg-white/40 rounded-full origin-left" style="transform: scaleX(0)" data-products-progress></div>
+        </div>
+      </div>
     </div>
 
-    <!-- Featured Product — Ring One (full width) -->
-    <div class="mb-8" data-scroll-reveal>
-      <a href={`/products/${products[0].slug}`} class="group block relative overflow-hidden rounded-2xl bg-brand-gray-900">
-        <div class="grid lg:grid-cols-2">
-          <div class="relative h-[400px] lg:h-[500px] overflow-hidden">
-            <img
-              src={products[0].image}
-              alt={products[0].name}
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              data-parallax="-0.1"
-            />
-          </div>
-          <div class="flex flex-col justify-center p-10 lg:p-16">
-            <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-4">{products[0].tagline}</p>
-            <h3 class="font-display text-3xl sm:text-4xl font-400 uppercase mb-4">{products[0].name}</h3>
-            <p class="text-brand-gray-400 leading-relaxed mb-6 max-w-md">{products[0].description}</p>
-            <div class="flex flex-wrap gap-3 mb-8">
-              {products[0].features.map((f) => (
-                <span class="text-[11px] uppercase tracking-[1.5px] px-3 py-1.5 border border-white/10 rounded-full text-brand-gray-400">
-                  {f}
-                </span>
-              ))}
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-2xl font-display font-400">{products[0].price}</span>
-              <span class="text-[13px] uppercase tracking-[1.5px] text-brand-gray-400 group-hover:text-white transition-colors">
-                Explore &rarr;
-              </span>
-            </div>
+    <!-- Sliding panels container -->
+    <div class="flex" data-products-track style={`width: ${products.length * 100}vw`}>
+      {products.map((product, i) => (
+        <div class="w-screen flex-shrink-0 px-6 lg:px-8" data-product-panel>
+          <div class="max-w-7xl mx-auto h-[70vh] flex items-center">
+            <a href={`/products/${product.slug}`} class="group block w-full">
+              <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                <!-- Image -->
+                <div class="relative h-[300px] sm:h-[400px] lg:h-[500px] overflow-hidden rounded-2xl bg-brand-gray-900">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-brand-gray-900/40 to-transparent"></div>
+                  <!-- Product number -->
+                  <div class="absolute top-6 left-6">
+                    <span class="text-[11px] uppercase tracking-[2px] text-white/40 font-display">{String(i + 1).padStart(2, '0')} / {String(products.length).padStart(2, '0')}</span>
+                  </div>
+                </div>
+
+                <!-- Content -->
+                <div class="flex flex-col justify-center">
+                  <div class="h-[3px] w-12 rounded-full mb-6" style={`background: ${product.color}`}></div>
+                  <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-4">{product.tagline}</p>
+                  <h3 class="font-display text-3xl sm:text-4xl lg:text-5xl font-400 uppercase mb-4 leading-[0.95]">{product.name}</h3>
+                  <p class="text-brand-gray-400 leading-relaxed mb-8 max-w-md">{product.description}</p>
+                  <div class="flex flex-wrap gap-3 mb-8">
+                    {product.features.map((f) => (
+                      <span class="text-[11px] uppercase tracking-[1.5px] px-3 py-1.5 border border-white/10 rounded-full text-brand-gray-400">
+                        {f}
+                      </span>
+                    ))}
+                  </div>
+                  <div class="flex items-center justify-between max-w-md">
+                    <span class="text-2xl font-display font-400">{product.price}</span>
+                    <span class="text-[13px] uppercase tracking-[1.5px] text-brand-gray-400 group-hover:text-white transition-colors">
+                      Explore &rarr;
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </a>
           </div>
         </div>
-      </a>
-    </div>
-
-    <!-- Other Products — 2x2 grid with stagger -->
-    <div class="grid sm:grid-cols-2 gap-4 sm:gap-6" data-scroll-stagger>
-      {products.slice(1).map((product) => (
-        <a href={`/products/${product.slug}`} class="group block relative overflow-hidden rounded-2xl bg-brand-gray-900">
-          <div class="relative h-64 sm:h-72 overflow-hidden">
-            <img
-              src={product.image}
-              alt={product.name}
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-brand-gray-900 to-transparent"></div>
-          </div>
-          <div class="p-6 sm:p-8">
-            <p class="text-[10px] uppercase tracking-[3px] text-brand-gray-500 mb-2">{product.tagline}</p>
-            <h3 class="font-display text-xl sm:text-2xl font-400 uppercase mb-2">{product.name}</h3>
-            <p class="text-sm text-brand-gray-500 leading-relaxed mb-4">{product.description}</p>
-            <div class="flex items-center justify-between">
-              <span class="text-lg font-display">{product.price}</span>
-              <span class="text-[12px] uppercase tracking-[1.5px] text-brand-gray-500 group-hover:text-white transition-colors">
-                Explore &rarr;
-              </span>
-            </div>
-          </div>
-        </a>
       ))}
     </div>
+
+    <!-- Bottom padding -->
+    <div class="h-16"></div>
   </div>
 </section>

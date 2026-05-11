@@ -1,0 +1,35 @@
+---
+interface Benefit {
+  title: string;
+  description: string;
+}
+
+interface Props {
+  headline: string;
+  color: string;
+  benefits: Benefit[];
+}
+
+const { headline, color, benefits } = Astro.props;
+---
+
+<section class="py-20 sm:py-28 bg-brand-dark border-t border-white/5">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="mb-14" data-scroll-reveal>
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">What It Does for You</p>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-300 uppercase leading-[0.95] max-w-xl">
+        {headline}
+      </h2>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-6" data-scroll-stagger>
+      {benefits.map((b) => (
+        <div class="p-8 rounded-2xl bg-brand-gray-900 border border-white/5">
+          <div class="w-2 h-2 rounded-full mb-4" style={`background: ${color}`}></div>
+          <h3 class="font-display text-lg font-400 uppercase mb-3">{b.title}</h3>
+          <p class="text-sm text-brand-gray-500 leading-relaxed">{b.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

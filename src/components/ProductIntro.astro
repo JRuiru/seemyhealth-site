@@ -1,0 +1,17 @@
+---
+interface Props {
+  tagline: string;
+  color: string;
+}
+
+const { tagline, color } = Astro.props;
+---
+
+<section class="py-20 sm:py-28 bg-brand-dark border-t border-white/5">
+  <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center" data-scroll-reveal>
+    <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">{tagline}</p>
+    <h2 class="font-display text-3xl sm:text-4xl lg:text-6xl font-300 uppercase leading-[0.95]">
+      <slot />
+    </h2>
+  </div>
+</section>

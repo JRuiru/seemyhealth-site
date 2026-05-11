@@ -1,0 +1,158 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import ProductConfigurator from '../../components/commerce/ProductConfigurator';
+import WhatsInTheBox from '../../components/commerce/WhatsInTheBox';
+import CustomerReviews from '../../components/commerce/CustomerReviews';
+import StickyAddToCart from '../../components/commerce/StickyAddToCart';
+import CartDrawer from '../../components/commerce/CartDrawer';
+import Footer from '../../components/Footer.astro';
+import { products, productSlugs } from '../../data/products';
+import { productVariants } from '../../data/variants';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return productSlugs
+    .filter((slug) => productVariants[slug])
+    .map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const product = products[slug as string];
+const variantData = productVariants[slug as string];
+
+const otherProducts = productSlugs
+  .filter((s) => s !== slug && products[s])
+  .map((s) => ({ slug: s, ...products[s] }))
+  .slice(0, 3);
+---
+
+<Layout
+  title={`Configure ${product.name} — SeeMyHealth`}
+  description={`Choose your ${product.name} finish, size, and add to cart. ${product.description}`}
+  ogImage={product.image}
+  canonicalPath={`/configure/${slug}`}
+>
+  <Navbar variant="product" productName={product.name} productColor={product.color} />
+
+  <div id="configure-wrapper" class="pt-20 sm:pt-24 bg-brand-black min-h-screen transition-colors duration-600">
+    <!-- Back link -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-6">
+      <a
+        href={`/products/${slug}`}
+        class="inline-flex items-center gap-2 text-[11px] uppercase tracking-[2px] text-brand-gray-500 hover:text-white transition-colors"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to {product.name}
+      </a>
+    </div>
+
+    <!-- Configurator (Photo + Purchase Module) -->
+    <ProductConfigurator slug={slug as string} accentColor={product.color} client:load />
+
+    <!-- What's in the Box -->
+    {variantData.boxContents && (
+      <WhatsInTheBox
+        productName={product.name}
+        items={variantData.boxContents}
+        accentColor={product.color}
+        client:load
+      />
+    )}
+
+    <!-- Customer Reviews -->
+    <CustomerReviews
+      productName={product.name}
+      accentColor={product.color}
+      client:load
+    />
+
+    <!-- Complete Your Ecosystem -->
+    <section class="py-20 sm:py-28 border-t border-white/5">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-14">
+          <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Complete Your Ecosystem</p>
+          <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-300 uppercase leading-[0.95] mb-4">
+            Better <span class="font-500">Together</span>
+          </h2>
+          <p class="text-brand-gray-400 max-w-lg mx-auto">
+            Every device feeds into one app. The more you add, the clearer your health picture becomes.
+          </p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {otherProducts.map((p) => (
+            <a
+              href={`/configure/${p.slug}`}
+              class="group rounded-2xl bg-brand-gray-900 border border-white/5 hover:border-white/15 overflow-hidden transition-all duration-300"
+            >
+              <div class="relative h-56 overflow-hidden">
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div class="p-6">
+                <p class="text-[10px] uppercase tracking-[3px] mb-2" style={`color: ${p.color}`}>{p.tagline}</p>
+                <h3 class="font-display text-xl font-400 uppercase mb-1">{p.name}</h3>
+                <p class="text-sm text-brand-gray-400 mb-4">{p.price}</p>
+                <span
+                  class="inline-flex items-center text-[11px] uppercase tracking-[1.5px] font-medium transition-colors"
+                  style={`color: ${p.color}`}
+                >
+                  Configure
+                  <svg class="w-3.5 h-3.5 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <div class="text-center mt-10">
+          <a
+            href="/shop"
+            class="inline-flex items-center px-8 py-3.5 text-[12px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
+          >
+            View All Products
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust bar -->
+    <section class="border-t border-white/5">
+      <div class="max-w-5xl mx-auto px-6 lg:px-8 py-10">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+          <div>
+            <p class="text-sm font-medium text-white mb-0.5">Free Shipping</p>
+            <p class="text-[10px] uppercase tracking-[1.5px] text-brand-gray-600">On orders over $150</p>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-white mb-0.5">30-Day Returns</p>
+            <p class="text-[10px] uppercase tracking-[1.5px] text-brand-gray-600">No questions asked</p>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-white mb-0.5">1-Year Warranty</p>
+            <p class="text-[10px] uppercase tracking-[1.5px] text-brand-gray-600">Full coverage</p>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-white mb-0.5">Secure Checkout</p>
+            <p class="text-[10px] uppercase tracking-[1.5px] text-brand-gray-600">Encrypted payment</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Sticky Add to Cart (appears when main button scrolls out of view) -->
+  <StickyAddToCart accentColor={product.color} client:load />
+
+  <CartDrawer client:load />
+  <Footer />
+</Layout>

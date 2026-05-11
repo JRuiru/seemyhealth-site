@@ -2,14 +2,20 @@
 import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar.astro';
 import ProductHero from '../../components/ProductHero.astro';
-import ProductLifestyle from '../../components/ProductLifestyle.astro';
+import ProductIntro from '../../components/ProductIntro.astro';
 import ProductFeatures from '../../components/ProductFeatures.astro';
+import ProductHowItWorks from '../../components/ProductHowItWorks.astro';
+import ProductLifestyle from '../../components/ProductLifestyle.astro';
+import ProductBenefits from '../../components/ProductBenefits.astro';
 import ProductGallery from '../../components/ProductGallery.astro';
 import ProductSpecs from '../../components/ProductSpecs.astro';
 import ProductVideo from '../../components/ProductVideo.astro';
+import ProductCTA from '../../components/ProductCTA.astro';
 import CrossSell from '../../components/CrossSell.astro';
+import CartDrawer from '../../components/commerce/CartDrawer';
 import Footer from '../../components/Footer.astro';
 import { products, productSlugs } from '../../data/products';
+import { productContent } from '../../data/product-content';
 
 export const prerender = true;
 
@@ -19,34 +25,109 @@ export function getStaticPaths() {
 
 const { slug } = Astro.params;
 const product = products[slug as string];
+const content = productContent[slug as string];
 
 const heroLifestyle = product.lifestyleImages.slice(0, 3);
 const remainingLifestyle = product.lifestyleImages.slice(3);
+
+const priceMatch = product.price.match(/\$([\d.]+)/);
+const numericPrice = priceMatch ? priceMatch[1] : "0";
+
+const productSchema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: product.name,
+  description: product.description,
+  image: product.image,
+  brand: {
+    "@type": "Brand",
+    name: "SeeMyHealth",
+  },
+  offers: {
+    "@type": "Offer",
+    url: `https://www.seemyhealth.ai/products/${slug}`,
+    priceCurrency: "USD",
+    price: numericPrice,
+    availability: "https://schema.org/InStock",
+    seller: {
+      "@type": "Organization",
+      name: "SeeMyHealth",
+    },
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.seemyhealth.ai/" },
+    { "@type": "ListItem", position: 2, name: "Products", item: "https://www.seemyhealth.ai/shop" },
+    { "@type": "ListItem", position: 3, name: product.name, item: `https://www.seemyhealth.ai/products/${slug}` },
+  ],
+};
 ---
 
-<Layout title={`${product.name} — SeeMyHealth`} description={product.description}>
+<Layout
+  title={`${product.name} — SeeMyHealth`}
+  description={product.description}
+  ogImage={product.image}
+  ogType="product"
+  canonicalPath={`/products/${slug}`}
+  jsonLd={[productSchema, breadcrumbSchema]}
+>
   <Navbar variant="product" productName={product.name} productColor={product.color} />
 
+  <!-- Hero -->
   <ProductHero
+    slug={slug as string}
     name={product.name}
     tagline={product.tagline}
     headline={product.headline}
     description={product.description}
     image={product.image}
+    streamId={product.streamId}
     price={product.price}
   />
 
-  <ProductLifestyle images={heroLifestyle} />
+  <!-- Text Intro -->
+  {content && (
+    <ProductIntro tagline={product.tagline} color={product.color}>
+      <Fragment set:html={`${content.introLine1}<br /><span class="font-500">${content.introLine2}</span>`} />
+    </ProductIntro>
+  )}
 
+  <!-- Key Value Highlights -->
   <ProductFeatures features={product.features} />
 
+  <!-- How It Works -->
+  {content && (
+    <ProductHowItWorks color={product.color} steps={content.howItWorks} />
+  )}
+
+  <!-- Lifestyle Images -->
+  <ProductLifestyle images={heroLifestyle} />
+
+  <!-- What It Does for You -->
+  {content && (
+    <ProductBenefits headline={content.benefits.headline} color={product.color} benefits={content.benefits.items} />
+  )}
+
+  <!-- Gallery -->
   <ProductGallery images={remainingLifestyle} />
 
-  <ProductSpecs name={product.name} price={product.price} specs={product.specs} />
+  <!-- Technical Specs -->
+  <ProductSpecs slug={slug as string} name={product.name} price={product.price} specs={product.specs} />
 
+  <!-- Video -->
   <ProductVideo name={product.name} image={product.image} />
 
+  <!-- Final CTA -->
+  <ProductCTA slug={slug as string} name={product.name} price={product.price} color={product.color} />
+
+  <!-- Cross-sell -->
   <CrossSell currentSlug={slug as string} />
+
+  <CartDrawer client:load />
 
   <Footer />
 </Layout>

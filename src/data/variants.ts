@@ -1,0 +1,238 @@
+// Shopify Storefront API variant IDs mapped by product handle
+// Used by ProductConfigurator to add correct variant to cart
+
+export interface Variant {
+  id: string;           // Shopify GID (gid://shopify/ProductVariant/...)
+  title: string;
+  price: string;        // e.g. "179.99"
+  currency: string;
+  options: Record<string, string>;  // e.g. { Finish: "Phantom Black", Size: "6" }
+  available: boolean;
+}
+
+export type MediaType = "image" | "video" | "model";
+
+export interface MediaItem {
+  type: MediaType;
+  url: string;
+  alt?: string;                    // accessible label
+  poster?: string;                 // thumbnail/poster for video or model preview
+}
+
+export interface ProductVariantData {
+  handle: string;
+  name: string;
+  optionNames: string[];          // e.g. ["Finish", "Size"] or ["Color"]
+  variants: Variant[];
+  colorSwatches: Record<string, string>;  // variant color name → hex for swatch display
+  media?: Record<string, MediaItem[]>;    // variant color name → ordered gallery of images/videos/models
+  ambientColors?: Record<string, string>; // variant color name → ambient bg color for configure page
+  boxContents?: string[];                 // items included in the box
+  deliveryEstimate?: string;              // e.g. "5-7 business days"
+  warrantyYears?: number;                 // warranty duration
+}
+
+const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
+const CF_STREAM = "https://customer-5zjora8ha9v60sg3.cloudflarestream.com";
+
+export const productVariants: Record<string, ProductVariantData> = {
+  "ring-one": {
+    handle: "ring-one",
+    name: "Ring One",
+    optionNames: ["Finish", "Size"],
+    boxContents: ["Ring One", "Charging dock", "USB-C cable", "Quick start guide"],
+    deliveryEstimate: "5–7 business days",
+    warrantyYears: 1,
+    colorSwatches: {
+      "Phantom Black": "#1a1a1a",
+      "Aurora Gold": "#d4a853",
+    },
+    media: {
+      "Phantom Black": [
+        { type: "video", url: `${CF_STREAM}/2ddd23875de627bd1410a4d251735cbe/downloads/default.mp4`, poster: `${CF_IMG}/ring-hero-hands/public`, alt: "Ring One Phantom Black reveal" },
+        { type: "model", url: "/models/ring-phantom-black-3d.glb", poster: `${CF_IMG}/ring-hero-hands/public`, alt: "Ring One Phantom Black 3D" },
+        { type: "image", url: `${CF_IMG}/ring-hero-hands/public`, alt: "Ring One Phantom Black on hand" },
+        { type: "image", url: `${CF_IMG}/ring-photo-05/public`, alt: "Ring One Phantom Black — cocktails" },
+        { type: "image", url: `${CF_IMG}/ring-photo-06/public`, alt: "Ring One Phantom Black — unboxing" },
+        { type: "image", url: `${CF_IMG}/ring-photo-07/public`, alt: "Ring One Phantom Black — dining" },
+        { type: "image", url: `${CF_IMG}/ring-photo-12/public`, alt: "Ring One Phantom Black — on hand" },
+        { type: "image", url: `${CF_IMG}/ring-aurora-phantom-multi/public`, alt: "Ring One all finishes" },
+      ],
+      "Aurora Gold": [
+        { type: "video", url: `${CF_STREAM}/7ffce116e3e526dae52d54e873f2b2be/downloads/default.mp4`, poster: `${CF_IMG}/ring-aurora-studio/public`, alt: "Ring One Aurora Gold reveal" },
+        { type: "model", url: "/models/ring-aurora-gold-3d.glb", poster: `${CF_IMG}/ring-aurora-studio/public`, alt: "Ring One Aurora Gold 3D" },
+        { type: "image", url: `${CF_IMG}/ring-aurora-studio/public`, alt: "Ring One Aurora Gold studio" },
+        { type: "image", url: `${CF_IMG}/ring-aurora-pink-studio/public`, alt: "Ring One Aurora Gold studio angle" },
+        { type: "image", url: `${CF_IMG}/ring-photo-01/public`, alt: "Ring One Aurora Gold — sleeping" },
+        { type: "image", url: `${CF_IMG}/ring-photo-02/public`, alt: "Ring One Aurora Gold — water resistant" },
+        { type: "image", url: `${CF_IMG}/ring-photo-03/public`, alt: "Ring One Aurora Gold — working" },
+        { type: "image", url: `${CF_IMG}/ring-photo-08/public`, alt: "Ring One Aurora Gold — fitness" },
+        { type: "image", url: `${CF_IMG}/ring-photo-09/public`, alt: "Ring One Aurora Gold — close-up hand" },
+        { type: "image", url: `${CF_IMG}/ring-photo-10/public`, alt: "Ring One Aurora Gold — face detail" },
+        { type: "image", url: `${CF_IMG}/ring-photo-11/public`, alt: "Ring One Aurora Gold — hand detail" },
+        { type: "image", url: `${CF_IMG}/ring-photo-13/public`, alt: "Ring One Aurora Gold — hands" },
+        { type: "image", url: `${CF_IMG}/ring-aurora-phantom-multi/public`, alt: "Ring One all finishes" },
+      ],
+    },
+    ambientColors: {
+      "Phantom Black": "#0a0a0a",
+      "Aurora Gold": "#1a1408",
+    },
+    variants: [
+      { id: "gid://shopify/ProductVariant/43225636470897", title: "Phantom Black / 6", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "6" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636503665", title: "Phantom Black / 7", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "7" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636536433", title: "Phantom Black / 8", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "8" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636569201", title: "Phantom Black / 9", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "9" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636601969", title: "Phantom Black / 10", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "10" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636634737", title: "Phantom Black / 11", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "11" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636667505", title: "Phantom Black / 12", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "12" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636700273", title: "Phantom Black / 13", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "13" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636733041", title: "Aurora Gold / 6", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "6" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636765809", title: "Aurora Gold / 7", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "7" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636798577", title: "Aurora Gold / 8", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "8" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636831345", title: "Aurora Gold / 9", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "9" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636864113", title: "Aurora Gold / 10", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "10" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636896881", title: "Aurora Gold / 11", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "11" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636929649", title: "Aurora Gold / 12", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "12" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636962417", title: "Aurora Gold / 13", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "13" }, available: true },
+    ],
+  },
+  "scale": {
+    handle: "scale",
+    name: "The Scale",
+    optionNames: ["Color"],
+    boxContents: ["Smart Scale", "4× AAA batteries", "Quick start guide"],
+    deliveryEstimate: "5–7 business days",
+    warrantyYears: 1,
+    colorSwatches: {
+      "Obsidian Black": "#1a1a1a",
+      "Frost White": "#e8e8e8",
+    },
+    media: {
+      "Obsidian Black": [
+        { type: "image", url: `${CF_IMG}/scale-black-pack/public`, alt: "Scale Obsidian Black" },
+        { type: "image", url: `${CF_IMG}/scale-pro-lifestyle-new/public`, alt: "Scale lifestyle" },
+      ],
+      "Frost White": [
+        { type: "image", url: `${CF_IMG}/scale-white-pack/public`, alt: "Scale Frost White" },
+        { type: "image", url: `${CF_IMG}/scale-pro-lifestyle/public`, alt: "Scale lifestyle" },
+      ],
+    },
+    ambientColors: {
+      "Obsidian Black": "#0a0a0a",
+      "Frost White": "#121210",
+    },
+    variants: [
+      { id: "gid://shopify/ProductVariant/43225637814385", title: "Obsidian Black", price: "99.99", currency: "USD", options: { Color: "Obsidian Black" }, available: false },
+      { id: "gid://shopify/ProductVariant/43225637847153", title: "Frost White", price: "99.99", currency: "USD", options: { Color: "Frost White" }, available: false },
+    ],
+  },
+  "scale-pro": {
+    handle: "scale-pro",
+    name: "Scale Pro",
+    optionNames: ["Color"],
+    boxContents: ["Scale Pro", "4× AAA batteries", "Quick start guide"],
+    deliveryEstimate: "5–7 business days",
+    warrantyYears: 1,
+    colorSwatches: {
+      "Obsidian Black": "#1a1a1a",
+      "Frost White": "#e8e8e8",
+    },
+    media: {
+      "Obsidian Black": [
+        { type: "image", url: `${CF_IMG}/scale-pro-hero-new/public`, alt: "Scale Pro Obsidian Black" },
+        { type: "image", url: `${CF_IMG}/scale-pro-laser-front/public`, alt: "Scale Pro front detail" },
+        { type: "image", url: `${CF_IMG}/scale-pro-laser-side/public`, alt: "Scale Pro side detail" },
+        { type: "image", url: `${CF_IMG}/scale-pro-using/public`, alt: "Scale Pro in use" },
+      ],
+      "Frost White": [
+        { type: "image", url: `${CF_IMG}/scale-pro-hero-new/public`, alt: "Scale Pro Frost White" },
+        { type: "image", url: `${CF_IMG}/scale-pro-laser-front/public`, alt: "Scale Pro front detail" },
+        { type: "image", url: `${CF_IMG}/scale-pro-laser-side/public`, alt: "Scale Pro side detail" },
+        { type: "image", url: `${CF_IMG}/scale-pro-using/public`, alt: "Scale Pro in use" },
+      ],
+    },
+    ambientColors: {
+      "Obsidian Black": "#0a0a0a",
+      "Frost White": "#121210",
+    },
+    variants: [
+      { id: "gid://shopify/ProductVariant/43225637879921", title: "Obsidian Black", price: "199.99", currency: "USD", options: { Color: "Obsidian Black" }, available: false },
+      { id: "gid://shopify/ProductVariant/43225637912689", title: "Frost White", price: "199.99", currency: "USD", options: { Color: "Frost White" }, available: false },
+    ],
+  },
+  "bp-monitor": {
+    handle: "bp-monitor",
+    name: "BP Monitor",
+    optionNames: ["Color"],
+    boxContents: ["BP Monitor", "Adjustable arm cuff (22–42 cm)", "USB-C charging cable", "Carrying pouch", "Quick start guide"],
+    deliveryEstimate: "5–7 business days",
+    warrantyYears: 1,
+    colorSwatches: {
+      "Carbon Black": "#1a1a1a",
+      "Opal White": "#e8e8e8",
+    },
+    media: {
+      "Carbon Black": [
+        { type: "image", url: `${CF_IMG}/bp-black/public`, alt: "BP Monitor Carbon Black" },
+        { type: "image", url: `${CF_IMG}/bp-black-studio/public`, alt: "BP Monitor Carbon Black studio" },
+      ],
+      "Opal White": [
+        { type: "image", url: `${CF_IMG}/bp-white/public`, alt: "BP Monitor Opal White" },
+        { type: "image", url: `${CF_IMG}/bp-white-studio/public`, alt: "BP Monitor Opal White studio" },
+      ],
+    },
+    ambientColors: {
+      "Carbon Black": "#0a0a0a",
+      "Opal White": "#121210",
+    },
+    variants: [
+      { id: "gid://shopify/ProductVariant/43225874759793", title: "Carbon Black", price: "89.99", currency: "USD", options: { Color: "Carbon Black" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225874792561", title: "Opal White", price: "89.99", currency: "USD", options: { Color: "Opal White" }, available: true },
+    ],
+  },
+  "hydra-one": {
+    handle: "hydra-one",
+    name: "Hydra One",
+    optionNames: ["Color"],
+    boxContents: ["Hydra One bottle (750 ml)", "USB-C charging cable", "Spare lid seal", "Quick start guide"],
+    deliveryEstimate: "5–7 business days",
+    warrantyYears: 1,
+    colorSwatches: {
+      "Abyss Black": "#1a1a1a",
+      "Glacier White": "#e8e8e8",
+    },
+    media: {
+      "Abyss Black": [
+        { type: "image", url: `${CF_IMG}/bottle-treebark/public`, alt: "Hydra One Abyss Black" },
+        { type: "image", url: `${CF_IMG}/bottle-studio-wet/public`, alt: "Hydra One condensation detail" },
+        { type: "image", url: `${CF_IMG}/bottle-office-scene/public`, alt: "Hydra One on desk" },
+      ],
+      "Glacier White": [
+        { type: "image", url: `${CF_IMG}/bottle-trio-studio/public`, alt: "Hydra One Glacier White" },
+        { type: "image", url: `${CF_IMG}/bottle-studio-wet/public`, alt: "Hydra One condensation detail" },
+        { type: "image", url: `${CF_IMG}/bottle-office-scene/public`, alt: "Hydra One on desk" },
+      ],
+    },
+    ambientColors: {
+      "Abyss Black": "#080a0a",
+      "Glacier White": "#0e1012",
+    },
+    variants: [
+      { id: "gid://shopify/ProductVariant/43225874825329", title: "Abyss Black", price: "59.99", currency: "USD", options: { Color: "Abyss Black" }, available: false },
+      { id: "gid://shopify/ProductVariant/43225874858097", title: "Glacier White", price: "59.99", currency: "USD", options: { Color: "Glacier White" }, available: false },
+    ],
+  },
+  "hema-one": {
+    handle: "hema-one",
+    name: "Hema One",
+    optionNames: [],
+    boxContents: ["Hema One analyzer", "10× test cartridges", "Lancet device", "10× lancets", "USB-C charging cable", "Quick start guide"],
+    deliveryEstimate: "5–7 business days",
+    warrantyYears: 1,
+    colorSwatches: {},
+    variants: [
+      { id: "gid://shopify/ProductVariant/43225640665201", title: "Default", price: "99.99", currency: "USD", options: {}, available: true },
+    ],
+  },
+};

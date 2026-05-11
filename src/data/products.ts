@@ -1,4 +1,5 @@
-const GCS = "https://storage.googleapis.com/seemyhealth-email-assets";
+const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
+const CF_STREAM = "customer-5zjora8ha9v60sg3.cloudflarestream.com";
 
 export interface ProductFeature {
   title: string;
@@ -22,6 +23,7 @@ export interface Product {
   headline: string;
   description: string;
   image: string;
+  streamId?: string;
   price: string;
   color: string;
   specs: ProductSpec[];
@@ -35,7 +37,8 @@ export const products: Record<string, Product> = {
     tagline: "Sensing, Made Human",
     headline: "Health clarity\non your finger",
     description: "24/7 heart rate, SpO2, sleep stages, activity tracking, and stress monitoring — all from a ring designed for daily wear. Medical-grade sensors wrapped in titanium, rated IP68 for showers, workouts, and everything in between.",
-    image: `${GCS}/ring-hero-hands.jpg`,
+    image: `${CF_IMG}/ring-hero-hands/public`,
+    streamId: "2dddbe4d3032da2f23af4ada53b92953",
     price: "From $179.99",
     color: "#F97316",
     specs: [
@@ -71,18 +74,18 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
-      { src: `${GCS}/ring-cocktails.jpg`, alt: "Ring One at a social evening" },
-      { src: `${GCS}/ring-face-closeup.jpg`, alt: "Ring One close-up portrait" },
-      { src: `${GCS}/ring-sleeping.jpg`, alt: "Tracking sleep with Ring One" },
-      { src: `${GCS}/ring-working.jpg`, alt: "Ring One while working" },
-      { src: `${GCS}/ring-yoga.jpg`, alt: "Ring One during yoga" },
-      { src: `${GCS}/ring-dining.jpg`, alt: "Ring One at dinner" },
-      { src: `${GCS}/ring-hand-detail.jpg`, alt: "Ring One hand detail" },
-      { src: `${GCS}/ring-fitness-body.jpg`, alt: "Ring One fitness tracking" },
-      { src: `${GCS}/ring-app-phone.jpg`, alt: "SeeMyHealth app with Ring One" },
-      { src: `${GCS}/ring-unboxing.jpg`, alt: "Ring One unboxing" },
-      { src: `${GCS}/ring-all-finishes.jpg`, alt: "All Ring One finishes" },
-      { src: `${GCS}/ring-aurora-studio.jpg`, alt: "Aurora Gold studio shot" },
+      { src: `${CF_IMG}/ring-cocktails/public`, alt: "Ring One at a social evening" },
+      { src: `${CF_IMG}/ring-face-closeup/public`, alt: "Ring One close-up portrait" },
+      { src: `${CF_IMG}/ring-sleeping/public`, alt: "Tracking sleep with Ring One" },
+      { src: `${CF_IMG}/ring-working/public`, alt: "Ring One while working" },
+      { src: `${CF_IMG}/ring-yoga/public`, alt: "Ring One during yoga" },
+      { src: `${CF_IMG}/ring-dining/public`, alt: "Ring One at dinner" },
+      { src: `${CF_IMG}/ring-hand-detail/public`, alt: "Ring One hand detail" },
+      { src: `${CF_IMG}/ring-fitness-body/public`, alt: "Ring One fitness tracking" },
+      { src: `${CF_IMG}/ring-app-phone/public`, alt: "SeeMyHealth app with Ring One" },
+      { src: `${CF_IMG}/ring-unboxing/public`, alt: "Ring One unboxing" },
+      { src: `${CF_IMG}/ring-all-finishes/public`, alt: "All Ring One finishes" },
+      { src: `${CF_IMG}/ring-aurora-studio/public`, alt: "Aurora Gold studio shot" },
     ],
   },
   "scale": {
@@ -90,7 +93,8 @@ export const products: Record<string, Product> = {
     tagline: "Beyond the Number",
     headline: "The whole picture,\nnot just weight",
     description: "Full body composition analysis in two variants — The Scale with 4-point BIA for essential metrics, or Scale Pro with 8-point dual-frequency BIA and segmental analysis. Step on, and see everything in the app instantly.",
-    image: `${GCS}/scale-black-pack.jpg`,
+    image: `${CF_IMG}/scale-black-pack/public`,
+    streamId: "20a7b78a3a620e0cbb8b861bb65af913",
     price: "From $99.99",
     color: "#3B82F6",
     specs: [
@@ -130,12 +134,12 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
-      { src: `${GCS}/scale-white-pack.jpg`, alt: "The Scale white finish" },
-      { src: `${GCS}/scale-pro-hero-new.jpg`, alt: "Scale Pro with handle" },
-      { src: `${GCS}/scale-pro-lifestyle-new.jpg`, alt: "Using Scale Pro at home" },
-      { src: `${GCS}/scale-pro-laser-front.jpg`, alt: "Scale Pro front view" },
-      { src: `${GCS}/scale-pro-laser-side.jpg`, alt: "Scale Pro side view" },
-      { src: `${GCS}/scale-pro-using.jpg`, alt: "Scale Pro body composition reading" },
+      { src: `${CF_IMG}/scale-white-pack/public`, alt: "The Scale white finish" },
+      { src: `${CF_IMG}/scale-pro-hero-new/public`, alt: "Scale Pro with handle" },
+      { src: `${CF_IMG}/scale-pro-lifestyle-new/public`, alt: "Using Scale Pro at home" },
+      { src: `${CF_IMG}/scale-pro-laser-front/public`, alt: "Scale Pro front view" },
+      { src: `${CF_IMG}/scale-pro-laser-side/public`, alt: "Scale Pro side view" },
+      { src: `${CF_IMG}/scale-pro-using/public`, alt: "Scale Pro body composition reading" },
     ],
   },
   "bp-monitor": {
@@ -143,7 +147,8 @@ export const products: Record<string, Product> = {
     tagline: "Blood Pressure, Simplified",
     headline: "Clinical accuracy,\nhome comfort",
     description: "Accurate blood pressure readings with irregular heartbeat detection. Validated against clinical standards. Share results directly with your doctor from the app.",
-    image: `${GCS}/bp-black.jpg`,
+    image: `${CF_IMG}/bp-black/public`,
+    streamId: "414b8ac36adafae24dc9750438174d9a",
     price: "$89.99",
     color: "#EF4444",
     specs: [
@@ -179,7 +184,9 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
-      { src: `${GCS}/bp-white.jpg`, alt: "BP Monitor white finish" },
+      { src: `${CF_IMG}/bp-white/public`, alt: "BP Monitor white finish" },
+      { src: `${CF_IMG}/bp-black-studio/public`, alt: "BP Monitor black studio" },
+      { src: `${CF_IMG}/bp-white-studio/public`, alt: "BP Monitor white studio" },
     ],
   },
   "hydra-one": {
@@ -187,7 +194,8 @@ export const products: Record<string, Product> = {
     tagline: "Stay Perfectly Hydrated",
     headline: "Drink smarter,\nnot harder",
     description: "Smart water bottle that tracks your daily intake automatically. LED ring shows your progress. Gentle reminders keep you on track without being annoying.",
-    image: `${GCS}/bottle-studio-wet.jpg`,
+    image: `${CF_IMG}/bottle-treebark/public`,
+    streamId: "09fe15a09d3e2ad17189fbc7d758bc52",
     price: "$59.99",
     color: "#06B6D4",
     specs: [
@@ -223,9 +231,9 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
-      { src: `${GCS}/bottle-trio-studio.jpg`, alt: "Hydra One all colors" },
-      { src: `${GCS}/bottle-office-scene.jpg`, alt: "Hydra One on desk" },
-      { src: `${GCS}/kitchen-lifestyle-web.jpg`, alt: "Hydra One in kitchen" },
+      { src: `${CF_IMG}/bottle-trio-studio/public`, alt: "Hydra One all colors" },
+      { src: `${CF_IMG}/bottle-office-scene/public`, alt: "Hydra One on desk" },
+      { src: `${CF_IMG}/kitchen-lifestyle-web/public`, alt: "Hydra One in kitchen" },
     ],
   },
   "hema-one": {
@@ -233,7 +241,8 @@ export const products: Record<string, Product> = {
     tagline: "Your Blood, Your Data",
     headline: "Lab results,\nno lab visit",
     description: "At-home blood analysis for key health markers. A small sample from your fingertip gives you lab-quality results in minutes, right in the app.",
-    image: `${GCS}/hema-one-web.jpg`,
+    image: `${CF_IMG}/hema-one-web/public`,
+    streamId: "8f576ad01105f0b3c8ff5495c066906e",
     price: "$99.99",
     color: "#A855F7",
     specs: [
@@ -265,13 +274,14 @@ export const products: Record<string, Product> = {
       {
         title: "Share with Doctor",
         description: "Grant your healthcare provider secure, authenticated access to your blood marker history with a single toggle. They see the longitudinal data they rarely get — and you stay in full control.",
-        icon: "M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13",
+        icon: "M4 12v8a2 2 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13",
       },
     ],
     lifestyleImages: [
-      { src: `${GCS}/hema-one-device-web.jpg`, alt: "Hema One device" },
+      { src: `${CF_IMG}/hema-one-device-web/public`, alt: "Hema One device" },
     ],
   },
 };
 
 export const productSlugs = Object.keys(products);
+export { CF_IMG, CF_STREAM };
