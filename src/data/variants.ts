@@ -103,6 +103,7 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Obsidian Black": [
         { type: "image", url: `${CF_IMG}/scale-black-pack/public`, alt: "Scale Obsidian Black" },
         { type: "model", url: "/models/scale-basic-black-3d.glb", poster: `${CF_IMG}/scale-black-pack/public`, alt: "Scale Obsidian Black 3D" },
+        { type: "image", url: `${CF_IMG}/scale-black-bathroom/public`, alt: "Scale Obsidian Black on bathroom counter" },
         { type: "image", url: `${CF_IMG}/scale-pro-lifestyle-new/public`, alt: "Scale lifestyle" },
       ],
       "Frost White": [

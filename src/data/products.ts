@@ -99,7 +99,7 @@ export const products: Record<string, Product> = {
     description: "Full body composition analysis with 4-point BIA. Step on and see weight, body fat, muscle mass, bone density, and 10 more metrics in the app instantly. Looking for segmental analysis? Check out The Scale Pro.",
     image: `${CF_IMG}/scale-black-pack/public`,
     crossSellImage: `${CF_IMG}/scale-white-portrait/public`,
-    streamId: "aaff94de34c19bfe9fe6fa3b038c80c8",
+    streamId: "08984500cbcb8e14ef154a1a36f7bb98",
     price: "From $99.99",
     color: "#3B82F6",
     specs: [
@@ -149,7 +149,7 @@ export const products: Record<string, Product> = {
     headline: "See your body,\nsegment by segment",
     description: "Clinical-grade body composition with 8-point dual-frequency BIA and segmental analysis. See fat and muscle distribution for each arm, leg, and trunk. The same technology used in professional sports labs.",
     image: `${CF_IMG}/scale-pro-bathroom-still/public`,
-    streamId: "aaff94de34c19bfe9fe6fa3b038c80c8",
+    streamId: "08984500cbcb8e14ef154a1a36f7bb98",
     price: "From $179.99",
     color: "#3B82F6",
     specs: [
@@ -286,6 +286,10 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
+      { src: `${CF_IMG}/bottle-black-desk/public`, alt: "Hydra One black on desk" },
+      { src: `${CF_IMG}/bottle-white-cafe/public`, alt: "Hydra One white in cafe" },
+      { src: `${CF_IMG}/bottle-white-park/public`, alt: "Hydra One white in park" },
+      { src: `${CF_IMG}/bottle-black-gym/public`, alt: "Hydra One black in gym" },
       { src: `${CF_IMG}/bottle-trio-studio/public`, alt: "Hydra One all colors" },
       { src: `${CF_IMG}/bottle-office-scene/public`, alt: "Hydra One on desk" },
       { src: `${CF_IMG}/kitchen-lifestyle-web/public`, alt: "Hydra One in kitchen" },
