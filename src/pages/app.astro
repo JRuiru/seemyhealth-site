@@ -220,39 +220,33 @@ const allFeatures = [
   <Navbar />
 
   <!-- Hero -->
-  <section class="relative min-h-screen lg:min-h-0 lg:h-[85vh] overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-b from-brand-dark to-brand-black"></div>
-
-    <!-- Phone image — full background on mobile, right half on desktop -->
-    <div class="absolute inset-0 lg:left-1/2 lg:right-0" data-scroll-reveal>
-      <div class="h-full overflow-hidden">
-        <img
-          src={`${CF_IMG}/app-hero-phones/public`}
-          alt="SeeMyHealth app — meals, health hub, and sleep tracking screens"
-          class="w-full h-full object-cover object-top lg:object-center scale-110"
-        />
-      </div>
-      <!-- Mobile: gradient so text reads over image -->
-      <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/80 to-brand-black/40 lg:hidden"></div>
-      <!-- Desktop: fade left edge into text half -->
-      <div class="hidden lg:block absolute inset-0 bg-gradient-to-r from-brand-black/90 via-brand-black/40 to-transparent"></div>
+  <section class="relative min-h-screen overflow-hidden">
+    <!-- Full-bleed background image -->
+    <div class="absolute inset-0">
+      <img
+        src={`${CF_IMG}/app-hero-triple-phones/public`}
+        alt="SeeMyHealth app — meals, health hub, and sleep tracking screens"
+        class="w-full h-full object-cover object-center"
+      />
+      <!-- Gradient overlay — darkens bottom and edges for text legibility -->
+      <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/60 to-brand-black/30"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-brand-black/50 via-transparent to-transparent"></div>
     </div>
 
-    <!-- Text — overlays on mobile, left half on desktop -->
-    <div class="relative min-h-screen lg:min-h-0 lg:h-[85vh] flex items-end pb-16 lg:items-center lg:pb-0">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8 w-full">
-        <div class="max-w-xl lg:space-y-8" data-scroll-reveal>
-          <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-6 lg:mb-0">The SeeMyHealth App</p>
-          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-300 uppercase leading-[0.95] mb-6 lg:mb-0">
-            Works the day you download it. <span class="font-500 italic">Smarter</span> when your devices arrive.
-          </h1>
-          <p class="text-base sm:text-lg text-brand-gray-400 leading-relaxed mb-8 lg:mb-0 max-w-lg">
-            Most health apps need hardware to be useful. Ours doesn't. Start with journalling, mood, meals, and guided programs — from day one of your trial. Add devices when you're ready.
-          </p>
-          <div>
-            <AppStoreButtons />
-            <p class="text-[12px] text-brand-gray-600 mt-4">1-month free trial. Cancel anytime.</p>
-          </div>
+    <!-- Text content — centered at bottom over image -->
+    <div class="relative min-h-screen flex items-end pb-20 pt-24">
+      <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-white/50 mb-5">The SeeMyHealth App</p>
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-300 uppercase leading-[0.95] mb-6">
+          Works from <span class="font-500 italic">day one.</span><br class="hidden sm:block" />
+          Smarter with devices.
+        </h1>
+        <p class="text-base sm:text-lg text-white/60 leading-relaxed mb-8 max-w-2xl mx-auto">
+          Start with journalling, mood, meals, and guided programs — no hardware needed. Add devices when you're ready for 24/7 vitals, sleep staging, and cross-device insights.
+        </p>
+        <div>
+          <AppStoreButtons />
+          <p class="text-[12px] text-white/30 mt-4">1-month free trial. Cancel anytime.</p>
         </div>
       </div>
     </div>
