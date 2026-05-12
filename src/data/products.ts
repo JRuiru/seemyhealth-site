@@ -26,6 +26,7 @@ export interface Product {
   streamId?: string;
   price: string;
   color: string;
+  specImage?: string;
   specs: ProductSpec[];
   features: ProductFeature[];
   lifestyleImages: ProductImage[];
@@ -41,6 +42,7 @@ export const products: Record<string, Product> = {
     streamId: "2dddbe4d3032da2f23af4ada53b92953",
     price: "From $179.99",
     color: "#F97316",
+    specImage: `${CF_IMG}/ring-studio-profile/public`,
     specs: [
       { label: "Sensors", value: "PPG, Temperature, Accelerometer" },
       { label: "Battery", value: "Up to 7 days" },

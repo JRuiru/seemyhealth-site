@@ -39,40 +39,113 @@ const standAloneFeatures = [
     icon: "M18 18.72a9.094 9.094 0 003.741-5.728M12 2.25c-4.97 0-9 4.03-9 9s4.03 9 9 9m0-18a8.96 8.96 0 015.672 2.018M12 2.25v0M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0",
   },
   {
-    title: "Book care provider sessions",
-    description: "Browse and book sessions with healthcare providers directly in the app. Video consultations, follow-ups, and second opinions — no separate platform needed.",
+    title: "Care provider access",
+    description: "Video consultations, follow-ups, and second opinions — without leaving the app.",
     icon: "M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5",
   },
   {
-    title: "Community feed & challenges",
-    description: "Join challenges that go beyond steps — closest to caloric target, best sleep consistency, earliest wake-up streak, hydration goals, and more. A community feed keeps you motivated and accountable.",
+    title: "Community & challenges",
+    description: "Sleep, nutrition, hydration, steps, and more — compete, share, stay accountable.",
     icon: "M18 18.72a9.094 9.094 0 003.741-5.728M3.741 13.008A9 9 0 0112 3a9 9 0 018.259 10.008M12 12l-3 3m0 0l3 3m-3-3h12",
   },
 ];
 
-const ecosystemFeatures = [
+const timeline = [
   {
-    title: "One dashboard. Every signal.",
-    description: "Heart rate from your ring, weight from your scale, blood pressure, hydration, blood markers — one screen, zero app-switching.",
-    icon: "M4 5a1 1 0 011-1h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5z",
-    image: `${CF_IMG}/app-dashboard-hand/public`,
+    time: "6:30 AM",
+    title: "Wake up",
+    device: "Ring One",
+    insight: "Sleep score 82. Recovery: ready to train.",
+    color: "#F97316",
+    image: `${CF_IMG}/ring-sleeping/public`,
   },
   {
-    title: "Insights single apps can't see",
-    description: "The app connects dots between devices. How sleep affects blood pressure. How hydration impacts recovery. Patterns you'd miss with one device alone.",
-    icon: "M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101M10.172 13.828a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1",
+    time: "6:45 AM",
+    title: "Morning journal",
+    device: "App",
+    insight: "Mood check-in, gratitude entry, set today's intention.",
+    color: "#737373",
+    image: `${CF_IMG}/lifestyle-sun-portrait/public`,
   },
   {
-    title: "Less logging, more living",
-    description: "Devices do the tracking. The app does the thinking. You get insights without lifting a finger — meals and mood are the only manual input.",
-    icon: "M13 10V3L4 14h7v7l9-11h-7z",
+    time: "7:00 AM",
+    title: "Step on the scale",
+    device: "The Scale Pro",
+    insight: "Muscle mass +0.3kg. Visceral fat down.",
+    color: "#3B82F6",
+    image: `${CF_IMG}/scale-pro-using/public`,
+  },
+  {
+    time: "7:20 AM",
+    title: "Scan, log, go",
+    device: "App",
+    insight: "Rushing to work. Scanned a protein bar — 230 cal, 20g protein, logged before the first bite.",
+    color: "#737373",
     image: `${CF_IMG}/app-less-logging-living/public`,
   },
   {
-    title: "Sleep intelligence",
-    description: "Advanced sleep staging — light, deep, REM — plus overnight HRV, skin temperature trends, and a morning recovery score.",
-    icon: "M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z",
+    time: "9:00 AM",
+    title: "Morning BP check",
+    device: "BP Monitor",
+    insight: "118/76. 30-day trend steady. Shared with your doctor.",
+    color: "#EF4444",
+    image: `${CF_IMG}/bp-black/public`,
+  },
+  {
+    time: "12:30 PM",
+    title: "Hydration check",
+    device: "Hydra One",
+    insight: "1.2L of 2.5L. Pick it up before 3 PM.",
+    color: "#06B6D4",
+    image: `${CF_IMG}/bottle-office-scene/public`,
+  },
+  {
+    time: "1:00 PM",
+    title: "Nutritionist video call",
+    device: "App",
+    insight: "Lunch break consult. Shared meal logs and blood markers — got a revised plan in 15 min.",
+    color: "#737373",
+    image: `${CF_IMG}/app-dashboard-hand/public`,
+  },
+  {
+    time: "3:00 PM",
+    title: "Workout recorded",
+    device: "Ring One",
+    insight: "45 min strength session. Heart rate zones, calories, and recovery impact — all logged automatically.",
+    color: "#F97316",
+    image: `${CF_IMG}/lifestyle-athlete/public`,
+  },
+  {
+    time: "4:30 PM",
+    title: "Challenge accepted",
+    device: "App",
+    insight: "Friend invited you to a 7-day most-active challenge. You're in — leaderboard is live.",
+    color: "#737373",
+    image: `${CF_IMG}/lifestyle-athlete/public`,
+  },
+  {
+    time: "5:30 PM",
+    title: "Check on mum's blood work",
+    device: "Hema One",
+    insight: "Family share alert: mum's iron dropped again. Flagged it — she's booking a follow-up.",
+    color: "#A855F7",
+    image: `${CF_IMG}/hema-one-hero/public`,
+  },
+  {
+    time: "9:15 PM",
+    title: "Evening mood check-in",
+    device: "App",
+    insight: "How are you feeling? Quick tap — the app tracks patterns between mood, sleep, and nutrition over time.",
+    color: "#737373",
     image: `${CF_IMG}/ring-sleeping/public`,
+  },
+  {
+    time: "9:30 PM",
+    title: "Goals achieved",
+    device: "App",
+    insight: "Hydration hit. Steps crushed. Meals on target. Sleep score pending — goodnight.",
+    color: "#737373",
+    image: `${CF_IMG}/app-dashboard-hand/public`,
   },
 ];
 
@@ -82,8 +155,8 @@ const comparisonRows = [
 { feature: "Habit streaks", appOnly: true, withDevices: true },
   { feature: "Wellness content library", appOnly: true, withDevices: true },
   { feature: "Family data sharing", appOnly: true, withDevices: true },
-  { feature: "Book care provider sessions", appOnly: true, withDevices: true },
-  { feature: "Community feed & challenges", appOnly: true, withDevices: true },
+  { feature: "Care provider access", appOnly: true, withDevices: true },
+  { feature: "Community & challenges", appOnly: true, withDevices: true },
   { feature: "24/7 heart rate & SpO2", appOnly: false, withDevices: true },
   { feature: "Sleep staging & recovery score", appOnly: false, withDevices: true },
   { feature: "Body composition analysis", appOnly: false, withDevices: true },
@@ -300,36 +373,72 @@ const allFeatures = [
     </div>
   </section>
 
-  <!-- The intelligent ecosystem -->
-  <section id="with-devices" class="py-20 sm:py-28 bg-brand-dark border-t border-white/5">
+  <!-- A day with the ecosystem -->
+  <section id="with-devices" class="py-20 sm:py-28 bg-brand-dark border-t border-white/5 overflow-hidden">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="mb-12" data-scroll-reveal>
+      <div class="mb-14 max-w-2xl" data-scroll-reveal>
         <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">With Devices</p>
-        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
-          The intelligent <span class="font-500">ecosystem.</span>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
+          Unlock the <span class="font-500">full picture.</span>
         </h2>
+        <p class="text-brand-gray-400 leading-relaxed">
+          Every device adds a layer of intelligence. Here's what a day looks like when everything's connected.
+        </p>
       </div>
+    </div>
 
-      <div class="grid sm:grid-cols-2 gap-6" data-scroll-stagger>
-        {ecosystemFeatures.map((f) => (
-          <div class="group rounded-2xl bg-brand-black border border-white/5 hover:border-white/15 overflow-hidden transition-all duration-300">
-            {f.image ? (
-              <div class="aspect-[16/9] overflow-hidden">
-                <img src={f.image} alt={f.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+    <div class="relative">
+      {/* Horizontal timeline line */}
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="relative">
+          <div class="absolute left-0 right-0 top-[7px] h-px bg-white/10 z-10"></div>
+
+          <div class="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pt-10 pb-4 -mr-6 lg:-mr-8 pr-6 lg:pr-8 no-scrollbar">
+            {timeline.map((entry) => (
+              <div class="relative shrink-0 w-[280px] sm:w-[320px] snap-start group">
+                {/* Dot on the line */}
+                <div class="absolute -top-10 left-8 z-20">
+                  <div class="w-[14px] h-[14px] rounded-full border-2" style={`background: ${entry.color}; border-color: ${entry.color};`}>
+                    <div class="absolute inset-0 rounded-full animate-ping opacity-20" style={`background: ${entry.color};`}></div>
+                  </div>
+                </div>
+                {/* Connector stem */}
+                <div class="absolute -top-[23px] left-[21px] w-px h-[23px] bg-white/10"></div>
+
+                {/* Card */}
+                <div class="relative rounded-2xl overflow-hidden h-full">
+                  {/* Background image */}
+                  <div class="aspect-[3/4]">
+                    <img src={entry.image} alt={entry.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20"></div>
+                  </div>
+
+                  {/* Time + device pill */}
+                  <div class="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
+                    <span class="text-[11px] uppercase tracking-[2px] text-white/70 font-medium">{entry.time}</span>
+                    <span class="text-[10px] uppercase tracking-[1.5px] px-2.5 py-1 rounded-full backdrop-blur-md" style={`background: ${entry.color}22; color: ${entry.color}; border: 1px solid ${entry.color}44;`}>
+                      {entry.device}
+                    </span>
+                  </div>
+
+                  {/* Bottom text */}
+                  <div class="absolute bottom-0 left-0 right-0 p-5 z-10">
+                    <h3 class="font-display text-xl uppercase font-300 text-white mb-1.5">{entry.title}</h3>
+                    <p class="text-[13px] text-white/60 leading-relaxed">{entry.insight}</p>
+                  </div>
+                </div>
               </div>
-            ) : (
-              <div class="aspect-[16/9] bg-brand-gray-900 flex items-center justify-center">
-                <svg class="w-10 h-10 text-brand-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                  <path stroke-linecap="round" stroke-linejoin="round" d={f.icon} />
-                </svg>
-              </div>
-            )}
-            <div class="p-6">
-              <h3 class="text-lg font-medium text-white mb-2">{f.title}</h3>
-              <p class="text-sm text-brand-gray-400 leading-relaxed">{f.description}</p>
-            </div>
+            ))}
           </div>
-        ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="mt-10 text-center" data-scroll-reveal>
+        <p class="text-sm text-brand-gray-500 leading-relaxed max-w-lg mx-auto">
+          No app-switching. No manual exports. Every device feeds the same dashboard — the app finds patterns you'd never spot alone.
+        </p>
       </div>
     </div>
   </section>
