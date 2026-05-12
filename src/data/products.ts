@@ -38,7 +38,7 @@ export const products: Record<string, Product> = {
     name: "Ring One",
     tagline: "Sensing, Made Human",
     headline: "Health clarity\non your finger",
-    description: "24/7 heart rate, SpO2, sleep stages, activity tracking, and stress monitoring — all from a ring designed for daily wear. Medical-grade sensors wrapped in titanium, rated IP68 for showers, workouts, and everything in between.",
+    description: "24/7 heart rate, SpO2, sleep stages, activity tracking, and stress monitoring, all from a ring designed for daily wear. Medical-grade sensors wrapped in titanium, rated IP68 for showers, workouts, and everything in between.",
     image: `${CF_IMG}/ring-hero-hands/public`,
     streamId: "2dddbe4d3032da2f23af4ada53b92953",
     price: "From $179.99",
@@ -47,7 +47,7 @@ export const products: Record<string, Product> = {
     specs: [
       { label: "Sensors", value: "PPG, Temperature, Accelerometer" },
       { label: "Battery", value: "Up to 7 days" },
-      { label: "Water Rating", value: "IP68 — 50m depth" },
+      { label: "Water Rating", value: "IP68, 50m depth" },
       { label: "Weight", value: "4-6g depending on size" },
       { label: "Materials", value: "Titanium shell, medical-grade resin" },
       { label: "Connectivity", value: "Bluetooth 5.2" },
@@ -57,7 +57,7 @@ export const products: Record<string, Product> = {
     features: [
       {
         title: "Sleep Intelligence",
-        description: "Advanced sleep staging — light, deep, REM — plus overnight HRV, skin temperature trends, and a morning recovery score so you know how to approach your day.",
+        description: "Advanced sleep staging: light, deep, and REM, plus overnight HRV, skin temperature trends, and a morning recovery score so you know how to approach your day.",
         icon: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
       },
       {
@@ -67,7 +67,7 @@ export const products: Record<string, Product> = {
       },
       {
         title: "Activity & Exercise",
-        description: "Automatic activity detection with steps, calories, and active minutes. No manual start needed — Ring One knows when you're moving.",
+        description: "Automatic activity detection with steps, calories, and active minutes. No manual start needed. Ring One knows when you're moving.",
         icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
       },
       {
@@ -115,7 +115,7 @@ export const products: Record<string, Product> = {
     features: [
       {
         title: "Body Composition",
-        description: "Go beyond weight. See body fat percentage, muscle mass, bone density, visceral fat, water percentage, BMR, and metabolic age — all in one step.",
+        description: "Go beyond weight. See body fat percentage, muscle mass, bone density, visceral fat, water percentage, BMR, and metabolic age, all in one step.",
         icon: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
       },
       {
@@ -147,7 +147,7 @@ export const products: Record<string, Product> = {
     name: "The Scale Pro",
     tagline: "Segmental Precision",
     headline: "See your body,\nsegment by segment",
-    description: "Clinical-grade body composition with 8-point dual-frequency BIA and segmental analysis. See fat and muscle distribution for each arm, leg, and trunk — the same technology used in professional sports labs.",
+    description: "Clinical-grade body composition with 8-point dual-frequency BIA and segmental analysis. See fat and muscle distribution for each arm, leg, and trunk. The same technology used in professional sports labs.",
     image: `${CF_IMG}/scale-pro-bathroom-still/public`,
     streamId: "aaff94de34c19bfe9fe6fa3b038c80c8",
     price: "From $179.99",
@@ -155,7 +155,7 @@ export const products: Record<string, Product> = {
     specs: [
       { label: "Sensors", value: "Dual-frequency BIA, 8-point electrode with retractable handle" },
       { label: "Metrics", value: "21 body composition measurements" },
-      { label: "Segmental", value: "Arms, legs, trunk — individual fat & muscle readings" },
+      { label: "Segmental", value: "Arms, legs, trunk: individual fat & muscle readings" },
       { label: "Display", value: "Full-color LED panel" },
       { label: "Max Weight", value: "200kg / 440lbs" },
       { label: "Connectivity", value: "Bluetooth 5.0" },
@@ -171,7 +171,7 @@ export const products: Record<string, Product> = {
       },
       {
         title: "21 Body Metrics",
-        description: "Weight, body fat, muscle mass, bone density, visceral fat, water percentage, BMR, metabolic age, protein, subcutaneous fat, and more — all from a single 10-second step.",
+        description: "Weight, body fat, muscle mass, bone density, visceral fat, water percentage, BMR, metabolic age, protein, subcutaneous fat, and more, all from a single 10-second step.",
         icon: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
       },
       {
@@ -266,7 +266,7 @@ export const products: Record<string, Product> = {
     features: [
       {
         title: "Auto Tracking",
-        description: "Capacitive sensors detect every sip. No manual logging — just drink and the app updates automatically.",
+        description: "Capacitive sensors detect every sip. No manual logging, just drink and the app updates automatically.",
         icon: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
       },
       {
@@ -328,7 +328,7 @@ export const products: Record<string, Product> = {
       },
       {
         title: "Share with Doctor",
-        description: "Grant your healthcare provider secure, authenticated access to your blood marker history with a single toggle. They see the longitudinal data they rarely get — and you stay in full control.",
+        description: "Grant your healthcare provider secure, authenticated access to your blood marker history with a single toggle. They see the longitudinal data they rarely get, and you stay in full control.",
         icon: "M4 12v8a2 2 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13",
       },
     ],

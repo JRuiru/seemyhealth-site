@@ -29,7 +29,7 @@ export const setupData: Record<string, DeviceSetup> = {
       },
       {
         title: "Size",
-        description: "Try the sizing rings included in the kit. Wear your best fit for at least 24 hours — finger size changes throughout the day. Pick snug but comfortable.",
+        description: "Try the sizing rings included in the kit. Wear your best fit for at least 24 hours since finger size changes throughout the day. Pick snug but comfortable.",
         tip: "Your index finger usually gives the best sensor contact.",
       },
       {
@@ -54,11 +54,11 @@ export const setupData: Record<string, DeviceSetup> = {
       },
       {
         title: "Place",
-        description: "Set the scale on a hard, flat surface. Carpet affects accuracy — use the included feet extensions if needed.",
+        description: "Set the scale on a hard, flat surface. Carpet affects accuracy, so use the included feet extensions if needed.",
       },
       {
         title: "Pair",
-        description: "Open the SeeMyHealth app → tap + → select The Scale. Step on barefoot — the app detects and pairs it via Bluetooth.",
+        description: "Open the SeeMyHealth app → tap + → select The Scale. Step on barefoot and the app detects and pairs it via Bluetooth.",
       },
       {
         title: "Profiles",
@@ -82,11 +82,11 @@ export const setupData: Record<string, DeviceSetup> = {
       },
       {
         title: "Place",
-        description: "Set the scale on a hard, flat surface. Carpet affects accuracy — use the included feet extensions if needed.",
+        description: "Set the scale on a hard, flat surface. Carpet affects accuracy, so use the included feet extensions if needed.",
       },
       {
         title: "Pair",
-        description: "Open the SeeMyHealth app → tap + → select The Scale Pro. Step on barefoot and grip the handle — the app detects and pairs automatically.",
+        description: "Open the SeeMyHealth app → tap + → select The Scale Pro. Step on barefoot and grip the handle. The app detects and pairs automatically.",
       },
       {
         title: "Profiles",
@@ -114,7 +114,7 @@ export const setupData: Record<string, DeviceSetup> = {
       },
       {
         title: "Pair",
-        description: "Open the SeeMyHealth app → tap + → select BP Monitor. Press the power button on the device — it connects via Bluetooth.",
+        description: "Open the SeeMyHealth app → tap + → select BP Monitor. Press the power button on the device and it connects via Bluetooth.",
       },
       {
         title: "Fit the cuff",
@@ -123,7 +123,7 @@ export const setupData: Record<string, DeviceSetup> = {
       },
       {
         title: "First reading",
-        description: "Sit comfortably and relax for 1 minute. Press Start. Stay still — results appear in about 30 seconds and sync to the app.",
+        description: "Sit comfortably and relax for 1 minute. Press Start. Stay still. Results appear in about 30 seconds and sync to the app.",
         tip: "For the best data, measure at the same time each day.",
       },
     ],
@@ -176,7 +176,7 @@ export const setupData: Record<string, DeviceSetup> = {
       {
         title: "First test",
         description: "Use the included lancet on your fingertip. Apply a small drop to the test strip. Results appear on the device and sync to the app in about 60 seconds.",
-        tip: "Prick the side of your fingertip — it's less sensitive than the center.",
+        tip: "Prick the side of your fingertip. It's less sensitive than the center.",
       },
     ],
   },

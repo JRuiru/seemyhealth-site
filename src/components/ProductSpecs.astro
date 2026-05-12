@@ -41,7 +41,7 @@ const { slug, name, price, specs, backgroundImage } = Astro.props;
         href={`/configure/${slug}`}
         class="inline-flex items-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
       >
-        Shop {name} — <PriceTag handle={slug} mode="from" prefix="From " fallback={price} client:idle />
+        Shop {name} · <PriceTag handle={slug} mode="from" prefix="From " fallback={price} client:idle />
       </a>
     </div>
   </div>
