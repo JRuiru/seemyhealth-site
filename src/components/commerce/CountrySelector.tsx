@@ -90,7 +90,7 @@ export default function CountrySelector({ className = "" }: Props) {
       </button>
 
       {open && countries.length > 0 && (
-        <div className="absolute bottom-full mb-2 right-0 w-64 max-h-72 overflow-y-auto bg-brand-gray-900 border border-white/10 rounded-xl shadow-2xl z-50">
+        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-0 w-[calc(100vw-3rem)] sm:w-64 max-h-72 overflow-y-auto bg-brand-gray-900 border border-white/10 rounded-xl shadow-2xl z-50">
           {countries.map((c) => (
             <button
               key={c.isoCode}

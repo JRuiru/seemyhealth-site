@@ -38,7 +38,7 @@ function ModelViewerSlot({ src, alt, poster }: { src: string; alt: string; poste
   }, [src, alt]);
 
   return (
-    <div className="relative w-full h-full bg-brand-gray-900">
+    <div className="relative w-full h-full bg-brand-gray-900 overflow-hidden">
       <div ref={ref} className="w-full h-full" />
       {poster && (
         <img
@@ -201,6 +201,8 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
   const [quantity, setQuantity] = useState(1);
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const addToCartRef = useRef<HTMLButtonElement>(null);
+  const swipeRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef(0);
   const isRing = slug === "ring-one";
 
   const activeVariant = useMemo<Variant | undefined>(() => {
@@ -306,14 +308,27 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
   }, [activeVariant, quantity]);
 
   return (
-    <section className="py-10 sm:py-16">
+    <section className="py-10 sm:py-16 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
           {/* Left: Product media carousel */}
-          <div className="lg:sticky lg:top-28">
+          <div className="lg:sticky lg:top-28 min-w-0">
             {/* Main viewer */}
-            <div className="relative aspect-square rounded-3xl overflow-hidden bg-brand-gray-900">
+            <div
+              ref={swipeRef}
+              className="relative aspect-square rounded-3xl overflow-hidden bg-brand-gray-900 touch-pan-y"
+              onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+              onTouchEnd={(e) => {
+                const current = mediaItems[activeImageIndex];
+                if (current?.type === "model") return; // let model-viewer handle touches
+                const dx = e.changedTouches[0].clientX - touchStartX.current;
+                if (Math.abs(dx) > 50 && mediaItems.length > 1) {
+                  if (dx < 0) setActiveImageIndex((i) => (i + 1) % mediaItems.length);
+                  else setActiveImageIndex((i) => (i - 1 + mediaItems.length) % mediaItems.length);
+                }
+              }}
+            >
               {mediaItems.length > 0 ? (
                 <MediaViewer
                   item={mediaItems[activeImageIndex] || mediaItems[0]}
@@ -408,7 +423,7 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
           </div>
 
           {/* Right: Configuration */}
-          <div className="lg:pt-4">
+          <div className="lg:pt-4 min-w-0">
             <p
               className="text-[11px] uppercase tracking-[4px] mb-3"
               style={{ color: accentColor }}

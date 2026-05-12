@@ -111,10 +111,12 @@ export const productVariants: Record<string, ProductVariantData> = {
     media: {
       "Obsidian Black": [
         { type: "image", url: `${CF_IMG}/scale-black-pack/public`, alt: "Scale Obsidian Black" },
+        { type: "model", url: "/models/scale-basic-black-3d.glb", poster: `${CF_IMG}/scale-black-pack/public`, alt: "Scale Obsidian Black 3D" },
         { type: "image", url: `${CF_IMG}/scale-pro-lifestyle-new/public`, alt: "Scale lifestyle" },
       ],
       "Frost White": [
         { type: "image", url: `${CF_IMG}/scale-white-pack/public`, alt: "Scale Frost White" },
+        { type: "model", url: "/models/scale-basic-white-3d.glb", poster: `${CF_IMG}/scale-white-pack/public`, alt: "Scale Frost White 3D" },
         { type: "image", url: `${CF_IMG}/scale-pro-lifestyle/public`, alt: "Scale lifestyle" },
       ],
     },
@@ -129,9 +131,9 @@ export const productVariants: Record<string, ProductVariantData> = {
   },
   "scale-pro": {
     handle: "scale-pro",
-    name: "Scale Pro",
+    name: "The Scale Pro",
     optionNames: ["Color"],
-    boxContents: ["Scale Pro", "4× AAA batteries", "Quick start guide"],
+    boxContents: ["The Scale Pro", "4× AAA batteries", "Quick start guide"],
     deliveryEstimate: "5–7 business days",
     warrantyYears: 1,
     colorSwatches: {
@@ -141,12 +143,14 @@ export const productVariants: Record<string, ProductVariantData> = {
     media: {
       "Obsidian Black": [
         { type: "image", url: `${CF_IMG}/scale-pro-hero-new/public`, alt: "Scale Pro Obsidian Black" },
+        { type: "model", url: "/models/scale-pro-black-3d.glb", poster: `${CF_IMG}/scale-pro-hero-new/public`, alt: "Scale Pro Obsidian Black 3D" },
         { type: "image", url: `${CF_IMG}/scale-pro-laser-front/public`, alt: "Scale Pro front detail" },
         { type: "image", url: `${CF_IMG}/scale-pro-laser-side/public`, alt: "Scale Pro side detail" },
         { type: "image", url: `${CF_IMG}/scale-pro-using/public`, alt: "Scale Pro in use" },
       ],
       "Frost White": [
         { type: "image", url: `${CF_IMG}/scale-pro-hero-new/public`, alt: "Scale Pro Frost White" },
+        { type: "model", url: "/models/scale-pro-white-3d.glb", poster: `${CF_IMG}/scale-pro-hero-new/public`, alt: "Scale Pro Frost White 3D" },
         { type: "image", url: `${CF_IMG}/scale-pro-laser-front/public`, alt: "Scale Pro front detail" },
         { type: "image", url: `${CF_IMG}/scale-pro-laser-side/public`, alt: "Scale Pro side detail" },
         { type: "image", url: `${CF_IMG}/scale-pro-using/public`, alt: "Scale Pro in use" },
@@ -175,10 +179,12 @@ export const productVariants: Record<string, ProductVariantData> = {
     media: {
       "Carbon Black": [
         { type: "image", url: `${CF_IMG}/bp-black/public`, alt: "BP Monitor Carbon Black" },
+        { type: "model", url: "/models/bpm-black-3d.glb", poster: `${CF_IMG}/bp-black/public`, alt: "BP Monitor Carbon Black 3D" },
         { type: "image", url: `${CF_IMG}/bp-black-studio/public`, alt: "BP Monitor Carbon Black studio" },
       ],
       "Opal White": [
         { type: "image", url: `${CF_IMG}/bp-white/public`, alt: "BP Monitor Opal White" },
+        { type: "model", url: "/models/bpm-white-3d.glb", poster: `${CF_IMG}/bp-white/public`, alt: "BP Monitor Opal White 3D" },
         { type: "image", url: `${CF_IMG}/bp-white-studio/public`, alt: "BP Monitor Opal White studio" },
       ],
     },
@@ -205,11 +211,13 @@ export const productVariants: Record<string, ProductVariantData> = {
     media: {
       "Abyss Black": [
         { type: "image", url: `${CF_IMG}/bottle-treebark/public`, alt: "Hydra One Abyss Black" },
+        { type: "model", url: "/models/bottle-black-3d.glb", poster: `${CF_IMG}/bottle-treebark/public`, alt: "Hydra One Abyss Black 3D" },
         { type: "image", url: `${CF_IMG}/bottle-studio-wet/public`, alt: "Hydra One condensation detail" },
         { type: "image", url: `${CF_IMG}/bottle-office-scene/public`, alt: "Hydra One on desk" },
       ],
       "Glacier White": [
         { type: "image", url: `${CF_IMG}/bottle-trio-studio/public`, alt: "Hydra One Glacier White" },
+        { type: "model", url: "/models/bottle-white-3d.glb", poster: `${CF_IMG}/bottle-trio-studio/public`, alt: "Hydra One Glacier White 3D" },
         { type: "image", url: `${CF_IMG}/bottle-studio-wet/public`, alt: "Hydra One condensation detail" },
         { type: "image", url: `${CF_IMG}/bottle-office-scene/public`, alt: "Hydra One on desk" },
       ],

@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import AccountDashboard from '../../components/commerce/AccountDashboard';
+
+export const prerender = true;
+---
+
+<Layout
+  title="My Account — SeeMyHealth"
+  description="Manage your SeeMyHealth account, view orders, and update your profile."
+  canonicalPath="/account"
+  noindex
+>
+  <Navbar />
+
+  <section class="pt-32 pb-20 sm:pt-40 sm:pb-28 bg-brand-black min-h-screen">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <AccountDashboard client:load />
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

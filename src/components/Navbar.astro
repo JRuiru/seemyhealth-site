@@ -1,5 +1,6 @@
 ---
 import CartIcon from './commerce/CartIcon';
+import AccountMenu from './commerce/AccountMenu';
 
 interface Props {
   variant?: 'default' | 'transparent' | 'product';
@@ -12,6 +13,7 @@ const { variant = 'default', productName, productColor } = Astro.props;
 const navLinks = [
   { label: "Ring One", href: "/products/ring-one" },
   { label: "The Scale", href: "/products/scale" },
+  { label: "The Scale Pro", href: "/products/scale-pro" },
   { label: "BP Monitor", href: "/products/bp-monitor" },
   { label: "Hydra One", href: "/products/hydra-one" },
   { label: "Hema One", href: "/products/hema-one" },
@@ -73,6 +75,7 @@ const isProduct = variant === 'product';
         >
           Shop Now
         </a>
+        <AccountMenu client:idle />
         <CartIcon client:load />
         <button
           class="lg:hidden p-2 text-brand-gray-400 hover:text-white"
@@ -104,6 +107,14 @@ const isProduct = variant === 'product';
       >
         Shop Now
       </a>
+      <div class="pt-3 mt-3 border-t border-white/5">
+        <a
+          href="/account"
+          class="block py-3 text-[13px] uppercase tracking-[2px] text-brand-gray-400 hover:text-white transition-colors"
+        >
+          My Account
+        </a>
+      </div>
     </div>
   </div>
 </nav>

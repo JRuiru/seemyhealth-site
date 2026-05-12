@@ -55,7 +55,25 @@ export const productContent: Record<string, ProductContent> = {
         { title: "13+ Body Metrics", description: "Body fat, muscle mass, bone density, visceral fat, water percentage, BMR, metabolic age, protein, and more — all from a single weigh-in." },
         { title: "Family Profiles", description: "Unlimited user profiles with auto-recognition. Everyone in the household gets their own private dashboard." },
         { title: "Trend Analysis", description: "Daily weight fluctuates. Real trends don't. See your 7-day, 30-day, and 90-day trajectories to understand what's really changing." },
-        { title: "Dual Variant", description: "The Scale for essential metrics, or Scale Pro with 8-point dual-frequency BIA and segmental analysis for arms, legs, and trunk." },
+        { title: "Affordable Precision", description: "Medical-grade body composition at a fraction of the cost. Need segmental analysis? Upgrade to The Scale Pro." },
+      ],
+    },
+  },
+  "scale-pro": {
+    introLine1: "Segment by segment.",
+    introLine2: "Clinical precision.",
+    howItWorks: [
+      { title: "Step On & Grip", description: "Step on barefoot and pull the retractable handles. 8-point electrodes measure through your arms, legs, and trunk simultaneously.", icon: "M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M12 3a4 4 0 100 8 4 4 0 000-8z" },
+      { title: "Segmental Breakdown", description: "In 10 seconds, see muscle and fat distribution for each arm, each leg, and your trunk — plus 21 total body metrics.", icon: "M22 12h-4l-3 9L9 3l-3 9H2" },
+      { title: "Track Progress", description: "The app shows how each body segment changes over time. Perfect for targeted training, rehab tracking, or balanced fitness goals.", icon: "M3 17l6-6 4 4 8-8M14 7h7v7" },
+    ],
+    benefits: {
+      headline: "The same tech pro athletes use.",
+      items: [
+        { title: "Segmental Analysis", description: "See fat and muscle for each arm, leg, and trunk independently. Spot imbalances, track rehab progress, and train smarter." },
+        { title: "21 Body Metrics", description: "Weight, body fat, muscle mass, bone density, visceral fat, water percentage, BMR, metabolic age, protein, subcutaneous fat, and more." },
+        { title: "Dual-Frequency BIA", description: "Two frequencies measure both intra- and extracellular water for significantly more accurate body composition than single-frequency scales." },
+        { title: "Family Profiles", description: "Unlimited user profiles with auto-recognition. Everyone in the household gets their own private dashboard." },
       ],
     },
   },

@@ -1,0 +1,211 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+export const prerender = true;
+
+const partnerModels = [
+  {
+    title: "Wholesale",
+    description: "Stock & sell our devices through your channel. Tiered pricing, MSRP support.",
+    icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+  },
+  {
+    title: "Co-brand",
+    description: "Your logo, our hardware. Custom app theme, white-label welcome flow.",
+    icon: "M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42",
+  },
+  {
+    title: "Hardware-as-a-Service",
+    description: "Per-member-per-month billing. We handle logistics, replacement, support.",
+    icon: "M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z",
+  },
+];
+
+const portalFeatures = [
+  { title: "Inventory", description: "Real-time stock + ETA" },
+  { title: "Co-brand assets", description: "Logo lockups, photography" },
+  { title: "Orders", description: "Bulk + drop-ship modes" },
+  { title: "Dashboards", description: "Sell-through, returns, RMA" },
+];
+
+const logistics = [
+  { title: "50 states", description: "Same-week ship" },
+  { title: "EU + UK", description: "via Rotterdam DC" },
+  { title: "APAC", description: "Singapore fulfillment" },
+  { title: "RMA", description: "30-day returns" },
+];
+
+---
+
+<Layout
+  title="For Business — SeeMyHealth"
+  description="Partner with SeeMyHealth. Wholesale, co-brand, and hardware-as-a-service options for health & wellness businesses."
+  canonicalPath="/business"
+>
+  <Navbar />
+
+  <!-- Hero -->
+  <section class="pt-32 pb-20 sm:pt-40 sm:pb-28 bg-brand-black">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-6">
+          For Business / Distribution
+        </p>
+        <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-300 uppercase leading-[0.95] mb-6">
+          Carry the platform. <span class="font-500">Keep the relationship.</span>
+        </h1>
+        <p class="text-lg text-brand-gray-400 leading-relaxed mb-10 max-w-xl">
+          Wholesale, retail and B2B2C partnerships. Co-branded bundles, integration partners, hardware-as-a-service options.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a
+            href="#contact"
+            class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+          >
+            Talk to sales
+            <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+          <a
+            href="#"
+            class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
+          >
+            Download one-pager
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portal preview -->
+  <section class="pb-20 sm:pb-28 bg-brand-black">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="relative rounded-2xl border border-white/10 bg-brand-gray-900 overflow-hidden aspect-[16/9] sm:aspect-[2.2/1] flex items-center justify-center">
+        <div class="text-center">
+          <svg class="w-12 h-12 mx-auto text-brand-gray-700 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="0.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
+          </svg>
+          <p class="text-brand-gray-600 text-sm">Partner portal — orders, co-brand assets, dashboards</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partner Models -->
+  <section class="py-20 sm:py-28 bg-brand-black border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-10">Partner Models</p>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {partnerModels.map((model) => (
+          <div class="group rounded-2xl bg-brand-gray-900 border border-white/5 hover:border-white/15 overflow-hidden transition-all duration-300">
+            <!-- Image placeholder -->
+            <div class="aspect-[4/3] bg-brand-gray-800 flex items-center justify-center">
+              <svg class="w-10 h-10 text-brand-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                <path stroke-linecap="round" stroke-linejoin="round" d={model.icon} />
+              </svg>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-medium text-white mb-2">{model.title}</h3>
+              <p class="text-sm text-brand-gray-400 leading-relaxed">{model.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Partner Portal -->
+  <section class="py-20 sm:py-28 bg-brand-black border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-10">Partner Portal</p>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {portalFeatures.map((feature) => (
+          <div class="rounded-xl bg-brand-gray-900 border border-white/5 p-6">
+            <h4 class="text-white font-medium mb-1">{feature.title}</h4>
+            <p class="text-[12px] text-brand-gray-500">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Logistics -->
+  <section class="py-20 sm:py-28 bg-brand-black border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-10">Logistics</p>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {logistics.map((item) => (
+          <div class="rounded-xl bg-brand-gray-900 border border-white/5 p-6">
+            <h4 class="text-xl font-medium text-white mb-1">{item.title}</h4>
+            <p class="text-[12px] text-brand-gray-500">{item.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact / CTA -->
+  <section id="contact" class="py-20 sm:py-28 bg-brand-black border-t border-white/5">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Get Started</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
+        Let's build <span class="font-500">together</span>
+      </h2>
+      <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto mb-10">
+        Whether you're a gym chain, wellness brand, or healthcare provider — we'll find the right model for your business.
+      </p>
+
+      <form class="max-w-md mx-auto space-y-4 text-left">
+        <div>
+          <input
+            type="text"
+            placeholder="Company name"
+            class="w-full px-4 py-3.5 bg-brand-gray-900 border border-white/10 rounded-xl text-sm text-white placeholder-brand-gray-600 focus:outline-none focus:border-white/30 transition-colors"
+          />
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <input
+            type="text"
+            placeholder="Your name"
+            class="w-full px-4 py-3.5 bg-brand-gray-900 border border-white/10 rounded-xl text-sm text-white placeholder-brand-gray-600 focus:outline-none focus:border-white/30 transition-colors"
+          />
+          <input
+            type="email"
+            placeholder="Work email"
+            class="w-full px-4 py-3.5 bg-brand-gray-900 border border-white/10 rounded-xl text-sm text-white placeholder-brand-gray-600 focus:outline-none focus:border-white/30 transition-colors"
+          />
+        </div>
+        <div>
+          <select class="w-full px-4 py-3.5 bg-brand-gray-900 border border-white/10 rounded-xl text-sm text-brand-gray-600 focus:outline-none focus:border-white/30 transition-colors appearance-none">
+            <option value="">Partnership model</option>
+            <option value="wholesale">Wholesale</option>
+            <option value="cobrand">Co-brand</option>
+            <option value="haas">Hardware-as-a-Service</option>
+            <option value="other">Other / Not sure</option>
+          </select>
+        </div>
+        <div>
+          <textarea
+            placeholder="Tell us about your business"
+            rows="3"
+            class="w-full px-4 py-3.5 bg-brand-gray-900 border border-white/10 rounded-xl text-sm text-white placeholder-brand-gray-600 focus:outline-none focus:border-white/30 transition-colors resize-none"
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          class="w-full px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+        >
+          Talk to Sales
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
