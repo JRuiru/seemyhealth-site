@@ -23,6 +23,7 @@ export interface Product {
   headline: string;
   description: string;
   image: string;
+  crossSellImage?: string;
   streamId?: string;
   price: string;
   color: string;
@@ -97,6 +98,7 @@ export const products: Record<string, Product> = {
     headline: "The whole picture,\nnot just weight",
     description: "Full body composition analysis with 4-point BIA. Step on and see weight, body fat, muscle mass, bone density, and 10 more metrics in the app instantly. Looking for segmental analysis? Check out The Scale Pro.",
     image: `${CF_IMG}/scale-black-pack/public`,
+    crossSellImage: `${CF_IMG}/scale-white-portrait/public`,
     streamId: "aaff94de34c19bfe9fe6fa3b038c80c8",
     price: "From $99.99",
     color: "#3B82F6",
@@ -198,6 +200,7 @@ export const products: Record<string, Product> = {
     headline: "Clinical accuracy,\nhome comfort",
     description: "Accurate blood pressure readings with irregular heartbeat detection. Validated against clinical standards. Share results directly with your doctor from the app.",
     image: "",
+    crossSellImage: `${CF_IMG}/bp-black-desk-portrait/public`,
     streamId: "414b8ac36adafae24dc9750438174d9a",
     price: "$89.99",
     color: "#EF4444",
@@ -234,6 +237,8 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
+      { src: `${CF_IMG}/bp-black-desk-portrait/public`, alt: "BP Monitor black on desk" },
+      { src: `${CF_IMG}/bp-desk-display/public`, alt: "BP Monitor displaying reading on desk" },
       { src: `${CF_IMG}/bp-white/public`, alt: "BP Monitor white finish" },
       { src: `${CF_IMG}/bp-black-studio/public`, alt: "BP Monitor black studio" },
       { src: `${CF_IMG}/bp-white-studio/public`, alt: "BP Monitor white studio" },
@@ -249,7 +254,7 @@ export const products: Record<string, Product> = {
     price: "$59.99",
     color: "#06B6D4",
     specs: [
-      { label: "Capacity", value: "750ml / 25oz" },
+      { label: "Capacity", value: "500ml / 17oz" },
       { label: "Material", value: "Tritan BPA-free, stainless steel lid" },
       { label: "Battery", value: "Rechargeable, up to 30 days" },
       { label: "Indicator", value: "12-LED progress ring" },

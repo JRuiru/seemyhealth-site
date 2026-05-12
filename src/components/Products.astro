@@ -20,7 +20,7 @@ const products = [
     slug: "scale",
     tagline: "Beyond the number",
     description: "13 body composition metrics from a single step. Weight, body fat, muscle mass, and more — shared by design, no account lock-in.",
-    image: `${CF_IMG}/scale-black-pack/public`,
+    image: `${CF_IMG}/scale-white-portrait/public`,
     price: "From $99.99",
     features: ["Body Composition", "Multi-User", "Shared Device", "13 Metrics"],
     metrics: [{ label: "13", sublabel: "Metrics" }, { label: "∞", sublabel: "Users" }],
@@ -44,7 +44,7 @@ const products = [
     slug: "bp-monitor",
     tagline: "Blood pressure, simplified",
     description: "Accurate blood pressure with irregular heartbeat detection. Clinical-grade monitoring made effortless.",
-    image: `${CF_IMG}/bp-black/public`,
+    image: `${CF_IMG}/bp-black-desk-portrait/public`,
     price: "$89.99",
     features: ["Systolic", "Diastolic", "Pulse", "Irregular HB"],
     metrics: [{ label: "30s", sublabel: "Reading" }, { label: "∞", sublabel: "Users" }],
@@ -56,10 +56,10 @@ const products = [
     slug: "hydra-one",
     tagline: "Stay perfectly hydrated",
     description: "Smart water bottle that tracks intake and reminds you to drink. LED indicators sync with the app.",
-    image: `${CF_IMG}/bottle-studio-wet/public`,
+    image: `${CF_IMG}/bottle-white-park/public`,
     price: "$59.99",
-    features: ["Intake", "Reminders", "LED Sync", "750ml"],
-    metrics: [{ label: "30 days", sublabel: "Battery" }, { label: "750", sublabel: "ml" }],
+    features: ["Intake", "Reminders", "LED Sync", "500ml"],
+    metrics: [{ label: "30 days", sublabel: "Battery" }, { label: "500", sublabel: "ml" }],
     color: "#06B6D4",
     shared: false,
   },
@@ -102,12 +102,12 @@ const products = [
     <div class="flex" data-products-track style={`width: ${products.length * 100}vw`}>
       {products.map((product, i) => (
         <div class="w-screen flex-shrink-0 px-6 lg:px-8" data-product-panel>
-          <div class="max-w-7xl mx-auto h-[80vh] pt-16 pb-4">
+          <div class="max-w-7xl mx-auto min-h-[80vh] lg:h-[80vh] pt-8 pb-4">
             <div class="group w-full h-full">
-              <div class="grid lg:grid-cols-2 gap-8 lg:gap-20 items-center h-full">
+              <div class="grid lg:grid-cols-2 gap-6 lg:gap-20 items-center h-full">
 
                 {/* Image with ambient glow */}
-                <a href={`/products/${product.slug}`} class="relative block h-[300px] sm:h-[400px] lg:h-full overflow-hidden rounded-2xl bg-brand-gray-900">
+                <a href={`/products/${product.slug}`} class="relative block h-[240px] sm:h-[350px] lg:h-full overflow-hidden rounded-2xl bg-brand-gray-900">
                   {/* Ambient color glow */}
                   <div
                     class="absolute -inset-20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-3xl pointer-events-none"
@@ -152,11 +152,11 @@ const products = [
 
                 {/* Content */}
                 <div class="flex flex-col justify-center">
-                  <div class="h-[3px] w-12 rounded-full mb-8 transition-all duration-500 group-hover:w-20" style={`background: ${product.color}`}></div>
-                  <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-5">{product.tagline}</p>
-                  <h3 class="font-display text-3xl sm:text-4xl lg:text-5xl font-400 uppercase mb-5 leading-[0.95]">{product.name}</h3>
-                  <p class="text-brand-gray-400 leading-relaxed mb-8 max-w-md">{product.description}</p>
-                  <div class="flex flex-wrap gap-3 mb-10">
+                  <div class="h-[3px] w-12 rounded-full mb-4 lg:mb-8 transition-all duration-500 group-hover:w-20" style={`background: ${product.color}`}></div>
+                  <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-3 lg:mb-5">{product.tagline}</p>
+                  <h3 class="font-display text-3xl sm:text-4xl lg:text-5xl font-400 uppercase mb-3 lg:mb-5 leading-[0.95]">{product.name}</h3>
+                  <p class="text-brand-gray-400 leading-relaxed mb-4 lg:mb-8 max-w-md text-sm lg:text-base">{product.description}</p>
+                  <div class="flex flex-wrap gap-2 lg:gap-3 mb-6 lg:mb-10">
                     {product.features.map((f) => (
                       <span
                         class="text-[11px] uppercase tracking-[1.5px] px-3 py-1.5 rounded-full border transition-colors"
@@ -166,7 +166,7 @@ const products = [
                       </span>
                     ))}
                   </div>
-                  <div class="flex items-center gap-4 mb-6 max-w-md">
+                  <div class="flex items-center gap-4 mb-4 lg:mb-6 max-w-md">
                     <span class="text-2xl font-display font-400">
                       <PriceTag handle={product.slug} mode="from" prefix="From " fallback={product.price} client:idle />
                     </span>

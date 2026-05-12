@@ -46,9 +46,21 @@ const features = [
           <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
             The app works <span class="font-500">from day one.</span>
           </h2>
-          <p class="text-brand-gray-400 leading-relaxed max-w-lg">
-            Most health apps need hardware to be useful. Ours doesn't. Your first month is free — journalling, mood tracking, meal logging, care provider access, and community challenges all work before you buy a single device.
-          </p>
+          <div class="relative min-h-[4.5rem]">
+            {[
+              "Track your mood daily, journal your thoughts, and build streaks. Understand how you feel over time — no wearable needed.",
+              "Log meals, track calories and macros, plan your nutrition, and set fasting schedules. Everything in one place.",
+              "View a family member's body composition, weight trends, and health scores — right from your own dashboard.",
+            ].map((text, i) => (
+              <p
+                class:list={[
+                  "text-brand-gray-400 leading-relaxed max-w-lg absolute inset-0 transition-opacity duration-500",
+                  i === 0 ? "opacity-100" : "opacity-0"
+                ]}
+                data-app-desc={i}
+              >{text}</p>
+            ))}
+          </div>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8" data-scroll-stagger>
@@ -71,85 +83,108 @@ const features = [
         </a>
       </div>
 
-      <!-- Right: Phone mockup -->
+      <!-- Right: Rotating app screenshots -->
       <div class="relative mt-12 lg:mt-0" data-scroll-reveal>
-        <div class="relative mx-auto w-[260px] sm:w-[300px]">
-          <div class="rounded-[2.5rem] border-2 border-white/10 bg-brand-gray-900 p-3 shadow-2xl shadow-black/50">
-            <div class="rounded-[2rem] bg-brand-black overflow-hidden">
-              <div class="px-5 pt-5 pb-6 space-y-3">
-                <div>
-                  <p class="text-[9px] uppercase tracking-[2px] text-brand-gray-600 mb-1">Good Morning</p>
-                  <p class="text-base font-display font-400">Your Day</p>
-                </div>
-
-                <!-- Mood -->
-                <div class="rounded-lg bg-brand-gray-900 p-3">
-                  <p class="text-[8px] uppercase tracking-wider text-brand-gray-600 mb-1.5">How are you feeling?</p>
-                  <div class="flex gap-2">
-                    {["😴", "😐", "🙂", "😊", "🤩"].map((e, i) => (
-                      <div class:list={["w-7 h-7 rounded-full flex items-center justify-center text-[12px]", i === 3 ? "bg-white/10 ring-1 ring-white/20" : "bg-brand-gray-800"]}>
-                        {e}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <!-- Meals -->
-                <div class="rounded-lg bg-brand-gray-900 p-3">
-                  <p class="text-[8px] uppercase tracking-wider text-brand-gray-600 mb-1.5">Today's Meals</p>
-                  <div class="space-y-1">
-                    <div class="flex justify-between"><span class="text-[9px] text-brand-gray-400">Breakfast</span><span class="text-[9px] text-brand-gray-600">420 cal</span></div>
-                    <div class="flex justify-between"><span class="text-[9px] text-brand-gray-400">Lunch</span><span class="text-[9px] text-brand-gray-600">580 cal</span></div>
-                    <div class="flex justify-between"><span class="text-[9px] text-brand-gray-400">+ Add meal</span><span class="text-[9px] text-brand-gray-600"></span></div>
-                  </div>
-                </div>
-
-                <!-- Hydration -->
-                <div class="rounded-lg bg-brand-gray-900 p-3">
-                  <div class="flex items-center justify-between mb-1.5">
-                    <p class="text-[8px] uppercase tracking-wider text-brand-gray-600">Hydration</p>
-                    <p class="text-[8px] text-cyan-400">1.2 / 2.5L</p>
-                  </div>
-                  <div class="h-1.5 rounded-full bg-white/5 overflow-hidden">
-                    <div class="h-full rounded-full bg-cyan-500/40" style="width: 48%"></div>
-                  </div>
-                </div>
-
-                <!-- Fasting -->
-                <div class="rounded-lg bg-brand-gray-900 p-3">
-                  <div class="flex items-center justify-between">
-                    <div>
-                      <p class="text-[8px] uppercase tracking-wider text-brand-gray-600">Fasting · 16:8</p>
-                      <p class="text-[9px] text-brand-gray-400">4h 12m remaining</p>
-                    </div>
-                    <div class="w-8 h-8 rounded-full border border-green-500/30 flex items-center justify-center">
-                      <span class="text-[8px] text-green-400">ON</span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Challenge -->
-                <div class="rounded-lg bg-brand-gray-900 p-3">
-                  <div class="flex items-center gap-2">
-                    <div class="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center">
-                      <span class="text-[9px]">🏆</span>
-                    </div>
-                    <div>
-                      <p class="text-[9px] text-white">7-Day Sleep Challenge</p>
-                      <p class="text-[8px] text-brand-gray-600">Day 3 of 7 · 2nd place</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Glow -->
-          <div class="absolute -inset-10 bg-gradient-to-b from-white/[0.02] to-transparent rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative mx-auto max-w-[360px] lg:max-w-none overflow-hidden rounded-[2rem]" data-app-carousel style="mask-image: radial-gradient(ellipse 85% 88% at center, black 45%, transparent 100%); -webkit-mask-image: radial-gradient(ellipse 85% 88% at center, black 45%, transparent 100%);">
+          {[
+            { src: `${CF_IMG}/app-mood-tracking/public`, alt: "Mood tracking & journalling", label: "Journal & Mood" },
+            { src: `${CF_IMG}/app-nutrition-view/public`, alt: "Meal logging & nutrition tracking", label: "Meals & Nutrition" },
+            { src: `${CF_IMG}/app-family-weight-view/public`, alt: "Family body composition sharing", label: "Family Sharing" },
+          ].map((screen, i) => (
+            <img
+              src={screen.src}
+              alt={screen.alt}
+              class:list={[
+                "absolute inset-0 w-full h-full object-contain transition-opacity duration-700",
+                i === 0 ? "opacity-100" : "opacity-0",
+                i !== 0 && "pointer-events-none"
+              ]}
+              data-app-slide={i}
+              data-app-label={screen.label}
+            />
+          ))}
+          <!-- Spacer for aspect ratio -->
+          <img
+            src={`${CF_IMG}/app-mood-tracking/public`}
+            alt=""
+            class="w-full invisible"
+            aria-hidden="true"
+          />
         </div>
 
-        <!-- Label -->
-        <p class="text-center text-[10px] uppercase tracking-[2px] text-brand-gray-600 mt-4">No devices connected</p>
+        <!-- Label + dots -->
+        <div class="text-center mt-2">
+          <p class="text-[10px] uppercase tracking-[2px] text-brand-gray-600 mb-3 transition-opacity duration-300" data-app-label-text>Journal & Mood</p>
+          <div class="flex justify-center gap-2">
+            {[0, 1, 2].map((i) => (
+              <button
+                class:list={[
+                  "w-2 h-2 rounded-full transition-all duration-300",
+                  i === 0 ? "bg-white/60 w-6" : "bg-white/20"
+                ]}
+                data-app-dot={i}
+                aria-label={`View slide ${i + 1}`}
+              ></button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  function initAppCarousel() {
+    const carousel = document.querySelector('[data-app-carousel]');
+    if (!carousel) return;
+
+    const slides = carousel.querySelectorAll<HTMLImageElement>('[data-app-slide]');
+    const dots = document.querySelectorAll<HTMLButtonElement>('[data-app-dot]');
+    const descs = document.querySelectorAll<HTMLParagraphElement>('[data-app-desc]');
+    const label = document.querySelector('[data-app-label-text]');
+    if (!slides.length) return;
+
+    let current = 0;
+    let interval: ReturnType<typeof setInterval>;
+
+    function goTo(index: number) {
+      slides.forEach((s, i) => {
+        s.classList.toggle('opacity-100', i === index);
+        s.classList.toggle('opacity-0', i !== index);
+      });
+      dots.forEach((d, i) => {
+        d.classList.toggle('bg-white/60', i === index);
+        d.classList.toggle('w-6', i === index);
+        d.classList.toggle('bg-white/20', i !== index);
+        d.classList.toggle('w-2', i !== index);
+      });
+      descs.forEach((d, i) => {
+        d.classList.toggle('opacity-100', i === index);
+        d.classList.toggle('opacity-0', i !== index);
+      });
+      if (label) {
+        label.textContent = slides[index].getAttribute('data-app-label') || '';
+      }
+      current = index;
+    }
+
+    function next() {
+      goTo((current + 1) % slides.length);
+    }
+
+    // Auto-rotate every 4 seconds
+    interval = setInterval(next, 4000);
+
+    // Click dots to navigate
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        clearInterval(interval);
+        goTo(i);
+        interval = setInterval(next, 4000);
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initAppCarousel);
+  initAppCarousel();
+</script>

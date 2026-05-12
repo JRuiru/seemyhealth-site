@@ -192,7 +192,7 @@ export const productVariants: Record<string, ProductVariantData> = {
     handle: "hydra-one",
     name: "Hydra One",
     optionNames: ["Color"],
-    boxContents: ["Hydra One bottle (750 ml)", "USB-C charging cable", "Spare lid seal", "Quick start guide"],
+    boxContents: ["Hydra One bottle (500 ml)", "USB-C charging cable", "Spare lid seal", "Quick start guide"],
     deliveryEstimate: "5–7 business days",
     warrantyYears: 1,
     colorSwatches: {

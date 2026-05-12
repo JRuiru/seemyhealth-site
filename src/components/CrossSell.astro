@@ -30,7 +30,7 @@ const otherProducts = Object.entries(products)
         <a href={`/products/${product.slug}`} class="group block rounded-2xl overflow-hidden bg-brand-gray-900 hover:bg-brand-gray-900/80 transition-colors">
           <div class="relative h-56 overflow-hidden">
             <img
-              src={product.image}
+              src={product.crossSellImage || product.image}
               alt={product.name}
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />

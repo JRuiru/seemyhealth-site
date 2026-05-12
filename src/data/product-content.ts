@@ -99,7 +99,7 @@ export const productContent: Record<string, ProductContent> = {
     introLine1: "Drink smarter.",
     introLine2: "Feel the difference.",
     howItWorks: [
-      { title: "Fill & Go", description: "Fill the 750ml bottle and go about your day. The capacitive sensor tracks every sip automatically — no manual logging.", icon: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" },
+      { title: "Fill & Go", description: "Fill the 500ml bottle and go about your day. The capacitive sensor tracks every sip automatically — no manual logging.", icon: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" },
       { title: "Watch the Ring", description: "The 12-LED progress ring around the lid shows your daily progress at a glance. Full ring means you hit your goal.", icon: "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" },
       { title: "See Correlations", description: "The app shows how your hydration affects sleep, energy, and recovery when paired with other SeeMyHealth devices.", icon: "M3 17l6-6 4 4 8-8M14 7h7v7" },
     ],
