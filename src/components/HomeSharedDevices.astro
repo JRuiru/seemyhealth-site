@@ -1,0 +1,68 @@
+---
+const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
+
+const sharedDevices = [
+  { name: "The Scale", color: "#3B82F6", slug: "scale", image: `${CF_IMG}/scale-black-pack/public` },
+  { name: "The Scale Pro", color: "#3B82F6", slug: "scale-pro", image: `${CF_IMG}/scale-pro-hero-new/public` },
+  { name: "BP Monitor", color: "#EF4444", slug: "bp-monitor", image: `${CF_IMG}/bp-black/public` },
+  { name: "Hema One", color: "#A855F7", slug: "hema-one", image: `${CF_IMG}/hema-one-web/public` },
+];
+---
+
+<section class="py-20 sm:py-28 bg-brand-black border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="lg:grid lg:grid-cols-[1fr_1.2fr] lg:gap-16 xl:gap-24 items-center">
+
+      <!-- Left: Device cards -->
+      <div class="relative mb-12 lg:mb-0" data-scroll-reveal>
+        <div class="grid grid-cols-2 gap-3">
+          {sharedDevices.map((d) => (
+            <a href={`/products/${d.slug}`} class="group relative rounded-xl overflow-hidden aspect-square bg-brand-gray-900 border border-white/5 hover:border-white/15 transition-all">
+              <img src={d.image} alt={d.name} class="w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+              <div class="absolute bottom-3 left-3 right-3">
+                <div class="w-2 h-2 rounded-full mb-1.5" style={`background: ${d.color}`}></div>
+                <p class="text-[11px] font-medium text-white">{d.name}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <!-- Connecting line illustration -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-brand-black border border-white/10 flex items-center justify-center z-10">
+          <svg class="w-6 h-6 text-brand-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Right: Text -->
+      <div>
+        <div data-scroll-reveal>
+          <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Shared by Design</p>
+          <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-6">
+            You don't need to own a device <span class="font-500">to use one.</span>
+          </h2>
+          <p class="text-brand-gray-400 leading-relaxed mb-8">
+            We engineered The Scale, The Scale Pro, BP Monitor, and Hema One to work with any account. Walk up to one at home, a gym, a friend's place — open the app, connect, and your reading saves to your profile. No setup, no re-pairing, no account switching.
+          </p>
+
+          <div class="grid grid-cols-2 gap-4 mb-8">
+            <div class="rounded-lg bg-white/[0.03] border border-white/5 p-4">
+              <p class="text-2xl font-display font-500 mb-0.5">∞</p>
+              <p class="text-[10px] uppercase tracking-wider text-brand-gray-600">Users per device</p>
+            </div>
+            <div class="rounded-lg bg-white/[0.03] border border-white/5 p-4">
+              <p class="text-2xl font-display font-500 mb-0.5">0 sec</p>
+              <p class="text-[10px] uppercase tracking-wider text-brand-gray-600">Setup for new users</p>
+            </div>
+          </div>
+
+          <p class="text-[13px] text-brand-gray-500">
+            <span class="text-white">Ring One</span> and <span class="text-white">Hydra One</span> are personal devices — worn or carried. Everything else is communal.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

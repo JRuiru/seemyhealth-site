@@ -317,7 +317,7 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
             {/* Main viewer */}
             <div
               ref={swipeRef}
-              className="relative aspect-square rounded-3xl overflow-hidden bg-brand-gray-900 touch-pan-y"
+              className="relative aspect-[2/3] rounded-3xl overflow-hidden bg-brand-gray-900 touch-pan-y"
               onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
               onTouchEnd={(e) => {
                 const current = mediaItems[activeImageIndex];

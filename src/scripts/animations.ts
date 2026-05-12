@@ -427,7 +427,7 @@ export function initProductsHorizontal() {
   panels.forEach((panel, i) => {
     if (i === 0) return; // first panel is already visible
     gsap.fromTo(
-      panel.querySelector("a"),
+      panel.querySelector(".group"),
       { opacity: 0, x: 80 },
       {
         opacity: 1,

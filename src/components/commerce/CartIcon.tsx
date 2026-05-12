@@ -14,7 +14,7 @@ export default function CartIcon() {
   return (
     <button
       onClick={() => window.dispatchEvent(new Event("cart:toggle"))}
-      className="relative w-10 h-10 flex items-center justify-center text-white/80 hover:text-white transition-colors"
+      className="relative w-10 h-10 flex items-center justify-center text-brand-gray-400 hover:text-white transition-colors"
       aria-label="Open cart"
     >
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

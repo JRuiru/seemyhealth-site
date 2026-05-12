@@ -21,12 +21,9 @@ if (images.length === 0) return;
       </p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-scroll-stagger>
-      {images.map((img, i) => (
-        <div class:list={[
-          "relative overflow-hidden rounded-2xl group",
-          i === 0 ? "sm:col-span-2 lg:col-span-2 h-[400px] sm:h-[500px]" : "h-[300px] sm:h-[500px]"
-        ]}>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" data-scroll-stagger>
+      {images.map((img) => (
+        <div class="relative overflow-hidden rounded-2xl group h-[300px] sm:h-[420px]">
           <img
             src={img.src}
             alt={img.alt}

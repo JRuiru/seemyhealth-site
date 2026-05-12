@@ -1,0 +1,489 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+export const prerender = true;
+
+const categories = [
+  { id: "getting-started", label: "Getting started" },
+  { id: "sizing-fit", label: "Sizing & fit" },
+  { id: "ring-one", label: "Ring One" },
+  { id: "scale", label: "The Scale & The Scale Pro" },
+  { id: "bp-monitor", label: "BP Monitor" },
+  { id: "hydra-one", label: "Hydra One" },
+  { id: "hema-one", label: "Hema One" },
+  { id: "data-privacy", label: "Data & privacy" },
+  { id: "billing", label: "Billing & subscription" },
+];
+
+const quickLinks = [
+  {
+    title: "Setup guides",
+    description: "First-time pairing for every device",
+    href: "/support/setup",
+    icon: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z",
+  },
+  {
+    title: "Account",
+    description: "Orders, tracking, profile",
+    href: "/account",
+    icon: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
+  },
+  {
+    title: "Trust & data",
+    description: "Privacy, sharing, export",
+    href: "#data-privacy",
+    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+  },
+  {
+    title: "Contact us",
+    description: "support@seemyhealth.ai",
+    href: "mailto:support@seemyhealth.ai",
+    icon: "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z",
+  },
+];
+
+const faqSections = [
+  {
+    id: "getting-started",
+    title: "Getting started",
+    questions: [
+      {
+        q: "How do I pair a device?",
+        a: "Open the app, go to Settings > Devices > Add Device. Make sure Bluetooth is enabled. The app will automatically detect nearby SeeMyHealth devices — follow the on-screen instructions for your specific device.",
+      },
+      {
+        q: "Do I need an account?",
+        a: "Yes. Create one in the app or at seemyhealth.ai. Your account secures your health data and syncs across devices.",
+      },
+      {
+        q: "Which phones are supported?",
+        a: "iOS 15+ and Android 10+. The app requires Bluetooth 5.0 for device pairing.",
+      },
+      {
+        q: "Does it work offline?",
+        a: "Yes. Devices store data locally and sync to the app when your phone is back in range. The app itself works offline for journalling, mood, and meal logging.",
+      },
+      {
+        q: "Do I need a subscription to use my device?",
+        a: "The app requires a subscription for full features, but basic device data viewing is available without one. Every feature is included in one plan — no hidden tiers, no ads, no data selling. 1-month free trial included.",
+      },
+      {
+        q: "Are devices locked to one account?",
+        a: "Ring One and Hydra One are personal devices you wear or carry. But The Scale, The Scale Pro, BP Monitor, and Hema One are shared by design — anyone can walk up, connect via the app, take a reading, and the data saves to their own profile. One device, whole family, gym, office — anywhere.",
+      },
+    ],
+  },
+  {
+    id: "sizing-fit",
+    title: "Sizing & fit",
+    questions: [
+      {
+        q: "How do I find my ring size?",
+        a: "We include a free sizing kit with every Ring One order. Wear the sizing ring for at least 24 hours before deciding — finger size changes throughout the day.",
+      },
+      {
+        q: "Can I return it if it doesn't fit?",
+        a: "Yes. We offer free size exchanges within 30 days. Contact support@seemyhealth.ai with your order number.",
+      },
+      {
+        q: "Is the BP cuff one-size?",
+        a: "The BP Monitor comes with a standard cuff (22–42cm) that fits most adults. A large cuff is available separately.",
+      },
+    ],
+  },
+  {
+    id: "ring-one",
+    title: "Ring One",
+    questions: [
+      {
+        q: "What does Ring One track?",
+        a: "Heart rate, blood oxygen (SpO2), sleep stages, body temperature variation, activity, and stress levels — all from your finger, 24/7.",
+      },
+      {
+        q: "How long does the battery last?",
+        a: "Up to 7 days on a single charge, depending on usage. Charging takes approximately 60 minutes.",
+      },
+      {
+        q: "Is Ring One water-resistant?",
+        a: "Yes — rated to 100 meters (10 ATM). Safe for swimming, showers, and daily wear.",
+      },
+    ],
+  },
+  {
+    id: "scale",
+    title: "The Scale & The Scale Pro",
+    questions: [
+      {
+        q: "What's the difference between The Scale and The Scale Pro?",
+        a: "The Scale uses 4-point BIA for 13 body composition metrics. The Scale Pro uses 8-point dual-frequency BIA with a retractable handle for segmental analysis — arms, legs, and trunk individually. 21 metrics total.",
+      },
+      {
+        q: "Can multiple people use the same scale?",
+        a: "Yes — that's how we designed it. The Scale and The Scale Pro aren't tied to any one account. Anyone can open the SeeMyHealth app, connect, step on, and their reading saves to their own profile. One scale for a whole family, a gym, or an office.",
+      },
+      {
+        q: "Does the scale need Wi-Fi?",
+        a: "No. The scale connects directly to your phone via Bluetooth. We intentionally skipped Wi-Fi so the device stays account-free — anyone can walk up and use it with their own app.",
+      },
+    ],
+  },
+  {
+    id: "bp-monitor",
+    title: "BP Monitor",
+    questions: [
+      {
+        q: "How accurate is the BP Monitor?",
+        a: "Clinically validated and meets international accuracy standards. Sit comfortably with your arm at heart level and remain still for the most accurate readings.",
+      },
+      {
+        q: "How do I take a reading?",
+        a: "Wrap the cuff snugly around your upper arm, sit relaxed for 1 minute, then press start. Results appear in about 30 seconds.",
+      },
+      {
+        q: "Can I share readings with my doctor?",
+        a: "Yes. Toggle access in Settings > Sharing. Your doctor gets authenticated, read-only access — you control it with a single switch.",
+      },
+      {
+        q: "Can my family share one BP Monitor?",
+        a: "Absolutely. The BP Monitor isn't locked to any account. Each person opens the SeeMyHealth app, connects, takes a reading, and it saves to their own profile. Perfect for households monitoring blood pressure together.",
+      },
+    ],
+  },
+  {
+    id: "hydra-one",
+    title: "Hydra One",
+    questions: [
+      {
+        q: "How does Hydra One measure water intake?",
+        a: "A precision sensor in the base measures every sip automatically. Battery lasts up to 30 days, charges via USB-C.",
+      },
+      {
+        q: "Is Hydra One dishwasher safe?",
+        a: "The bottle body is hand-wash only to protect the sensor. The cap is dishwasher safe. The sensor base is sealed and splash-proof.",
+      },
+    ],
+  },
+  {
+    id: "hema-one",
+    title: "Hema One",
+    questions: [
+      {
+        q: "What does Hema One analyze?",
+        a: "Key biomarkers including glucose, cholesterol (total, HDL, LDL), triglycerides, and hemoglobin from a small finger-prick sample.",
+      },
+      {
+        q: "Is Hema One a medical device?",
+        a: "Designed for personal health monitoring using clinical-grade sensors. Not a substitute for professional lab testing — always consult your doctor for medical decisions.",
+      },
+      {
+        q: "How often should I test?",
+        a: "Weekly or bi-weekly for general wellness trends. Your healthcare provider can recommend a specific schedule.",
+      },
+      {
+        q: "Can multiple people use the same Hema One?",
+        a: "Yes. Like The Scale and BP Monitor, Hema One isn't tied to any account. Each person connects via the app, runs their test with a fresh strip and lancet, and results save to their own profile.",
+      },
+    ],
+  },
+  {
+    id: "data-privacy",
+    title: "Data & privacy",
+    questions: [
+      {
+        q: "Where is my data stored?",
+        a: "All health data is encrypted in transit (TLS 1.3) and at rest (AES-256) on secure cloud infrastructure. We are HIPAA-compliant and SOC 2 certified.",
+      },
+      {
+        q: "Do you sell my data?",
+        a: "Never. We don't sell your data, we don't run ads, and we never will. Your health data exists to serve you — no one else.",
+      },
+      {
+        q: "Can I delete my data?",
+        a: "Yes. Request full deletion anytime through the app at Settings > Privacy > Delete My Data. We process requests within 30 days.",
+      },
+      {
+        q: "Can my doctor see this?",
+        a: "Only if you grant access. Toggle sharing on/off per provider in Settings > Sharing. They get authenticated, read-only access — you control it completely.",
+      },
+    ],
+  },
+  {
+    id: "billing",
+    title: "Billing & subscription",
+    questions: [
+      {
+        q: "Do you accept HSA/FSA?",
+        a: "We're working on HSA/FSA eligibility. Many of our devices may qualify — check with your plan administrator.",
+      },
+      {
+        q: "What payment methods?",
+        a: "Visa, Mastercard, American Express, Apple Pay, Google Pay, and Shop Pay. Mobile money available in select regions.",
+      },
+      {
+        q: "Can I get a receipt for insurance?",
+        a: "Yes. Detailed receipts with device information and itemized costs are available in your account under Orders. You can download or email them directly.",
+      },
+      {
+        q: "How do I cancel my subscription?",
+        a: "Cancel anytime through the App Store (iOS) or Google Play (Android) where you subscribed. Your access continues until the end of the current billing period.",
+      },
+    ],
+  },
+];
+
+const popularSearches = ["ring sizing", "BP cuff fit", "doctor sharing", "data export", "cancel subscription"];
+
+// Build FAQ schema
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqSections.flatMap((section) =>
+    section.questions.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.a,
+      },
+    }))
+  ),
+};
+---
+
+<Layout
+  title="Help Center — SeeMyHealth"
+  description="Get help with your SeeMyHealth devices. Setup guides, FAQs on pairing, sizing, data privacy, shipping, returns, and billing."
+  canonicalPath="/support"
+  jsonLd={faqSchema}
+>
+  <Navbar />
+
+  <!-- Hero + Search -->
+  <section class="pt-32 pb-16 sm:pt-40 sm:pb-20 bg-brand-black">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8">
+      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95] mb-8" data-scroll-reveal>
+        How can we <span class="font-500">help?</span>
+      </h1>
+
+      <!-- Search -->
+      <div class="relative mb-4" data-scroll-reveal>
+        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+        </svg>
+        <input
+          type="text"
+          id="faq-search"
+          placeholder="Search the help center..."
+          class="w-full pl-12 pr-4 py-4 bg-brand-gray-900 border border-white/10 rounded-xl text-sm text-white placeholder-brand-gray-600 focus:outline-none focus:border-white/30 transition-colors"
+        />
+      </div>
+      <p class="text-[12px] text-brand-gray-600">
+        Popular: {popularSearches.map((term, i) => (
+          <><button class="search-tag text-brand-gray-500 hover:text-white transition-colors cursor-pointer" data-term={term}>{term}</button>{i < popularSearches.length - 1 && <span class="mx-1">·</span>}</>
+        ))}
+      </p>
+    </div>
+  </section>
+
+  <!-- Quick access cards -->
+  <section class="pb-16 bg-brand-black">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4" data-scroll-stagger>
+        {quickLinks.map((link) => (
+          <a href={link.href} class="group rounded-xl bg-brand-gray-900 border border-white/5 hover:border-white/15 p-5 transition-all">
+            <svg class="w-6 h-6 text-brand-gray-500 mb-3 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d={link.icon} />
+            </svg>
+            <h3 class="text-sm font-medium text-white mb-1">{link.title}</h3>
+            <p class="text-[12px] text-brand-gray-600">{link.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ sections with sidebar -->
+  <section class="py-16 sm:py-24 bg-brand-black border-t border-white/5">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      <div class="lg:grid lg:grid-cols-[180px_1fr] lg:gap-12">
+
+        <!-- Sidebar nav -->
+        <aside class="hidden lg:block">
+          <div class="sticky top-28">
+            <p class="text-[10px] uppercase tracking-[2px] text-brand-gray-600 mb-4">Categories</p>
+            <nav class="space-y-1">
+              {categories.map((cat) => (
+                <a
+                  href={`#${cat.id}`}
+                  class="category-link block py-2 text-sm text-brand-gray-500 hover:text-white border-l-2 border-transparent hover:border-white/30 pl-3 transition-all"
+                  data-category={cat.id}
+                >
+                  {cat.label}
+                </a>
+              ))}
+            </nav>
+          </div>
+        </aside>
+
+        <!-- FAQ content -->
+        <div class="space-y-14" id="faq-content">
+          {faqSections.map((section) => (
+            <div id={section.id} class="faq-section scroll-mt-28">
+              <h2 class="font-display text-2xl uppercase mb-6">{section.title}</h2>
+              <div class="border-t border-white/10">
+                {section.questions.map((item, i) => (
+                  <div class="faq-item border-b border-white/5" data-question={item.q.toLowerCase()} data-answer={item.a.toLowerCase()}>
+                    <button
+                      class="faq-toggle w-full flex items-center justify-between py-5 text-left group"
+                    >
+                      <span class="faq-question text-sm text-white pr-8 group-hover:text-brand-gray-300 transition-colors">{item.q}</span>
+                      <svg
+                        class="faq-icon w-5 h-5 text-brand-gray-600 shrink-0 transition-transform duration-300"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v12M6 12h12" />
+                      </svg>
+                    </button>
+                    <div class="faq-answer hidden pb-5">
+                      <p class="text-sm text-brand-gray-500 leading-relaxed">{item.a}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          <!-- No results message -->
+          <div id="no-results" class="hidden text-center py-12">
+            <p class="text-brand-gray-500 mb-2">No results found.</p>
+            <p class="text-sm text-brand-gray-600">Try a different search or <a href="#contact" class="text-white hover:underline">contact us</a>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TODO: Uncomment when live chat & phone support are enabled
+  <section id="contact" class="py-16 sm:py-20 bg-brand-dark border-t border-white/5">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-8" data-scroll-reveal>Still stuck?</p>
+      <div class="grid sm:grid-cols-3 gap-4" data-scroll-stagger>
+        <div class="rounded-xl bg-brand-black border border-white/5 p-6">
+          <h3 class="text-white font-medium mb-1">Live chat</h3>
+          <p class="text-[12px] text-brand-gray-600 mb-4">7am–7pm PT</p>
+          <a href="#" class="inline-flex items-center px-4 py-2 text-[12px] uppercase tracking-[1px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors">
+            Start chat
+            <svg class="w-3 h-3 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </a>
+        </div>
+        <div class="rounded-xl bg-brand-black border border-white/5 p-6">
+          <h3 class="text-white font-medium mb-1">Email</h3>
+          <p class="text-[12px] text-brand-gray-600 mb-4">Reply in 24h</p>
+          <a href="mailto:support@seemyhealth.ai" class="inline-flex items-center px-4 py-2 text-[12px] uppercase tracking-[1px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors">support@seemyhealth.ai</a>
+        </div>
+        <div class="rounded-xl bg-brand-black border border-white/5 p-6">
+          <h3 class="text-white font-medium mb-1">Phone</h3>
+          <p class="text-[12px] text-brand-gray-600 mb-4">Mon–Fri</p>
+          <a href="tel:+14155550142" class="inline-flex items-center px-4 py-2 text-[12px] uppercase tracking-[1px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors">+1 (415) 555-0142</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  -->
+
+  <Footer />
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // FAQ accordion
+    const toggles = document.querySelectorAll('.faq-toggle');
+    toggles.forEach((toggle) => {
+      toggle.addEventListener('click', () => {
+        const answer = toggle.nextElementSibling as HTMLElement;
+        const icon = toggle.querySelector('.faq-icon') as HTMLElement;
+        if (!answer || !icon) return;
+
+        const isOpen = !answer.classList.contains('hidden');
+        if (isOpen) {
+          answer.classList.add('hidden');
+          icon.style.transform = 'rotate(0deg)';
+        } else {
+          answer.classList.remove('hidden');
+          icon.style.transform = 'rotate(45deg)';
+        }
+      });
+    });
+
+    // Search
+    const searchInput = document.getElementById('faq-search') as HTMLInputElement;
+    const faqItems = document.querySelectorAll('.faq-item');
+    const faqSections = document.querySelectorAll('.faq-section');
+    const noResults = document.getElementById('no-results');
+
+    function filterFAQs(query: string) {
+      const q = query.toLowerCase().trim();
+      let anyVisible = false;
+
+      faqSections.forEach((section) => {
+        const items = section.querySelectorAll('.faq-item');
+        let sectionHasMatch = false;
+
+        items.forEach((item) => {
+          const questionText = item.getAttribute('data-question') || '';
+          const answerText = item.getAttribute('data-answer') || '';
+          const matches = !q || questionText.includes(q) || answerText.includes(q);
+          (item as HTMLElement).style.display = matches ? '' : 'none';
+          if (matches) sectionHasMatch = true;
+        });
+
+        (section as HTMLElement).style.display = sectionHasMatch ? '' : 'none';
+        if (sectionHasMatch) anyVisible = true;
+      });
+
+      if (noResults) {
+        noResults.classList.toggle('hidden', anyVisible || !q);
+      }
+    }
+
+    searchInput?.addEventListener('input', () => filterFAQs(searchInput.value));
+
+    // Popular search tags
+    document.querySelectorAll('.search-tag').forEach((tag) => {
+      tag.addEventListener('click', () => {
+        const term = tag.getAttribute('data-term') || '';
+        if (searchInput) {
+          searchInput.value = term;
+          filterFAQs(term);
+          searchInput.focus();
+        }
+      });
+    });
+
+    // Active category highlighting on scroll
+    const categoryLinks = document.querySelectorAll('.category-link');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            categoryLinks.forEach((link) => {
+              const isActive = link.getAttribute('data-category') === id;
+              link.classList.toggle('text-white', isActive);
+              link.classList.toggle('border-white/50', isActive);
+              link.classList.toggle('text-brand-gray-500', !isActive);
+              link.classList.toggle('border-transparent', !isActive);
+            });
+          }
+        });
+      },
+      { rootMargin: '-30% 0px -60% 0px' }
+    );
+
+    faqSections.forEach((section) => observer.observe(section));
+  });
+</script>

@@ -24,17 +24,19 @@ const videoSrc = streamId ? `https://customer-5zjora8ha9v60sg3.cloudflarestream.
         muted
         loop
         playsinline
-        poster={image}
+        poster={image || undefined}
         class="w-full h-full object-cover"
       >
         <source src={videoSrc} type="video/mp4" />
       </video>
-    ) : (
+    ) : image ? (
       <img
         src={image}
         alt={name}
         class="w-full h-full object-cover"
       />
+    ) : (
+      <div class="w-full h-full bg-brand-black"></div>
     )}
     <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/50 to-transparent"></div>
     <div class="absolute inset-0 bg-gradient-to-r from-brand-black/60 to-transparent"></div>

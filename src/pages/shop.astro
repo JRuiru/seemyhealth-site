@@ -14,6 +14,7 @@ const shopProducts = [
     ...products["ring-one"],
     slug: "ring-one",
     badge: "Best Seller",
+    shared: false,
     shortFeatures: ["24/7 Heart Rate", "SpO2", "Sleep Stages", "7-Day Battery"],
     secondImage: `${CF_IMG}/ring-all-finishes/public`,
     finishes: ["Midnight Black — $179.99", "Aurora Gold — $199.99"],
@@ -22,7 +23,8 @@ const shopProducts = [
     ...products["scale"],
     slug: "scale",
     badge: null,
-    shortFeatures: ["13 Body Metrics", "4-Point BIA", "Wi-Fi Sync", "Multi-User"],
+    shared: true,
+    shortFeatures: ["13 Body Metrics", "4-Point BIA", "Shared Device", "Multi-User"],
     secondImage: `${CF_IMG}/scale-white-pack/public`,
     finishes: ["Obsidian Black", "Frost White"],
   },
@@ -30,6 +32,7 @@ const shopProducts = [
     ...products["scale-pro"],
     slug: "scale-pro",
     badge: "Pro",
+    shared: true,
     shortFeatures: ["21 Body Metrics", "8-Point BIA", "Segmental Analysis", "Color Display"],
     secondImage: `${CF_IMG}/scale-pro-laser-front/public`,
     finishes: ["Obsidian Black", "Frost White"],
@@ -38,6 +41,7 @@ const shopProducts = [
     ...products["bp-monitor"],
     slug: "bp-monitor",
     badge: "FDA Cleared",
+    shared: true,
     shortFeatures: ["Clinical Accuracy", "Irregular HB Detection", "30s Reading", "Rechargeable"],
     secondImage: `${CF_IMG}/bp-white/public`,
     finishes: ["Black", "White"],
@@ -46,6 +50,7 @@ const shopProducts = [
     ...products["hydra-one"],
     slug: "hydra-one",
     badge: null,
+    shared: false,
     shortFeatures: ["Auto Tracking", "LED Progress Ring", "30-Day Battery", "750ml"],
     secondImage: `${CF_IMG}/bottle-trio-studio/public`,
     finishes: ["Black", "White", "Purple"],
@@ -54,6 +59,7 @@ const shopProducts = [
     ...products["hema-one"],
     slug: "hema-one",
     badge: "Coming Soon",
+    shared: true,
     shortFeatures: ["Fingertip Sample", "5-Min Results", "4 Key Markers", "10 Cartridges"],
     secondImage: `${CF_IMG}/hema-one-device-web/public`,
     finishes: null,
@@ -65,55 +71,63 @@ const shopProducts = [
   <Navbar />
 
   <!-- Hero -->
-  <section class="pt-32 pb-16 sm:pt-40 sm:pb-20 bg-brand-black">
+  <section class="pt-32 pb-12 sm:pt-40 sm:pb-16 bg-brand-black">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="max-w-2xl" data-scroll-reveal>
+      <div class="max-w-2xl mb-10" data-scroll-reveal>
         <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Shop</p>
         <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-300 uppercase leading-[0.95] mb-6">
           Choose Your <span class="font-500">Devices</span>
         </h1>
         <p class="text-lg text-brand-gray-400 leading-relaxed">
-          Medical-grade sensors. Designed for daily wear. Free shipping on all orders.
+          Medical-grade sensors. Designed for daily wear.
           Start with one device or build your complete health ecosystem.
         </p>
+      </div>
+
+      <!-- Inline trust pills -->
+      <div class="flex flex-wrap gap-3" data-scroll-reveal>
+        <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-[1.5px] text-brand-gray-400 px-4 py-2 rounded-full border border-white/5 bg-white/[0.02]">
+          <svg class="w-3.5 h-3.5 text-brand-gray-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H6.375m11.25 0h3.375a1.125 1.125 0 001.125-1.125v-2.764a3 3 0 00-.879-2.121l-2.007-2.008a3 3 0 00-2.121-.879H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" /></svg>
+          Free shipping
+        </span>
+        <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-[1.5px] text-brand-gray-400 px-4 py-2 rounded-full border border-white/5 bg-white/[0.02]">
+          <svg class="w-3.5 h-3.5 text-brand-gray-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3" /></svg>
+          1-month free trial
+        </span>
+        <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-[1.5px] text-brand-gray-400 px-4 py-2 rounded-full border border-white/5 bg-white/[0.02]">
+          <svg class="w-3.5 h-3.5 text-brand-gray-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" /></svg>
+          30-day returns
+        </span>
       </div>
     </div>
   </section>
 
-  <!-- Free trial banner -->
-  <section class="bg-brand-dark border-y border-white/5">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-center">
-      <span class="text-[11px] uppercase tracking-[2px] text-brand-gray-400">
-        <span class="text-white">Free shipping</span> on all orders
-      </span>
-      <span class="hidden sm:inline text-brand-gray-800">|</span>
-      <span class="text-[11px] uppercase tracking-[2px] text-brand-gray-400">
-        <span class="text-white">1-month free trial</span> of the app
-      </span>
-      <span class="hidden sm:inline text-brand-gray-800">|</span>
-      <span class="text-[11px] uppercase tracking-[2px] text-brand-gray-400">
-        <span class="text-white">30-day returns</span> no questions asked
-      </span>
-    </div>
-  </section>
-
   <!-- Product Grid -->
-  <section class="py-16 sm:py-24 bg-brand-black">
+  <section class="py-12 sm:py-20 bg-brand-black">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="space-y-8">
+      <div class="space-y-6">
         {shopProducts.map((product, i) => (
           <div
-            class="group rounded-2xl bg-brand-gray-900 overflow-hidden border border-white/5 hover:border-white/10 transition-colors duration-300"
+            class="group relative rounded-2xl bg-brand-gray-900 overflow-hidden border border-white/5 hover:border-white/10 transition-all duration-500"
             data-scroll-reveal
           >
-            <div class="grid lg:grid-cols-2">
+            <!-- Accent color bar top -->
+            <div class="h-[2px] w-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={`background: ${product.color}`}></div>
+
+            <div class:list={["grid lg:grid-cols-2", i % 2 === 1 && "lg:direction-rtl"]}>
               <!-- Image side -->
-              <div class="relative h-[350px] sm:h-[450px] lg:h-auto overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 product-image-primary"
-                />
+              <div class:list={["relative h-[350px] sm:h-[450px] lg:h-auto lg:min-h-[500px] overflow-hidden", i % 2 === 1 && "lg:order-2"]}>
+                {product.image ? (
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                ) : (
+                  <div class="w-full h-full bg-brand-black flex items-center justify-center">
+                    <div class="w-24 h-24 rounded-full opacity-20" style={`background: radial-gradient(circle, ${product.color}40, transparent)`}></div>
+                  </div>
+                )}
                 {product.secondImage && (
                   <img
                     src={product.secondImage}
@@ -121,8 +135,12 @@ const shopProducts = [
                     class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   />
                 )}
-                {product.badge && (
-                  <div class="absolute top-6 left-6">
+                <!-- Ambient glow on hover -->
+                <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={`background: radial-gradient(ellipse at center, ${product.color}08, transparent 70%)`}></div>
+
+                <!-- Badges -->
+                <div class="absolute top-6 left-6 flex items-center gap-2">
+                  {product.badge && (
                     <span class:list={[
                       "text-[10px] uppercase tracking-[2px] font-medium px-4 py-2 rounded-full",
                       product.badge === "Coming Soon"
@@ -131,13 +149,35 @@ const shopProducts = [
                     ]}>
                       {product.badge}
                     </span>
-                  </div>
-                )}
+                  )}
+                </div>
+
+                <!-- Shared / Personal badge -->
+                <div class="absolute top-6 right-6">
+                  <span class:list={[
+                    "text-[9px] uppercase tracking-[1.5px] px-3 py-1.5 rounded-full backdrop-blur-sm",
+                    product.shared
+                      ? "bg-white/10 text-white/70"
+                      : "bg-white/10 text-white/70"
+                  ]}>
+                    {product.shared ? (
+                      <span class="flex items-center gap-1.5">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-5.728M12 2.25c-4.97 0-9 4.03-9 9s4.03 9 9 9m0-18a8.96 8.96 0 015.672 2.018M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0" /></svg>
+                        Shared device
+                      </span>
+                    ) : (
+                      <span class="flex items-center gap-1.5">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                        Personal
+                      </span>
+                    )}
+                  </span>
+                </div>
               </div>
 
               <!-- Details side -->
-              <div class="flex flex-col justify-center p-8 sm:p-10 lg:p-14">
-                <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-3">{product.tagline}</p>
+              <div class:list={["flex flex-col justify-center p-8 sm:p-10 lg:p-14", i % 2 === 1 && "lg:order-1"]}>
+                <p class="text-[11px] uppercase tracking-[3px] mb-3" style={`color: ${product.color}90`}>{product.tagline}</p>
                 <h2 class="font-display text-3xl sm:text-4xl font-400 uppercase mb-2">{product.name}</h2>
                 <p class="font-display text-2xl font-300 text-brand-gray-300 mb-6">
                   <PriceTag
@@ -155,7 +195,7 @@ const shopProducts = [
                 <div class="grid grid-cols-2 gap-3 mb-8">
                   {product.shortFeatures.map((f) => (
                     <div class="flex items-center gap-2">
-                      <svg class="w-4 h-4 text-brand-gray-600 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <svg class="w-4 h-4 flex-shrink-0" style={`color: ${product.color}80`} fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                       <span class="text-[12px] text-brand-gray-400">{f}</span>
@@ -167,9 +207,9 @@ const shopProducts = [
                 {product.finishes && (
                   <div class="mb-8">
                     <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600 mb-3">Available Finishes</p>
-                    <div class="flex gap-2">
+                    <div class="flex flex-wrap gap-2">
                       {product.finishes.map((finish) => (
-                        <span class="text-[11px] uppercase tracking-[1.5px] px-3 py-1.5 border border-white/10 rounded-full text-brand-gray-400">
+                        <span class="text-[11px] uppercase tracking-[1.5px] px-3 py-1.5 border border-white/10 rounded-full text-brand-gray-400 hover:border-white/20 transition-colors">
                           {finish}
                         </span>
                       ))}
@@ -186,16 +226,18 @@ const shopProducts = [
                   ) : (
                     <a
                       href={`/configure/${product.slug}`}
-                      class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+                      class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium rounded-full transition-all duration-300 hover:shadow-lg"
+                      style={`background: ${product.color}; color: white; --tw-shadow-color: ${product.color}30`}
                     >
-                      Buy Now
+                      Configure & Buy
                     </a>
                   )}
                   <a
                     href={`/products/${product.slug}`}
-                    class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
+                    class="inline-flex items-center gap-2 px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
                   >
                     Learn More
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                   </a>
                 </div>
               </div>
@@ -206,8 +248,29 @@ const shopProducts = [
     </div>
   </section>
 
-  <!-- Bundle CTA -->
-  <section class="py-20 sm:py-28 bg-brand-dark border-t border-white/5">
+  <!-- Don't need a device? -->
+  <section class="py-16 sm:py-24 bg-brand-dark border-t border-white/5">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center" data-scroll-reveal>
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">No Device Yet?</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-6">
+        Start with the <span class="font-500">App</span>
+      </h2>
+      <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto mb-10">
+        Journal, mood tracking, meals, nutrition plans, fasting schedules, hydration logging, and community challenges — all work before you buy a single device. Your first month is free.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="/app"
+          class="inline-flex items-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+        >
+          Explore the App
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ecosystem CTA -->
+  <section class="py-16 sm:py-24 bg-brand-black border-t border-white/5">
     <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center" data-scroll-reveal>
       <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Complete Ecosystem</p>
       <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-6">
@@ -220,17 +283,20 @@ const shopProducts = [
       <a
         href="#"
         onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;"
-        class="inline-flex items-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+        class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[1.5px] font-medium text-white hover:text-brand-gray-300 transition-colors"
       >
-        Shop All Devices
+        Back to top
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
       </a>
     </div>
   </section>
 
   <!-- Trust bar -->
-  <section class="bg-brand-black border-t border-white/5">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center" data-scroll-stagger>
+  <section class="bg-brand-dark border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-10">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center" data-scroll-stagger>
         <div>
           <p class="font-display text-2xl sm:text-3xl font-300 mb-1">Free</p>
           <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">Shipping Worldwide</p>

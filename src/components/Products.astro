@@ -11,17 +11,33 @@ const products = [
     image: `${CF_IMG}/ring-hero-hands/public`,
     price: "From $179.99",
     features: ["Heart Rate", "SpO2", "Sleep Stages", "Stress"],
+    metrics: [{ label: "24/7", sublabel: "Monitoring" }, { label: "7 days", sublabel: "Battery" }],
     color: "#F97316",
+    shared: false,
   },
   {
     name: "The Scale",
     slug: "scale",
     tagline: "Beyond the number",
-    description: "Full body composition — The Scale for essentials, The Scale Pro for segmental analysis. Both in Black and White.",
+    description: "13 body composition metrics from a single step. Weight, body fat, muscle mass, and more — shared by design, no account lock-in.",
     image: `${CF_IMG}/scale-black-pack/public`,
     price: "From $99.99",
-    features: ["Body Composition", "Multi-User", "Wi-Fi Sync", "Segmental (Pro)"],
+    features: ["Body Composition", "Multi-User", "Shared Device", "13 Metrics"],
+    metrics: [{ label: "13", sublabel: "Metrics" }, { label: "∞", sublabel: "Users" }],
     color: "#3B82F6",
+    shared: true,
+  },
+  {
+    name: "The Scale Pro",
+    slug: "scale-pro",
+    tagline: "Segmental precision",
+    description: "8-point dual-frequency BIA with retractable handle. Segmental analysis for arms, legs, and trunk — 21 metrics total.",
+    image: `${CF_IMG}/scale-pro-hero-new/public`,
+    price: "From $149.99",
+    features: ["Segmental Analysis", "21 Metrics", "Shared Device", "Dual-Frequency"],
+    metrics: [{ label: "21", sublabel: "Metrics" }, { label: "8-point", sublabel: "BIA" }],
+    color: "#3B82F6",
+    shared: true,
   },
   {
     name: "BP Monitor",
@@ -31,7 +47,9 @@ const products = [
     image: `${CF_IMG}/bp-black/public`,
     price: "$89.99",
     features: ["Systolic", "Diastolic", "Pulse", "Irregular HB"],
+    metrics: [{ label: "30s", sublabel: "Reading" }, { label: "∞", sublabel: "Users" }],
     color: "#EF4444",
+    shared: true,
   },
   {
     name: "Hydra One",
@@ -41,7 +59,9 @@ const products = [
     image: `${CF_IMG}/bottle-studio-wet/public`,
     price: "$59.99",
     features: ["Intake", "Reminders", "LED Sync", "750ml"],
+    metrics: [{ label: "30 days", sublabel: "Battery" }, { label: "750", sublabel: "ml" }],
     color: "#06B6D4",
+    shared: false,
   },
   {
     name: "Hema One",
@@ -51,15 +71,17 @@ const products = [
     image: `${CF_IMG}/hema-one-web/public`,
     price: "$99.99",
     features: ["Hemoglobin", "Glucose", "Cholesterol", "Iron"],
+    metrics: [{ label: "60s", sublabel: "Results" }, { label: "∞", sublabel: "Users" }],
     color: "#A855F7",
+    shared: true,
   },
 ];
 ---
 
 <section id="products" class="relative bg-brand-black overflow-hidden" data-products-horizontal>
-  <!-- Section header (visible before pin) -->
-  <div class="pt-24 sm:pt-32 pb-12 max-w-7xl mx-auto px-6 lg:px-8" data-scroll-reveal>
-    <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Our Devices</p>
+  <!-- Section header -->
+  <div class="pt-16 sm:pt-20 pb-8 max-w-7xl mx-auto px-6 lg:px-8" data-scroll-reveal>
+    <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Six Devices</p>
     <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95]">
       The <span class="font-500">Ecosystem</span>
     </h2>
@@ -68,7 +90,7 @@ const products = [
   <!-- Horizontal scroll track -->
   <div class="relative" data-products-track-wrap>
     <!-- Progress bar -->
-    <div class="sticky top-0 z-10 px-6 lg:px-8 pt-4 pb-6">
+    <div class="sticky top-0 z-10 px-6 lg:px-8 pt-3 pb-4">
       <div class="max-w-7xl mx-auto">
         <div class="h-[1px] bg-white/10 rounded-full overflow-hidden">
           <div class="h-full bg-white/40 rounded-full origin-left" style="transform: scaleX(0)" data-products-progress></div>
@@ -76,57 +98,102 @@ const products = [
       </div>
     </div>
 
-    <!-- Sliding panels container -->
+    <!-- Sliding panels -->
     <div class="flex" data-products-track style={`width: ${products.length * 100}vw`}>
       {products.map((product, i) => (
         <div class="w-screen flex-shrink-0 px-6 lg:px-8" data-product-panel>
-          <div class="max-w-7xl mx-auto h-[70vh] flex items-center">
-            <a href={`/products/${product.slug}`} class="group block w-full">
-              <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-                <!-- Image -->
-                <div class="relative h-[300px] sm:h-[400px] lg:h-[500px] overflow-hidden rounded-2xl bg-brand-gray-900">
+          <div class="max-w-7xl mx-auto h-[80vh] pt-16 pb-4">
+            <div class="group w-full h-full">
+              <div class="grid lg:grid-cols-2 gap-8 lg:gap-20 items-center h-full">
+
+                {/* Image with ambient glow */}
+                <a href={`/products/${product.slug}`} class="relative block h-[300px] sm:h-[400px] lg:h-full overflow-hidden rounded-2xl bg-brand-gray-900">
+                  {/* Ambient color glow */}
+                  <div
+                    class="absolute -inset-20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-3xl pointer-events-none"
+                    style={`background: radial-gradient(circle at center, ${product.color}15 0%, transparent 70%)`}
+                  ></div>
+
                   <img
                     src={product.image}
                     alt={product.name}
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    class="relative w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div class="absolute inset-0 bg-gradient-to-t from-brand-gray-900/40 to-transparent"></div>
-                  <!-- Product number -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-brand-gray-900/50 to-transparent"></div>
+
+                  {/* Product number */}
                   <div class="absolute top-6 left-6">
                     <span class="text-[11px] uppercase tracking-[2px] text-white/40 font-display">{String(i + 1).padStart(2, '0')} / {String(products.length).padStart(2, '0')}</span>
                   </div>
-                </div>
 
-                <!-- Content -->
+                  {/* Shared / Personal badge */}
+                  <div class="absolute top-6 right-6">
+                    <span
+                      class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] uppercase tracking-[1px] backdrop-blur-md"
+                      style={product.shared
+                        ? `background: ${product.color}20; color: ${product.color}; border: 1px solid ${product.color}30;`
+                        : "background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.1);"}
+                    >
+                      <span class="w-1.5 h-1.5 rounded-full" style={`background: ${product.shared ? product.color : 'rgba(255,255,255,0.4)'}`}></span>
+                      {product.shared ? "Shared device" : "Personal"}
+                    </span>
+                  </div>
+
+                  {/* Floating metric callouts */}
+                  <div class="absolute bottom-6 left-6 right-6 flex gap-3">
+                    {product.metrics.map((m) => (
+                      <div class="rounded-lg bg-black/50 backdrop-blur-md border border-white/10 px-3 py-2">
+                        <p class="text-base font-display font-500 text-white leading-none">{m.label}</p>
+                        <p class="text-[9px] uppercase tracking-wider text-white/50 mt-0.5">{m.sublabel}</p>
+                      </div>
+                    ))}
+                  </div>
+                </a>
+
+                {/* Content */}
                 <div class="flex flex-col justify-center">
-                  <div class="h-[3px] w-12 rounded-full mb-6" style={`background: ${product.color}`}></div>
-                  <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-4">{product.tagline}</p>
-                  <h3 class="font-display text-3xl sm:text-4xl lg:text-5xl font-400 uppercase mb-4 leading-[0.95]">{product.name}</h3>
+                  <div class="h-[3px] w-12 rounded-full mb-8 transition-all duration-500 group-hover:w-20" style={`background: ${product.color}`}></div>
+                  <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-5">{product.tagline}</p>
+                  <h3 class="font-display text-3xl sm:text-4xl lg:text-5xl font-400 uppercase mb-5 leading-[0.95]">{product.name}</h3>
                   <p class="text-brand-gray-400 leading-relaxed mb-8 max-w-md">{product.description}</p>
-                  <div class="flex flex-wrap gap-3 mb-8">
+                  <div class="flex flex-wrap gap-3 mb-10">
                     {product.features.map((f) => (
-                      <span class="text-[11px] uppercase tracking-[1.5px] px-3 py-1.5 border border-white/10 rounded-full text-brand-gray-400">
+                      <span
+                        class="text-[11px] uppercase tracking-[1.5px] px-3 py-1.5 rounded-full border transition-colors"
+                        style={`border-color: ${product.color}20; color: rgba(255,255,255,0.5);`}
+                      >
                         {f}
                       </span>
                     ))}
                   </div>
-                  <div class="flex items-center justify-between max-w-md">
+                  <div class="flex items-center gap-4 mb-6 max-w-md">
                     <span class="text-2xl font-display font-400">
                       <PriceTag handle={product.slug} mode="from" prefix="From " fallback={product.price} client:idle />
                     </span>
-                    <span class="text-[13px] uppercase tracking-[1.5px] text-brand-gray-400 group-hover:text-white transition-colors">
-                      Explore &rarr;
-                    </span>
+                  </div>
+                  <div class="flex items-center gap-4 max-w-md">
+                    <a
+                      href={`/configure/${product.slug}`}
+                      class="inline-flex items-center px-6 py-3 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black rounded-full hover:opacity-90 transition-opacity"
+                      style={`background: ${product.color}`}
+                    >
+                      Configure & Buy
+                    </a>
+                    <a
+                      href={`/products/${product.slug}`}
+                      class="text-[12px] uppercase tracking-[1.5px] text-brand-gray-500 hover:text-white transition-colors"
+                    >
+                      Learn more &rarr;
+                    </a>
                   </div>
                 </div>
               </div>
-            </a>
+            </div>
           </div>
         </div>
       ))}
     </div>
 
-    <!-- Bottom padding -->
-    <div class="h-16"></div>
+    <div class="h-8"></div>
   </div>
 </section>

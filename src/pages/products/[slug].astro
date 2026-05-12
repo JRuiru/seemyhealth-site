@@ -27,8 +27,8 @@ const { slug } = Astro.params;
 const product = products[slug as string];
 const content = productContent[slug as string];
 
-const heroLifestyle = product.lifestyleImages.slice(0, 3);
-const remainingLifestyle = product.lifestyleImages.slice(3);
+const heroLifestyle = product.lifestyleImages.slice(0, 4);
+const remainingLifestyle = product.lifestyleImages.slice(4);
 
 const priceMatch = product.price.match(/\$([\d.]+)/);
 const numericPrice = priceMatch ? priceMatch[1] : "0";

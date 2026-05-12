@@ -1,0 +1,247 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import { setupData } from '../../../data/setup-guides';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return Object.keys(setupData).map((device) => ({ params: { device } }));
+}
+
+const { device } = Astro.params;
+const data = setupData[device as string];
+const deviceSlugs = Object.keys(setupData);
+const currentIndex = deviceSlugs.indexOf(device as string);
+const prevSlug = currentIndex > 0 ? deviceSlugs[currentIndex - 1] : null;
+const nextSlug = currentIndex < deviceSlugs.length - 1 ? deviceSlugs[currentIndex + 1] : null;
+const prevName = prevSlug ? setupData[prevSlug].name : null;
+const nextName = nextSlug ? setupData[nextSlug].name : null;
+---
+
+<Layout
+  title={`Set up your ${data.name} — SeeMyHealth`}
+  description={`Step-by-step setup guide for ${data.name}. Pair, calibrate, and get your first reading.`}
+  canonicalPath={`/support/setup/${device}`}
+>
+  <Navbar />
+
+  <section class="pt-32 pb-20 sm:pt-40 sm:pb-28 bg-brand-black min-h-screen">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      {/* Breadcrumb */}
+      <a href="/support/setup" class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[1.5px] text-brand-gray-500 hover:text-white transition-colors mb-8">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        All guides
+      </a>
+
+      {/* Title */}
+      <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-300 uppercase leading-[0.95] mb-2">
+        Set up your <span class="font-500">{data.name}.</span>
+      </h1>
+      <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-12">
+        Step <span id="current-step-num">1</span> of {data.steps.length}
+      </p>
+
+      {/* Main layout */}
+      <div class="lg:grid lg:grid-cols-[200px_1fr] lg:gap-10">
+        {/* Step sidebar */}
+        <aside class="hidden lg:block">
+          <nav class="space-y-1 sticky top-28">
+            {data.steps.map((step, i) => (
+              <button
+                class="step-nav-btn w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left transition-all"
+                data-step={i}
+              >
+                <div
+                  class="step-indicator w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-medium shrink-0 border transition-all"
+                  data-step-indicator={i}
+                >
+                  <span class="step-number">{i + 1}</span>
+                  <svg class="step-check hidden w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <span class="step-label text-sm text-brand-gray-500 transition-colors">{step.title}</span>
+              </button>
+            ))}
+          </nav>
+        </aside>
+
+        {/* Step content */}
+        <div>
+          {data.steps.map((step, i) => (
+            <div
+              class="step-panel"
+              data-panel={i}
+              style={i > 0 ? "display: none;" : ""}
+            >
+              {/* Image / animation placeholder */}
+              <div class="rounded-2xl bg-brand-gray-900 border border-white/5 overflow-hidden aspect-[16/9] flex items-center justify-center mb-8">
+                <div class="text-center">
+                  <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600 mb-2">
+                    setup/{device}/step{i + 1}
+                  </p>
+                  <p class="text-sm text-brand-gray-700">Animated GIF or short clip</p>
+                </div>
+              </div>
+
+              {/* Step text */}
+              <h2 class="font-display text-3xl font-300 uppercase mb-3">{step.title}</h2>
+              <p class="text-brand-gray-400 leading-relaxed max-w-xl mb-4">{step.description}</p>
+
+              {step.tip && (
+                <div class="flex items-start gap-3 rounded-lg bg-white/[0.03] border border-white/5 p-4 max-w-xl">
+                  <svg class="w-4 h-4 text-brand-gray-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+                  </svg>
+                  <p class="text-sm text-brand-gray-500">{step.tip}</p>
+                </div>
+              )}
+
+              <p class="text-[12px] text-brand-gray-600 mt-6">
+                Trouble with this step? <a href="/support#contact" class="text-white hover:underline">Get help →</a>
+              </p>
+            </div>
+          ))}
+
+          {/* Navigation */}
+          <div class="flex items-center justify-between mt-12 pt-8 border-t border-white/5">
+            <button
+              id="btn-back"
+              class="inline-flex items-center gap-2 px-5 py-3 text-[12px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+              Back
+            </button>
+            <button
+              id="btn-next"
+              class="inline-flex items-center gap-2 px-5 py-3 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+            >
+              Next
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Next/prev device links */}
+          <div class="flex items-center justify-between mt-6 text-[12px]">
+            {prevSlug ? (
+              <a href={`/support/setup/${prevSlug}`} class="text-brand-gray-600 hover:text-white transition-colors">
+                ← {prevName}
+              </a>
+            ) : <span />}
+            {nextSlug ? (
+              <a href={`/support/setup/${nextSlug}`} class="text-brand-gray-600 hover:text-white transition-colors">
+                {nextName} →
+              </a>
+            ) : <span />}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<script define:vars={{ totalSteps: data.steps.length, deviceColor: data.color }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    let current = 0;
+    const total = totalSteps;
+    const panels = document.querySelectorAll('.step-panel');
+    const navBtns = document.querySelectorAll('.step-nav-btn');
+    const indicators = document.querySelectorAll('.step-indicator');
+    const btnBack = document.getElementById('btn-back');
+    const btnNext = document.getElementById('btn-next');
+    const stepNum = document.getElementById('current-step-num');
+
+    function goTo(step) {
+      if (step < 0 || step >= total) return;
+      current = step;
+
+      // Show/hide panels
+      panels.forEach((p, i) => {
+        p.style.display = i === current ? '' : 'none';
+      });
+
+      // Update sidebar
+      navBtns.forEach((btn, i) => {
+        const label = btn.querySelector('.step-label');
+        const indicator = btn.querySelector('.step-indicator');
+        const number = btn.querySelector('.step-number');
+        const check = btn.querySelector('.step-check');
+
+        if (i < current) {
+          // Completed
+          indicator.style.background = deviceColor;
+          indicator.style.borderColor = deviceColor;
+          indicator.style.color = '#000';
+          number.classList.add('hidden');
+          check.classList.remove('hidden');
+          label.classList.remove('text-white');
+          label.classList.add('text-brand-gray-500');
+          btn.classList.remove('bg-white/5');
+        } else if (i === current) {
+          // Active
+          indicator.style.background = 'transparent';
+          indicator.style.borderColor = deviceColor;
+          indicator.style.color = deviceColor;
+          number.classList.remove('hidden');
+          check.classList.add('hidden');
+          label.classList.add('text-white');
+          label.classList.remove('text-brand-gray-500');
+          btn.classList.add('bg-white/5');
+        } else {
+          // Future
+          indicator.style.background = 'transparent';
+          indicator.style.borderColor = 'rgba(255,255,255,0.1)';
+          indicator.style.color = 'rgba(255,255,255,0.3)';
+          number.classList.remove('hidden');
+          check.classList.add('hidden');
+          label.classList.remove('text-white');
+          label.classList.add('text-brand-gray-500');
+          btn.classList.remove('bg-white/5');
+        }
+      });
+
+      // Update step counter
+      if (stepNum) stepNum.textContent = String(current + 1);
+
+      // Update back/next
+      if (btnBack) btnBack.style.visibility = current === 0 ? 'hidden' : 'visible';
+      if (btnNext) btnNext.textContent = current === total - 1 ? '✓ Done' : '';
+      if (btnNext && current < total - 1) {
+        btnNext.innerHTML = 'Next <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>';
+      } else if (btnNext) {
+        btnNext.innerHTML = 'Done <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>';
+      }
+
+      // Scroll to top of content on mobile
+      window.scrollTo({ top: 200, behavior: 'smooth' });
+    }
+
+    // Sidebar clicks
+    navBtns.forEach((btn, i) => {
+      btn.addEventListener('click', () => goTo(i));
+    });
+
+    // Back/Next
+    btnBack?.addEventListener('click', () => goTo(current - 1));
+    btnNext?.addEventListener('click', () => {
+      if (current === total - 1) {
+        window.location.href = '/support/setup';
+      } else {
+        goTo(current + 1);
+      }
+    });
+
+    // Initialize
+    goTo(0);
+  });
+</script>

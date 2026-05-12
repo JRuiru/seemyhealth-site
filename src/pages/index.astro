@@ -2,11 +2,13 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Hero from '../components/Hero.astro';
-import EcosystemVision from '../components/EcosystemVision.astro';
+import HomeProblem from '../components/HomeProblem.astro';
+import HomeAppFirst from '../components/HomeAppFirst.astro';
+import HomeSharedDevices from '../components/HomeSharedDevices.astro';
+import HomeFamily from '../components/HomeFamily.astro';
 import Products from '../components/Products.astro';
 import Stats from '../components/Stats.astro';
-import AppShowcase from '../components/AppShowcase.astro';
-import LifestyleStrip from '../components/LifestyleStrip.astro';
+import HomeTrust from '../components/HomeTrust.astro';
 import HowItWorks from '../components/HowItWorks.astro';
 import Testimonials from '../components/Testimonials.astro';
 import CTA from '../components/CTA.astro';
@@ -33,34 +35,44 @@ const webSiteSchema = {
 ---
 
 <Layout
-  title="SeeMyHealth — Medical-Grade Health Monitoring Devices"
+  title="SeeMyHealth — One App. Six Devices. Nothing Hidden."
   canonicalPath="/"
   jsonLd={[orgSchema, webSiteSchema]}
 >
   <Navbar variant="transparent" />
+
+  <!-- 1. Hero — See Your Health -->
   <Hero />
-  <EcosystemVision />
 
-  <!-- Bridge between ecosystem and products -->
-  <section class="relative bg-brand-dark py-20 sm:py-28 overflow-hidden">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4" data-scroll-reveal>Meet the Lineup</p>
-      <h2 class="font-display text-3xl sm:text-4xl lg:text-6xl font-300 uppercase leading-[0.95] mb-6" data-scroll-reveal>
-        Every device.<br />
-        <span class="font-500">Built for real life.</span>
-      </h2>
-      <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto" data-scroll-reveal>
-        Medical-grade precision meets everyday design. Pick one to start, or build your complete ecosystem.
-      </p>
-    </div>
-  </section>
+  <!-- 2. The problem — fragmented health data -->
+  <HomeProblem />
 
+  <!-- 3. App works from day one — the answer -->
+  <HomeAppFirst />
+
+  <!-- 4. Shared by design — the differentiator -->
+  <HomeSharedDevices />
+
+  <!-- 5. Family wellness — care is shared -->
+  <HomeFamily />
+
+  <!-- 6. The devices -->
   <Products />
+
+  <!-- 7. Stats -->
   <Stats />
-  <AppShowcase />
-  <LifestyleStrip />
+
+  <!-- 8. How it works -->
   <HowItWorks />
+
+  <!-- 9. Trust & privacy -->
+  <HomeTrust />
+
+  <!-- 10. Social proof -->
   <Testimonials />
+
+  <!-- 11. Final CTA -->
   <CTA />
+
   <Footer />
 </Layout>

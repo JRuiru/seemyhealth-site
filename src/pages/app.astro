@@ -29,9 +29,14 @@ const standAloneFeatures = [
     icon: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
   },
   {
-    title: "Meals, recipes & nutrition",
-    description: "Log meals with photos or barcode scan. Browse curated recipes matched to your goals. Track macros, calories, and how food affects your energy.",
+    title: "Meals, nutrition & fasting",
+    description: "Log meals with photos or barcode scan. Build nutrition plans, set fasting schedules, and get smart reminders — all without a device.",
     icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
+  },
+  {
+    title: "Hydration tracking",
+    description: "Log water intake manually, set daily goals, and get reminders to stay on track. Hydra One automates it — but the app works on its own.",
+    icon: "M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z",
   },
   {
     title: "Family data sharing",
@@ -152,8 +157,9 @@ const timeline = [
 const comparisonRows = [
   { feature: "Mood tracking & journalling", appOnly: true, withDevices: true },
   { feature: "Meal logging & recipes", appOnly: true, withDevices: true },
-{ feature: "Habit streaks", appOnly: true, withDevices: true },
-  { feature: "Wellness content library", appOnly: true, withDevices: true },
+  { feature: "Nutrition & fasting plans", appOnly: true, withDevices: true },
+  { feature: "Hydration tracking (manual)", appOnly: true, withDevices: true },
+  { feature: "Habit streaks", appOnly: true, withDevices: true },
   { feature: "Family data sharing", appOnly: true, withDevices: true },
   { feature: "Care provider access", appOnly: true, withDevices: true },
   { feature: "Community & challenges", appOnly: true, withDevices: true },
@@ -161,7 +167,7 @@ const comparisonRows = [
   { feature: "Sleep staging & recovery score", appOnly: false, withDevices: true },
   { feature: "Body composition analysis", appOnly: false, withDevices: true },
   { feature: "Blood pressure tracking", appOnly: false, withDevices: true },
-  { feature: "Smart hydration goals", appOnly: false, withDevices: true },
+  { feature: "Auto hydration tracking (Hydra One)", appOnly: false, withDevices: true },
   { feature: "Blood marker insights", appOnly: false, withDevices: true },
   { feature: "Cross-device health correlations", appOnly: false, withDevices: true },
   { feature: "Secure doctor sharing (with live data)", appOnly: false, withDevices: true },
@@ -179,6 +185,10 @@ const faqs = [
   {
     q: "Do I need Plus to use my SeeMyHealth devices?",
     a: "No — you can pair and use devices without a Plus subscription. Plus unlocks the full app experience: cross-device insights, advanced sleep intelligence, guided programs, meal tracking, and unlimited history.",
+  },
+  {
+    q: "Do I need to own a device to use one?",
+    a: "No. The Scale, The Scale Pro, BP Monitor, and Hema One aren't locked to any account. Walk up to any one — at home, a gym, a friend's place — open the app, connect, and your reading saves to your profile. We engineered these devices to be shared.",
   },
   {
     q: "Can I use the app with non-SeeMyHealth devices?",
@@ -210,102 +220,39 @@ const allFeatures = [
   <Navbar />
 
   <!-- Hero -->
-  <section class="relative pt-32 pb-24 sm:pt-40 sm:pb-32 overflow-hidden">
+  <section class="relative min-h-screen lg:min-h-0 lg:h-[85vh] overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-b from-brand-dark to-brand-black"></div>
 
-    <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-        <!-- Text -->
-        <div data-scroll-reveal>
-          <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-6">The SeeMyHealth App</p>
-          <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-300 uppercase leading-[0.95] mb-6">
+    <!-- Phone image — full background on mobile, right half on desktop -->
+    <div class="absolute inset-0 lg:left-1/2 lg:right-0" data-scroll-reveal>
+      <div class="h-full overflow-hidden">
+        <img
+          src={`${CF_IMG}/app-hero-phones/public`}
+          alt="SeeMyHealth app — meals, health hub, and sleep tracking screens"
+          class="w-full h-full object-cover object-top lg:object-center scale-110"
+        />
+      </div>
+      <!-- Mobile: gradient so text reads over image -->
+      <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/80 to-brand-black/40 lg:hidden"></div>
+      <!-- Desktop: fade left edge into text half -->
+      <div class="hidden lg:block absolute inset-0 bg-gradient-to-r from-brand-black/90 via-brand-black/40 to-transparent"></div>
+    </div>
+
+    <!-- Text — overlays on mobile, left half on desktop -->
+    <div class="relative min-h-screen lg:min-h-0 lg:h-[85vh] flex items-end pb-16 lg:items-center lg:pb-0">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8 w-full">
+        <div class="max-w-xl lg:space-y-8" data-scroll-reveal>
+          <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-6 lg:mb-0">The SeeMyHealth App</p>
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-300 uppercase leading-[0.95] mb-6 lg:mb-0">
             Works the day you download it. <span class="font-500 italic">Smarter</span> when your devices arrive.
           </h1>
-          <p class="text-lg text-brand-gray-400 leading-relaxed mb-8">
-            Most health apps need hardware to be useful. Ours doesn't. Start with journalling, mood, meals, and guided programs — from day one of your trial. Add devices when you're ready and watch cross-device intelligence turn data into clarity.
+          <p class="text-base sm:text-lg text-brand-gray-400 leading-relaxed mb-8 lg:mb-0 max-w-lg">
+            Most health apps need hardware to be useful. Ours doesn't. Start with journalling, mood, meals, and guided programs — from day one of your trial. Add devices when you're ready.
           </p>
-          <AppStoreButtons />
-          <p class="text-[12px] text-brand-gray-600 mt-4">1-month free trial. Cancel anytime.</p>
-        </div>
-
-        <!-- Phone mockups -->
-        <div class="relative" data-scroll-reveal>
-          <div class="flex justify-center gap-4">
-            <!-- Phone 1: App-only view -->
-            <div class="relative w-[160px] sm:w-[200px]">
-              <div class="rounded-[1.5rem] sm:rounded-[2rem] border-2 border-white/10 bg-brand-gray-900 p-2 shadow-2xl shadow-black/50">
-                <div class="rounded-[1.2rem] sm:rounded-[1.6rem] bg-brand-black overflow-hidden">
-                  <div class="px-3 pt-3 pb-4 space-y-2.5">
-                    <p class="text-[8px] uppercase tracking-[1.5px] text-brand-gray-600">Journal</p>
-                    <div class="flex gap-1.5">
-                      {["😴", "😐", "🙂", "😊", "🤩"].map((e, i) => (
-                        <div class:list={["w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[10px]", i === 3 ? "bg-white/10 ring-1 ring-white/20" : "bg-brand-gray-900"]}>
-                          {e}
-                        </div>
-                      ))}
-                    </div>
-                    <div class="rounded-lg bg-brand-gray-900 p-2.5">
-                      <p class="text-[7px] uppercase tracking-wider text-brand-gray-600 mb-1">Today's Meals</p>
-                      <div class="space-y-1">
-                        <div class="flex justify-between"><span class="text-[8px] text-brand-gray-400">Breakfast</span><span class="text-[8px] text-brand-gray-600">420 cal</span></div>
-                        <div class="flex justify-between"><span class="text-[8px] text-brand-gray-400">Lunch</span><span class="text-[8px] text-brand-gray-600">580 cal</span></div>
-                      </div>
-                    </div>
-                    <div class="rounded-lg bg-brand-gray-900 p-2.5">
-                      <p class="text-[7px] uppercase tracking-wider text-brand-gray-600 mb-1">Habits</p>
-                      <div class="flex gap-1">
-                        <div class="w-4 h-4 rounded bg-green-500/20 flex items-center justify-center"><span class="text-[7px] text-green-400">✓</span></div>
-                        <div class="w-4 h-4 rounded bg-green-500/20 flex items-center justify-center"><span class="text-[7px] text-green-400">✓</span></div>
-                        <div class="w-4 h-4 rounded bg-white/5"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <p class="text-[9px] text-center text-brand-gray-600 mt-3 uppercase tracking-wider">Without devices</p>
-            </div>
-
-            <!-- Phone 2: With devices view -->
-            <div class="relative w-[160px] sm:w-[200px]">
-              <div class="rounded-[1.5rem] sm:rounded-[2rem] border-2 border-white/10 bg-brand-gray-900 p-2 shadow-2xl shadow-black/50">
-                <div class="rounded-[1.2rem] sm:rounded-[1.6rem] bg-brand-black overflow-hidden">
-                  <div class="px-3 pt-3 pb-4 space-y-2.5">
-                    <p class="text-[8px] uppercase tracking-[1.5px] text-brand-gray-600">Dashboard</p>
-                    <div class="rounded-lg bg-brand-gray-900 p-2.5 text-center">
-                      <div class="relative w-12 h-12 mx-auto mb-1">
-                        <svg class="w-12 h-12 -rotate-90" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="3"/><circle cx="24" cy="24" r="20" fill="none" stroke="#22c55e" stroke-width="3" stroke-dasharray="105" stroke-dashoffset="18" stroke-linecap="round"/></svg>
-                        <span class="absolute inset-0 flex items-center justify-center text-sm font-display">83</span>
-                      </div>
-                      <p class="text-[7px] text-brand-gray-600 uppercase">Recovery</p>
-                    </div>
-                    <div class="grid grid-cols-2 gap-1.5">
-                      <div class="rounded-lg bg-brand-gray-900 p-2">
-                        <div class="w-2 h-2 rounded-full bg-orange-500 mb-1"></div>
-                        <p class="text-[7px] text-brand-gray-600">Heart Rate</p>
-                        <p class="text-xs font-display">72 <span class="text-[7px] text-brand-gray-600">bpm</span></p>
-                      </div>
-                      <div class="rounded-lg bg-brand-gray-900 p-2">
-                        <div class="w-2 h-2 rounded-full bg-cyan-500 mb-1"></div>
-                        <p class="text-[7px] text-brand-gray-600">Hydration</p>
-                        <p class="text-xs font-display">1.8 <span class="text-[7px] text-brand-gray-600">L</span></p>
-                      </div>
-                    </div>
-                    <div class="rounded-lg bg-brand-gray-900 p-2">
-                      <p class="text-[7px] text-brand-gray-600 uppercase mb-1">Sleep — 7h 12m</p>
-                      <div class="flex gap-0.5 h-2">
-                        <div class="flex-1 rounded-sm bg-indigo-900/60"></div>
-                        <div class="flex-[2] rounded-sm bg-indigo-700/60"></div>
-                        <div class="flex-1 rounded-sm bg-indigo-500/60"></div>
-                        <div class="flex-[1.5] rounded-sm bg-indigo-700/60"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <p class="text-[9px] text-center text-brand-gray-600 mt-3 uppercase tracking-wider">With devices</p>
-            </div>
+          <div>
+            <AppStoreButtons />
+            <p class="text-[12px] text-brand-gray-600 mt-4">1-month free trial. Cancel anytime.</p>
           </div>
-          <div class="absolute -inset-16 bg-gradient-to-b from-white/[0.02] to-transparent rounded-full blur-3xl pointer-events-none"></div>
         </div>
       </div>
     </div>
@@ -369,6 +316,43 @@ const allFeatures = [
           </div>
         </div>
       ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Shared by design -->
+  <section class="py-16 sm:py-20 bg-brand-black border-t border-white/5">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      <div class="rounded-2xl border border-white/5 bg-brand-gray-900 p-8 sm:p-12 lg:flex lg:items-center lg:gap-12" data-scroll-reveal>
+        <div class="lg:flex-1 mb-8 lg:mb-0">
+          <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Shared by design</p>
+          <h3 class="font-display text-3xl sm:text-4xl font-300 uppercase leading-[0.95] mb-4">
+            You don't need to own a device <span class="font-500">to use one.</span>
+          </h3>
+          <p class="text-brand-gray-400 leading-relaxed">
+            We engineered The Scale, The Scale Pro, BP Monitor, and Hema One to work with any account. Walk up to one at home, a gym, a friend's place — open the app, connect, and your reading saves to your profile. No setup, no re-pairing, no account switching. One device, shared by a whole family or an entire floor.
+          </p>
+        </div>
+        <div class="lg:w-[280px] shrink-0">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="rounded-xl bg-brand-black border border-white/5 p-4 text-center">
+              <p class="text-2xl font-display font-500 mb-1">∞</p>
+              <p class="text-[10px] uppercase tracking-wider text-brand-gray-600">Users per device</p>
+            </div>
+            <div class="rounded-xl bg-brand-black border border-white/5 p-4 text-center">
+              <p class="text-2xl font-display font-500 mb-1">0</p>
+              <p class="text-[10px] uppercase tracking-wider text-brand-gray-600">Setup needed</p>
+            </div>
+            <div class="rounded-xl bg-brand-black border border-white/5 p-4 text-center">
+              <p class="text-2xl font-display font-500 mb-1">4</p>
+              <p class="text-[10px] uppercase tracking-wider text-brand-gray-600">Shared devices</p>
+            </div>
+            <div class="rounded-xl bg-brand-black border border-white/5 p-4 text-center">
+              <p class="text-2xl font-display font-500 mb-1">🔒</p>
+              <p class="text-[10px] uppercase tracking-wider text-brand-gray-600">Private to you</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
