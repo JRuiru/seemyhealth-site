@@ -201,7 +201,7 @@ export const products: Record<string, Product> = {
     description: "Accurate blood pressure readings with irregular heartbeat detection. Validated against clinical standards. Share results directly with your doctor from the app.",
     image: "",
     crossSellImage: `${CF_IMG}/bp-black-desk-portrait/public`,
-    streamId: "414b8ac36adafae24dc9750438174d9a",
+    streamId: "1d73637dabb39e29daa4e516a616da0e",
     price: "$89.99",
     color: "#EF4444",
     specs: [

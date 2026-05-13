@@ -56,7 +56,7 @@ scripts/
 | Ring One | ring-one | #F97316 | Phantom Black / Aurora Gold × sizes 6–13 | 7643546812529 | 11598e9e76e389bfaebbccb7c0c5a5fb |
 | The Scale | scale | #3B82F6 | Obsidian Black / Frost White | 7643546878065 | 20a7b78a3a620e0cbb8b861bb65af913 |
 | Scale Pro | scale-pro | #3B82F6 | Obsidian Black / Frost White | 7643546943601 | — |
-| BP Monitor | bp-monitor | #EF4444 | Carbon Black / Opal White | 7643547009137 | 414b8ac36adafae24dc9750438174d9a |
+| BP Monitor | bp-monitor | #EF4444 | Carbon Black / Opal White | 7643547009137 | 1d73637dabb39e29daa4e516a616da0e |
 | Hydra One | hydra-one | #06B6D4 | Abyss Black / Glacier White | 7643547041905 | 09fe15a09d3e2ad17189fbc7d758bc52 |
 | Hema One | hema-one | #A855F7 | Single variant | 7643547074673 | 8f576ad01105f0b3c8ff5495c066906e |
 
