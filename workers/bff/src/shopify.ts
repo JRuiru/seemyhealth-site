@@ -58,6 +58,7 @@ const CART_FRAGMENT = `
             ... on ProductVariant {
               id
               title
+              image { url altText width height }
               product {
                 title
                 handle

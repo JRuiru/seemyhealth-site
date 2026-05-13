@@ -53,6 +53,7 @@ export interface CartResponse {
           merchandise: {
             id: string;
             title: string;
+            image: { url: string; altText: string } | null;
             product: {
               title: string;
               handle: string;
