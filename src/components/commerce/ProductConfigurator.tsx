@@ -473,7 +473,7 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
 
             {/* Option selectors */}
             {data.optionNames.map((optionName) => (
-              <div key={optionName} className="mb-10">
+              <div key={optionName} className={`mb-10 ${(optionName === "Color" || optionName === "Finish") ? "hidden lg:block" : ""}`}>
                 <div className="flex items-center justify-between mb-4">
                   <p className="text-[12px] uppercase tracking-[3px] text-brand-gray-400">
                     {optionName}: <span className="text-white font-medium">{selected[optionName]}</span>
@@ -490,7 +490,7 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
                 </div>
 
                 {(optionName === "Color" || optionName === "Finish") ? (
-                  <div className="flex gap-4">
+                  <div className="hidden lg:flex gap-4">
                     {optionValues[optionName]?.map((value) => {
                       const hex = data.colorSwatches[value] || "#666";
                       const isActive = selected[optionName] === value;
