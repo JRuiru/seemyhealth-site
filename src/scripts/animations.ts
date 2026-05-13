@@ -456,25 +456,37 @@ export function initAppFirstCollapse() {
     const collapsible = section.querySelector("[data-app-collapsible]") as HTMLElement;
     if (!collapsible) return;
 
-    // Simple scroll-triggered collapse without pinning.
-    // No pin = no dead-space problem.
-    gsap.set(collapsible, { height: collapsible.scrollHeight, overflow: "hidden" });
+    const naturalHeight = collapsible.scrollHeight;
+    gsap.set(collapsible, { height: naturalHeight, overflow: "hidden" });
 
-    gsap.to(collapsible, {
-      height: 0,
-      opacity: 0,
-      ease: "none",
+    // Insert a spacer after the section that equals the collapse height.
+    // pinSpacing: false so ScrollTrigger doesn't add its own spacer.
+    // Our spacer fills the gap while content is expanded, then we shrink
+    // it in sync with the collapse so no dead space remains.
+    const spacer = document.createElement("div");
+    spacer.style.height = `${naturalHeight}px`;
+    section.parentNode!.insertBefore(spacer, section.nextSibling);
+
+    const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: collapsible,
-        start: "top 65%",
-        end: "bottom 30%",
-        scrub: 0.3,
+        trigger: section,
+        start: "top top",
+        end: () => `+=${naturalHeight}`,
+        pin: true,
+        pinSpacing: false,
+        scrub: 0.5,
+        anticipatePin: 1,
         invalidateOnRefresh: true,
       },
     });
 
+    // Collapse the content and shrink the spacer together
+    tl.to(collapsible, { height: 0, opacity: 0, duration: 1, ease: "power2.inOut" }, 0);
+    tl.to(spacer, { height: 0, duration: 1, ease: "power2.inOut" }, 0);
+
     return () => {
       gsap.set(collapsible, { height: "auto", opacity: 1, overflow: "" });
+      spacer.remove();
     };
   });
 }
