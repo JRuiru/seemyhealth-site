@@ -184,3 +184,18 @@ scripts/
 - [ ] Satellite image quality during orbit rotation
 - [ ] Mobile video playback consistency
 - [ ] Homepage section spacing/polish
+
+### Site Audit (2026-05-13) — Fix one by one
+
+1. [x] **Remaining em/en dashes** — Replaced " — " with " | " in all 19 page titles. Fixed alt text and table dash in app.astro. En dashes in number ranges (3–5, 5–10, etc.) kept as acceptable.
+2. [x] **Homepage meta description** — Added tailored description to index.astro Layout component.
+3. [x] **Lazy loading on images** — Added `loading="lazy"` to 25 img tags across 16 files. Skipped above-the-fold (Hero, Navbar, Footer logo).
+4. [ ] **Favicon cleanup** — Layout.astro references `favicon.png` but `favicon.ico` and `favicon.svg` also exist in /public/. Consolidate and add SVG variant for modern browsers.
+5. [ ] **Footer social links** — All 5 social icons (Instagram, X, TikTok, YouTube, Facebook) in Footer.astro point to href="#". Replace with real profile URLs once accounts are created.
+6. [ ] **Business page download buttons** — business/index.astro, business/providers.astro, business/insurance.astro all have "Download" buttons pointing to href="#". Need real PDF assets or remove buttons.
+7. [x] **Support page CTA** — Already commented out, not rendered. No fix needed.
+8. [x] **Shop page placeholder link** — Is a "Back to top" scroll button with JS handler. Working as intended.
+9. [x] **Hema One "Coming Soon" status** — Intentional. Product is not yet available for purchase.
+10. [x] **Decorative image accessibility** — Added `aria-hidden="true"` to decorative images in ProductSpecs.astro and ProductConfigurator.tsx.
+11. [x] **FAQPage schema** — Already exists on support/index.astro (line 241). No fix needed.
+12. [x] **Web app manifest** — Created public/manifest.json with PWA metadata. Added manifest link and theme-color meta to Layout.astro.

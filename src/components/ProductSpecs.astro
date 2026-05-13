@@ -16,7 +16,7 @@ const { slug, name, price, specs, backgroundImage } = Astro.props;
 <section class="relative py-24 sm:py-32 bg-brand-dark border-t border-white/5 overflow-hidden">
   {backgroundImage && (
     <div class="absolute inset-0 pointer-events-none">
-      <img src={backgroundImage} alt="" class="absolute right-0 top-1/2 -translate-y-1/2 h-[120%] w-auto object-contain opacity-15 sm:opacity-20" loading="lazy" />
+      <img src={backgroundImage} alt="" aria-hidden="true" class="absolute right-0 top-1/2 -translate-y-1/2 h-[120%] w-auto object-contain opacity-15 sm:opacity-20" loading="lazy" />
     </div>
   )}
   <div class="relative max-w-5xl mx-auto px-6 lg:px-8">

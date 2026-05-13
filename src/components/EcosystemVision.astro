@@ -75,7 +75,7 @@ const orbitAngles = [-90, -18, 54, 126, 198];
                   style={`border-color: ${device.color}60; --sat-angle: ${orbitAngles[i]}deg;`}
                   data-satellite={device.slug}
                 >
-                  <img src={device.image} alt={device.name} class="w-full h-full object-cover" />
+                  <img src={device.image} alt={device.name} class="w-full h-full object-cover" loading="lazy" />
                 </div>
               );
             })}
@@ -87,14 +87,14 @@ const orbitAngles = [-90, -18, 54, 126, 198];
             <div class="absolute inset-0 flex items-center justify-center bg-brand-gray-900" data-flip-face="app">
               <div class="text-center">
                 <div class="w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-2 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                  <img src={`${CF_IMG}/logo/public`} alt="SeeMyHealth" class="w-16 h-16 sm:w-24 sm:h-24 rounded-xl" />
+                  <img src={`${CF_IMG}/logo/public`} alt="SeeMyHealth" class="w-16 h-16 sm:w-24 sm:h-24 rounded-xl" loading="lazy" />
                 </div>
                 <p class="text-[10px] sm:text-[11px] uppercase tracking-[2px] text-brand-gray-400">The App</p>
               </div>
             </div>
             {devices.map((device) => (
               <div class="absolute inset-0" style="opacity:0" data-flip-face={device.slug}>
-                <img src={device.image} alt={device.name} class="w-full h-full object-cover" />
+                <img src={device.image} alt={device.name} class="w-full h-full object-cover" loading="lazy" />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
               </div>
             ))}

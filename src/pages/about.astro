@@ -49,7 +49,7 @@ const timeline = [
 ];
 ---
 
-<Layout title="About — SeeMyHealth" description="We build medical-grade health monitoring devices designed for real life: smart rings, smart scales, BP monitors, smart water bottles, and blood analyzers. Learn about our mission and values." canonicalPath="/about" jsonLd={aboutSchema}>
+<Layout title="About | SeeMyHealth" description="We build medical-grade health monitoring devices designed for real life: smart rings, smart scales, BP monitors, smart water bottles, and blood analyzers. Learn about our mission and values." canonicalPath="/about" jsonLd={aboutSchema}>
   <Navbar />
 
   <!-- Hero -->
@@ -59,6 +59,7 @@ const timeline = [
         src={`${CF_IMG}/lifestyle-friends-bar/public`}
         alt="Friends enjoying life with SeeMyHealth"
         class="w-full h-full object-cover opacity-30"
+        loading="lazy"
       />
       <div class="absolute inset-0 bg-gradient-to-b from-brand-black via-brand-black/80 to-brand-black"></div>
     </div>
@@ -95,6 +96,7 @@ const timeline = [
             src={`${CF_IMG}/ring-face-closeup/public`}
             alt="Ring One close-up"
             class="w-full h-full object-cover"
+            loading="lazy"
           />
         </div>
       </div>
@@ -171,6 +173,7 @@ const timeline = [
       alt="Using SeeMyHealth in daily life"
       class="w-full h-full object-cover"
       data-parallax="-0.15"
+      loading="lazy"
     />
     <div class="absolute inset-0 bg-brand-black/30"></div>
   </section>
@@ -198,7 +201,7 @@ const timeline = [
         ].map((device) => (
           <a href={`/products/${device.slug}`} class="group text-center">
             <div class="relative w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full overflow-hidden border border-white/10 group-hover:border-white/30 transition-colors mb-3">
-              <img src={device.image} alt={device.name} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+              <img src={device.image} alt={device.name} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
             </div>
             <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-500 group-hover:text-white transition-colors">{device.name}</p>
           </a>

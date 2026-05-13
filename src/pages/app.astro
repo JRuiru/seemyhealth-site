@@ -216,7 +216,7 @@ const allFeatures = [
 ];
 ---
 
-<Layout title="The App — SeeMyHealth" description="Works the day you download it. Smarter when your devices arrive. Journalling, mood tracking, meal logging, recipes, and guided programs, no device required. Add devices for 24/7 vitals, sleep staging, and cross-device insights." canonicalPath="/app" jsonLd={appSchema}>
+<Layout title="The App | SeeMyHealth" description="Works the day you download it. Smarter when your devices arrive. Journalling, mood tracking, meal logging, recipes, and guided programs, no device required. Add devices for 24/7 vitals, sleep staging, and cross-device insights." canonicalPath="/app" jsonLd={appSchema}>
   <Navbar />
 
   <!-- Hero -->
@@ -225,8 +225,9 @@ const allFeatures = [
     <div class="absolute inset-0">
       <img
         src={`${CF_IMG}/app-hero-triple-phones/public`}
-        alt="SeeMyHealth app — meals, health hub, and sleep tracking screens"
+        alt="SeeMyHealth app, meals, health hub, and sleep tracking screens"
         class="w-full h-full object-cover object-center"
+        loading="lazy"
       />
       <!-- Gradient overlay — darkens bottom and edges for text legibility -->
       <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/60 to-brand-black/30"></div>
@@ -456,7 +457,7 @@ const allFeatures = [
                   {row.appOnly ? (
                     <svg class="w-4 h-4 text-green-500 inline-block" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                   ) : (
-                    <span class="text-brand-gray-700">—</span>
+                    <span class="text-brand-gray-700">-</span>
                   )}
                 </td>
                 <td class="px-2 sm:px-6 py-3 text-center border-t border-white/5">

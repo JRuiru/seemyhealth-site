@@ -44,6 +44,7 @@ function ModelViewerSlot({ src, alt, poster }: { src: string; alt: string; poste
         <img
           src={poster}
           alt=""
+          aria-hidden="true"
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 pointer-events-none ${
             loaded ? "opacity-0" : "opacity-100"
           }`}
@@ -83,6 +84,7 @@ function VideoWithPoster({ src, poster }: { src: string; poster?: string }) {
             playing ? "opacity-0" : "opacity-100"
           }`}
           alt=""
+          aria-hidden="true"
         />
       )}
     </div>

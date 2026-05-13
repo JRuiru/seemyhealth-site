@@ -25,6 +25,7 @@ const { name, image } = Astro.props;
         src={image}
         alt={`${name} video`}
         class="w-full h-full object-cover opacity-30"
+        loading="lazy"
       />
     </div>
   </div>
