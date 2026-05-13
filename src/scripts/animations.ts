@@ -447,7 +447,6 @@ export function initProductsHorizontal() {
 
 // --- Mobile collapse for "App works from day one" section ---
 export function initAppFirstCollapse() {
-  // Only on mobile (< 1024px)
   const mm = gsap.matchMedia();
 
   mm.add("(max-width: 1023px)", () => {
@@ -457,32 +456,25 @@ export function initAppFirstCollapse() {
     const collapsible = section.querySelector("[data-app-collapsible]") as HTMLElement;
     if (!collapsible) return;
 
-    // Measure the natural height before animating
-    const naturalHeight = collapsible.scrollHeight;
-    gsap.set(collapsible, { height: naturalHeight });
+    // Simple scroll-triggered collapse without pinning.
+    // No pin = no dead-space problem.
+    gsap.set(collapsible, { height: collapsible.scrollHeight, overflow: "hidden" });
 
-    const tl = gsap.timeline({
+    gsap.to(collapsible, {
+      height: 0,
+      opacity: 0,
+      ease: "none",
       scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: () => `+=${naturalHeight}`,
-        pin: true,
-        pinSpacing: true,
-        scrub: 0.5,
-        anticipatePin: 1,
+        trigger: collapsible,
+        start: "top 65%",
+        end: "bottom 30%",
+        scrub: 0.3,
         invalidateOnRefresh: true,
       },
     });
 
-    tl.to(collapsible, {
-      height: 0,
-      opacity: 0,
-      duration: 1,
-      ease: "power2.inOut",
-    });
-
     return () => {
-      gsap.set(collapsible, { height: "auto", opacity: 1 });
+      gsap.set(collapsible, { height: "auto", opacity: 1, overflow: "" });
     };
   });
 }
