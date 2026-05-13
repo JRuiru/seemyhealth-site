@@ -41,7 +41,7 @@ export const products: Record<string, Product> = {
     description: "24/7 heart rate, SpO2, sleep stages, activity tracking, and stress monitoring, all from a ring designed for daily wear. Medical-grade sensors wrapped in titanium, rated IP68 for showers, workouts, and everything in between.",
     image: `${CF_IMG}/ring-hero-hands/public`,
     streamId: "11598e9e76e389bfaebbccb7c0c5a5fb",
-    price: "From $179.99",
+    price: "From $179",
     color: "#F97316",
     specImage: `${CF_IMG}/ring-studio-profile/public`,
     specs: [
@@ -52,7 +52,7 @@ export const products: Record<string, Product> = {
       { label: "Materials", value: "Titanium shell, medical-grade resin" },
       { label: "Connectivity", value: "Bluetooth 5.2" },
       { label: "Sizes", value: "6, 7, 8, 9, 10, 11, 12, 13" },
-      { label: "Finishes", value: "Midnight Black ($179.99), Aurora Gold ($199.99)" },
+      { label: "Finishes", value: "Midnight Black ($179), Aurora Gold ($199)" },
     ],
     features: [
       {
@@ -100,7 +100,7 @@ export const products: Record<string, Product> = {
     image: `${CF_IMG}/scale-black-pack/public`,
     crossSellImage: `${CF_IMG}/scale-white-portrait/public`,
     streamId: "08984500cbcb8e14ef154a1a36f7bb98",
-    price: "From $99.99",
+    price: "From $99",
     color: "#3B82F6",
     specs: [
       { label: "Sensors", value: "BIA, 4-point electrode" },
@@ -150,7 +150,7 @@ export const products: Record<string, Product> = {
     description: "Clinical-grade body composition with 8-point dual-frequency BIA and segmental analysis. See fat and muscle distribution for each arm, leg, and trunk. The same technology used in professional sports labs.",
     image: `${CF_IMG}/scale-pro-bathroom-still/public`,
     streamId: "08984500cbcb8e14ef154a1a36f7bb98",
-    price: "From $179.99",
+    price: "From $179",
     color: "#3B82F6",
     specs: [
       { label: "Sensors", value: "Dual-frequency BIA, 8-point electrode with retractable handle" },
@@ -202,7 +202,7 @@ export const products: Record<string, Product> = {
     image: "",
     crossSellImage: `${CF_IMG}/bp-black-desk-portrait/public`,
     streamId: "1d73637dabb39e29daa4e516a616da0e",
-    price: "$89.99",
+    price: "$89",
     color: "#EF4444",
     specs: [
       { label: "Method", value: "Oscillometric" },
@@ -251,7 +251,7 @@ export const products: Record<string, Product> = {
     description: "Smart water bottle that tracks your daily intake automatically. LED ring shows your progress. Gentle reminders keep you on track without being annoying.",
     image: "",
     streamId: "09fe15a09d3e2ad17189fbc7d758bc52",
-    price: "$59.99",
+    price: "$59",
     color: "#06B6D4",
     specs: [
       { label: "Capacity", value: "500ml / 17oz" },
@@ -302,7 +302,7 @@ export const products: Record<string, Product> = {
     description: "At-home blood analysis for key health markers. A small sample from your fingertip gives you lab-quality results in minutes, right in the app.",
     image: `${CF_IMG}/hema-one-web/public`,
     streamId: "8f576ad01105f0b3c8ff5495c066906e",
-    price: "$99.99",
+    price: "$99",
     color: "#A855F7",
     specs: [
       { label: "Sample", value: "Fingertip microsampling" },

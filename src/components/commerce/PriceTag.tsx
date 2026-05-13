@@ -34,34 +34,30 @@ export default function PriceTag({
 }: Props) {
   const [display, setDisplay] = useState<string | null>(null);
 
+  const updatePrice = (pricing: ProductPricing | null, cancelled: boolean) => {
+    if (cancelled || !pricing) return;
+    let formatted: string | undefined;
+
+    if (mode === "variant" && variantTitle) {
+      const variant = pricing.variants.find((v) => v.title === variantTitle);
+      if (variant) formatted = formatLocalizedPrice(variant.price);
+    } else {
+      formatted = formatLocalizedPrice(getFromPrice(pricing));
+    }
+
+    // Only update if the live price differs from the fallback
+    if (formatted && formatted !== fallback) {
+      setDisplay(formatted);
+    }
+  };
+
   useEffect(() => {
     let cancelled = false;
 
-    fetchProductPricing(handle).then((pricing) => {
-      if (cancelled || !pricing) return;
+    fetchProductPricing(handle).then((pricing) => updatePrice(pricing, cancelled));
 
-      if (mode === "variant" && variantTitle) {
-        const variant = pricing.variants.find((v) => v.title === variantTitle);
-        if (variant) {
-          setDisplay(formatLocalizedPrice(variant.price));
-        }
-      } else {
-        const fromPrice = getFromPrice(pricing);
-        setDisplay(formatLocalizedPrice(fromPrice));
-      }
-    });
-
-    // Re-fetch on country change
     const handler = () => {
-      fetchProductPricing(handle).then((pricing) => {
-        if (cancelled || !pricing) return;
-        if (mode === "variant" && variantTitle) {
-          const variant = pricing.variants.find((v) => v.title === variantTitle);
-          if (variant) setDisplay(formatLocalizedPrice(variant.price));
-        } else {
-          setDisplay(formatLocalizedPrice(getFromPrice(pricing)));
-        }
-      });
+      fetchProductPricing(handle).then((pricing) => updatePrice(pricing, cancelled));
     };
 
     window.addEventListener("country:changed", handler);

@@ -70,22 +70,22 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Aurora Gold": "#1a1408",
     },
     variants: [
-      { id: "gid://shopify/ProductVariant/43225636470897", title: "Phantom Black / 6", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "6" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636503665", title: "Phantom Black / 7", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "7" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636536433", title: "Phantom Black / 8", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "8" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636569201", title: "Phantom Black / 9", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "9" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636601969", title: "Phantom Black / 10", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "10" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636634737", title: "Phantom Black / 11", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "11" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636667505", title: "Phantom Black / 12", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "12" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636700273", title: "Phantom Black / 13", price: "179.99", currency: "USD", options: { Finish: "Phantom Black", Size: "13" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636733041", title: "Aurora Gold / 6", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "6" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636765809", title: "Aurora Gold / 7", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "7" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636798577", title: "Aurora Gold / 8", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "8" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636831345", title: "Aurora Gold / 9", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "9" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636864113", title: "Aurora Gold / 10", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "10" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636896881", title: "Aurora Gold / 11", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "11" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636929649", title: "Aurora Gold / 12", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "12" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225636962417", title: "Aurora Gold / 13", price: "199.99", currency: "USD", options: { Finish: "Aurora Gold", Size: "13" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636470897", title: "Phantom Black / 6", price: "179", currency: "USD", options: { Finish: "Phantom Black", Size: "6" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636503665", title: "Phantom Black / 7", price: "179", currency: "USD", options: { Finish: "Phantom Black", Size: "7" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636536433", title: "Phantom Black / 8", price: "179", currency: "USD", options: { Finish: "Phantom Black", Size: "8" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636569201", title: "Phantom Black / 9", price: "179", currency: "USD", options: { Finish: "Phantom Black", Size: "9" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636601969", title: "Phantom Black / 10", price: "179", currency: "USD", options: { Finish: "Phantom Black", Size: "10" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636634737", title: "Phantom Black / 11", price: "179", currency: "USD", options: { Finish: "Phantom Black", Size: "11" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636667505", title: "Phantom Black / 12", price: "179", currency: "USD", options: { Finish: "Phantom Black", Size: "12" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636700273", title: "Phantom Black / 13", price: "179", currency: "USD", options: { Finish: "Phantom Black", Size: "13" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636733041", title: "Aurora Gold / 6", price: "199", currency: "USD", options: { Finish: "Aurora Gold", Size: "6" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636765809", title: "Aurora Gold / 7", price: "199", currency: "USD", options: { Finish: "Aurora Gold", Size: "7" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636798577", title: "Aurora Gold / 8", price: "199", currency: "USD", options: { Finish: "Aurora Gold", Size: "8" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636831345", title: "Aurora Gold / 9", price: "199", currency: "USD", options: { Finish: "Aurora Gold", Size: "9" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636864113", title: "Aurora Gold / 10", price: "199", currency: "USD", options: { Finish: "Aurora Gold", Size: "10" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636896881", title: "Aurora Gold / 11", price: "199", currency: "USD", options: { Finish: "Aurora Gold", Size: "11" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636929649", title: "Aurora Gold / 12", price: "199", currency: "USD", options: { Finish: "Aurora Gold", Size: "12" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225636962417", title: "Aurora Gold / 13", price: "199", currency: "USD", options: { Finish: "Aurora Gold", Size: "13" }, available: true },
     ],
   },
   "scale": {
@@ -118,8 +118,8 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Frost White": "#121210",
     },
     variants: [
-      { id: "gid://shopify/ProductVariant/43225637814385", title: "Obsidian Black", price: "99.99", currency: "USD", options: { Color: "Obsidian Black" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225637847153", title: "Frost White", price: "99.99", currency: "USD", options: { Color: "Frost White" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225637814385", title: "Obsidian Black", price: "99", currency: "USD", options: { Color: "Obsidian Black" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225637847153", title: "Frost White", price: "99", currency: "USD", options: { Color: "Frost White" }, available: true },
     ],
   },
   "scale-pro": {
@@ -154,8 +154,8 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Frost White": "#121210",
     },
     variants: [
-      { id: "gid://shopify/ProductVariant/43225637879921", title: "Obsidian Black", price: "199.99", currency: "USD", options: { Color: "Obsidian Black" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225637912689", title: "Frost White", price: "199.99", currency: "USD", options: { Color: "Frost White" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225637879921", title: "Obsidian Black", price: "199", currency: "USD", options: { Color: "Obsidian Black" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225637912689", title: "Frost White", price: "199", currency: "USD", options: { Color: "Frost White" }, available: true },
     ],
   },
   "bp-monitor": {
@@ -188,8 +188,8 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Opal White": "#121210",
     },
     variants: [
-      { id: "gid://shopify/ProductVariant/43225874759793", title: "Carbon Black", price: "89.99", currency: "USD", options: { Color: "Carbon Black" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225874792561", title: "Opal White", price: "89.99", currency: "USD", options: { Color: "Opal White" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225874759793", title: "Carbon Black", price: "89", currency: "USD", options: { Color: "Carbon Black" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225874792561", title: "Opal White", price: "89", currency: "USD", options: { Color: "Opal White" }, available: true },
     ],
   },
   "hydra-one": {
@@ -224,8 +224,8 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Glacier White": "#0e1012",
     },
     variants: [
-      { id: "gid://shopify/ProductVariant/43225874825329", title: "Abyss Black", price: "59.99", currency: "USD", options: { Color: "Abyss Black" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225874858097", title: "Glacier White", price: "59.99", currency: "USD", options: { Color: "Glacier White" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225874825329", title: "Abyss Black", price: "59", currency: "USD", options: { Color: "Abyss Black" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225874858097", title: "Glacier White", price: "59", currency: "USD", options: { Color: "Glacier White" }, available: true },
     ],
   },
   "hema-one": {
@@ -237,7 +237,7 @@ export const productVariants: Record<string, ProductVariantData> = {
     warrantyYears: 1,
     colorSwatches: {},
     variants: [
-      { id: "gid://shopify/ProductVariant/43225640665201", title: "Default", price: "99.99", currency: "USD", options: {}, available: true },
+      { id: "gid://shopify/ProductVariant/43225640665201", title: "Default", price: "99", currency: "USD", options: {}, available: true },
     ],
   },
 };
