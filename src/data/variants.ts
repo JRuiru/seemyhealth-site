@@ -109,7 +109,8 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Frost White": [
         { type: "image", url: `${CF_IMG}/scale-white-pack/public`, alt: "Scale Frost White" },
         { type: "model", url: "/models/scale-basic-white-3d.glb", poster: `${CF_IMG}/scale-white-pack/public`, alt: "Scale Frost White 3D" },
-        { type: "image", url: `${CF_IMG}/scale-pro-lifestyle/public`, alt: "Scale lifestyle" },
+        { type: "image", url: `${CF_IMG}/scale-white-portrait/public`, alt: "Scale Frost White portrait" },
+        { type: "image", url: `${CF_IMG}/scale-white-bathroom/public`, alt: "Scale Frost White in bathroom" },
       ],
     },
     ambientColors: {
@@ -172,6 +173,8 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Carbon Black": [
         { type: "image", url: `${CF_IMG}/bp-black/public`, alt: "BP Monitor Carbon Black" },
         { type: "model", url: "/models/bpm-black-3d.glb", poster: `${CF_IMG}/bp-black/public`, alt: "BP Monitor Carbon Black 3D" },
+        { type: "image", url: `${CF_IMG}/bp-black-desk-portrait/public`, alt: "BP Monitor black on desk" },
+        { type: "image", url: `${CF_IMG}/bp-desk-display/public`, alt: "BP Monitor displaying reading" },
         { type: "image", url: `${CF_IMG}/bp-black-studio/public`, alt: "BP Monitor Carbon Black studio" },
       ],
       "Opal White": [
@@ -204,13 +207,15 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Abyss Black": [
         { type: "image", url: `${CF_IMG}/bottle-treebark/public`, alt: "Hydra One Abyss Black" },
         { type: "model", url: "/models/bottle-black-3d.glb", poster: `${CF_IMG}/bottle-treebark/public`, alt: "Hydra One Abyss Black 3D" },
-        { type: "image", url: `${CF_IMG}/bottle-studio-wet/public`, alt: "Hydra One condensation detail" },
+        { type: "image", url: `${CF_IMG}/bottle-black-desk/public`, alt: "Hydra One black on desk" },
+        { type: "image", url: `${CF_IMG}/bottle-black-gym/public`, alt: "Hydra One black in gym" },
         { type: "image", url: `${CF_IMG}/bottle-office-scene/public`, alt: "Hydra One on desk" },
       ],
       "Glacier White": [
         { type: "image", url: `${CF_IMG}/bottle-trio-studio/public`, alt: "Hydra One Glacier White" },
         { type: "model", url: "/models/bottle-white-3d.glb", poster: `${CF_IMG}/bottle-trio-studio/public`, alt: "Hydra One Glacier White 3D" },
-        { type: "image", url: `${CF_IMG}/bottle-studio-wet/public`, alt: "Hydra One condensation detail" },
+        { type: "image", url: `${CF_IMG}/bottle-white-cafe/public`, alt: "Hydra One white in cafe" },
+        { type: "image", url: `${CF_IMG}/bottle-white-park/public`, alt: "Hydra One white in park" },
         { type: "image", url: `${CF_IMG}/bottle-office-scene/public`, alt: "Hydra One on desk" },
       ],
     },

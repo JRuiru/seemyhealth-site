@@ -16,6 +16,7 @@ const shopProducts = [
     badge: "Best Seller",
     shared: false,
     shortFeatures: ["24/7 Heart Rate", "SpO2", "Sleep Stages", "7-Day Battery"],
+    image: `${CF_IMG}/ring-hero-hands/public`,
     secondImage: `${CF_IMG}/ring-all-finishes/public`,
     finishes: ["Midnight Black · $179.99", "Aurora Gold · $199.99"],
   },
@@ -25,7 +26,8 @@ const shopProducts = [
     badge: null,
     shared: true,
     shortFeatures: ["13 Body Metrics", "4-Point BIA", "Shared Device", "Multi-User"],
-    secondImage: `${CF_IMG}/scale-white-pack/public`,
+    image: `${CF_IMG}/scale-white-bathroom/public`,
+    secondImage: `${CF_IMG}/scale-black-bathroom/public`,
     finishes: ["Obsidian Black", "Frost White"],
   },
   {
@@ -34,6 +36,7 @@ const shopProducts = [
     badge: "Pro",
     shared: true,
     shortFeatures: ["21 Body Metrics", "8-Point BIA", "Segmental Analysis", "Color Display"],
+    image: `${CF_IMG}/scale-pro-hero-new/public`,
     secondImage: `${CF_IMG}/scale-pro-laser-front/public`,
     finishes: ["Obsidian Black", "Frost White"],
   },
@@ -43,7 +46,8 @@ const shopProducts = [
     badge: "FDA Cleared",
     shared: true,
     shortFeatures: ["Clinical Accuracy", "Irregular HB Detection", "30s Reading", "Rechargeable"],
-    secondImage: `${CF_IMG}/bp-white/public`,
+    image: `${CF_IMG}/bp-desk-display/public`,
+    secondImage: `${CF_IMG}/bp-black-desk-portrait/public`,
     finishes: ["Black", "White"],
   },
   {
@@ -52,7 +56,8 @@ const shopProducts = [
     badge: null,
     shared: false,
     shortFeatures: ["Auto Tracking", "LED Progress Ring", "30-Day Battery", "500ml"],
-    secondImage: `${CF_IMG}/bottle-trio-studio/public`,
+    image: `${CF_IMG}/bottle-white-cafe/public`,
+    secondImage: `${CF_IMG}/bottle-black-desk/public`,
     finishes: ["Black", "White", "Purple"],
   },
   {
@@ -61,6 +66,7 @@ const shopProducts = [
     badge: "Coming Soon",
     shared: true,
     shortFeatures: ["Fingertip Sample", "5-Min Results", "4 Key Markers", "10 Cartridges"],
+    image: `${CF_IMG}/hema-one-web/public`,
     secondImage: `${CF_IMG}/hema-one-device-web/public`,
     finishes: null,
   },
@@ -116,7 +122,7 @@ const shopProducts = [
 
             <div class:list={["grid lg:grid-cols-2", i % 2 === 1 && "lg:direction-rtl"]}>
               <!-- Image side -->
-              <div class:list={["relative h-[350px] sm:h-[450px] lg:h-auto lg:min-h-[500px] overflow-hidden", i % 2 === 1 && "lg:order-2"]}>
+              <div class:list={["relative h-[400px] sm:h-[500px] lg:h-[550px] overflow-hidden", i % 2 === 1 && "lg:order-2"]}>
                 {product.image ? (
                   <img
                     src={product.image}
@@ -156,20 +162,15 @@ const shopProducts = [
 
                 <!-- Shared / Personal badge -->
                 <div class="absolute top-6 right-6">
-                  <span class:list={[
-                    "text-[9px] uppercase tracking-[1.5px] px-3 py-1.5 rounded-full backdrop-blur-sm",
-                    product.shared
-                      ? "bg-white/10 text-white/70"
-                      : "bg-white/10 text-white/70"
-                  ]}>
+                  <span class="text-[9px] uppercase tracking-[1.5px] px-3 py-1.5 rounded-full bg-black/50 text-white/70 inline-flex">
                     {product.shared ? (
                       <span class="flex items-center gap-1.5">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-5.728M12 2.25c-4.97 0-9 4.03-9 9s4.03 9 9 9m0-18a8.96 8.96 0 015.672 2.018M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0" /></svg>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
                         Shared device
                       </span>
                     ) : (
                       <span class="flex items-center gap-1.5">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                         Personal
                       </span>
                     )}

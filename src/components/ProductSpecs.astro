@@ -29,9 +29,9 @@ const { slug, name, price, specs, backgroundImage } = Astro.props;
 
     <div class="border-t border-white/10" data-scroll-stagger>
       {specs.map((spec) => (
-        <div class="flex items-center justify-between py-5 border-b border-white/5">
-          <span class="text-sm text-brand-gray-500 uppercase tracking-wider">{spec.label}</span>
-          <span class="text-sm text-white">{spec.value}</span>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 py-5 border-b border-white/5">
+          <span class="text-sm text-brand-gray-500 uppercase tracking-wider shrink-0">{spec.label}</span>
+          <span class="text-sm text-white sm:text-right">{spec.value}</span>
         </div>
       ))}
     </div>

@@ -385,6 +385,30 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
                   </div>
                 </>
               )}
+
+              {/* Mobile color switcher overlay */}
+              {colorOption && (optionValues[colorOption]?.length ?? 0) > 1 && (
+                <div className="absolute top-4 right-4 flex flex-col gap-2 lg:hidden">
+                  {optionValues[colorOption]?.map((value) => {
+                    const hex = data.colorSwatches[value] || "#666";
+                    const isActive = selected[colorOption] === value;
+                    return (
+                      <button
+                        key={value}
+                        onClick={() => handleSelect(colorOption, value)}
+                        className="w-10 h-10 rounded-full transition-all shadow-lg"
+                        style={{
+                          background: hex,
+                          boxShadow: isActive
+                            ? `0 0 0 2px #0d0d0d, 0 0 0 4px ${accentColor}`
+                            : "0 2px 8px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)",
+                        }}
+                        aria-label={value}
+                      />
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {/* Thumbnail strip */}
