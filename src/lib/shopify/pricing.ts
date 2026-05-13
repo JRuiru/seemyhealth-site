@@ -141,13 +141,16 @@ export function getFromPrice(pricing: ProductPricing): LocalizedPrice {
 // Format a price with locale-aware currency
 export function formatLocalizedPrice(price: LocalizedPrice): string {
   const num = parseFloat(price.amount);
+  const isWhole = num % 1 === 0;
   try {
     return new Intl.NumberFormat(undefined, {
       style: "currency",
       currency: price.currencyCode,
+      minimumFractionDigits: isWhole ? 0 : 2,
+      maximumFractionDigits: 2,
     }).format(num);
   } catch {
-    return `$${num.toFixed(2)}`;
+    return isWhole ? `$${num}` : `$${num.toFixed(2)}`;
   }
 }
 
