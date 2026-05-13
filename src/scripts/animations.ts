@@ -445,6 +445,50 @@ export function initProductsHorizontal() {
   });
 }
 
+// --- Mobile collapse for "App works from day one" section ---
+export function initAppFirstCollapse() {
+  // Only on mobile (< 1024px)
+  const mm = gsap.matchMedia();
+
+  mm.add("(max-width: 1023px)", () => {
+    const section = document.querySelector("[data-app-first-section]") as HTMLElement;
+    if (!section) return;
+
+    const collapsible = section.querySelector("[data-app-collapsible]") as HTMLElement;
+    if (!collapsible) return;
+
+    // Measure the natural height before animating
+    const naturalHeight = collapsible.scrollHeight;
+    gsap.set(collapsible, { height: naturalHeight });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top top",
+        end: "+=300",
+        pin: true,
+        pinSpacing: true,
+        scrub: 0.5,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+
+    // Collapse the feature grid + CTA to 0 height with fade
+    tl.to(collapsible, {
+      height: 0,
+      opacity: 0,
+      duration: 1,
+      ease: "power2.inOut",
+    });
+
+    return () => {
+      // Cleanup: restore natural height when exiting mobile
+      gsap.set(collapsible, { height: "auto", opacity: 1 });
+    };
+  });
+}
+
 // --- Init all ---
 export function initAllAnimations() {
   initSmoothScroll();
@@ -452,6 +496,7 @@ export function initAllAnimations() {
   initHeroReveal();
   initEcosystemReveal();
   initProductsHorizontal();
+  initAppFirstCollapse();
   initScrollReveals();
   initImageReveals();
   initParallax();

@@ -35,13 +35,13 @@ const features = [
 ];
 ---
 
-<section class="py-20 sm:py-28 bg-brand-dark border-t border-white/5">
+<section class="py-20 sm:py-28 bg-brand-dark border-t border-white/5" data-app-first-section>
   <div class="max-w-7xl mx-auto px-6 lg:px-8">
     <div class="lg:grid lg:grid-cols-2 lg:gap-16 xl:gap-24 items-center">
 
       <!-- Left: Text + feature grid -->
       <div>
-        <div class="mb-10" data-scroll-reveal>
+        <div class="mb-10 lg:mb-10" data-scroll-reveal data-app-header>
           <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">No Device Required</p>
           <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
             The app works <span class="font-500">from day one.</span>
@@ -63,24 +63,27 @@ const features = [
           </div>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8" data-scroll-stagger>
-          {features.map((f) => (
-            <div class="group rounded-xl bg-white/[0.03] border border-white/5 hover:border-white/15 p-4 transition-all">
-              <svg class="w-5 h-5 text-brand-gray-600 group-hover:text-white mb-2 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d={f.icon} />
-              </svg>
-              <p class="text-sm font-medium text-white mb-0.5">{f.title}</p>
-              <p class="text-[11px] text-brand-gray-600 leading-snug">{f.description}</p>
-            </div>
-          ))}
-        </div>
+        <!-- Collapsible on mobile: feature grid + CTA -->
+        <div data-app-collapsible class="overflow-hidden">
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8" data-scroll-stagger>
+            {features.map((f) => (
+              <div class="group rounded-xl bg-white/[0.03] border border-white/5 hover:border-white/15 p-4 transition-all">
+                <svg class="w-5 h-5 text-brand-gray-600 group-hover:text-white mb-2 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d={f.icon} />
+                </svg>
+                <p class="text-sm font-medium text-white mb-0.5">{f.title}</p>
+                <p class="text-[11px] text-brand-gray-600 leading-snug">{f.description}</p>
+              </div>
+            ))}
+          </div>
 
-        <a href="/app" class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[1.5px] font-medium text-white hover:text-brand-gray-300 transition-colors" data-scroll-reveal>
-          Explore the app
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
+          <a href="/app" class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[1.5px] font-medium text-white hover:text-brand-gray-300 transition-colors" data-scroll-reveal>
+            Explore the app
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
       </div>
 
       <!-- Right: Rotating app screenshots -->
