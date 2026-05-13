@@ -180,6 +180,7 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Opal White": [
         { type: "image", url: `${CF_IMG}/bp-white/public`, alt: "BP Monitor Opal White" },
         { type: "model", url: "/models/bpm-white-3d.glb", poster: `${CF_IMG}/bp-white/public`, alt: "BP Monitor Opal White 3D" },
+        { type: "image", url: `${CF_IMG}/bp-white-desk-display/public`, alt: "BP Monitor Opal White on desk" },
         { type: "image", url: `${CF_IMG}/bp-white-studio/public`, alt: "BP Monitor Opal White studio" },
       ],
     },
