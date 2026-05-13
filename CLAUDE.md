@@ -105,9 +105,15 @@ scripts/
 - [x] Shopify Markets — 9 markets with PPP pricing (US primary)
 - [x] Inventory set across 4 locations (Nairobi, Qatar, US, Shenzhen)
 - [x] Products published to Storefront API + Online Store channels
-- [ ] Add-to-cart UI components
-- [ ] Variant selector components
-- [ ] Cart drawer component
+- [x] Add-to-cart UI components
+- [x] Variant selector components
+- [x] Cart drawer component
+
+### Blocked — Checkout (needs payment provider + Shopify config)
+- [ ] Enable Shopify Payments (or Paystack/Flutterwave) once bank account is set up
+- [ ] Remove storefront password on shop.seemyhealth.ai (Shopify Admin > Online Store > Preferences)
+- [ ] Verify Headless sales channel is configured for checkout URLs
+- [ ] Test end-to-end checkout flow (add to cart > checkout > payment > order confirmation)
 
 ### Not Started — Analytics
 - [ ] Google Analytics 4 setup
@@ -190,7 +196,7 @@ scripts/
 1. [x] **Remaining em/en dashes** — Replaced " — " with " | " in all 19 page titles. Fixed alt text and table dash in app.astro. En dashes in number ranges (3–5, 5–10, etc.) kept as acceptable.
 2. [x] **Homepage meta description** — Added tailored description to index.astro Layout component.
 3. [x] **Lazy loading on images** — Added `loading="lazy"` to 25 img tags across 16 files. Skipped above-the-fold (Hero, Navbar, Footer logo).
-4. [ ] **Favicon cleanup** — Layout.astro references `favicon.png` but `favicon.ico` and `favicon.svg` also exist in /public/. Consolidate and add SVG variant for modern browsers.
+4. [x] **Favicon cleanup** — Removed stale Astro default favicon.ico and favicon.svg from /public/. Added proper sizes to favicon and apple-touch-icon links.
 5. [ ] **Footer social links** — All 5 social icons (Instagram, X, TikTok, YouTube, Facebook) in Footer.astro point to href="#". Replace with real profile URLs once accounts are created.
 6. [ ] **Business page download buttons** — business/index.astro, business/providers.astro, business/insurance.astro all have "Download" buttons pointing to href="#". Need real PDF assets or remove buttons.
 7. [x] **Support page CTA** — Already commented out, not rendered. No fix needed.
@@ -198,4 +204,4 @@ scripts/
 9. [x] **Hema One "Coming Soon" status** — Intentional. Product is not yet available for purchase.
 10. [x] **Decorative image accessibility** — Added `aria-hidden="true"` to decorative images in ProductSpecs.astro and ProductConfigurator.tsx.
 11. [x] **FAQPage schema** — Already exists on support/index.astro (line 241). No fix needed.
-12. [x] **Web app manifest** — Created public/manifest.json with PWA metadata. Added manifest link and theme-color meta to Layout.astro.
+12. [x] **Web app manifest** — Not needed. Site is not meant to be installed as a PWA. Removed manifest. Kept theme-color meta only.
