@@ -461,22 +461,24 @@ export function initAppFirstCollapse() {
     const naturalHeight = collapsible.scrollHeight;
     gsap.set(collapsible, { height: naturalHeight });
 
-    ScrollTrigger.create({
-      trigger: section,
-      start: "top top",
-      end: () => `+=${naturalHeight}`,
-      pin: true,
-      pinSpacing: false,
-      scrub: 0.5,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-      onUpdate: (self) => {
-        const progress = self.progress;
-        gsap.set(collapsible, {
-          height: naturalHeight * (1 - progress),
-          opacity: 1 - progress,
-        });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top top",
+        end: () => `+=${naturalHeight}`,
+        pin: true,
+        pinSpacing: true,
+        scrub: 0.5,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
       },
+    });
+
+    tl.to(collapsible, {
+      height: 0,
+      opacity: 0,
+      duration: 1,
+      ease: "power2.inOut",
     });
 
     return () => {
