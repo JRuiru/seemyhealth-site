@@ -117,8 +117,8 @@ const features = [
           />
         </div>
 
-        <!-- Label + dots -->
-        <div class="text-center mt-2">
+        <!-- Label + dots (hidden on mobile, visible on desktop) -->
+        <div class="hidden lg:block text-center mt-2">
           <p class="text-[10px] uppercase tracking-[2px] text-brand-gray-600 mb-3 transition-opacity duration-300" data-app-label-text>Journal & Mood</p>
           <div class="flex justify-center gap-2">
             {[0, 1, 2].map((i) => (
