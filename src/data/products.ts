@@ -41,7 +41,7 @@ export const products: Record<string, Product> = {
     description: "24/7 heart rate, SpO2, sleep stages, activity tracking, and stress monitoring, all from a ring designed for daily wear. Medical-grade sensors wrapped in titanium, rated IP68 for showers, workouts, and everything in between.",
     image: `${CF_IMG}/ring-hero-hands/public`,
     streamId: "11598e9e76e389bfaebbccb7c0c5a5fb",
-    price: "From $179",
+    price: "$179",
     color: "#F97316",
     specImage: `${CF_IMG}/ring-studio-profile/public`,
     specs: [
@@ -100,7 +100,7 @@ export const products: Record<string, Product> = {
     image: `${CF_IMG}/scale-black-pack/public`,
     crossSellImage: `${CF_IMG}/scale-white-portrait/public`,
     streamId: "08984500cbcb8e14ef154a1a36f7bb98",
-    price: "From $99",
+    price: "$99",
     color: "#3B82F6",
     specs: [
       { label: "Sensors", value: "BIA, 4-point electrode" },
@@ -150,7 +150,7 @@ export const products: Record<string, Product> = {
     description: "Clinical-grade body composition with 8-point dual-frequency BIA and segmental analysis. See fat and muscle distribution for each arm, leg, and trunk. The same technology used in professional sports labs.",
     image: `${CF_IMG}/scale-pro-bathroom-still/public`,
     streamId: "08984500cbcb8e14ef154a1a36f7bb98",
-    price: "From $179",
+    price: "$179",
     color: "#3B82F6",
     specs: [
       { label: "Sensors", value: "Dual-frequency BIA, 8-point electrode with retractable handle" },
