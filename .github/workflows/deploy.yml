@@ -32,9 +32,5 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
-      - name: Deploy BFF Worker
-        run: npx wrangler deploy -c wrangler.jsonc
-        working-directory: workers/bff
-        env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      # BFF Worker is deployed locally via: cd workers/bff && npx wrangler deploy -c wrangler.jsonc
+      # It rarely changes and needs a token with Workers Routes permission.
