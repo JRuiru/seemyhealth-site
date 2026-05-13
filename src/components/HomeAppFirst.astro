@@ -35,18 +35,18 @@ const features = [
 ];
 ---
 
-<section class="py-20 sm:py-28 bg-brand-dark border-t border-white/5" data-app-first-section>
+<section class="py-12 sm:py-28 bg-brand-dark border-t border-white/5" data-app-first-section>
   <div class="max-w-7xl mx-auto px-6 lg:px-8">
     <div class="lg:grid lg:grid-cols-2 lg:gap-16 xl:gap-24 items-center">
 
       <!-- Left: Text + feature grid -->
       <div>
-        <div class="mb-10 lg:mb-10" data-scroll-reveal data-app-header>
-          <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">No Device Required</p>
-          <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
+        <div class="mb-4 lg:mb-10" data-scroll-reveal data-app-header>
+          <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-3 lg:mb-4">No Device Required</p>
+          <h2 class="font-display text-3xl sm:text-5xl font-300 uppercase leading-[0.95] mb-3 lg:mb-4">
             The app works <span class="font-500">from day one.</span>
           </h2>
-          <div class="relative min-h-[4.5rem]">
+          <div class="relative min-h-[3.5rem] lg:min-h-[4.5rem]">
             {[
               "Track your mood daily, journal your thoughts, and build streaks. Understand how you feel over time, no wearable needed.",
               "Log meals, track calories and macros, plan your nutrition, and set fasting schedules. Everything in one place.",
@@ -54,7 +54,7 @@ const features = [
             ].map((text, i) => (
               <p
                 class:list={[
-                  "text-brand-gray-400 leading-relaxed max-w-lg absolute inset-0 transition-opacity duration-500",
+                  "text-sm lg:text-base text-brand-gray-400 leading-relaxed max-w-lg absolute inset-0 transition-opacity duration-500",
                   i === 0 ? "opacity-100" : "opacity-0"
                 ]}
                 data-app-desc={i}
@@ -87,7 +87,7 @@ const features = [
       </div>
 
       <!-- Right: Rotating app screenshots -->
-      <div class="relative mt-12 lg:mt-0" data-scroll-reveal>
+      <div class="relative mt-4 lg:mt-0" data-scroll-reveal>
         <div class="relative mx-auto max-w-[360px] lg:max-w-none overflow-hidden rounded-[2rem]" data-app-carousel style="mask-image: radial-gradient(ellipse 85% 88% at center, black 45%, transparent 100%); -webkit-mask-image: radial-gradient(ellipse 85% 88% at center, black 45%, transparent 100%);">
           {[
             { src: `${CF_IMG}/app-mood-tracking/public`, alt: "Mood tracking & journalling", label: "Journal & Mood" },
