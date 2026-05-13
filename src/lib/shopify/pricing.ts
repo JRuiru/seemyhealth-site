@@ -67,9 +67,16 @@ function saveCache(cache: PricingCache) {
   }
 }
 
-// Fetch a single product's localized pricing
+// Fetch a single product's localized pricing (checks session cache first)
 export async function fetchProductPricing(handle: string): Promise<ProductPricing | null> {
   const country = getStoredCountry();
+
+  // Check cache first
+  const cached = memoryCache || getStoredCache();
+  if (cached && cached.country === country && cached.products[handle]) {
+    return cached.products[handle];
+  }
+
   const qs = country ? `?country=${country}` : "";
 
   try {
@@ -90,7 +97,16 @@ export async function fetchProductPricing(handle: string): Promise<ProductPricin
       })
     );
 
-    return { handle, variants };
+    const pricing = { handle, variants };
+
+    // Store in cache
+    const existingCache = memoryCache || getStoredCache() || { country, products: {}, timestamp: 0 };
+    existingCache.products[handle] = pricing;
+    existingCache.timestamp = Date.now();
+    existingCache.country = country;
+    saveCache(existingCache);
+
+    return pricing;
   } catch {
     return null;
   }

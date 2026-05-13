@@ -370,7 +370,10 @@ export default {
         const product = await getProductByHandle(shopify, handle, buyerCountry);
         if (!product) return error("Product not found", 404, cors);
 
-        return json({ product, country: buyerCountry || null }, 200, cors);
+        return json({ product, country: buyerCountry || null }, 200, {
+          ...cors,
+          "Cache-Control": "public, s-maxage=300, stale-while-revalidate=60",
+        });
       }
 
       // ============================================================
