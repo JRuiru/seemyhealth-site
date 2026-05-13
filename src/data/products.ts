@@ -40,7 +40,7 @@ export const products: Record<string, Product> = {
     headline: "Health clarity\non your finger",
     description: "24/7 heart rate, SpO2, sleep stages, activity tracking, and stress monitoring, all from a ring designed for daily wear. Medical-grade sensors wrapped in titanium, rated IP68 for showers, workouts, and everything in between.",
     image: `${CF_IMG}/ring-hero-hands/public`,
-    streamId: "2dddbe4d3032da2f23af4ada53b92953",
+    streamId: "11598e9e76e389bfaebbccb7c0c5a5fb",
     price: "From $179.99",
     color: "#F97316",
     specImage: `${CF_IMG}/ring-studio-profile/public`,

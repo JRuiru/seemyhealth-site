@@ -53,7 +53,7 @@ scripts/
 
 | Device | Slug | Color | Variants | Shopify ID | Stream ID |
 |--------|------|-------|----------|------------|-----------|
-| Ring One | ring-one | #F97316 | Phantom Black / Aurora Gold × sizes 6–13 | 7643546812529 | 2dddbe4d3032da2f23af4ada53b92953 |
+| Ring One | ring-one | #F97316 | Phantom Black / Aurora Gold × sizes 6–13 | 7643546812529 | 11598e9e76e389bfaebbccb7c0c5a5fb |
 | The Scale | scale | #3B82F6 | Obsidian Black / Frost White | 7643546878065 | 20a7b78a3a620e0cbb8b861bb65af913 |
 | Scale Pro | scale-pro | #3B82F6 | Obsidian Black / Frost White | 7643546943601 | — |
 | BP Monitor | bp-monitor | #EF4444 | Carbon Black / Opal White | 7643547009137 | 414b8ac36adafae24dc9750438174d9a |
