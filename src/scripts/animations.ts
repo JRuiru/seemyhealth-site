@@ -443,41 +443,50 @@ export function initProductsHorizontal() {
 }
 
 // --- Mobile collapse for "App works from day one" section ---
+// Uses CSS sticky instead of ScrollTrigger pin.
+// Sticky doesn't create a spacer, so when content collapses,
+// the document flow adjusts naturally — no dead space possible.
 export function initAppFirstCollapse() {
   const mm = gsap.matchMedia();
 
   mm.add("(max-width: 1023px)", () => {
+    const wrapper = document.querySelector("[data-app-first-wrapper]") as HTMLElement;
     const section = document.querySelector("[data-app-first-section]") as HTMLElement;
-    if (!section) return;
+    if (!wrapper || !section) return;
 
     const collapsible = section.querySelector("[data-app-collapsible]") as HTMLElement;
     if (!collapsible) return;
 
-    // Measure natural height and lock it
     const naturalHeight = collapsible.offsetHeight;
+
+    // Make section sticky within the wrapper
+    section.style.position = "sticky";
+    section.style.top = "0";
+
+    // Wrapper must be taller than the section to provide scroll distance.
+    // Extra height = the cards we'll collapse (the scroll runway).
+    wrapper.style.height = `${section.offsetHeight + naturalHeight}px`;
+
+    // Lock collapsible height for smooth animation
     gsap.set(collapsible, { height: naturalHeight, overflow: "hidden" });
 
-    const tl = gsap.timeline({
+    // Animate based on wrapper scroll, no pin needed
+    gsap.to(collapsible, {
+      height: 0,
+      opacity: 0,
+      ease: "power2.inOut",
       scrollTrigger: {
-        trigger: section,
+        trigger: wrapper,
         start: "top top",
-        // end = exact card height so spacer compensates perfectly
-        end: `+=${naturalHeight}`,
-        pin: true,
-        pinSpacing: true,
+        end: "bottom bottom",
         scrub: 0.5,
-        anticipatePin: 1,
       },
     });
 
-    tl.to(collapsible, {
-      height: 0,
-      opacity: 0,
-      duration: 1,
-      ease: "power2.inOut",
-    });
-
     return () => {
+      section.style.position = "";
+      section.style.top = "";
+      wrapper.style.height = "";
       gsap.set(collapsible, { height: "auto", opacity: 1, overflow: "" });
     };
   });
