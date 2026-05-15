@@ -451,44 +451,40 @@ export function initAppFirstCollapse() {
     if (!section) return;
 
     const collapsible = section.querySelector("[data-app-collapsible]") as HTMLElement;
-    if (!collapsible) return;
+    const phone = section.querySelector("[data-app-phone]") as HTMLElement;
+    if (!collapsible || !phone) return;
 
-    // Measure after images load for accurate height
     const naturalHeight = collapsible.scrollHeight;
-    gsap.set(collapsible, { height: naturalHeight, overflow: "hidden" });
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
         start: "top top",
-        end: () => `+=${collapsible.scrollHeight || naturalHeight}`,
+        end: () => `+=${naturalHeight}`,
         pin: true,
-        pinSpacing: true, // let GSAP manage spacing for downstream pins
+        pinSpacing: true,
         scrub: 0.5,
         anticipatePin: 1,
         invalidateOnRefresh: true,
       },
     });
 
-    // Animate children, not the pinned element itself
-    tl.to(collapsible, {
-      height: 0,
-      opacity: 0,
-      duration: 1,
-      ease: "power2.inOut",
-    });
+    // Don't change heights - fade out cards and slide phone up instead.
+    // This keeps the pinned element's height stable so pinSpacing works.
+    tl.to(collapsible, { opacity: 0, duration: 0.6, ease: "power2.in" }, 0);
+    tl.to(phone, { y: -naturalHeight, duration: 1, ease: "power2.inOut" }, 0);
 
     return () => {
-      gsap.set(collapsible, { height: "auto", opacity: 1, overflow: "" });
+      gsap.set(collapsible, { opacity: 1 });
+      gsap.set(phone, { y: 0 });
     };
   });
 }
 
 // --- Init all ---
 export function initAllAnimations() {
-  // Mobile config: prevent address bar resize jumps + touch jitter
+  // Mobile config: prevent address bar resize jumps
   ScrollTrigger.config({ ignoreMobileResize: true });
-  ScrollTrigger.normalizeScroll(true);
 
   initSmoothScroll();
   initNavbarScroll();
