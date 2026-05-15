@@ -5,7 +5,6 @@ import ProductConfigurator from '../../components/commerce/ProductConfigurator';
 import WhatsInTheBox from '../../components/commerce/WhatsInTheBox';
 import CustomerReviews from '../../components/commerce/CustomerReviews';
 import StickyAddToCart from '../../components/commerce/StickyAddToCart';
-import CartDrawer from '../../components/commerce/CartDrawer';
 import PriceTag from '../../components/commerce/PriceTag';
 import Footer from '../../components/Footer.astro';
 import { products, productSlugs } from '../../data/products';
@@ -157,6 +156,5 @@ const otherProducts = productSlugs
   <!-- Sticky Add to Cart (appears when main button scrolls out of view) -->
   <StickyAddToCart accentColor={product.color} client:load />
 
-  <CartDrawer client:load />
   <Footer />
 </Layout>

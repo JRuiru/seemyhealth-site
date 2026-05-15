@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css'
+import CartDrawer from '../components/commerce/CartDrawer';
 
 interface Props {
   title: string;
@@ -75,6 +76,7 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
   </head>
   <body class="bg-brand-black text-white font-sans antialiased overflow-x-hidden">
     <slot />
+    <CartDrawer client:load />
     <script>
       import { initAllAnimations } from '../scripts/animations';
       document.addEventListener('DOMContentLoaded', initAllAnimations);

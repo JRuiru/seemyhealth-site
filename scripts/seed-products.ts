@@ -63,17 +63,17 @@ const products: ProductDef[] = [
     product_type: "Wearable",
     tags: ["ring", "wearable", "heart-rate", "sleep", "spo2"],
     options: [
-      { name: "Finish", values: ["Midnight Black", "Aurora Gold"] },
+      { name: "Finish", values: ["Phantom Black", "Aurora Gold"] },
       { name: "Size", values: ["6", "7", "8", "9", "10", "11", "12", "13"] },
     ],
     variants: [
-      // Midnight Black sizes
+      // Phantom Black sizes
       ...["6", "7", "8", "9", "10", "11", "12", "13"].map((size) => ({
-        title: `Midnight Black / ${size}`,
+        title: `Phantom Black / ${size}`,
         price: "179.99",
         sku: `RING-BLK-${size}`,
         inventory_management: "shopify" as const,
-        option1: "Midnight Black",
+        option1: "Phantom Black",
         option2: size,
       })),
       // Aurora Gold sizes
@@ -94,10 +94,10 @@ const products: ProductDef[] = [
     vendor: "SeeMyHealth",
     product_type: "Scale",
     tags: ["scale", "body-composition", "weight", "bmi"],
-    options: [{ name: "Color", values: ["Black", "White"] }],
+    options: [{ name: "Color", values: ["Obsidian Black", "Frost White"] }],
     variants: [
-      { title: "Black", price: "99.99", sku: "SCALE-BLK", inventory_management: "shopify", option1: "Black" },
-      { title: "White", price: "99.99", sku: "SCALE-WHT", inventory_management: "shopify", option1: "White" },
+      { title: "Obsidian Black", price: "99.99", sku: "SCALE-BLK", inventory_management: "shopify", option1: "Obsidian Black" },
+      { title: "Frost White", price: "99.99", sku: "SCALE-WHT", inventory_management: "shopify", option1: "Frost White" },
     ],
   },
   {
@@ -107,10 +107,10 @@ const products: ProductDef[] = [
     vendor: "SeeMyHealth",
     product_type: "Scale",
     tags: ["scale", "body-composition", "weight", "segmental", "pro"],
-    options: [{ name: "Color", values: ["Black", "White"] }],
+    options: [{ name: "Color", values: ["Obsidian Black", "Frost White"] }],
     variants: [
-      { title: "Black", price: "199.99", sku: "SCALE-PRO-BLK", inventory_management: "shopify", option1: "Black" },
-      { title: "White", price: "199.99", sku: "SCALE-PRO-WHT", inventory_management: "shopify", option1: "White" },
+      { title: "Obsidian Black", price: "199.99", sku: "SCALE-PRO-BLK", inventory_management: "shopify", option1: "Obsidian Black" },
+      { title: "Frost White", price: "199.99", sku: "SCALE-PRO-WHT", inventory_management: "shopify", option1: "Frost White" },
     ],
   },
   {
@@ -120,8 +120,10 @@ const products: ProductDef[] = [
     vendor: "SeeMyHealth",
     product_type: "Monitor",
     tags: ["blood-pressure", "heart", "medical", "fda-cleared"],
+    options: [{ name: "Color", values: ["Carbon Black", "Opal White"] }],
     variants: [
-      { title: "Default", price: "89.99", sku: "BP-MON", inventory_management: "shopify" },
+      { title: "Carbon Black", price: "89.99", sku: "BP-MON-BLK", inventory_management: "shopify", option1: "Carbon Black" },
+      { title: "Opal White", price: "89.99", sku: "BP-MON-WHT", inventory_management: "shopify", option1: "Opal White" },
     ],
   },
   {
@@ -131,8 +133,10 @@ const products: ProductDef[] = [
     vendor: "SeeMyHealth",
     product_type: "Bottle",
     tags: ["hydration", "water", "smart-bottle"],
+    options: [{ name: "Color", values: ["Abyss Black", "Glacier White"] }],
     variants: [
-      { title: "Default", price: "59.99", sku: "HYDRA-ONE", inventory_management: "shopify" },
+      { title: "Abyss Black", price: "59.99", sku: "HYDRA-BLK", inventory_management: "shopify", option1: "Abyss Black" },
+      { title: "Glacier White", price: "59.99", sku: "HYDRA-WHT", inventory_management: "shopify", option1: "Glacier White" },
     ],
   },
   {

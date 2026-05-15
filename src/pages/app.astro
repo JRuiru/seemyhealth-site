@@ -9,14 +9,20 @@ export const prerender = true;
 const appSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "SeeMyHealth",
+  name: "C-MyHealth",
+  alternateName: ["SeeMyHealth", "See My Health", "SeeMyHealth App"],
   operatingSystem: "iOS, Android",
   applicationCategory: "HealthApplication",
-  description: "The SeeMyHealth app unifies all your health devices into one dashboard. Track heart rate, sleep, body composition, blood pressure, hydration, blood markers, mood, journalling, and more.",
+  description: "C-MyHealth (by SeeMyHealth) unifies all your health devices into one dashboard. Track heart rate, sleep, body composition, blood pressure, hydration, blood markers, mood, journalling, and more.",
   offers: {
     "@type": "Offer",
     price: "0",
     priceCurrency: "USD",
+  },
+  author: {
+    "@type": "Organization",
+    name: "SeeMyHealth",
+    url: "https://www.seemyhealth.ai",
   },
 };
 
@@ -216,7 +222,7 @@ const allFeatures = [
 ];
 ---
 
-<Layout title="The App | SeeMyHealth" description="Works the day you download it. Smarter when your devices arrive. Journalling, mood tracking, meal logging, recipes, and guided programs, no device required. Add devices for 24/7 vitals, sleep staging, and cross-device insights." canonicalPath="/app" jsonLd={appSchema}>
+<Layout title="C-MyHealth App | SeeMyHealth" description="Download C-MyHealth, the SeeMyHealth app for iOS and Android. Journalling, mood tracking, meal logging, recipes, and guided programs, no device required. Add devices for 24/7 vitals, sleep staging, and cross-device insights." canonicalPath="/app" jsonLd={appSchema}>
   <Navbar />
 
   <!-- Hero -->

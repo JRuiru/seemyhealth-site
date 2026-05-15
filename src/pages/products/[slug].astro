@@ -12,7 +12,6 @@ import ProductSpecs from '../../components/ProductSpecs.astro';
 import ProductVideo from '../../components/ProductVideo.astro';
 import ProductCTA from '../../components/ProductCTA.astro';
 import CrossSell from '../../components/CrossSell.astro';
-import CartDrawer from '../../components/commerce/CartDrawer';
 import Footer from '../../components/Footer.astro';
 import { products, productSlugs } from '../../data/products';
 import { productContent } from '../../data/product-content';
@@ -126,8 +125,6 @@ const breadcrumbSchema = {
 
   <!-- Cross-sell -->
   <CrossSell currentSlug={slug as string} />
-
-  <CartDrawer client:load />
 
   <Footer />
 </Layout>

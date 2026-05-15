@@ -52,7 +52,7 @@ export const products: Record<string, Product> = {
       { label: "Materials", value: "Titanium shell, medical-grade resin" },
       { label: "Connectivity", value: "Bluetooth 5.2" },
       { label: "Sizes", value: "6, 7, 8, 9, 10, 11, 12, 13" },
-      { label: "Finishes", value: "Midnight Black ($179), Aurora Gold ($199)" },
+      { label: "Finishes", value: "Phantom Black ($179), Aurora Gold ($199)" },
     ],
     features: [
       {
@@ -79,7 +79,7 @@ export const products: Record<string, Product> = {
     lifestyleImages: [
       { src: `${CF_IMG}/ring-reading-coffee/public`, alt: "Ring One while reading with coffee" },
       { src: `${CF_IMG}/ring-cocktails/public`, alt: "Ring One at a social evening" },
-      { src: `${CF_IMG}/ring-hand-closeup-black/public`, alt: "Ring One Midnight Black close-up on hand" },
+      { src: `${CF_IMG}/ring-hand-closeup-black/public`, alt: "Ring One Phantom Black close-up on hand" },
       { src: `${CF_IMG}/ring-painting-aurora/public`, alt: "Ring One Aurora Gold while painting" },
       { src: `${CF_IMG}/ring-face-closeup/public`, alt: "Ring One close-up portrait" },
       { src: `${CF_IMG}/ring-sleeping/public`, alt: "Tracking sleep with Ring One" },
