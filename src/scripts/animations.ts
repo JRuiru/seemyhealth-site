@@ -451,16 +451,18 @@ export function initAppFirstCollapse() {
     if (!section) return;
 
     const collapsible = section.querySelector("[data-app-collapsible]") as HTMLElement;
-    const phone = section.querySelector("[data-app-phone]") as HTMLElement;
-    if (!collapsible || !phone) return;
+    if (!collapsible) return;
 
-    const naturalHeight = collapsible.scrollHeight;
+    // Lock height so collapse is smooth
+    gsap.set(collapsible, { height: collapsible.scrollHeight, overflow: "hidden" });
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
         start: "top top",
-        end: () => `+=${naturalHeight}`,
+        // Use a fixed scroll distance (viewport-relative) instead of
+        // content height, which can vary before images load.
+        end: "+=60%",
         pin: true,
         pinSpacing: true,
         scrub: 0.5,
@@ -469,14 +471,18 @@ export function initAppFirstCollapse() {
       },
     });
 
-    // Don't change heights - fade out cards and slide phone up instead.
-    // This keeps the pinned element's height stable so pinSpacing works.
-    tl.to(collapsible, { opacity: 0, duration: 0.6, ease: "power2.in" }, 0);
-    tl.to(phone, { y: -naturalHeight, duration: 1, ease: "power2.inOut" }, 0);
+    // Collapse height to 0 — the phone moves up naturally as space closes.
+    // pinSpacing adds scroll runway equal to end value. The section shrinks
+    // by the same amount, so the net extra space is zero.
+    tl.to(collapsible, {
+      height: 0,
+      opacity: 0,
+      duration: 1,
+      ease: "power2.inOut",
+    });
 
     return () => {
-      gsap.set(collapsible, { opacity: 1 });
-      gsap.set(phone, { y: 0 });
+      gsap.set(collapsible, { height: "auto", opacity: 1, overflow: "" });
     };
   });
 }
