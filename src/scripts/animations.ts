@@ -453,29 +453,20 @@ export function initAppFirstCollapse() {
     const collapsible = section.querySelector("[data-app-collapsible]") as HTMLElement;
     if (!collapsible) return;
 
-    // Measure and lock height so collapse is smooth.
-    // Store the measured value as a data attribute so it survives refresh.
-    const measure = () => {
-      gsap.set(collapsible, { height: "auto", overflow: "" });
-      const h = collapsible.offsetHeight;
-      gsap.set(collapsible, { height: h, overflow: "hidden" });
-      return h;
-    };
-    let collapseHeight = measure();
+    // Measure natural height and lock it
+    const naturalHeight = collapsible.offsetHeight;
+    gsap.set(collapsible, { height: naturalHeight, overflow: "hidden" });
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
         start: "top top",
-        // end must exactly equal the collapsed height so pinSpacing
-        // spacer perfectly compensates for the lost DOM height.
-        end: () => `+=${collapseHeight}`,
+        // end = exact card height so spacer compensates perfectly
+        end: `+=${naturalHeight}`,
         pin: true,
         pinSpacing: true,
         scrub: 0.5,
         anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onRefresh: () => { collapseHeight = measure(); },
       },
     });
 
