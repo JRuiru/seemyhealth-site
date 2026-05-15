@@ -51,7 +51,7 @@ const faqSections = [
     questions: [
       {
         q: "How do I pair a device?",
-        a: "Open the app, go to Settings > Devices > Add Device. Make sure Bluetooth is enabled. The app will automatically detect nearby SeeMyHealth devices. Follow the on-screen instructions for your specific device.",
+        a: "Open the app, go to Settings > Devices > Add Device. Make sure Bluetooth is enabled. The app will automatically detect nearby SeeMyHealth devices. Follow the on-screen instructions for your specific device. <a href='/support/setup' class='text-white underline hover:text-brand-gray-300'>View step-by-step setup guides for each device →</a>",
       },
       {
         q: "Do I need an account?",
@@ -349,7 +349,7 @@ const faqSchema = {
                       </svg>
                     </button>
                     <div class="faq-answer hidden pb-5">
-                      <p class="text-sm text-brand-gray-500 leading-relaxed">{item.a}</p>
+                      <p class="text-sm text-brand-gray-500 leading-relaxed" set:html={item.a} />
                     </div>
                   </div>
                 ))}
