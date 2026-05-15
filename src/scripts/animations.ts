@@ -453,27 +453,32 @@ export function initAppFirstCollapse() {
     const collapsible = section.querySelector("[data-app-collapsible]") as HTMLElement;
     if (!collapsible) return;
 
-    // Lock height so collapse is smooth
-    gsap.set(collapsible, { height: collapsible.scrollHeight, overflow: "hidden" });
+    // Measure and lock height so collapse is smooth.
+    // Store the measured value as a data attribute so it survives refresh.
+    const measure = () => {
+      gsap.set(collapsible, { height: "auto", overflow: "" });
+      const h = collapsible.offsetHeight;
+      gsap.set(collapsible, { height: h, overflow: "hidden" });
+      return h;
+    };
+    let collapseHeight = measure();
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
         start: "top top",
-        // Use a fixed scroll distance (viewport-relative) instead of
-        // content height, which can vary before images load.
-        end: "+=60%",
+        // end must exactly equal the collapsed height so pinSpacing
+        // spacer perfectly compensates for the lost DOM height.
+        end: () => `+=${collapseHeight}`,
         pin: true,
         pinSpacing: true,
         scrub: 0.5,
         anticipatePin: 1,
         invalidateOnRefresh: true,
+        onRefresh: () => { collapseHeight = measure(); },
       },
     });
 
-    // Collapse height to 0 — the phone moves up naturally as space closes.
-    // pinSpacing adds scroll runway equal to end value. The section shrinks
-    // by the same amount, so the net extra space is zero.
     tl.to(collapsible, {
       height: 0,
       opacity: 0,
