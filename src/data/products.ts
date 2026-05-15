@@ -99,7 +99,7 @@ export const products: Record<string, Product> = {
     description: "Full body composition analysis with 4-point BIA. Step on and see weight, body fat, muscle mass, bone density, and 10 more metrics in the app instantly. Looking for segmental analysis? Check out The Scale Pro.",
     image: `${CF_IMG}/scale-black-pack/public`,
     crossSellImage: `${CF_IMG}/scale-white-portrait/public`,
-    streamId: "08984500cbcb8e14ef154a1a36f7bb98",
+    streamId: "4680ce4c659c102a3d394bf5eab4bad2",
     price: "$99",
     color: "#3B82F6",
     specs: [
