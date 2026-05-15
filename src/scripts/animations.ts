@@ -288,9 +288,6 @@ export function initEcosystemReveal() {
     (s) => section.querySelector(`[data-flip-label="${s}"]`) as HTMLElement
   );
 
-  // Normalize scroll for mobile — prevents touch stutter fighting with pin
-  ScrollTrigger.normalizeScroll(true);
-
   // --- Build a single scrubbed + snapped timeline ---
   // Each segment has a FIXED duration S so snap points align exactly with settled states.
   // Steps: entrance | intro | app | scale | bp-monitor | hydra-one | hema-one | ring-one | exit
@@ -456,53 +453,59 @@ export function initAppFirstCollapse() {
     const collapsible = section.querySelector("[data-app-collapsible]") as HTMLElement;
     if (!collapsible) return;
 
+    // Measure after images load for accurate height
     const naturalHeight = collapsible.scrollHeight;
     gsap.set(collapsible, { height: naturalHeight, overflow: "hidden" });
-
-    // Insert a spacer after the section that equals the collapse height.
-    // pinSpacing: false so ScrollTrigger doesn't add its own spacer.
-    // Our spacer fills the gap while content is expanded, then we shrink
-    // it in sync with the collapse so no dead space remains.
-    const spacer = document.createElement("div");
-    spacer.style.height = `${naturalHeight}px`;
-    section.parentNode!.insertBefore(spacer, section.nextSibling);
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
         start: "top top",
-        end: () => `+=${naturalHeight}`,
+        end: () => `+=${collapsible.scrollHeight || naturalHeight}`,
         pin: true,
-        pinSpacing: false,
+        pinSpacing: true, // let GSAP manage spacing for downstream pins
         scrub: 0.5,
         anticipatePin: 1,
         invalidateOnRefresh: true,
       },
     });
 
-    // Collapse the content and shrink the spacer together
-    tl.to(collapsible, { height: 0, opacity: 0, duration: 1, ease: "power2.inOut" }, 0);
-    tl.to(spacer, { height: 0, duration: 1, ease: "power2.inOut" }, 0);
+    // Animate children, not the pinned element itself
+    tl.to(collapsible, {
+      height: 0,
+      opacity: 0,
+      duration: 1,
+      ease: "power2.inOut",
+    });
 
     return () => {
       gsap.set(collapsible, { height: "auto", opacity: 1, overflow: "" });
-      spacer.remove();
     };
   });
 }
 
 // --- Init all ---
 export function initAllAnimations() {
+  // Mobile config: prevent address bar resize jumps + touch jitter
+  ScrollTrigger.config({ ignoreMobileResize: true });
+  ScrollTrigger.normalizeScroll(true);
+
   initSmoothScroll();
   initNavbarScroll();
   initHeroReveal();
   initEcosystemReveal();
-  initProductsHorizontal();
-  initAppFirstCollapse();
+
+  // Sequential pins must be created in DOM order (top → bottom)
+  initAppFirstCollapse();   // pin 1: collapse section
+  initProductsHorizontal(); // pin 2: horizontal scroll
+
   initScrollReveals();
   initImageReveals();
   initParallax();
   initLineWipes();
   initCounters();
   initStickyFeatures();
+
+  // Recalculate after all assets load (images affect pin-spacer height)
+  window.addEventListener("load", () => ScrollTrigger.refresh());
 }
