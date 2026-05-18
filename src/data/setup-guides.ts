@@ -95,7 +95,7 @@ export const setupData: Record<string, DeviceSetup> = {
       },
       {
         title: "First reading",
-        description: "Step on barefoot, grip the handle with both hands, arms at 45°. Hold for 15 seconds. 21 metrics including segmental muscle and fat data sync to the app.",
+        description: "Step on barefoot, grip the handle with both hands, arms at 45°. Hold for 15 seconds. 32 metrics including segmental muscle and fat data sync to the app.",
       },
     ],
   },
@@ -155,7 +155,7 @@ export const setupData: Record<string, DeviceSetup> = {
   "hema-one": {
     name: "Hema One",
     color: "#A855F7",
-    image: `${CF_IMG}/hema-one-hero/public`,
+    image: `${CF_IMG}/hema-one-web/public`,
     steps: [
       {
         title: "Unbox",

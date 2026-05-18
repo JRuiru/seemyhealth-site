@@ -71,8 +71,8 @@ export const productContent: Record<string, ProductContent> = {
       headline: "The same tech pro athletes use.",
       items: [
         { title: "Segmental Analysis", description: "See fat and muscle for each arm, leg, and trunk independently. Spot imbalances, track rehab progress, and train smarter." },
-        { title: "21 Body Metrics", description: "Weight, body fat, muscle mass, bone density, visceral fat, water percentage, BMR, metabolic age, protein, subcutaneous fat, and more." },
-        { title: "Dual-Frequency BIA", description: "Two frequencies measure both intra- and extracellular water for significantly more accurate body composition than single-frequency scales." },
+        { title: "32 Body Metrics", description: "Weight, heart rate, BMI, body fat, muscle mass, visceral fat, skeletal muscle, protein ratio, subcutaneous fat, bone mass, body cell mass, intracellular/extracellular water, minerals, and more." },
+        { title: "Multi-Frequency BIA", description: "Multiple frequencies measure both intra- and extracellular water for significantly more accurate body composition than single-frequency scales." },
         { title: "Family Profiles", description: "Unlimited user profiles with auto-recognition. Everyone in the household gets their own private dashboard." },
       ],
     },
