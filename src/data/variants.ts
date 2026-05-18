@@ -104,7 +104,7 @@ export const productVariants: Record<string, ProductVariantData> = {
         { type: "image", url: `${CF_IMG}/scale-black-pack/public`, alt: "Scale Obsidian Black" },
         { type: "model", url: "/models/scale-basic-black-3d.glb", poster: `${CF_IMG}/scale-black-pack/public`, alt: "Scale Obsidian Black 3D" },
         { type: "image", url: `${CF_IMG}/scale-black-bathroom/public`, alt: "Scale Obsidian Black on bathroom counter" },
-        { type: "image", url: `${CF_IMG}/scale-pro-lifestyle-new/public`, alt: "Scale lifestyle" },
+        { type: "image", url: `${CF_IMG}/scale-black-nutritionist/public`, alt: "Scale in nutritionist office" },
       ],
       "Frost White": [
         { type: "image", url: `${CF_IMG}/scale-white-pack/public`, alt: "Scale Frost White" },
@@ -135,17 +135,15 @@ export const productVariants: Record<string, ProductVariantData> = {
     },
     media: {
       "Obsidian Black": [
-        { type: "image", url: `${CF_IMG}/scale-pro-hero-new/public`, alt: "Scale Pro Obsidian Black" },
-        { type: "model", url: "/models/scale-pro-black-3d.glb", poster: `${CF_IMG}/scale-pro-hero-new/public`, alt: "Scale Pro Obsidian Black 3D" },
-        { type: "image", url: `${CF_IMG}/scale-pro-laser-front/public`, alt: "Scale Pro front detail" },
-        { type: "image", url: `${CF_IMG}/scale-pro-laser-side/public`, alt: "Scale Pro side detail" },
+        { type: "image", url: `${CF_IMG}/scale-pro-black-bathroom/public`, alt: "Scale Pro Obsidian Black in dark bathroom" },
+        { type: "model", url: "/models/scale-pro-black-3d.glb", poster: `${CF_IMG}/scale-pro-black-bathroom/public`, alt: "Scale Pro Obsidian Black 3D" },
         { type: "image", url: `${CF_IMG}/scale-pro-using/public`, alt: "Scale Pro in use" },
       ],
       "Frost White": [
-        { type: "image", url: `${CF_IMG}/scale-pro-hero-new/public`, alt: "Scale Pro Frost White" },
-        { type: "model", url: "/models/scale-pro-white-3d.glb", poster: `${CF_IMG}/scale-pro-hero-new/public`, alt: "Scale Pro Frost White 3D" },
-        { type: "image", url: `${CF_IMG}/scale-pro-laser-front/public`, alt: "Scale Pro front detail" },
-        { type: "image", url: `${CF_IMG}/scale-pro-laser-side/public`, alt: "Scale Pro side detail" },
+        { type: "image", url: `${CF_IMG}/scale-pro-white-marble/public`, alt: "Scale Pro Frost White on marble counter" },
+        { type: "image", url: `${CF_IMG}/scale-pro-white-bathroom/public`, alt: "Scale Pro Frost White in bathroom" },
+        { type: "image", url: `${CF_IMG}/scale-pro-white-gym/public`, alt: "Scale Pro Frost White in fitness suite" },
+        { type: "model", url: "/models/scale-pro-white-3d.glb", poster: `${CF_IMG}/scale-pro-white-marble/public`, alt: "Scale Pro Frost White 3D" },
         { type: "image", url: `${CF_IMG}/scale-pro-using/public`, alt: "Scale Pro in use" },
       ],
     },
