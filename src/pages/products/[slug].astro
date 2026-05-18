@@ -118,7 +118,7 @@ const breadcrumbSchema = {
   <ProductSpecs slug={slug as string} name={product.name} price={product.price} specs={product.specs} backgroundImage={product.specImage} />
 
   <!-- Video -->
-  <ProductVideo name={product.name} image={product.image} />
+  <ProductVideo name={product.name} image={product.videoThumbnail || product.image} />
 
   <!-- Final CTA -->
   <ProductCTA slug={slug as string} name={product.name} price={product.price} color={product.color} />

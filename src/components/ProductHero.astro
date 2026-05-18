@@ -48,8 +48,7 @@ const videoSrc = streamId ? `https://customer-5zjora8ha9v60sg3.cloudflarestream.
       <h1 class="font-display text-4xl sm:text-6xl lg:text-8xl font-300 uppercase leading-[0.95] mb-4 sm:mb-6 whitespace-pre-line">
         {headline}
       </h1>
-      <p class="text-sm sm:text-lg text-brand-gray-300 leading-relaxed max-w-lg mb-6 sm:mb-8">
-        {description}
+      <p class="text-sm sm:text-lg text-brand-gray-300 leading-relaxed max-w-lg mb-6 sm:mb-8" set:html={description}>
       </p>
       <div class="flex items-center gap-6">
         <a

@@ -91,7 +91,7 @@ const otherProducts = productSlugs
             >
               <div class="relative h-56 overflow-hidden">
                 <img
-                  src={p.image}
+                  src={p.crossSellImage || p.image}
                   alt={p.name}
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
