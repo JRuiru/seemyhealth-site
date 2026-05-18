@@ -99,7 +99,8 @@ export const products: Record<string, Product> = {
     description: "Full body composition analysis with 4-point BIA. Step on and see weight, body fat, muscle mass, bone density, and 10 more metrics in the app instantly. Looking for segmental analysis? Check out The Scale Pro.",
     image: `${CF_IMG}/scale-black-pack/public`,
     crossSellImage: `${CF_IMG}/scale-white-portrait/public`,
-    streamId: "4680ce4c659c102a3d394bf5eab4bad2",
+    streamId: "299bcfd1f9b9fb20b7d4f809a7b481fe",
+    specImage: `${CF_IMG}/scale-base-side-profile/public`,
     price: "$99",
     color: "#3B82F6",
     specs: [
@@ -149,7 +150,8 @@ export const products: Record<string, Product> = {
     headline: "See your body,\nsegment by segment",
     description: "Clinical-grade body composition with 8-point dual-frequency BIA and segmental analysis. See fat and muscle distribution for each arm, leg, and trunk. The same technology used in professional sports labs.",
     image: `${CF_IMG}/scale-pro-bathroom-still/public`,
-    streamId: "08984500cbcb8e14ef154a1a36f7bb98",
+    streamId: "06c05d17807848beace5a531eab5f747",
+    specImage: `${CF_IMG}/scale-pro-side-profile/public`,
     price: "$179",
     color: "#3B82F6",
     specs: [
@@ -202,6 +204,7 @@ export const products: Record<string, Product> = {
     image: "",
     crossSellImage: `${CF_IMG}/bp-black-desk-portrait/public`,
     streamId: "1d73637dabb39e29daa4e516a616da0e",
+    specImage: `${CF_IMG}/bp-monitor-side-profile/public`,
     price: "$89",
     color: "#EF4444",
     specs: [
@@ -251,6 +254,7 @@ export const products: Record<string, Product> = {
     description: "Smart water bottle that tracks your daily intake automatically. LED ring shows your progress. Gentle reminders keep you on track without being annoying.",
     image: "",
     streamId: "09fe15a09d3e2ad17189fbc7d758bc52",
+    specImage: `${CF_IMG}/hydra-one-side-profile/public`,
     price: "$59",
     color: "#06B6D4",
     specs: [
@@ -302,6 +306,7 @@ export const products: Record<string, Product> = {
     description: "At-home blood analysis for key health markers. A small sample from your fingertip gives you lab-quality results in minutes, right in the app.",
     image: `${CF_IMG}/hema-one-web/public`,
     streamId: "8f576ad01105f0b3c8ff5495c066906e",
+    specImage: `${CF_IMG}/hema-one-side-profile/public`,
     price: "$99",
     color: "#A855F7",
     specs: [
