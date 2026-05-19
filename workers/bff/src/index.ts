@@ -317,13 +317,15 @@ export default {
         const body = (await request.json()) as {
           cartId: string;
           lines: { merchandiseId: string; quantity: number }[];
+          countryCode?: string;
         };
 
         if (!body.cartId || !body.lines?.length) {
           return error("cartId and lines[] required", 400, cors);
         }
 
-        const cart = await cartLinesAdd(shopify, body.cartId, body.lines);
+        const country = body.countryCode || buyerCountry;
+        const cart = await cartLinesAdd(shopify, body.cartId, body.lines, country);
         return json({ cart }, 200, cors);
       }
 
@@ -332,13 +334,15 @@ export default {
         const body = (await request.json()) as {
           cartId: string;
           lines: { id: string; quantity: number }[];
+          countryCode?: string;
         };
 
         if (!body.cartId || !body.lines?.length) {
           return error("cartId and lines[] required", 400, cors);
         }
 
-        const cart = await cartLinesUpdate(shopify, body.cartId, body.lines);
+        const country = body.countryCode || buyerCountry;
+        const cart = await cartLinesUpdate(shopify, body.cartId, body.lines, country);
         return json({ cart }, 200, cors);
       }
 
@@ -347,13 +351,15 @@ export default {
         const body = (await request.json()) as {
           cartId: string;
           lineIds: string[];
+          countryCode?: string;
         };
 
         if (!body.cartId || !body.lineIds?.length) {
           return error("cartId and lineIds[] required", 400, cors);
         }
 
-        const cart = await cartLinesRemove(shopify, body.cartId, body.lineIds);
+        const country = body.countryCode || buyerCountry;
+        const cart = await cartLinesRemove(shopify, body.cartId, body.lineIds, country);
         return json({ cart }, 200, cors);
       }
 
@@ -362,7 +368,7 @@ export default {
         const cartId = decodeURIComponent(path.replace("/api/cart/", ""));
         if (!cartId) return error("Cart ID required", 400, cors);
 
-        const cart = await cartGet(shopify, cartId);
+        const cart = await cartGet(shopify, cartId, buyerCountry);
         if (!cart) return error("Cart not found", 404, cors);
 
         return json({ cart }, 200, cors);

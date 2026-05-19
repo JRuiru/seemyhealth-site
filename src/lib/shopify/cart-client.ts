@@ -100,6 +100,7 @@ export async function addToCart(
     result = await bffFetch<CartResponse>("/cart/add", {
       cartId,
       lines,
+      countryCode,
     });
   } else {
     result = await bffFetch<CartResponse>("/cart/create", {
@@ -136,9 +137,11 @@ export async function updateLineItem(
   const cartId = getStoredCartId();
   if (!cartId) throw new Error("No cart");
 
+  const countryCode = getStoredCountry() || undefined;
   const result = await bffFetch<CartResponse>("/cart/update", {
     cartId,
     lines: [{ id: lineId, quantity }],
+    countryCode,
   });
 
   window.dispatchEvent(new CustomEvent("cart:updated", { detail: result.cart }));
@@ -151,9 +154,11 @@ export async function removeLineItem(
   const cartId = getStoredCartId();
   if (!cartId) throw new Error("No cart");
 
+  const countryCode = getStoredCountry() || undefined;
   const result = await bffFetch<CartResponse>("/cart/remove", {
     cartId,
     lineIds: [lineId],
+    countryCode,
   });
 
   window.dispatchEvent(new CustomEvent("cart:updated", { detail: result.cart }));

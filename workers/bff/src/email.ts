@@ -12,9 +12,19 @@ export interface ContactFormData {
 }
 
 const MODEL_LABELS: Record<string, string> = {
+  // Distribution / business page
   bulk: "Bulk Orders",
   distribution: "Distribution Partner",
   haas: "Hardware-as-a-Service",
+  // Providers page
+  hospital: "Hospital / Health System",
+  clinic: "Clinic / Practice",
+  telehealth: "Telehealth Platform",
+  pharmacy: "Pharmacy",
+  // Insurance page
+  "health-plan": "Health Plan / Payer",
+  employer: "Employer Benefits",
+  tpa: "TPA / Benefits Administrator",
   other: "Other / Not sure",
 };
 

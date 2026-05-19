@@ -84,12 +84,13 @@ export async function cartCreate(
   lines: { merchandiseId: string; quantity: number }[],
   countryCode?: string
 ) {
+  const context = countryCode ? `@inContext(country: ${countryCode})` : "";
   const data = await storefrontFetch<{
     cartCreate: { cart: unknown; userErrors: { field: string; message: string }[] };
   }>(
     config,
     `${CART_FRAGMENT}
-    mutation ($input: CartInput!) {
+    mutation ($input: CartInput!) ${context} {
       cartCreate(input: $input) {
         cart { ...CartFields }
         userErrors { field message }
@@ -112,14 +113,16 @@ export async function cartCreate(
 export async function cartLinesAdd(
   config: ShopifyConfig,
   cartId: string,
-  lines: { merchandiseId: string; quantity: number }[]
+  lines: { merchandiseId: string; quantity: number }[],
+  countryCode?: string
 ) {
+  const context = countryCode ? `@inContext(country: ${countryCode})` : "";
   const data = await storefrontFetch<{
     cartLinesAdd: { cart: unknown; userErrors: { field: string; message: string }[] };
   }>(
     config,
     `${CART_FRAGMENT}
-    mutation ($cartId: ID!, $lines: [CartLineInput!]!) {
+    mutation ($cartId: ID!, $lines: [CartLineInput!]!) ${context} {
       cartLinesAdd(cartId: $cartId, lines: $lines) {
         cart { ...CartFields }
         userErrors { field message }
@@ -137,14 +140,16 @@ export async function cartLinesAdd(
 export async function cartLinesUpdate(
   config: ShopifyConfig,
   cartId: string,
-  lines: { id: string; quantity: number }[]
+  lines: { id: string; quantity: number }[],
+  countryCode?: string
 ) {
+  const context = countryCode ? `@inContext(country: ${countryCode})` : "";
   const data = await storefrontFetch<{
     cartLinesUpdate: { cart: unknown; userErrors: { field: string; message: string }[] };
   }>(
     config,
     `${CART_FRAGMENT}
-    mutation ($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+    mutation ($cartId: ID!, $lines: [CartLineUpdateInput!]!) ${context} {
       cartLinesUpdate(cartId: $cartId, lines: $lines) {
         cart { ...CartFields }
         userErrors { field message }
@@ -162,14 +167,16 @@ export async function cartLinesUpdate(
 export async function cartLinesRemove(
   config: ShopifyConfig,
   cartId: string,
-  lineIds: string[]
+  lineIds: string[],
+  countryCode?: string
 ) {
+  const context = countryCode ? `@inContext(country: ${countryCode})` : "";
   const data = await storefrontFetch<{
     cartLinesRemove: { cart: unknown; userErrors: { field: string; message: string }[] };
   }>(
     config,
     `${CART_FRAGMENT}
-    mutation ($cartId: ID!, $lineIds: [ID!]!) {
+    mutation ($cartId: ID!, $lineIds: [ID!]!) ${context} {
       cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
         cart { ...CartFields }
         userErrors { field message }
@@ -184,11 +191,12 @@ export async function cartLinesRemove(
   return data.cartLinesRemove.cart;
 }
 
-export async function cartGet(config: ShopifyConfig, cartId: string) {
+export async function cartGet(config: ShopifyConfig, cartId: string, countryCode?: string) {
+  const context = countryCode ? `@inContext(country: ${countryCode})` : "";
   const data = await storefrontFetch<{ cart: unknown }>(
     config,
     `${CART_FRAGMENT}
-    query ($cartId: ID!) {
+    query ($cartId: ID!) ${context} {
       cart(id: $cartId) { ...CartFields }
     }`,
     { cartId }
@@ -252,12 +260,13 @@ export async function cartBuyerIdentityUpdate(
   cartId: string,
   countryCode: string
 ) {
+  const context = `@inContext(country: ${countryCode})`;
   const data = await storefrontFetch<{
     cartBuyerIdentityUpdate: { cart: unknown; userErrors: { field: string; message: string }[] };
   }>(
     config,
     `${CART_FRAGMENT}
-    mutation ($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
+    mutation ($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) ${context} {
       cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
         cart { ...CartFields }
         userErrors { field message }

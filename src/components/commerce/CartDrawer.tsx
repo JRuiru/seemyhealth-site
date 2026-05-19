@@ -10,6 +10,14 @@ import {
 type Cart = CartResponse["cart"];
 type LineNode = Cart["lines"]["edges"][number]["node"];
 
+function formatMoney(amount: string, currencyCode: string): string {
+  return new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency: currencyCode,
+    minimumFractionDigits: 2,
+  }).format(parseFloat(amount));
+}
+
 export default function CartDrawer() {
   const [open, setOpen] = useState(false);
   const [cart, setCart] = useState<Cart | null>(null);
@@ -152,7 +160,7 @@ export default function CartDrawer() {
                         .join(" / ")}
                     </p>
                     <p className="text-sm text-white mt-1">
-                      ${parseFloat(line.cost.totalAmount.amount).toFixed(2)}
+                      {formatMoney(line.cost.totalAmount.amount, line.cost.totalAmount.currencyCode)}
                     </p>
 
                     {/* Quantity controls */}
@@ -198,7 +206,7 @@ export default function CartDrawer() {
             <div className="flex items-center justify-between mb-4">
               <span className="text-[11px] uppercase tracking-[2px] text-brand-gray-400">Subtotal</span>
               <span className="text-lg font-medium text-white">
-                ${subtotal ? parseFloat(subtotal.amount).toFixed(2) : "0.00"}
+                {subtotal ? formatMoney(subtotal.amount, subtotal.currencyCode) : "$0.00"}
               </span>
             </div>
             <p className="text-[10px] text-brand-gray-500 mb-4">
