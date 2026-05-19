@@ -22,6 +22,12 @@ import {
   type CustomerAuthConfig,
 } from "./customer-auth";
 
+import {
+  sendSalesNotification,
+  sendCustomerAcknowledgment,
+  type ContactFormData,
+} from "./email";
+
 interface Env {
   SHOPIFY_STORE_DOMAIN: string;
   SHOPIFY_STOREFRONT_TOKEN: string;
@@ -29,6 +35,10 @@ interface Env {
   SHOPIFY_CUSTOMER_CLIENT_ID: string;
   SHOPIFY_SHOP_ID: string;
   WEBHOOK_SECRET: string;
+  SENDGRID_API_KEY: string;
+  SALES_EMAIL: string;
+  SENDGRID_SALES_TEMPLATE_ID: string;
+  SENDGRID_ACK_TEMPLATE_ID: string;
   ALLOWED_ORIGINS: string;
 }
 
@@ -374,6 +384,32 @@ export default {
           ...cors,
           "Cache-Control": "public, s-maxage=300, stale-while-revalidate=60",
         });
+      }
+
+      // ============================================================
+      // CONTACT FORM
+      // ============================================================
+
+      // POST /api/contact — Business enquiry form
+      if (path === "/api/contact" && request.method === "POST") {
+        const body = (await request.json()) as ContactFormData;
+
+        if (!body.company || !body.name || !body.email || !body.model) {
+          return error("company, name, email, and model are required", 400, cors);
+        }
+
+        // Basic email format check
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) {
+          return error("Invalid email address", 400, cors);
+        }
+
+        // Send both emails in parallel
+        await Promise.all([
+          sendSalesNotification(env.SENDGRID_API_KEY, env.SALES_EMAIL, env.SENDGRID_SALES_TEMPLATE_ID, body),
+          sendCustomerAcknowledgment(env.SENDGRID_API_KEY, env.SENDGRID_ACK_TEMPLATE_ID, body),
+        ]);
+
+        return json({ sent: true }, 200, cors);
       }
 
       // ============================================================
