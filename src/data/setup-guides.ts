@@ -171,11 +171,11 @@ export const setupData: Record<string, DeviceSetup> = {
       },
       {
         title: "Prepare",
-        description: "Insert a test strip into the slot. The device confirms it's ready. Wash your hands with warm water to improve blood flow.",
+        description: "Insert a test strip into the slot. NFC auto-identifies the strip type and the device confirms it's ready. Wash your hands with warm water to improve blood flow.",
       },
       {
         title: "First test",
-        description: "Use the included lancet on your fingertip. Apply a small drop to the test strip. Results appear on the device and sync to the app in about 60 seconds.",
+        description: "Use the included lancet on your fingertip. Apply a small drop (~1μL) to the test strip. Results appear on the LED display in 5–15 seconds and sync to the app.",
         tip: "Prick the side of your fingertip. It's less sensitive than the center.",
       },
     ],

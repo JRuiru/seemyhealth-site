@@ -117,15 +117,15 @@ export const productContent: Record<string, ProductContent> = {
     introLine1: "Lab results.",
     introLine2: "No lab visit.",
     howItWorks: [
-      { title: "Prick & Place", description: "A tiny fingertip sample (less than 0.1ml) goes onto the disposable cartridge. Quick and virtually painless.", icon: "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" },
-      { title: "Insert & Wait", description: "Slide the cartridge into Hema One. Results appear in the app in under 5 minutes: hemoglobin, glucose, cholesterol, iron.", icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z" },
+      { title: "Prick & Place", description: "A tiny fingertip sample (~1μL) goes onto the test strip. Quick and virtually painless.", icon: "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" },
+      { title: "Insert & Wait", description: "Slide the test strip into Hema One. NFC auto-identifies the strip type. Results in 5–15 seconds: lipid profile, glucose, uric acid, hemoglobin.", icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z" },
       { title: "Track Over Time", description: "See how your markers change with diet, exercise, and supplements. Spot deficiencies early. Share trends with your doctor.", icon: "M3 17l6-6 4 4 8-8M14 7h7v7" },
     ],
     benefits: {
       headline: "Your blood, your data, your terms.",
       items: [
         { title: "Lab-Quality Accuracy", description: "±2% accuracy vs. laboratory reference methods. Real results you and your doctor can trust." },
-        { title: "4 Key Markers", description: "Hemoglobin, blood glucose, total cholesterol, and iron. The markers that matter most for everyday health." },
+        { title: "7 Key Markers", description: "Full lipid profile (TC, HDL-C, LDL-C, triglycerides), blood glucose, uric acid, and hemoglobin. The markers that matter most for everyday health." },
         { title: "Trend Detection", description: "One reading is a snapshot. Monthly readings reveal patterns. Track the impact of dietary changes and supplements." },
         { title: "Doctor Sharing", description: "Grant your provider secure, authenticated access with a single toggle. They see the longitudinal data they rarely get." },
       ],

@@ -101,14 +101,14 @@ export const productVariants: Record<string, ProductVariantData> = {
     },
     media: {
       "Obsidian Black": [
-        { type: "image", url: `${CF_IMG}/scale-black-pack/public`, alt: "Scale Obsidian Black" },
-        { type: "model", url: "/models/scale-basic-black-3d.glb", poster: `${CF_IMG}/scale-black-pack/public`, alt: "Scale Obsidian Black 3D" },
+        { type: "video", url: "", poster: `${CF_IMG}/scale-base-black-config/public`, alt: "Scale Obsidian Black video" },
+        { type: "model", url: "/models/scale-basic-black-3d.glb", poster: `${CF_IMG}/scale-base-black-config/public`, alt: "Scale Obsidian Black 3D" },
         { type: "image", url: `${CF_IMG}/scale-black-bathroom/public`, alt: "Scale Obsidian Black on bathroom counter" },
         { type: "image", url: `${CF_IMG}/scale-black-nutritionist/public`, alt: "Scale in nutritionist office" },
       ],
       "Frost White": [
-        { type: "image", url: `${CF_IMG}/scale-white-pack/public`, alt: "Scale Frost White" },
-        { type: "model", url: "/models/scale-basic-white-3d.glb", poster: `${CF_IMG}/scale-white-pack/public`, alt: "Scale Frost White 3D" },
+        { type: "video", url: "", poster: `${CF_IMG}/scale-base-white-config/public`, alt: "Scale Frost White video" },
+        { type: "model", url: "/models/scale-basic-white-3d.glb", poster: `${CF_IMG}/scale-base-white-config/public`, alt: "Scale Frost White 3D" },
         { type: "image", url: `${CF_IMG}/scale-white-portrait/public`, alt: "Scale Frost White portrait" },
         { type: "image", url: `${CF_IMG}/scale-white-bathroom/public`, alt: "Scale Frost White in bathroom" },
       ],
@@ -135,15 +135,17 @@ export const productVariants: Record<string, ProductVariantData> = {
     },
     media: {
       "Obsidian Black": [
+        { type: "video", url: "", poster: `${CF_IMG}/scale-pro-black-config/public`, alt: "Scale Pro Obsidian Black video" },
+        { type: "model", url: "/models/scale-pro-black-3d.glb", poster: `${CF_IMG}/scale-pro-black-config/public`, alt: "Scale Pro Obsidian Black 3D" },
         { type: "image", url: `${CF_IMG}/scale-pro-black-bathroom/public`, alt: "Scale Pro Obsidian Black in dark bathroom" },
-        { type: "model", url: "/models/scale-pro-black-3d.glb", poster: `${CF_IMG}/scale-pro-black-bathroom/public`, alt: "Scale Pro Obsidian Black 3D" },
         { type: "image", url: `${CF_IMG}/scale-pro-using/public`, alt: "Scale Pro in use" },
       ],
       "Frost White": [
+        { type: "video", url: "", poster: `${CF_IMG}/scale-pro-white-config/public`, alt: "Scale Pro Frost White video" },
+        { type: "model", url: "/models/scale-pro-white-3d.glb", poster: `${CF_IMG}/scale-pro-white-config/public`, alt: "Scale Pro Frost White 3D" },
         { type: "image", url: `${CF_IMG}/scale-pro-white-marble/public`, alt: "Scale Pro Frost White on marble counter" },
         { type: "image", url: `${CF_IMG}/scale-pro-white-bathroom/public`, alt: "Scale Pro Frost White in bathroom" },
         { type: "image", url: `${CF_IMG}/scale-pro-white-gym/public`, alt: "Scale Pro Frost White in fitness suite" },
-        { type: "model", url: "/models/scale-pro-white-3d.glb", poster: `${CF_IMG}/scale-pro-white-marble/public`, alt: "Scale Pro Frost White 3D" },
         { type: "image", url: `${CF_IMG}/scale-pro-using/public`, alt: "Scale Pro in use" },
       ],
     },
@@ -231,13 +233,31 @@ export const productVariants: Record<string, ProductVariantData> = {
   "hema-one": {
     handle: "hema-one",
     name: "Hema One",
-    optionNames: [],
-    boxContents: ["Hema One analyzer", "10× test cartridges", "Lancet device", "10× lancets", "USB-C charging cable", "Quick start guide"],
+    optionNames: ["Color"],
+    boxContents: ["Hema One analyzer", "10× test strips", "Lancet device", "10× lancets", "USB-C charging cable", "Quick start guide"],
     deliveryEstimate: "5–7 business days",
     warrantyYears: 1,
-    colorSwatches: {},
+    colorSwatches: {
+      "Stealth Black": "#1a1a1a",
+      "Ember Orange": "#c2571a",
+    },
+    media: {
+      "Stealth Black": [
+        { type: "image", url: `${CF_IMG}/hema-one-web/public`, alt: "Hema One Stealth Black" },
+        { type: "image", url: `${CF_IMG}/hema-one-device-web/public`, alt: "Hema One Stealth Black device" },
+      ],
+      "Ember Orange": [
+        { type: "image", url: `${CF_IMG}/hema-one-web/public`, alt: "Hema One Ember Orange" },
+        { type: "image", url: `${CF_IMG}/hema-one-device-web/public`, alt: "Hema One Ember Orange device" },
+      ],
+    },
+    ambientColors: {
+      "Stealth Black": "#0a0a0a",
+      "Ember Orange": "#1a0f08",
+    },
     variants: [
-      { id: "gid://shopify/ProductVariant/43225640665201", title: "Default", price: "99", currency: "USD", options: {}, available: true },
+      { id: "gid://shopify/ProductVariant/43253482717297", title: "Stealth Black", price: "99", currency: "USD", options: { Color: "Stealth Black" }, available: true },
+      { id: "gid://shopify/ProductVariant/43253482750065", title: "Ember Orange", price: "99", currency: "USD", options: { Color: "Ember Orange" }, available: true },
     ],
   },
 };

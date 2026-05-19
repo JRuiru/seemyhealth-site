@@ -36,8 +36,8 @@ const reviewsByProduct: Record<string, Review[]> = {
   ],
   "hema-one": [
     { name: "Dr. Anil S.", rating: 5, date: "Apr 2026", title: "Game changer for patients", body: "I recommend this to patients who need regular blood work monitoring. The accuracy is impressive for a consumer device. Saves them frequent lab visits.", verified: true },
-    { name: "Maria G.", rating: 5, date: "Mar 2026", title: "Worth every penny", body: "Tracking my iron levels monthly has helped me optimize my supplements. The trend detection caught a deficiency early.", verified: true },
-    { name: "Kevin L.", rating: 4, date: "Feb 2026", title: "Convenient blood testing", body: "The fingertip prick is minimal. Getting glucose and cholesterol readings at home is incredibly convenient. Wish it tested more markers.", verified: true },
+    { name: "Maria G.", rating: 5, date: "Mar 2026", title: "Worth every penny", body: "Tracking my hemoglobin and lipid profile monthly has helped me optimize my supplements. The trend detection caught a deficiency early.", verified: true },
+    { name: "Kevin L.", rating: 4, date: "Feb 2026", title: "Convenient blood testing", body: "The fingertip prick is minimal. Getting glucose, full lipid profile, and uric acid readings at home is incredibly convenient. Results in seconds.", verified: true },
   ],
 };
 
