@@ -131,7 +131,10 @@ export default {
       // GET /api/localization — detected country + available markets
       if (path === "/api/localization" && request.method === "GET") {
         const localization = await getLocalization(shopify, buyerCountry);
-        return json({ ...localization, detectedCountry: cfCountry || null }, 200, cors);
+        return json({ ...localization, detectedCountry: cfCountry || null }, 200, {
+          ...cors,
+          "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=600",
+        });
       }
 
       // ============================================================
@@ -371,7 +374,10 @@ export default {
         const cart = await cartGet(shopify, cartId, buyerCountry);
         if (!cart) return error("Cart not found", 404, cors);
 
-        return json({ cart }, 200, cors);
+        return json({ cart }, 200, {
+          ...cors,
+          "Cache-Control": "private, no-cache",
+        });
       }
 
       // ============================================================

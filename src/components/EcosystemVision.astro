@@ -1,4 +1,5 @@
 ---
+import PriceTag from './commerce/PriceTag';
 const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
 
 const devices = [
@@ -44,7 +45,9 @@ const orbitAngles = [-90, -18, 54, 126, 198];
               <p class="text-[11px] uppercase tracking-[3px] mb-1" style={`color: ${device.color}`}>{device.metric}</p>
               <p class="font-display text-2xl sm:text-3xl lg:text-4xl font-400 uppercase mb-3">{device.name}</p>
               <p class="text-sm sm:text-base text-brand-gray-400 mb-2 max-w-md mx-auto">{device.desc}</p>
-              <p class="text-[12px] uppercase tracking-[2px] font-medium mb-5" style={`color: ${device.color}`}>{device.price}</p>
+              <p class="text-[12px] uppercase tracking-[2px] font-medium mb-5" style={`color: ${device.color}`}>
+                <PriceTag handle={device.slug} mode="from" prefix={device.price.startsWith("From") ? "From " : ""} fallback={device.price} client:idle />
+              </p>
               <a href={`/products/${device.slug}`} class="inline-flex items-center px-6 py-3 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black rounded-full transition-colors" style={`background: ${device.color}`}>
                 Learn More
               </a>

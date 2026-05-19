@@ -1,5 +1,6 @@
 ---
 import { products } from '../data/products';
+import PriceTag from './commerce/PriceTag';
 
 interface Props {
   currentSlug: string;
@@ -41,7 +42,9 @@ const otherProducts = Object.entries(products)
             <p class="text-[10px] uppercase tracking-[3px] text-brand-gray-500 mb-1">{product.tagline}</p>
             <h3 class="font-display text-lg uppercase mb-1">{product.name}</h3>
             <div class="flex items-center justify-between mt-3">
-              <span class="text-sm font-display text-brand-gray-300">{product.price}</span>
+              <span class="text-sm font-display text-brand-gray-300">
+                <PriceTag handle={product.slug} mode="from" prefix="From " fallback={product.price} client:idle />
+              </span>
               <span class="text-[11px] uppercase tracking-[1.5px] text-brand-gray-500 group-hover:text-white transition-colors">
                 Explore &rarr;
               </span>
