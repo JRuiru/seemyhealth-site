@@ -4,6 +4,7 @@
 const SENDGRID_API = "https://api.sendgrid.com/v3/mail/send";
 
 export interface ContactFormData {
+  source?: string;
   company: string;
   name: string;
   email: string;
@@ -70,6 +71,7 @@ export async function sendSalesNotification(
     from: { email: "noreply@seemyhealth.ai", name: "SeeMyHealth" },
     templateId,
     dynamicData: {
+      source: data.source || "Website",
       company: data.company,
       name: data.name,
       email: data.email,

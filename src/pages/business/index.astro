@@ -297,6 +297,7 @@ const logistics = [
       btn.textContent = "Sending...";
 
       const data = {
+        source: "Distribution",
         company: (form.elements.namedItem("company") as HTMLInputElement).value.trim(),
         name: (form.elements.namedItem("name") as HTMLInputElement).value.trim(),
         email: (form.elements.namedItem("email") as HTMLInputElement).value.trim(),
