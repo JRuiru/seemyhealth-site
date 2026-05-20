@@ -8,53 +8,59 @@ export const prerender = true;
 const platformFeatures = [
   {
     title: "Video Consultations",
-    description: "Built-in video calls with screen sharing. Patients join from the app. No separate link, no third-party software. Review live vitals during the call.",
+    description: "Built-in video calls with screen sharing. Clients join from the app. No separate link, no third-party software. Review live vitals during the call.",
     icon: "M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z",
+    image: "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/provider-video-consult/public",
   },
   {
     title: "Appointment Management",
-    description: "Schedule, reschedule, and manage appointments across providers and locations. Automated reminders via push notification, SMS, and email reduce no-shows.",
+    description: "Schedule, reschedule, and manage appointments across practitioners and locations. Automated reminders via push notification, SMS, and email reduce no-shows.",
     icon: "M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5",
+    image: "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/provider-appointments/public",
   },
   {
-    title: "Patient Management",
-    description: "Full patient profiles with vitals history, device data, notes, and documents. Smart reminders for follow-ups, medication, and check-ins, all automated.",
+    title: "Client Management",
+    description: "Full client profiles with vitals history, device data, notes, and documents. Smart reminders for follow-ups, check-ins, and progress reviews, all automated.",
     icon: "M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z",
+    image: "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/provider-patient-mgmt/public",
   },
   {
     title: "Payments & Billing",
     description: "Accept payments in-app and at the desk. Invoice generation, insurance claim support, and payment tracking, all in one place.",
     icon: "M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z",
+    image: "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/provider-payments/public",
   },
   {
-    title: "Remote Patient Monitoring",
-    description: "Continuous vitals from SeeMyHealth devices flow into patient records automatically. Blood pressure, weight, SpO2, sleep, flagged when trends deviate.",
+    title: "Remote Client Monitoring",
+    description: "Continuous vitals from SeeMyHealth devices flow into client records automatically. Blood pressure, weight, hydration, sleep, flagged when trends deviate.",
     icon: "M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z",
+    image: "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/provider-rpm/public",
   },
   {
     title: "Multi-Location Support",
-    description: "Manage multiple clinics, practices, or departments from one dashboard. Location-specific scheduling, staff, and reporting with unified patient records.",
+    description: "Manage multiple studios, practices, or branches from one dashboard. Location-specific scheduling, staff, and reporting with unified client records.",
     icon: "M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21",
+    image: "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/provider-multi-location/public",
   },
 ];
 
 const capabilities = [
   { title: "FHIR Ready", description: "Standards-based data export for EHR integration" },
-  { title: "Smart Reminders", description: "Automated follow-ups, medication, appointment alerts" },
-  { title: "Bulk Provisioning", description: "Configure and ship devices to patient cohorts" },
+  { title: "Smart Reminders", description: "Automated follow-ups, appointment alerts, and check-ins" },
+  { title: "Bulk Provisioning", description: "Configure and ship devices to client groups" },
   { title: "HIPAA & SOC 2", description: "End-to-end encryption, BAA available" },
 ];
 
 const outcomes = [
   { metric: "40%", label: "Fewer no-shows", description: "With automated multi-channel reminders" },
   { metric: "3x", label: "More data points", description: "Between visits vs. traditional care" },
-  { metric: "92%", label: "Patient adherence", description: "Passive tracking removes friction" },
+  { metric: "92%", label: "Client adherence", description: "Passive tracking removes friction" },
 ];
 ---
 
 <Layout
-  title="Healthcare Providers | SeeMyHealth for Business"
-  description="Tablet-first practice management with video calls, appointments, payments, patient monitoring, and multi-location support. Built for providers on the move."
+  title="Wellness Professionals | SeeMyHealth for Business"
+  description="Tablet-first practice management for nutritionists, therapists, physiotherapists, and fitness professionals. Video calls, appointments, payments, client monitoring, and multi-location support."
   canonicalPath="/business/providers"
 >
   <Navbar />
@@ -62,32 +68,36 @@ const outcomes = [
   <!-- Hero -->
   <section class="pt-32 pb-20 sm:pt-40 sm:pb-28 bg-brand-black">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="max-w-3xl">
-        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-6">
-          For Business / Healthcare Providers
-        </p>
-        <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-300 uppercase leading-[0.95] mb-6">
-          Your practice, <span class="font-500">in your hands.</span>
-        </h1>
-        <p class="text-lg text-brand-gray-400 leading-relaxed mb-10 max-w-xl">
-          A tablet-first practice management platform built for providers on the move. Video calls, appointments, payments, patient monitoring, and multi-location management, all from one app.
-        </p>
-        <div class="flex flex-wrap gap-4">
-          <a
-            href="#contact"
-            class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
-          >
-            Request a pilot
-            <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-          <a
-            href="#"
-            class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
-          >
-            Download clinical brief
-          </a>
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="max-w-3xl">
+          <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-6">
+            For Business / Wellness Professionals
+          </p>
+          <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-300 uppercase leading-[0.95] mb-6">
+            Your practice, <span class="font-500">in your hands.</span>
+          </h1>
+          <p class="text-lg text-brand-gray-400 leading-relaxed mb-10 max-w-xl">
+            A tablet-first practice management platform built for nutritionists, therapists, physiotherapists, and fitness professionals. Video calls, appointments, payments, client monitoring, and multi-location management, all from one app.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a
+              href="#contact"
+              class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+            >
+              Request a pilot
+              <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+            </div>
+        </div>
+        <div class="relative rounded-2xl overflow-hidden">
+          <img
+            src="https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/provider-hero-tablet/public"
+            alt="Wellness practitioner reviewing client data on tablet"
+            class="w-full h-auto rounded-2xl"
+            loading="lazy"
+          />
         </div>
       </div>
     </div>
@@ -98,10 +108,12 @@ const outcomes = [
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="relative rounded-2xl border border-white/10 bg-brand-gray-900 overflow-hidden aspect-[16/9] sm:aspect-[2.2/1] flex items-center justify-center">
         <div class="text-center">
-          <svg class="w-12 h-12 mx-auto text-brand-gray-700 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="0.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
-          </svg>
-          <p class="text-brand-gray-600 text-sm">Provider app, tablet-optimized for consultations, scheduling, and patient management</p>
+          <img
+            src="https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/logo/public"
+            alt="SeeMyHealth"
+            class="w-16 h-16 mx-auto mb-4 opacity-30"
+          />
+          <p class="text-brand-gray-600 text-sm">Product video coming soon</p>
         </div>
       </div>
     </div>
@@ -117,9 +129,9 @@ const outcomes = [
           </svg>
         </div>
         <div>
-          <h3 class="text-xl font-medium text-white mb-2">Built tablet-first</h3>
+          <h3 class="text-xl font-medium text-white mb-2">Tablet-first. Browser too.</h3>
           <p class="text-sm text-brand-gray-400 leading-relaxed">
-            Designed for the way providers actually work, moving between rooms, patients, and locations. The full platform runs on any tablet or iPad with a touch-optimized interface. No desktop required.
+            Access everything from your browser on any device, but we built tablet-first for a reason. A tablet with a SIM card gives you a truly portable practice: walk between rooms, visit clients at home, or work from anywhere with a cellular connection. No Wi-Fi dependency, no desktop required.
           </p>
         </div>
       </div>
@@ -137,12 +149,17 @@ const outcomes = [
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {platformFeatures.map((item) => (
           <div class="group rounded-2xl bg-brand-gray-900 border border-white/5 hover:border-white/15 overflow-hidden transition-all duration-300">
-            <!-- Image placeholder -->
-            <div class="aspect-[4/3] bg-brand-gray-800 flex items-center justify-center">
-              <svg class="w-10 h-10 text-brand-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                <path stroke-linecap="round" stroke-linejoin="round" d={item.icon} />
-              </svg>
-            </div>
+            {item.image ? (
+              <div class="aspect-[4/3] overflow-hidden">
+                <img src={item.image} alt={item.title} class="w-full h-full object-cover" loading="lazy" />
+              </div>
+            ) : (
+              <div class="aspect-[4/3] bg-brand-gray-800 flex items-center justify-center">
+                <svg class="w-10 h-10 text-brand-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                  <path stroke-linecap="round" stroke-linejoin="round" d={item.icon} />
+                </svg>
+              </div>
+            )}
             <div class="p-6">
               <h3 class="text-xl font-medium text-white mb-2">{item.title}</h3>
               <p class="text-sm text-brand-gray-400 leading-relaxed">{item.description}</p>
@@ -194,7 +211,7 @@ const outcomes = [
         See it <span class="font-500">in action</span>
       </h2>
       <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto mb-10">
-        We'll walk you through the full platform: video calls, scheduling, patient management, and device integration, tailored to your practice.
+        We'll walk you through the full platform: video calls, scheduling, client management, and device integration, tailored to your practice.
       </p>
 
       <form id="contact-form" class="max-w-md mx-auto space-y-4 text-left">
@@ -222,16 +239,17 @@ const outcomes = [
           />
         </div>
         <select name="model" required class="w-full px-4 py-3.5 bg-brand-gray-900 border border-white/10 rounded-xl text-sm text-brand-gray-600 focus:outline-none focus:border-white/30 transition-colors appearance-none">
-          <option value="">Organization type</option>
-          <option value="hospital">Hospital / Health System</option>
-          <option value="clinic">Clinic / Practice</option>
-          <option value="telehealth">Telehealth Platform</option>
-          <option value="pharmacy">Pharmacy</option>
+          <option value="">Practice type</option>
+          <option value="nutrition">Nutritionist / Dietitian</option>
+          <option value="therapy">Therapist / Counsellor</option>
+          <option value="physio">Physiotherapist / Rehab</option>
+          <option value="fitness">Fitness / Personal Training</option>
+          <option value="wellness">Wellness Studio / Spa</option>
           <option value="other">Other</option>
         </select>
         <textarea
           name="message"
-          placeholder="Tell us about your patient population and goals"
+          placeholder="Tell us about your practice and goals"
           rows="3"
           class="w-full px-4 py-3.5 bg-brand-gray-900 border border-white/10 rounded-xl text-sm text-white placeholder-brand-gray-600 focus:outline-none focus:border-white/30 transition-colors resize-none"
         ></textarea>

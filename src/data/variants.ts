@@ -207,15 +207,15 @@ export const productVariants: Record<string, ProductVariantData> = {
     },
     media: {
       "Abyss Black": [
-        { type: "image", url: `${CF_IMG}/bottle-treebark/public`, alt: "Hydra One Abyss Black" },
-        { type: "model", url: "/models/bottle-black-3d.glb", poster: `${CF_IMG}/bottle-treebark/public`, alt: "Hydra One Abyss Black 3D" },
+        { type: "video", url: "", poster: `${CF_IMG}/bottle-black-config/public`, alt: "Hydra One Abyss Black video" },
+        { type: "model", url: "/models/bottle-black-3d.glb", poster: `${CF_IMG}/bottle-black-config/public`, alt: "Hydra One Abyss Black 3D" },
         { type: "image", url: `${CF_IMG}/bottle-black-desk/public`, alt: "Hydra One black on desk" },
         { type: "image", url: `${CF_IMG}/bottle-black-gym/public`, alt: "Hydra One black in gym" },
-        { type: "image", url: `${CF_IMG}/bottle-office-scene/public`, alt: "Hydra One on desk" },
+        { type: "image", url: `${CF_IMG}/bottle-treebark/public`, alt: "Hydra One Abyss Black" },
       ],
       "Glacier White": [
-        { type: "image", url: `${CF_IMG}/bottle-trio-studio/public`, alt: "Hydra One Glacier White" },
-        { type: "model", url: "/models/bottle-white-3d.glb", poster: `${CF_IMG}/bottle-trio-studio/public`, alt: "Hydra One Glacier White 3D" },
+        { type: "video", url: "", poster: `${CF_IMG}/bottle-white-config/public`, alt: "Hydra One Glacier White video" },
+        { type: "model", url: "/models/bottle-white-3d.glb", poster: `${CF_IMG}/bottle-white-config/public`, alt: "Hydra One Glacier White 3D" },
         { type: "image", url: `${CF_IMG}/bottle-white-cafe/public`, alt: "Hydra One white in cafe" },
         { type: "image", url: `${CF_IMG}/bottle-white-park/public`, alt: "Hydra One white in park" },
         { type: "image", url: `${CF_IMG}/bottle-office-scene/public`, alt: "Hydra One on desk" },
