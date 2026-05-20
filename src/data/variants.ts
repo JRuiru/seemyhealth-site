@@ -171,15 +171,15 @@ export const productVariants: Record<string, ProductVariantData> = {
     },
     media: {
       "Carbon Black": [
-        { type: "image", url: `${CF_IMG}/bp-black/public`, alt: "BP Monitor Carbon Black" },
-        { type: "model", url: "/models/bpm-black-3d.glb", poster: `${CF_IMG}/bp-black/public`, alt: "BP Monitor Carbon Black 3D" },
+        { type: "video", url: "", poster: `${CF_IMG}/bp-black-poster/public`, alt: "BP Monitor Carbon Black video" },
+        { type: "model", url: "/models/bpm-black-3d.glb", poster: `${CF_IMG}/bp-black-poster/public`, alt: "BP Monitor Carbon Black 3D" },
         { type: "image", url: `${CF_IMG}/bp-black-desk-portrait/public`, alt: "BP Monitor black on desk" },
         { type: "image", url: `${CF_IMG}/bp-desk-display/public`, alt: "BP Monitor displaying reading" },
         { type: "image", url: `${CF_IMG}/bp-black-studio/public`, alt: "BP Monitor Carbon Black studio" },
       ],
       "Opal White": [
-        { type: "image", url: `${CF_IMG}/bp-white/public`, alt: "BP Monitor Opal White" },
-        { type: "model", url: "/models/bpm-white-3d.glb", poster: `${CF_IMG}/bp-white/public`, alt: "BP Monitor Opal White 3D" },
+        { type: "video", url: "", poster: `${CF_IMG}/bp-white-poster/public`, alt: "BP Monitor Opal White video" },
+        { type: "model", url: "/models/bpm-white-3d.glb", poster: `${CF_IMG}/bp-white-poster/public`, alt: "BP Monitor Opal White 3D" },
         { type: "image", url: `${CF_IMG}/bp-white-desk-display/public`, alt: "BP Monitor Opal White on desk" },
         { type: "image", url: `${CF_IMG}/bp-white-living-room/public`, alt: "BP Monitor Opal White in living room" },
         { type: "image", url: `${CF_IMG}/bp-white-studio/public`, alt: "BP Monitor Opal White studio" },
