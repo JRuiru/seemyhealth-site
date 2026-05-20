@@ -76,6 +76,19 @@ const breadcrumbSchema = {
 >
   <Navbar variant="product" productName={product.name} productColor={product.color} />
 
+  <!-- GA4: view_item for product detail page -->
+  <script define:vars={{ slug, productName: product.name, price: numericPrice }}>
+    window.addEventListener('load', function() {
+      if (window.gtag) {
+        window.gtag('event', 'view_item', {
+          currency: 'USD',
+          value: parseFloat(price),
+          items: [{ item_id: slug, item_name: productName, price: parseFloat(price), currency: 'USD' }],
+        });
+      }
+    });
+  </script>
+
   <!-- Hero -->
   <ProductHero
     slug={slug as string}

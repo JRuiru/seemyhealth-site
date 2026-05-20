@@ -6,6 +6,7 @@ import {
   goToCheckout,
   type CartResponse,
 } from "../../lib/shopify/cart-client";
+import { trackViewCart, trackRemoveFromCart, trackBeginCheckout } from "../../lib/analytics";
 
 type Cart = CartResponse["cart"];
 type LineNode = Cart["lines"]["edges"][number]["node"];
@@ -53,11 +54,34 @@ export default function CartDrawer() {
     window.dispatchEvent(new CustomEvent("cart:count", { detail: count }));
   }, [cart]);
 
+  // Track view_cart when drawer opens
+  useEffect(() => {
+    if (open && cart) {
+      const items = cart.lines.edges.map((e) => ({
+        item_id: e.node.merchandise.product.handle || e.node.merchandise.product.title,
+        item_name: e.node.merchandise.product.title,
+        price: parseFloat(e.node.cost.totalAmount.amount) / e.node.quantity,
+        currency: e.node.cost.totalAmount.currencyCode,
+        quantity: e.node.quantity,
+      }));
+      const subtotal = parseFloat(cart.cost.subtotalAmount?.amount || "0");
+      const currency = cart.cost.subtotalAmount?.currencyCode || "USD";
+      trackViewCart(items, subtotal, currency);
+    }
+  }, [open]);
+
   const handleQuantity = async (line: LineNode, delta: number) => {
     const newQty = line.quantity + delta;
     setLoading(true);
     try {
       if (newQty <= 0) {
+        trackRemoveFromCart({
+          item_id: line.merchandise.product.handle || line.merchandise.product.title,
+          item_name: line.merchandise.product.title,
+          price: parseFloat(line.cost.totalAmount.amount) / line.quantity,
+          currency: line.cost.totalAmount.currencyCode,
+          quantity: line.quantity,
+        });
         const updated = await removeLineItem(line.id);
         setCart(updated);
       } else {
@@ -71,7 +95,19 @@ export default function CartDrawer() {
   };
 
   const handleCheckout = () => {
-    if (cart?.checkoutUrl) goToCheckout(cart.checkoutUrl);
+    if (cart?.checkoutUrl) {
+      const items = cart.lines.edges.map((e) => ({
+        item_id: e.node.merchandise.product.handle || e.node.merchandise.product.title,
+        item_name: e.node.merchandise.product.title,
+        price: parseFloat(e.node.cost.totalAmount.amount) / e.node.quantity,
+        currency: e.node.cost.totalAmount.currencyCode,
+        quantity: e.node.quantity,
+      }));
+      const subtotal = parseFloat(cart.cost.subtotalAmount?.amount || "0");
+      const currency = cart.cost.subtotalAmount?.currencyCode || "USD";
+      trackBeginCheckout(items, subtotal, currency);
+      goToCheckout(cart.checkoutUrl);
+    }
   };
 
   const lines = cart?.lines.edges.map((e) => e.node) || [];

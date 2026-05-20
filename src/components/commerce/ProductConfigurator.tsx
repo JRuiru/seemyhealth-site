@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { productVariants, type Variant, type MediaItem } from "../../data/variants";
 import { addToCart } from "../../lib/shopify/cart-client";
+import { trackViewItem, trackSelectVariant, trackAddToCart, trackVideoPlay } from "../../lib/analytics";
 import RingSizeGuide from "./RingSizeGuide";
 
 interface Props {
@@ -54,17 +55,20 @@ function ModelViewerSlot({ src, alt, poster }: { src: string; alt: string; poste
   );
 }
 
-function VideoWithPoster({ src, poster }: { src: string; poster?: string }) {
+function VideoWithPoster({ src, poster, productName }: { src: string; poster?: string; productName?: string }) {
   const [playing, setPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    const onPlay = () => setPlaying(true);
+    const onPlay = () => {
+      setPlaying(true);
+      if (productName) trackVideoPlay(productName);
+    };
     v.addEventListener("playing", onPlay);
     return () => v.removeEventListener("playing", onPlay);
-  }, []);
+  }, [productName]);
 
   return (
     <div className="relative w-full h-full">
@@ -101,7 +105,7 @@ function MediaViewer({ item, name, colorName, index }: {
   const key = `${colorName}-${index}`;
 
   if (item.type === "video") {
-    return <VideoWithPoster key={key} src={item.url} poster={item.poster} />;
+    return <VideoWithPoster key={key} src={item.url} poster={item.poster} productName={name} />;
   }
 
   if (item.type === "model") {
@@ -282,9 +286,23 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
     return () => observer.disconnect();
   }, []);
 
+  // Track view_item on initial load
+  useEffect(() => {
+    if (activeVariant) {
+      trackViewItem({
+        item_id: slug,
+        item_name: data.name,
+        price: parseFloat(activeVariant.price),
+        currency: activeVariant.currency || "USD",
+        item_variant: activeVariant.title,
+      });
+    }
+  }, []); // fire once on mount
+
   const handleSelect = (optionName: string, value: string) => {
     setSelected((prev) => ({ ...prev, [optionName]: value }));
     setStatus("idle");
+    trackSelectVariant(data.name, optionName, value);
     if (optionName === "Color" || optionName === "Finish") {
       setActiveImageIndex(0);
     }
@@ -295,6 +313,14 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
     setStatus("adding");
     try {
       await addToCart(activeVariant.id, quantity);
+      trackAddToCart({
+        item_id: slug,
+        item_name: data.name,
+        item_variant: activeVariant.title,
+        price: parseFloat(activeVariant.price),
+        currency: activeVariant.currency || "USD",
+        quantity,
+      });
       setStatus("added");
       setTimeout(() => setStatus("idle"), 2500);
     } catch {
