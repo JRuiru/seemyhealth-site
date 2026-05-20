@@ -182,21 +182,22 @@ const timeline = [
   <section class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
     <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
       <div data-scroll-reveal>
-        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Five Devices, One App</p>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Six Devices, One App</p>
         <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-6">
           The <span class="font-500">Ecosystem</span>
         </h2>
         <p class="text-brand-gray-400 leading-relaxed max-w-2xl mx-auto mb-12">
-          Ring One tracks your heart and sleep. The Scale reads your body composition. The BP Monitor catches what others miss. Hydra One keeps you hydrated. Hema One analyzes your blood. Together, they give you the full picture, all in one app.
+          Ring One tracks your heart and sleep. The Scale and Scale Pro read your body composition. The BP Monitor catches what others miss. Hydra One keeps you hydrated. Hema One analyzes your blood. Together, they give you the full picture, all in one app.
         </p>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-5 gap-6 sm:gap-8" data-scroll-stagger>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-8" data-scroll-stagger>
         {[
-          { name: "Ring One", slug: "ring-one", image: `${CF_IMG}/ring-aurora-gold/public` },
-          { name: "The Scale", slug: "scale", image: `${CF_IMG}/scale-black-pack/public` },
+          { name: "Ring One", slug: "ring-one", image: `${CF_IMG}/ring-phantom-black-poster/public` },
+          { name: "The Scale", slug: "scale", image: `${CF_IMG}/scale-base-black-config/public` },
+          { name: "Scale Pro", slug: "scale-pro", image: `${CF_IMG}/scale-pro-black-config/public` },
           { name: "BP Monitor", slug: "bp-monitor", image: `${CF_IMG}/bp-black/public` },
-          { name: "Hydra One", slug: "hydra-one", image: `${CF_IMG}/bottle-studio-wet/public` },
+          { name: "Hydra One", slug: "hydra-one", image: `${CF_IMG}/bottle-black-config/public` },
           { name: "Hema One", slug: "hema-one", image: `${CF_IMG}/hema-one-web/public` },
         ].map((device) => (
           <a href={`/products/${device.slug}`} class="group text-center">
