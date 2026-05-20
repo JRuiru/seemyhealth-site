@@ -81,5 +81,15 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
       import { initAllAnimations } from '../scripts/animations';
       document.addEventListener('DOMContentLoaded', initAllAnimations);
     </script>
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHZ5MMVC1X"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FHZ5MMVC1X');
+    </script>
+    <!-- Cloudflare Web Analytics -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"193b24cbe01847a28de70a0809257fc9"}'></script>
   </body>
 </html>

@@ -157,7 +157,7 @@ export const products: Record<string, Product> = {
     description: "Multi-frequency BIA with 8 electrodes (4 feet + 4 hands) for medical-grade body composition. 32 metrics including segmental fat and muscle for each arm, leg, and trunk. Lab-grade insights from home.",
     image: `${CF_IMG}/scale-pro-bathroom-still/public`,
     crossSellImage: `${CF_IMG}/scale-pro-black-bathroom/public`,
-    streamId: "06c05d17807848beace5a531eab5f747",
+    streamId: "bc1265478cde805cec6ffaf93f0fd0ec",
     specImage: `${CF_IMG}/scale-pro-side-profile/public`,
     price: "$179",
     color: "#3B82F6",

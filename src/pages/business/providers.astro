@@ -220,6 +220,7 @@ const outcomes = [
           name="company"
           placeholder="Organization name"
           required
+          minlength="2"
           class="w-full px-4 py-3.5 bg-brand-gray-900 border border-white/10 rounded-xl text-sm text-white placeholder-brand-gray-600 focus:outline-none focus:border-white/30 transition-colors"
         />
         <div class="grid grid-cols-2 gap-4">
@@ -251,6 +252,8 @@ const outcomes = [
           name="message"
           placeholder="Tell us about your practice and goals"
           rows="3"
+          required
+          minlength="10"
           class="w-full px-4 py-3.5 bg-brand-gray-900 border border-white/10 rounded-xl text-sm text-white placeholder-brand-gray-600 focus:outline-none focus:border-white/30 transition-colors resize-none"
         ></textarea>
         <button
@@ -271,12 +274,61 @@ const outcomes = [
     const form = document.getElementById("contact-form") as HTMLFormElement;
     const btn = document.getElementById("contact-submit") as HTMLButtonElement;
     const status = document.getElementById("contact-status") as HTMLParagraphElement;
+    const errorClass = "!border-red-500/60";
+    const validClass = "!border-green-500/40";
+
+    function clearFieldStates() {
+      form.querySelectorAll("input, select, textarea").forEach((el) => {
+        el.classList.remove(errorClass, validClass);
+      });
+    }
+
+    function validateField(el: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): string | null {
+      const val = el.value.trim();
+      if (el.hasAttribute("required") && !val) return `${el.placeholder || el.name} is required`;
+      if (el.type === "email" && val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) return "Please enter a valid email";
+      const min = el.getAttribute("minlength");
+      if (min && val.length < Number(min)) return `${el.placeholder || el.name} must be at least ${min} characters`;
+      return null;
+    }
+
+    form.querySelectorAll("input, select, textarea").forEach((el) => {
+      el.addEventListener("blur", () => {
+        const error = validateField(el as HTMLInputElement);
+        el.classList.remove(errorClass, validClass);
+        el.classList.add(error ? errorClass : validClass);
+      });
+      el.addEventListener("input", () => {
+        el.classList.remove(errorClass);
+      });
+    });
 
     form?.addEventListener("submit", async (e) => {
       e.preventDefault();
+      clearFieldStates();
+      status.classList.add("hidden");
+
+      const fields = Array.from(form.querySelectorAll("input, select, textarea")) as HTMLInputElement[];
+      const errors: string[] = [];
+
+      fields.forEach((el) => {
+        const error = validateField(el);
+        if (error) {
+          errors.push(error);
+          el.classList.add(errorClass);
+        } else {
+          el.classList.add(validClass);
+        }
+      });
+
+      if (errors.length) {
+        status.textContent = errors[0];
+        status.className = "text-center text-sm text-red-400";
+        return;
+      }
+
       btn.disabled = true;
       btn.textContent = "Sending...";
-      status.classList.add("hidden");
 
       const data = {
         company: (form.elements.namedItem("company") as HTMLInputElement).value.trim(),
@@ -299,6 +351,7 @@ const outcomes = [
         }
 
         form.reset();
+        clearFieldStates();
         status.textContent = "Thanks! We'll be in touch soon.";
         status.className = "text-center text-sm text-green-400";
       } catch (err) {
