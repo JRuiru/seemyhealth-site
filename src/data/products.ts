@@ -28,6 +28,7 @@ export interface Product {
   price: string;
   color: string;
   specImage?: string;
+  benefitsImage?: string;
   videoThumbnail?: string;
   specs: ProductSpec[];
   features: ProductFeature[];
@@ -45,6 +46,7 @@ export const products: Record<string, Product> = {
     price: "$179",
     color: "#F97316",
     specImage: `${CF_IMG}/ring-studio-profile/public`,
+    benefitsImage: `${CF_IMG}/ring-one-sunset-meditation/public`,
     specs: [
       { label: "Sensors", value: "PPG, Temperature, Accelerometer" },
       { label: "Battery", value: "Up to 7 days" },
@@ -102,6 +104,7 @@ export const products: Record<string, Product> = {
     crossSellImage: `${CF_IMG}/scale-black-bathroom/public`,
     streamId: "299bcfd1f9b9fb20b7d4f809a7b481fe",
     specImage: `${CF_IMG}/scale-base-side-profile/public`,
+    benefitsImage: `${CF_IMG}/scale-bathroom-stepon-v3/public`,
     price: "$99",
     color: "#3B82F6",
     specs: [
@@ -159,6 +162,7 @@ export const products: Record<string, Product> = {
     crossSellImage: `${CF_IMG}/scale-pro-black-bathroom/public`,
     streamId: "bc1265478cde805cec6ffaf93f0fd0ec",
     specImage: `${CF_IMG}/scale-pro-side-profile/public`,
+    benefitsImage: `${CF_IMG}/scale-pro-athlete-gym/public`,
     price: "$179",
     color: "#3B82F6",
     specs: [
@@ -213,6 +217,7 @@ export const products: Record<string, Product> = {
     crossSellImage: `${CF_IMG}/bp-black-desk-portrait/public`,
     streamId: "1d73637dabb39e29daa4e516a616da0e",
     specImage: `${CF_IMG}/bp-monitor-side-profile/public`,
+    benefitsImage: `${CF_IMG}/bp-breakfast-reading/public`,
     videoThumbnail: `${CF_IMG}/bp-white-desk-display/public`,
     price: "$89",
     color: "#EF4444",
@@ -265,6 +270,7 @@ export const products: Record<string, Product> = {
     videoThumbnail: `${CF_IMG}/bottle-black-desk-work/public`,
     streamId: "323f4655be53eefdf3f08ecd6765c362",
     specImage: `${CF_IMG}/hydra-one-side-profile/public`,
+    benefitsImage: `${CF_IMG}/bottle-treebark/public`,
     price: "$79",
     color: "#06B6D4",
     specs: [
@@ -303,7 +309,6 @@ export const products: Record<string, Product> = {
       { src: `${CF_IMG}/bottle-black-picnic/public`, alt: "Hydra One Abyss Black in picnic basket" },
       { src: `${CF_IMG}/bottle-white-office/public`, alt: "Hydra One white on office desk with city view" },
       { src: `${CF_IMG}/bottle-white-park/public`, alt: "Hydra One white in park" },
-      { src: `${CF_IMG}/bottle-treebark/public`, alt: "Hydra One Abyss Black on tree bark" },
       { src: `${CF_IMG}/bottle-black-gym-v2/public`, alt: "Hydra One black in gym" },
       { src: `${CF_IMG}/bottle-white-beach/public`, alt: "Hydra One white on beach sand" },
       { src: `${CF_IMG}/bottle-black-conference/public`, alt: "Hydra One Abyss Black at conference venue" },
@@ -318,6 +323,7 @@ export const products: Record<string, Product> = {
     image: `${CF_IMG}/hema-one-web/public`,
     streamId: "8f576ad01105f0b3c8ff5495c066906e",
     specImage: `${CF_IMG}/hema-one-side-profile/public`,
+    benefitsImage: `${CF_IMG}/hema-desk-results/public`,
     price: "$159",
     color: "#A855F7",
     specs: [
