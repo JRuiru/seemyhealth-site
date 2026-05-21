@@ -35,6 +35,15 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Hide scrollbar but keep scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Fade in animation */
 @keyframes fade-up {
   from {
