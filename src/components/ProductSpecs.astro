@@ -39,9 +39,9 @@ const { slug, name, price, specs, backgroundImage } = Astro.props;
     <div class="mt-12 text-center" data-scroll-reveal>
       <a
         href={`/configure/${slug}`}
-        class="inline-flex items-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+        class="inline-flex items-center justify-center px-6 sm:px-10 py-3.5 text-[11px] sm:text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors whitespace-nowrap"
       >
-        Shop {name} · <PriceTag handle={slug} mode="from" prefix="From " fallback={price} client:idle />
+        Shop {name}&nbsp;·&nbsp;<PriceTag handle={slug} mode="from" prefix="From " fallback={price} client:idle />
       </a>
     </div>
   </div>
