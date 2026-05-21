@@ -210,7 +210,7 @@ export const productVariants: Record<string, ProductVariantData> = {
         { type: "video", url: "", poster: `${CF_IMG}/bottle-black-config/public`, alt: "Hydra One Abyss Black video" },
         { type: "model", url: "/models/bottle-black-3d.glb", poster: `${CF_IMG}/bottle-black-config/public`, alt: "Hydra One Abyss Black 3D" },
         { type: "image", url: `${CF_IMG}/bottle-black-desk/public`, alt: "Hydra One black on desk" },
-        { type: "image", url: `${CF_IMG}/bottle-black-gym/public`, alt: "Hydra One black in gym" },
+        { type: "image", url: `${CF_IMG}/bottle-black-gym-v2/public`, alt: "Hydra One black in gym" },
         { type: "image", url: `${CF_IMG}/bottle-treebark/public`, alt: "Hydra One Abyss Black" },
         { type: "image", url: `${CF_IMG}/bottle-black-picnic/public`, alt: "Hydra One Abyss Black in picnic basket" },
       ],
