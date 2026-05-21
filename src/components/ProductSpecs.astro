@@ -13,7 +13,7 @@ interface Props {
 const { slug, name, price, specs, backgroundImage } = Astro.props;
 ---
 
-<section class="relative py-24 sm:py-32 bg-brand-dark border-t border-white/5 overflow-hidden">
+<section class="relative pt-24 pb-16 sm:pt-32 sm:pb-20 bg-brand-dark border-t border-white/5 overflow-hidden">
   {backgroundImage && (
     <div class="absolute inset-0 pointer-events-none">
       <img src={backgroundImage} alt="" aria-hidden="true" class:list={["absolute right-0 top-1/2 -translate-y-1/2 w-auto object-contain opacity-15 sm:opacity-20", slug.startsWith('scale') ? 'h-full' : 'h-[120%]']} loading="lazy" />
