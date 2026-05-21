@@ -11,9 +11,11 @@ interface Props {
 }
 
 const { color, steps } = Astro.props;
+// Ensure exactly 3 steps for the triangular prism
+const cards = steps.slice(0, 3);
 ---
 
-<section class="py-20 sm:py-28 bg-brand-black border-t border-white/5">
+<section class="py-20 sm:py-28 bg-brand-black border-t border-white/5 overflow-hidden">
   <div class="max-w-5xl mx-auto px-6 lg:px-8">
     <div class="text-center mb-16" data-scroll-reveal>
       <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">How It Works</p>
@@ -22,21 +24,52 @@ const { color, steps } = Astro.props;
       </h2>
     </div>
 
-    <div class="grid sm:grid-cols-3 gap-8 sm:gap-12" data-scroll-stagger>
-      {steps.map((step, i) => (
-        <div class="text-center">
-          <div
-            class="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center"
-            style={`background: ${color}15; border: 1px solid ${color}30;`}
-          >
-            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke={color} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d={step.icon} />
-            </svg>
-          </div>
-          <p class="text-[11px] uppercase tracking-[3px] mb-2" style={`color: ${color}`}>Step {i + 1}</p>
-          <h3 class="font-display text-lg font-400 uppercase mb-3">{step.title}</h3>
-          <p class="text-sm text-brand-gray-500 leading-relaxed">{step.description}</p>
-        </div>
+    <!-- 3D Rotating Carousel -->
+    <div class="flex justify-center items-center" style="perspective: 1000px;">
+      <div
+        data-how-carousel
+        class="relative w-[260px] h-[320px] sm:w-[320px] sm:h-[380px]"
+        style="transform-style: preserve-3d;"
+      >
+        {cards.map((step, i) => {
+          const angle = i * 120;
+          return (
+            <div
+              class="absolute inset-0 w-full h-full backface-hidden how-card-face"
+              style={`transform: rotateY(${angle}deg) translateZ(var(--carousel-z, 160px)); backface-visibility: hidden;`}
+              data-how-card
+            >
+              <div
+                class="w-full h-full rounded-3xl border p-8 flex flex-col items-center justify-center text-center gap-5 backdrop-blur-sm"
+                style={`background: linear-gradient(145deg, ${color}08, ${color}04); border-color: ${color}25; box-shadow: 0 0 40px ${color}08;`}
+              >
+                <div
+                  class="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+                  style={`background: ${color}15; border: 1px solid ${color}30;`}
+                >
+                  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke={color} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d={step.icon} />
+                  </svg>
+                </div>
+                <p class="text-[11px] uppercase tracking-[3px] font-medium" style={`color: ${color}`}>Step {i + 1}</p>
+                <h3 class="font-display text-xl font-400 uppercase leading-tight">{step.title}</h3>
+                <p class="text-sm text-brand-gray-400 leading-relaxed">{step.description}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- Step indicators -->
+    <div class="flex justify-center gap-3 mt-20" data-how-dots>
+      {cards.map((_, i) => (
+        <button
+          class="w-2 h-2 rounded-full transition-all duration-500"
+          style={`background: ${color}30;`}
+          data-how-dot={i}
+          aria-label={`Step ${i + 1}`}
+        />
       ))}
     </div>
 
@@ -50,3 +83,14 @@ const { color, steps } = Astro.props;
     </div>
   </div>
 </section>
+
+<style>
+  [data-how-carousel] {
+    --carousel-z: 140px;
+  }
+  @media (min-width: 640px) {
+    [data-how-carousel] {
+      --carousel-z: 200px;
+    }
+  }
+</style>

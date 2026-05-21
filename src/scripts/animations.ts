@@ -492,6 +492,93 @@ export function initAppFirstCollapse() {
   });
 }
 
+// --- How It Works: continuously rotating 3D card carousel ---
+export function initHowItWorksCarousel() {
+  const carousel = document.querySelector("[data-how-carousel]") as HTMLElement;
+  if (!carousel) return;
+
+  const dots = document.querySelectorAll("[data-how-dot]");
+  const color = getComputedStyle(dots[0])?.backgroundColor || "#fff";
+  let currentStep = 0;
+
+  function updateDots(step: number) {
+    dots.forEach((dot, i) => {
+      const el = dot as HTMLElement;
+      if (i === step) {
+        el.style.transform = "scale(1.5)";
+        el.style.opacity = "1";
+      } else {
+        el.style.transform = "scale(1)";
+        el.style.opacity = "0.4";
+      }
+    });
+  }
+
+  updateDots(0);
+
+  // Continuous rotation: 120° per face, pause on each face
+  const tl = gsap.timeline({ repeat: -1 });
+
+  for (let i = 0; i < 3; i++) {
+    const targetAngle = -(i + 1) * 120;
+    tl.to(carousel, {
+      rotateY: targetAngle,
+      duration: 1.2,
+      ease: "power2.inOut",
+      onStart: () => {
+        currentStep = (i + 1) % 3;
+        updateDots(currentStep);
+      },
+    });
+    // Pause on each face
+    tl.to({}, { duration: 2.5 });
+  }
+
+  // Pause on hover
+  carousel.parentElement?.addEventListener("mouseenter", () => tl.pause());
+  carousel.parentElement?.addEventListener("mouseleave", () => tl.resume());
+
+  // Jump to a specific face
+  function goToFace(i: number) {
+    tl.pause();
+    currentStep = i;
+    updateDots(i);
+    gsap.to(carousel, {
+      rotateY: -i * 120,
+      duration: 0.8,
+      ease: "power2.inOut",
+      onComplete: () => {
+        tl.seek((i * (1.2 + 2.5)) + 1.2);
+        setTimeout(() => tl.resume(), 2500);
+      },
+    });
+  }
+
+  // Click dots to jump to a face
+  dots.forEach((dot, i) => {
+    dot.addEventListener("click", () => goToFace(i));
+  });
+
+  // Swipe support for mobile
+  let touchStartX = 0;
+  const wrapper = carousel.parentElement!;
+  wrapper.addEventListener("touchstart", (e) => {
+    touchStartX = e.touches[0].clientX;
+    tl.pause();
+  }, { passive: true });
+  wrapper.addEventListener("touchend", (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) {
+      const next = dx < 0
+        ? (currentStep + 1) % 3
+        : (currentStep - 1 + 3) % 3;
+      goToFace(next);
+    } else {
+      tl.resume();
+    }
+  }, { passive: true });
+}
+
 // --- Init all ---
 export function initAllAnimations() {
   // Mobile config: prevent address bar resize jumps
@@ -512,6 +599,7 @@ export function initAllAnimations() {
   initLineWipes();
   initCounters();
   initStickyFeatures();
+  initHowItWorksCarousel();
 
   // Recalculate after all assets load (images affect pin-spacer height)
   window.addEventListener("load", () => ScrollTrigger.refresh());
