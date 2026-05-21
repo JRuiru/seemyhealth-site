@@ -498,7 +498,10 @@ export function initHowItWorksCarousel() {
   if (!carousel) return;
 
   const dots = document.querySelectorAll("[data-how-dot]");
-  const color = getComputedStyle(dots[0])?.backgroundColor || "#fff";
+  const glow = document.querySelector("[data-how-glow]") as HTMLElement;
+  const icons = document.querySelectorAll("[data-how-icon]");
+  const lines = document.querySelectorAll("[data-how-line]");
+  const pulses = document.querySelectorAll("[data-how-pulse]");
   let currentStep = 0;
 
   function updateDots(step: number) {
@@ -514,7 +517,56 @@ export function initHowItWorksCarousel() {
     });
   }
 
+  // Animate the active card's icon, line, and pulse
+  function animateActiveCard(step: number) {
+    // Reset all icons, lines, and pulses
+    icons.forEach((icon) => {
+      const path = icon.querySelector(".how-icon-path") as SVGPathElement;
+      if (path) gsap.set(path, { strokeDashoffset: 100 });
+    });
+    lines.forEach((line) => gsap.set(line, { width: 0 }));
+    pulses.forEach((pulse) => {
+      (pulse as HTMLElement).style.animation = "none";
+    });
+
+    // Animate active icon: stroke draw-on
+    const activeIcon = icons[step];
+    if (activeIcon) {
+      const path = activeIcon.querySelector(".how-icon-path") as SVGPathElement;
+      if (path) {
+        gsap.fromTo(path,
+          { strokeDashoffset: 100 },
+          { strokeDashoffset: 0, duration: 1, ease: "power2.out", delay: 0.3 }
+        );
+      }
+    }
+
+    // Animate active line: grow from center
+    const activeLine = lines[step] as HTMLElement;
+    if (activeLine) {
+      gsap.fromTo(activeLine,
+        { width: 0 },
+        { width: "60%", duration: 0.8, ease: "power2.out", delay: 0.5 }
+      );
+    }
+
+    // Animate active pulse ring
+    const activePulse = pulses[step] as HTMLElement;
+    if (activePulse) {
+      activePulse.style.animation = "pulse-ring 2s ease-out infinite";
+    }
+
+    // Glow pulse
+    if (glow) {
+      gsap.fromTo(glow,
+        { opacity: 0.1, scale: 0.8 },
+        { opacity: 0.25, scale: 1, duration: 1, ease: "power2.out" }
+      );
+    }
+  }
+
   updateDots(0);
+  animateActiveCard(0);
 
   // Continuous rotation: 120° per face, pause on each face
   const tl = gsap.timeline({ repeat: -1 });
@@ -529,14 +581,17 @@ export function initHowItWorksCarousel() {
         currentStep = (i + 1) % 3;
         updateDots(currentStep);
       },
+      onComplete: () => {
+        animateActiveCard(currentStep);
+      },
     });
     // Pause on each face
     tl.to({}, { duration: 2.5 });
   }
 
   // Pause on hover
-  carousel.parentElement?.addEventListener("mouseenter", () => tl.pause());
-  carousel.parentElement?.addEventListener("mouseleave", () => tl.resume());
+  carousel.parentElement?.parentElement?.addEventListener("mouseenter", () => tl.pause());
+  carousel.parentElement?.parentElement?.addEventListener("mouseleave", () => tl.resume());
 
   // Jump to a specific face
   function goToFace(i: number) {
@@ -548,6 +603,7 @@ export function initHowItWorksCarousel() {
       duration: 0.8,
       ease: "power2.inOut",
       onComplete: () => {
+        animateActiveCard(i);
         tl.seek((i * (1.2 + 2.5)) + 1.2);
         setTimeout(() => tl.resume(), 2500);
       },
@@ -561,7 +617,7 @@ export function initHowItWorksCarousel() {
 
   // Swipe support for mobile
   let touchStartX = 0;
-  const wrapper = carousel.parentElement!;
+  const wrapper = carousel.parentElement!.parentElement!;
   wrapper.addEventListener("touchstart", (e) => {
     touchStartX = e.touches[0].clientX;
     tl.pause();
