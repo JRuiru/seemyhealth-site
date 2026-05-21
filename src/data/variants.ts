@@ -212,13 +212,15 @@ export const productVariants: Record<string, ProductVariantData> = {
         { type: "image", url: `${CF_IMG}/bottle-black-desk/public`, alt: "Hydra One black on desk" },
         { type: "image", url: `${CF_IMG}/bottle-black-gym/public`, alt: "Hydra One black in gym" },
         { type: "image", url: `${CF_IMG}/bottle-treebark/public`, alt: "Hydra One Abyss Black" },
+        { type: "image", url: `${CF_IMG}/bottle-black-picnic/public`, alt: "Hydra One Abyss Black in picnic basket" },
       ],
       "Glacier White": [
         { type: "video", url: "", poster: `${CF_IMG}/bottle-white-config/public`, alt: "Hydra One Glacier White video" },
         { type: "model", url: "/models/bottle-white-3d.glb", poster: `${CF_IMG}/bottle-white-config/public`, alt: "Hydra One Glacier White 3D" },
-        { type: "image", url: `${CF_IMG}/bottle-white-cafe/public`, alt: "Hydra One white in cafe" },
+        { type: "image", url: `${CF_IMG}/bottle-white-cafe-v2/public`, alt: "Hydra One white in cafe" },
         { type: "image", url: `${CF_IMG}/bottle-white-park/public`, alt: "Hydra One white in park" },
-        { type: "image", url: `${CF_IMG}/bottle-office-scene/public`, alt: "Hydra One on desk" },
+        { type: "image", url: `${CF_IMG}/bottle-white-office/public`, alt: "Hydra One white on office desk with city view" },
+        { type: "image", url: `${CF_IMG}/bottle-white-kitchen/public`, alt: "Hydra One white on kitchen counter with french press and breakfast" },
       ],
     },
     ambientColors: {
@@ -226,8 +228,8 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Glacier White": "#0e1012",
     },
     variants: [
-      { id: "gid://shopify/ProductVariant/43225874825329", title: "Abyss Black", price: "59", currency: "USD", options: { Color: "Abyss Black" }, available: true },
-      { id: "gid://shopify/ProductVariant/43225874858097", title: "Glacier White", price: "59", currency: "USD", options: { Color: "Glacier White" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225874825329", title: "Abyss Black", price: "79", currency: "USD", options: { Color: "Abyss Black" }, available: true },
+      { id: "gid://shopify/ProductVariant/43225874858097", title: "Glacier White", price: "79", currency: "USD", options: { Color: "Glacier White" }, available: true },
     ],
   },
   "hema-one": {
@@ -243,12 +245,18 @@ export const productVariants: Record<string, ProductVariantData> = {
     },
     media: {
       "Stealth Black": [
-        { type: "image", url: `${CF_IMG}/hema-one-web/public`, alt: "Hema One Stealth Black" },
-        { type: "image", url: `${CF_IMG}/hema-one-device-web/public`, alt: "Hema One Stealth Black device" },
+        { type: "video", url: "", poster: `${CF_IMG}/hema-black-poster/public`, alt: "Hema One Stealth Black video" },
+        { type: "model", url: "/models/hema-black-3d.glb", poster: `${CF_IMG}/hema-black-poster/public`, alt: "Hema One Stealth Black 3D" },
+        { type: "image", url: `${CF_IMG}/hema-black-lab/public`, alt: "Hema One Stealth Black on lab desk showing lipid panel and glucose readings" },
+        { type: "image", url: `${CF_IMG}/hema-black-bedside/public`, alt: "Hema One Stealth Black on bedside table with wellness book" },
+        { type: "image", url: `${CF_IMG}/hema-black-hand-v2/public`, alt: "Hema One Stealth Black in hand with test strip and lancet" },
       ],
       "Ember Orange": [
-        { type: "image", url: `${CF_IMG}/hema-one-web/public`, alt: "Hema One Ember Orange" },
-        { type: "image", url: `${CF_IMG}/hema-one-device-web/public`, alt: "Hema One Ember Orange device" },
+        { type: "video", url: "", poster: `${CF_IMG}/hema-orange-poster/public`, alt: "Hema One Ember Orange video" },
+        { type: "model", url: "/models/hema-orange-3d.glb", poster: `${CF_IMG}/hema-orange-poster/public`, alt: "Hema One Ember Orange 3D" },
+        { type: "image", url: `${CF_IMG}/hema-orange-kitchen-v2/public`, alt: "Hema One Ember Orange on kitchen counter with test strips and fruit" },
+        { type: "image", url: `${CF_IMG}/hema-orange-clinic/public`, alt: "Hema One Ember Orange on clinic desk with stethoscope" },
+        { type: "image", url: `${CF_IMG}/hema-orange-doctor/public`, alt: "Doctor holding Hema One Ember Orange with test strip" },
       ],
     },
     ambientColors: {
@@ -256,8 +264,8 @@ export const productVariants: Record<string, ProductVariantData> = {
       "Ember Orange": "#1a0f08",
     },
     variants: [
-      { id: "gid://shopify/ProductVariant/43253482717297", title: "Stealth Black", price: "99", currency: "USD", options: { Color: "Stealth Black" }, available: true },
-      { id: "gid://shopify/ProductVariant/43253482750065", title: "Ember Orange", price: "99", currency: "USD", options: { Color: "Ember Orange" }, available: true },
+      { id: "gid://shopify/ProductVariant/43253482717297", title: "Stealth Black", price: "159", currency: "USD", options: { Color: "Stealth Black" }, available: true },
+      { id: "gid://shopify/ProductVariant/43253482750065", title: "Ember Orange", price: "159", currency: "USD", options: { Color: "Ember Orange" }, available: true },
     ],
   },
 };
