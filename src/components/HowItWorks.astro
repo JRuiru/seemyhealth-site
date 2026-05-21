@@ -1,32 +1,35 @@
 ---
-const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
-
 const steps = [
   {
     number: "01",
     verb: "Download",
     title: "Start with the app",
     description: "Create your account and start your 1-month free trial. Journalling, mood, meals, and challenges work from day one. No device needed.",
+    icon: "M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z",
   },
   {
     number: "02",
     verb: "Add",
     title: "Connect your devices",
     description: "Buy your own or walk up to a shared one. Open the app, tap connect, and your reading saves to your profile instantly.",
+    icon: "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 8v8M8 12h8",
   },
   {
     number: "03",
     verb: "See",
     title: "The full picture",
     description: "Every device feeds one dashboard. The app finds patterns across your data: sleep vs. weight, hydration vs. energy, blood markers vs. diet.",
+    icon: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8zm11-3a3 3 0 100 6 3 3 0 000-6z",
   },
 ];
+
+const color = "#FFFFFF";
 ---
 
-<section id="how-it-works" class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
+<section id="how-it-works" class="py-16 sm:py-32 bg-brand-black border-t border-white/5 overflow-hidden">
   <div class="max-w-7xl mx-auto px-6 lg:px-8">
     <!-- Section Header -->
-    <div class="text-center mb-20" data-scroll-reveal>
+    <div class="text-center mb-12 sm:mb-20" data-scroll-reveal>
       <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">How It Works</p>
       <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95]">
         Download. Add. <span class="font-500">See.</span>
@@ -36,15 +39,53 @@ const steps = [
     <!-- Steps -->
     <div class="grid lg:grid-cols-3 gap-px bg-white/5 rounded-2xl overflow-hidden max-w-5xl mx-auto" data-scroll-stagger>
       {steps.map((step) => (
-        <div class="bg-brand-black p-10 sm:p-12 text-center group hover:bg-brand-gray-900 transition-colors duration-300">
-          <span class="font-display text-5xl font-200 text-brand-gray-800 group-hover:text-brand-gray-600 transition-colors block mb-4">
+        <div class="relative bg-brand-black p-6 sm:p-12 text-center group overflow-hidden how-step">
+          {/* Hover gradient background */}
+          <div
+            class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+            style="background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%);"
+          ></div>
+
+          {/* Top accent line */}
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 h-[2px] w-0 group-hover:w-16 rounded-full transition-all duration-500 bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+
+          {/* Icon */}
+          <div class="relative mx-auto w-14 h-14 rounded-2xl flex items-center justify-center mb-6 border border-white/10 group-hover:border-white/20 transition-colors duration-300" style="background: rgba(255,255,255,0.04);">
+            <svg class="w-6 h-6 how-step-icon" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d={step.icon} class="how-step-path" />
+            </svg>
+          </div>
+
+          {/* Number */}
+          <span class="relative font-display text-5xl font-200 text-brand-gray-800 group-hover:text-brand-gray-600 transition-colors duration-300 block mb-4">
             {step.number}
           </span>
-          <h3 class="font-display text-2xl uppercase font-400 mb-2">{step.verb}</h3>
-          <p class="text-sm text-brand-gray-400 mb-4">{step.title}</p>
-          <p class="text-sm text-brand-gray-600 leading-relaxed">{step.description}</p>
+
+          <h3 class="relative font-display text-2xl uppercase font-400 mb-2">{step.verb}</h3>
+          <p class="relative text-sm text-brand-gray-400 mb-2 sm:mb-4">{step.title}</p>
+          <p class="relative text-sm text-brand-gray-600 leading-relaxed group-hover:text-brand-gray-500 transition-colors duration-300 hidden sm:block">{step.description}</p>
+
+          {/* Bottom glow on hover */}
+          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-16 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style="background: rgba(255,255,255,0.05);"></div>
         </div>
       ))}
     </div>
   </div>
 </section>
+
+<style>
+  /* Icon stroke draw-on on scroll reveal */
+  .how-step-path {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    transition: stroke-dashoffset 1.2s ease-out;
+  }
+  .how-step.is-visible .how-step-path {
+    stroke-dashoffset: 0;
+  }
+
+  /* Subtle hover icon glow */
+  .how-step:hover .how-step-icon {
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.15));
+  }
+</style>

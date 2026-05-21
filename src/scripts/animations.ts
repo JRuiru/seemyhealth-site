@@ -102,6 +102,9 @@ export function initScrollReveals() {
           trigger: container,
           start: "top 80%",
           toggleActions: "play none none none",
+          onEnter: () => {
+            Array.from(children).forEach((child) => child.classList.add("is-visible"));
+          },
         },
       }
     );

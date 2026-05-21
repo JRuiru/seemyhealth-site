@@ -23,9 +23,9 @@ const trustPoints = [
 ];
 ---
 
-<section class="py-20 sm:py-28 bg-brand-dark border-t border-white/5">
+<section class="py-14 sm:py-28 bg-brand-dark border-t border-white/5">
   <div class="max-w-5xl mx-auto px-6 lg:px-8">
-    <div class="text-center mb-14" data-scroll-reveal>
+    <div class="text-center mb-8 sm:mb-14" data-scroll-reveal>
       <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Trust & Privacy</p>
       <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
         Your data. <span class="font-500">Your rules.</span>
@@ -35,14 +35,14 @@ const trustPoints = [
       </p>
     </div>
 
-    <div class="grid sm:grid-cols-2 gap-4" data-scroll-stagger>
+    <div class="grid grid-cols-2 gap-3 sm:gap-4" data-scroll-stagger>
       {trustPoints.map((point) => (
-        <div class="group rounded-xl bg-brand-black border border-white/5 hover:border-white/15 p-6 sm:p-8 transition-all">
-          <svg class="w-6 h-6 text-brand-gray-600 group-hover:text-white mb-4 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <div class="group rounded-xl bg-brand-black border border-white/5 hover:border-white/15 p-4 sm:p-8 transition-all">
+          <svg class="w-5 h-5 sm:w-6 sm:h-6 text-brand-gray-600 group-hover:text-white mb-3 sm:mb-4 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round" d={point.icon} />
           </svg>
-          <h3 class="text-base font-medium text-white mb-2">{point.title}</h3>
-          <p class="text-sm text-brand-gray-500 leading-relaxed">{point.description}</p>
+          <h3 class="text-sm sm:text-base font-medium text-white mb-1 sm:mb-2">{point.title}</h3>
+          <p class="text-xs sm:text-sm text-brand-gray-500 leading-relaxed hidden sm:block">{point.description}</p>
         </div>
       ))}
     </div>
