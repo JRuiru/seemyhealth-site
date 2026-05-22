@@ -82,7 +82,11 @@ export async function exchangeCodeForTokens(
 
   const res = await fetch(tokenUrl, {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Origin": "https://www.seemyhealth.ai",
+      "User-Agent": "SeeMyHealth-BFF/1.0",
+    },
     body: body.toString(),
   });
 
@@ -118,7 +122,11 @@ export async function refreshAccessToken(
 
   const res = await fetch(tokenUrl, {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Origin": "https://www.seemyhealth.ai",
+      "User-Agent": "SeeMyHealth-BFF/1.0",
+    },
     body: body.toString(),
   });
 
