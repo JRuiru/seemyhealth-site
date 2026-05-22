@@ -262,8 +262,46 @@ export default function AccountDashboard() {
         </div>
       )}
 
+      {/* App CTA banner */}
+      <div className="mb-14">
+        <a
+          href="/app"
+          className="group relative block rounded-2xl overflow-hidden border border-white/5 hover:border-white/15 transition-colors"
+        >
+          <div className="relative grid sm:grid-cols-2 items-center">
+            {/* Left: lifestyle image */}
+            <div className="relative h-48 sm:h-64 overflow-hidden">
+              <img
+                src={`${CF_IMG}/lifestyle-sun-portrait/public`}
+                alt="Living your healthiest life"
+                loading="lazy"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-brand-black sm:block hidden" />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-black to-transparent sm:hidden" />
+            </div>
+            {/* Right: app content */}
+            <div className="relative p-6 sm:p-8 -mt-8 sm:mt-0">
+              <p className="text-[10px] uppercase tracking-[2px] text-brand-gray-500 mb-3">The C-MyHealth App</p>
+              <h3 className="font-display text-xl sm:text-2xl font-300 uppercase text-white leading-tight mb-2">
+                Get More From<br /><span className="font-500">Every Device</span>
+              </h3>
+              <p className="text-sm text-brand-gray-400 leading-relaxed mb-4 max-w-sm">
+                Track trends, set goals, share reports with your doctor, and discover insights you'd never see on your own. All your health data, one beautiful dashboard.
+              </p>
+              <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[1.5px] text-white group-hover:gap-3 transition-all">
+                Discover the app
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                </svg>
+              </span>
+            </div>
+          </div>
+        </a>
+      </div>
+
       {/* Ecosystem CTA — always shown */}
-      <div>
+      <div className="mb-14">
         <div className="mb-6">
           <h2 className="font-display text-2xl font-300 uppercase">
             {orders.length === 0 ? "Start Your Health Journey" : "Explore More Devices"}
@@ -302,6 +340,19 @@ export default function AccountDashboard() {
               </div>
             </a>
           ))}
+        </div>
+      </div>
+
+      {/* Lifestyle strip */}
+      <div className="grid grid-cols-3 gap-3 rounded-2xl overflow-hidden">
+        <div className="aspect-[3/2] overflow-hidden">
+          <img src={`${CF_IMG}/lifestyle-athlete/public`} alt="Active lifestyle" loading="lazy" className="w-full h-full object-cover" />
+        </div>
+        <div className="aspect-[3/2] overflow-hidden">
+          <img src={`${CF_IMG}/lifestyle-friends-bar/public`} alt="Living well together" loading="lazy" className="w-full h-full object-cover" />
+        </div>
+        <div className="aspect-[3/2] overflow-hidden">
+          <img src={`${CF_IMG}/scale-pro-lifestyle/public`} alt="Health at home" loading="lazy" className="w-full h-full object-cover" />
         </div>
       </div>
     </div>
