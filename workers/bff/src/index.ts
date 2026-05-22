@@ -115,6 +115,7 @@ export default {
     const customerAuth: CustomerAuthConfig = {
       clientId: env.SHOPIFY_CUSTOMER_CLIENT_ID,
       shopId: env.SHOPIFY_SHOP_ID,
+      customerAccountDomain: "account.seemyhealth.ai",
       redirectUri: `${SITE_ORIGIN}/api/auth/callback`,
     };
 

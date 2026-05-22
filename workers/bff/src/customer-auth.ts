@@ -4,11 +4,12 @@
 export interface CustomerAuthConfig {
   clientId: string;
   shopId: string;
+  customerAccountDomain: string; // e.g. account.seemyhealth.ai
   redirectUri: string; // https://www.seemyhealth.ai/api/auth/callback
 }
 
-const AUTH_BASE = (shopId: string) =>
-  `https://shopify.com/authentication/${shopId}`;
+const AUTH_BASE = (domain: string) =>
+  `https://${domain}/authentication`;
 
 // --- PKCE helpers ---
 
@@ -55,7 +56,7 @@ export async function buildAuthorizationUrl(
     code_challenge_method: "S256",
   });
 
-  const url = `${AUTH_BASE(config.shopId)}/oauth/authorize?${params}`;
+  const url = `${AUTH_BASE(config.customerAccountDomain)}/oauth/authorize?${params}`;
   return { url, codeVerifier, nonce };
 }
 
@@ -70,7 +71,7 @@ export async function exchangeCodeForTokens(
   expires_in: number;
   token_type: string;
 }> {
-  const tokenUrl = `${AUTH_BASE(config.shopId)}/oauth/token`;
+  const tokenUrl = `${AUTH_BASE(config.customerAccountDomain)}/oauth/token`;
 
   const body = new URLSearchParams({
     grant_type: "authorization_code",
@@ -112,7 +113,7 @@ export async function refreshAccessToken(
   refresh_token: string;
   expires_in: number;
 }> {
-  const tokenUrl = `${AUTH_BASE(config.shopId)}/oauth/token`;
+  const tokenUrl = `${AUTH_BASE(config.customerAccountDomain)}/oauth/token`;
 
   const body = new URLSearchParams({
     grant_type: "refresh_token",
@@ -148,5 +149,5 @@ export function buildLogoutUrl(config: CustomerAuthConfig, idToken: string): str
     post_logout_redirect_uri: "https://www.seemyhealth.ai",
   });
 
-  return `${AUTH_BASE(config.shopId)}/logout?${params}`;
+  return `${AUTH_BASE(config.customerAccountDomain)}/logout?${params}`;
 }
