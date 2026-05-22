@@ -298,8 +298,7 @@ export default {
         );
 
         if (!res.ok) {
-          const errText = await res.text();
-          console.error(`Customer API error: ${res.status}`, errText);
+          console.error(`Customer API error: ${res.status}`);
           // Token might be expired
           if (res.status === 401) {
             return json({ customer: null, expired: true }, 200, cors);
@@ -497,9 +496,9 @@ export default {
 
       return error("Not found", 404, cors);
     } catch (err) {
-      console.error("BFF error:", err);
       const message = err instanceof Error ? err.message : "Internal error";
-      return error(message, 500, cors);
+      console.error("BFF error:", message);
+      return error("Internal error", 500, cors);
     }
   },
 } satisfies ExportedHandler<Env>;
