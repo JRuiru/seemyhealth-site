@@ -4,15 +4,36 @@ import { getCustomer, login, logout, type Customer } from "../../lib/shopify/aut
 export default function AccountDashboard() {
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Check for error params from failed callback
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get("error");
+    if (error) {
+      setAuthError(error);
+      setLoading(false);
+      return;
+    }
+
     getCustomer()
       .then((c) => {
         if (!c) {
-          // Not logged in — redirect to login
+          // Prevent redirect loop: only auto-login if we haven't just tried
+          const lastAttempt = sessionStorage.getItem("smh_login_attempt");
+          const now = Date.now();
+          if (lastAttempt && now - parseInt(lastAttempt) < 30000) {
+            // Tried within last 30s — don't loop
+            setAuthError("login_failed");
+            setLoading(false);
+            return;
+          }
+          sessionStorage.setItem("smh_login_attempt", now.toString());
           login();
           return;
         }
+        // Successful login — clear the attempt tracker
+        sessionStorage.removeItem("smh_login_attempt");
         setCustomer(c);
       })
       .finally(() => setLoading(false));
@@ -22,6 +43,29 @@ export default function AccountDashboard() {
     return (
       <div className="flex items-center justify-center py-32">
         <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (authError) {
+    return (
+      <div className="text-center py-16 rounded-2xl bg-brand-gray-900 border border-white/5 max-w-lg mx-auto">
+        <svg className="w-12 h-12 mx-auto text-brand-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+        </svg>
+        <h2 className="text-lg font-medium text-white mb-2">Unable to sign in</h2>
+        <p className="text-sm text-brand-gray-500 mb-6">
+          Something went wrong during sign in. Please try again.
+        </p>
+        <button
+          onClick={() => {
+            sessionStorage.removeItem("smh_login_attempt");
+            login();
+          }}
+          className="inline-flex items-center px-8 py-3.5 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+        >
+          Try Again
+        </button>
       </div>
     );
   }

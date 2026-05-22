@@ -169,7 +169,13 @@ export default {
           return redirect(`${SITE_ORIGIN}/account?error=state_mismatch`);
         }
 
-        const tokens = await exchangeCodeForTokens(customerAuth, code, codeVerifier);
+        let tokens;
+        try {
+          tokens = await exchangeCodeForTokens(customerAuth, code, codeVerifier);
+        } catch (e: any) {
+          console.error("Token exchange error:", e.message);
+          return redirect(`${SITE_ORIGIN}/account?error=token_exchange`);
+        }
 
         // Store tokens in secure httpOnly cookies
         // Access token is short-lived, refresh token is long-lived
