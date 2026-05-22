@@ -234,13 +234,15 @@ export default {
           return json({ customer: null }, 200, cors);
         }
 
-        const res = await fetch(
-          `https://shopify.com/${env.SHOPIFY_SHOP_ID}/account/customer/api/2025-04/graphql`,
-          {
+        // Customer Account API GraphQL — discovered via /.well-known/customer-account-api
+        const graphqlUrl = `https://${customerAuth.customerAccountDomain}/customer/api/2026-04/graphql`;
+        const res = await fetch(graphqlUrl, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: accessToken,
+              Origin: SITE_ORIGIN,
+              "User-Agent": "SeeMyHealth-BFF/1.0",
             },
             body: JSON.stringify({
               query: `{
@@ -276,11 +278,13 @@ export default {
         );
 
         if (!res.ok) {
+          const errText = await res.text();
+          console.error(`Customer API error: ${res.status}`, errText);
           // Token might be expired
           if (res.status === 401) {
             return json({ customer: null, expired: true }, 200, cors);
           }
-          throw new Error(`Customer API ${res.status}`);
+          return json({ customer: null, error: `api_${res.status}` }, 200, cors);
         }
 
         const data = await res.json();
