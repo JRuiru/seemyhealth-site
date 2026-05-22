@@ -11,10 +11,13 @@ const stats = [
   <div class="max-w-7xl mx-auto px-6 lg:px-8">
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12" data-scroll-stagger>
       {stats.map((stat) => (
-        <div class="text-center lg:text-left">
+        <div class:list={["text-center lg:text-left", stat.special && "relative"]}>
           <div class="flex items-baseline justify-center lg:justify-start gap-1">
             <span
-              class="font-display text-5xl sm:text-6xl lg:text-7xl font-300 leading-none"
+              class:list={[
+                "font-display text-5xl sm:text-6xl lg:text-7xl font-300 leading-none",
+                stat.special && "text-emerald-400"
+              ]}
               data-counter={stat.value}
             >
               0
@@ -23,7 +26,13 @@ const stats = [
               <span class="font-display text-2xl sm:text-3xl font-300 text-brand-gray-400">{stat.suffix}</span>
             )}
           </div>
-          <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mt-3">{stat.label}</p>
+          <p class:list={[
+            "text-[11px] uppercase tracking-[3px] mt-3",
+            stat.special ? "text-emerald-400/60" : "text-brand-gray-500"
+          ]}>{stat.label}</p>
+          {stat.special && (
+            <p class="text-[10px] uppercase tracking-[2px] text-brand-gray-600 mt-1">Ever.</p>
+          )}
           <div class="h-px bg-white/10 mt-6 origin-left" data-line-wipe></div>
         </div>
       ))}

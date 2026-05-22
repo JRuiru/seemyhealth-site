@@ -3,13 +3,12 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Hero from '../components/Hero.astro';
 import HomeProblem from '../components/HomeProblem.astro';
-import HomeAppFirst from '../components/HomeAppFirst.astro';
-import HomeSharedDevices from '../components/HomeSharedDevices.astro';
 import HomeFamily from '../components/HomeFamily.astro';
-import Products from '../components/Products.astro';
-import Stats from '../components/Stats.astro';
 import HomeTrust from '../components/HomeTrust.astro';
+import HomeAppFirst from '../components/HomeAppFirst.astro';
+import Products from '../components/Products.astro';
 import HowItWorks from '../components/HowItWorks.astro';
+import Stats from '../components/Stats.astro';
 import Testimonials from '../components/Testimonials.astro';
 import CTA from '../components/CTA.astro';
 import Footer from '../components/Footer.astro';
@@ -47,29 +46,26 @@ const webSiteSchema = {
   <!-- 1. Hero — See Your Health -->
   <Hero />
 
-  <!-- 2. The problem — fragmented health data -->
+  <!-- 2. The problem — fragmented health data → we connect everything -->
   <HomeProblem />
 
-  <!-- 3. App works from day one — the answer -->
-  <HomeAppFirst />
-
-  <!-- 4. Shared by design — the differentiator -->
-  <HomeSharedDevices />
-
-  <!-- 5. Family wellness — care is shared -->
+  <!-- 3. Family wellness — not just you, your whole family -->
   <HomeFamily />
 
-  <!-- 6. The devices -->
+  <!-- 5. Trust & privacy — your data stays yours -->
+  <HomeTrust />
+
+  <!-- 6. The app — works from day one -->
+  <HomeAppFirst />
+
+  <!-- 7. The devices -->
   <Products />
 
-  <!-- 7. Stats -->
-  <Stats />
-
-  <!-- 8. How it works -->
+  <!-- 8. How it works — Download. Connect. See. -->
   <HowItWorks />
 
-  <!-- 9. Trust & privacy -->
-  <HomeTrust />
+  <!-- 9. Stats -->
+  <Stats />
 
   <!-- 10. Social proof -->
   <Testimonials />

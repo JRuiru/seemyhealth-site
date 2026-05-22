@@ -1,19 +1,27 @@
 ---
+const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
+
 const testimonials = [
   {
-    quote: "I've been part of the early testing group for Ring One since day one. Watching it evolve from prototype to this, I'm genuinely blown away. The sleep insights alone have changed how I plan my mornings.",
-    author: "Sarah M.",
-    role: "Beta Tester · Hardware & App",
-  },
-  {
-    quote: "Our family was invited to test the ecosystem during development. Seeing the app pull data from the Scale, the Ring, and Hydra One into a single dashboard... it just clicked. The team has built something truly special.",
-    author: "James K.",
-    role: "Beta Tester · Family Program",
-  },
-  {
-    quote: "I participated in the clinical validation of the BP Monitor and Hema One. The accuracy rivals lab-grade equipment, and the software experience is years ahead of anything else I've recommended to patients. Blown away by what this team has achieved.",
+    quote: "The accuracy rivals lab-grade equipment, and the software experience is years ahead of anything else I've recommended to patients.",
     author: "Dr. Amina N.",
-    role: "Clinical Advisor · Early Development",
+    role: "Clinical Advisor",
+    image: `${CF_IMG}/family-grandma/public`,
+    color: "#A855F7",
+  },
+  {
+    quote: "The sleep insights alone have changed how I plan my mornings. Watching Ring One evolve from prototype to this, I'm genuinely blown away.",
+    author: "Sarah M.",
+    role: "Beta Tester",
+    image: `${CF_IMG}/family-daughter/public`,
+    color: "#F97316",
+  },
+  {
+    quote: "Seeing the app pull data from the Scale, the Ring, and Hydra One into a single dashboard... it just clicked. Something truly special.",
+    author: "James K.",
+    role: "Family Program Tester",
+    image: `${CF_IMG}/family-husband/public`,
+    color: "#3B82F6",
   },
 ];
 ---
@@ -28,16 +36,50 @@ const testimonials = [
       </h2>
     </div>
 
-    <!-- Testimonials — horizontal scroll on mobile, grid on desktop -->
-    <div class="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pl-6 -ml-6 pr-6 -mr-6 lg:ml-0 lg:mr-0 lg:pl-0 lg:pr-0 lg:grid lg:grid-cols-3 lg:overflow-visible" style="scroll-padding-left: 1.5rem;" data-scroll-stagger>
-      {testimonials.map((t) => (
-        <div class="rounded-2xl bg-brand-black border border-white/5 p-6 sm:p-8 snap-start shrink-0 w-[80vw] sm:w-[60vw] lg:w-auto flex flex-col justify-between">
-          <p class="text-base sm:text-lg text-brand-gray-300 leading-relaxed mb-6 sm:mb-8 italic">
-            &ldquo;{t.quote}&rdquo;
+    <!-- Testimonials — featured first, then two side by side -->
+    <div class="grid lg:grid-cols-3 gap-4 sm:gap-6" data-scroll-stagger>
+
+      <!-- Featured testimonial (Dr. Amina) — spans full height -->
+      <div class="lg:row-span-1 rounded-2xl border border-white/5 bg-brand-black p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group hover:border-white/15 transition-all">
+        <!-- Accent glow -->
+        <div class="absolute top-0 left-0 w-32 h-32 rounded-full blur-[80px] opacity-10 pointer-events-none" style={`background: ${testimonials[0].color}`}></div>
+
+        <div class="relative">
+          <!-- Quote mark -->
+          <span class="font-display text-6xl text-white/[0.06] leading-none block mb-2">&ldquo;</span>
+          <p class="text-lg sm:text-xl text-brand-gray-200 leading-relaxed font-light">
+            {testimonials[0].quote}
           </p>
+        </div>
+        <div class="relative flex items-center gap-3 mt-6 sm:mt-8">
+          <div class="w-10 h-10 rounded-full overflow-hidden shrink-0" style={`border: 2px solid ${testimonials[0].color}50`}>
+            <img src={testimonials[0].image} alt={testimonials[0].author} class="w-full h-full object-cover" loading="lazy" />
+          </div>
           <div>
-            <div class="text-sm font-medium text-white">{t.author}</div>
-            <div class="text-[12px] text-brand-gray-500 uppercase tracking-wider mt-1">{t.role}</div>
+            <div class="text-sm font-medium text-white">{testimonials[0].author}</div>
+            <div class="text-[11px] text-brand-gray-500 uppercase tracking-wider">{testimonials[0].role}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary testimonials -->
+      {testimonials.slice(1).map((t) => (
+        <div class="rounded-2xl border border-white/5 bg-brand-black p-6 sm:p-8 flex flex-col justify-between group hover:border-white/15 transition-all relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-24 h-24 rounded-full blur-[60px] opacity-10 pointer-events-none" style={`background: ${t.color}`}></div>
+          <div class="relative">
+            <span class="font-display text-5xl text-white/[0.06] leading-none block mb-2">&ldquo;</span>
+            <p class="text-base text-brand-gray-300 leading-relaxed font-light">
+              {t.quote}
+            </p>
+          </div>
+          <div class="relative flex items-center gap-3 mt-6">
+            <div class="w-9 h-9 rounded-full overflow-hidden shrink-0" style={`border: 2px solid ${t.color}50`}>
+              <img src={t.image} alt={t.author} class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div>
+              <div class="text-sm font-medium text-white">{t.author}</div>
+              <div class="text-[11px] text-brand-gray-500 uppercase tracking-wider">{t.role}</div>
+            </div>
           </div>
         </div>
       ))}

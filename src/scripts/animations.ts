@@ -194,6 +194,125 @@ export function initCounters() {
   });
 }
 
+// --- HomeProblem: chaos → unified scroll transition ---
+export function initChaosToUnified() {
+  const chaosZone = document.querySelector("[data-chaos-zone]") as HTMLElement;
+  const arrow = document.querySelector("[data-chaos-arrow]") as HTMLElement;
+  const unifiedHeader = document.querySelector("[data-unified-header]") as HTMLElement;
+  const unifiedGrid = document.querySelector("[data-unified-grid]") as HTMLElement;
+  if (!chaosZone || !arrow) return;
+
+  const cards = chaosZone.querySelectorAll(".fragment-card") as NodeListOf<HTMLElement>;
+  if (!cards.length) return;
+
+  // Kill CSS animations — GSAP handles everything
+  cards.forEach((card) => { card.style.animation = "none"; });
+
+  // Ambient drift parameters per card
+  const driftX =    [ 8,  -10,  12,  -8,   10,  -6];
+  const driftY =    [-12,   8,  10, -14,    6, -10];
+  const driftRot =  [ 3,   3,  -3,  -3,   -3,   3];
+  const durations = [ 3,  3.5, 2.8,   4,  3.2, 3.8];
+
+  // Start looping drift tweens for each card
+  function startDrift() {
+    const tweens: gsap.core.Tween[] = [];
+    cards.forEach((card, i) => {
+      const tween = gsap.to(card, {
+        x: driftX[i],
+        y: driftY[i],
+        rotation: `+=${driftRot[i]}`,
+        duration: durations[i],
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+        delay: i * -0.5,
+      });
+      tweens.push(tween);
+    });
+    return tweens;
+  }
+
+  let driftTweens = startDrift();
+
+  // Scatter directions for each card (outward from center)
+  const scatterX = [-180, -120, -60, 60, 120, 180];
+  const scatterY = [-100, 80, -110, 90, -80, 70];
+  const scatterRot = [-25, 20, -15, 30, -20, 25];
+
+  // As user scrolls past the chaos zone, cards scatter outward and fade
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: chaosZone,
+      start: "top 40%",
+      end: "bottom 30%",
+      scrub: 0.8,
+      onEnter: () => {
+        driftTweens.forEach((t) => t.kill());
+      },
+      onLeaveBack: () => {
+        // Scrolled back up — reset cards and restart drift
+        cards.forEach((card) => {
+          gsap.set(card, { x: 0, y: 0, rotation: 0, opacity: 0.6, scale: 1 });
+        });
+        driftTweens = startDrift();
+      },
+    },
+  });
+
+  cards.forEach((card, i) => {
+    tl.to(card, {
+      x: scatterX[i],
+      y: scatterY[i],
+      rotation: scatterRot[i],
+      opacity: 0,
+      scale: 0.5,
+      duration: 1,
+      ease: "power2.in",
+    }, 0);
+  });
+
+  // Fade the SVG connection lines too
+  const svgLines = chaosZone.querySelector("svg");
+  if (svgLines) {
+    tl.to(svgLines, { opacity: 0, duration: 0.5 }, 0);
+  }
+
+  // Arrow pulses and fades
+  if (arrow) {
+    tl.fromTo(arrow, { opacity: 1 }, { opacity: 0, y: -20, duration: 0.5 }, 0.5);
+  }
+
+  // Unified section rises up with more presence
+  if (unifiedHeader) {
+    gsap.fromTo(unifiedHeader,
+      { opacity: 0, y: 60 },
+      {
+        opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
+        scrollTrigger: {
+          trigger: unifiedHeader,
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+      }
+    );
+  }
+
+  if (unifiedGrid) {
+    gsap.fromTo(unifiedGrid,
+      { opacity: 0, y: 80, scale: 0.95 },
+      {
+        opacity: 1, y: 0, scale: 1, duration: 1, ease: "power2.out",
+        scrollTrigger: {
+          trigger: unifiedGrid,
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+      }
+    );
+  }
+}
+
 // --- Sticky pinned feature section ---
 export function initStickyFeatures() {
   const section = document.querySelector("[data-sticky-features]");
@@ -657,6 +776,7 @@ export function initAllAnimations() {
   initParallax();
   initLineWipes();
   initCounters();
+  initChaosToUnified();
   initStickyFeatures();
   initHowItWorksCarousel();
 
