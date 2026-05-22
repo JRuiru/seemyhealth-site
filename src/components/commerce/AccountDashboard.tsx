@@ -201,9 +201,9 @@ export default function AccountDashboard() {
                     }).format(parseFloat(order.totalPrice.amount))}
                   </p>
                   <p className="text-[10px] uppercase tracking-wider mt-0.5" style={{
-                    color: order.fulfillments?.[0]?.status === "SUCCESS" ? "#22c55e" : "#f59e0b"
+                    color: order.fulfillments?.edges?.[0]?.node?.status === "SUCCESS" ? "#22c55e" : "#f59e0b"
                   }}>
-                    {order.fulfillments?.[0]?.status === "SUCCESS" ? "Delivered" : "Processing"}
+                    {order.fulfillments?.edges?.[0]?.node?.status === "SUCCESS" ? "Delivered" : "Processing"}
                   </p>
                 </div>
               </div>

@@ -266,7 +266,11 @@ export default {
                         processedAt
                         totalPrice { amount currencyCode }
                         fulfillments(first: 1) {
-                          status
+                          edges {
+                            node {
+                              status
+                            }
+                          }
                         }
                       }
                     }
