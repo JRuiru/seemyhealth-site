@@ -55,13 +55,13 @@ export const productContent: Record<string, ProductContent> = {
         { title: "13+ Body Metrics", description: "Body fat, muscle mass, bone density, visceral fat, water percentage, BMR, metabolic age, protein, and more, all from a single weigh-in." },
         { title: "Family Profiles", description: "Unlimited user profiles with auto-recognition. Everyone in the household gets their own private dashboard." },
         { title: "Trend Analysis", description: "Daily weight fluctuates. Real trends don't. See your 7-day, 30-day, and 90-day trajectories to understand what's really changing." },
-        { title: "Affordable Precision", description: "Medical-grade body composition at a fraction of the cost. Need segmental analysis? Upgrade to The Scale Pro." },
+        { title: "Affordable Precision", description: "Accurate body composition at a fraction of the cost. Need segmental analysis? Upgrade to The Scale Pro." },
       ],
     },
   },
   "scale-pro": {
     introLine1: "Segment by segment.",
-    introLine2: "Clinical precision.",
+    introLine2: "Total clarity.",
     howItWorks: [
       { title: "Step On & Grip", description: "Step on barefoot and pull the retractable handles. 8-point electrodes measure through your arms, legs, and trunk simultaneously.", icon: "M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M12 3a4 4 0 100 8 4 4 0 000-8z" },
       { title: "Segmental Breakdown", description: "In 10 seconds, see muscle and fat distribution for each arm, each leg, and your trunk. Plus 21 total body metrics.", icon: "M22 12h-4l-3 9L9 3l-3 9H2" },
@@ -78,8 +78,8 @@ export const productContent: Record<string, ProductContent> = {
     },
   },
   "bp-monitor": {
-    introLine1: "Clinical accuracy.",
-    introLine2: "Home comfort.",
+    introLine1: "Accuracy you trust.",
+    introLine2: "Comfort you feel.",
     howItWorks: [
       { title: "Wrap the Cuff", description: "Adjustable cuff fits arms 22-42cm. The fit guide in the app ensures accurate placement every time.", icon: "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" },
       { title: "Press Start", description: "One button. 30 seconds. Your systolic, diastolic, and pulse rate appear on the device and sync to the app automatically.", icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z" },
@@ -88,7 +88,7 @@ export const productContent: Record<string, ProductContent> = {
     benefits: {
       headline: "Blood pressure, finally simple.",
       items: [
-        { title: "FDA Cleared", description: "Validated against clinical standards. The same accuracy you'd get at a doctor's office, from your living room." },
+        { title: "Trusted Accuracy", description: "Readings you and your doctor can rely on. The same confidence you'd get at a doctor's office, from your living room." },
         { title: "Irregular Heartbeat Detection", description: "Automatically flags irregular heart rhythm patterns during measurement. Catches what you might not feel." },
         { title: "AM/PM Tracking", description: "Set reminders for consistent morning and evening readings. The app tracks patterns your doctor would want to see." },
         { title: "Unlimited History", description: "Every reading synced and stored. No 60-reading memory limit like traditional monitors. Your full history lives in the app." },

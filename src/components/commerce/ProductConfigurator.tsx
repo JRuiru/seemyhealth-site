@@ -489,7 +489,7 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
               {slug === "ring-one" && "24/7 health tracking in a titanium ring."}
               {slug === "scale" && "13+ body metrics beyond weight."}
               {slug === "scale-pro" && "Segmental body composition analysis."}
-              {slug === "bp-monitor" && "Clinical-grade blood pressure at home."}
+              {slug === "bp-monitor" && "Accurate blood pressure monitoring at home."}
               {slug === "hydra-one" && "Smart hydration tracking, all day."}
               {slug === "hema-one" && "Lab-quality blood analysis at home."}
             </p>
