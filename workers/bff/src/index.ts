@@ -303,11 +303,13 @@ export default {
           if (res.status === 401) {
             return json({ customer: null, expired: true }, 200, cors);
           }
-          return json({ customer: null, error: `api_${res.status}` }, 200, cors);
+          return json({ customer: null }, 200, cors);
         }
 
-        const data = await res.json();
-        return json(data, 200, cors);
+        const data = await res.json() as any;
+        // Only pass customer data to client, never raw GraphQL response
+        const customer = data?.data?.customer || null;
+        return json({ data: { customer } }, 200, cors);
       }
 
       // ============================================================
