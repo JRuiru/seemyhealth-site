@@ -258,17 +258,33 @@ export default {
                     province
                     zip
                   }
-                  orders(first: 10) {
+                  orders(first: 20, sortKey: PROCESSED_AT, reverse: true) {
                     edges {
                       node {
                         id
                         number
                         processedAt
+                        financialStatus
                         totalPrice { amount currencyCode }
-                        fulfillments(first: 1) {
+                        lineItems(first: 10) {
+                          edges {
+                            node {
+                              title
+                              quantity
+                              image { url altText }
+                              price { amount currencyCode }
+                              variantTitle
+                            }
+                          }
+                        }
+                        fulfillments(first: 5) {
                           edges {
                             node {
                               status
+                              trackingInformation {
+                                number
+                                url
+                              }
                             }
                           }
                         }

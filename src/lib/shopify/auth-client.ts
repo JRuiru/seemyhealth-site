@@ -13,12 +13,27 @@ export interface CustomerAddress {
   zip: string;
 }
 
+export interface OrderLineItem {
+  title: string;
+  quantity: number;
+  image: { url: string; altText: string | null } | null;
+  price: { amount: string; currencyCode: string };
+  variantTitle: string | null;
+}
+
+export interface TrackingInfo {
+  number: string;
+  url: string | null;
+}
+
 export interface CustomerOrder {
   id: string;
   number: number;
   processedAt: string;
+  financialStatus: string;
   totalPrice: { amount: string; currencyCode: string };
-  fulfillments: { status: string }[];
+  lineItems: { edges: { node: OrderLineItem }[] };
+  fulfillments: { edges: { node: { status: string; trackingInformation: TrackingInfo[] } }[] };
 }
 
 export interface Customer {
