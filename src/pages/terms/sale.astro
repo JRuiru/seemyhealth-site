@@ -1,0 +1,189 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+export const prerender = true;
+---
+
+<Layout title="Terms of Sale | SeeMyHealth" description="Terms governing purchases of SeeMyHealth products, including pricing, payments, shipping, returns, and international delivery." canonicalPath="/terms/sale" noindex={true}>
+  <Navbar />
+
+  <!-- Hero -->
+  <section class="pt-32 pb-16 sm:pt-40 sm:pb-20 bg-brand-black relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-white/[0.02] blur-[120px]"></div>
+    </div>
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 relative z-10">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Legal</p>
+      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95] mb-6">
+        Terms of <span class="font-500">Sale</span>
+      </h1>
+      <p class="text-lg text-brand-gray-400 leading-relaxed max-w-xl">Everything about buying, shipping, and returning SeeMyHealth products.</p>
+      <p class="text-brand-gray-600 text-sm mt-4">Last updated: May 22, 2026</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="py-16 sm:py-24 bg-brand-black border-t border-white/5">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 space-y-16">
+
+      <!-- 1. Scope -->
+      <div>
+        <h2 class="font-display text-2xl uppercase mb-4">1. Scope</h2>
+        <div class="text-sm text-brand-gray-400 leading-relaxed space-y-4">
+          <p>These Terms of Sale apply to all purchases of SeeMyHealth hardware products and accessories made through our online store at <a href="https://shop.seemyhealth.ai" class="text-white hover:underline">shop.seemyhealth.ai</a> or through our headless commerce experience at <a href="https://seemyhealth.ai/shop" class="text-white hover:underline">seemyhealth.ai/shop</a>.</p>
+          <p>By placing an order, you confirm that you are at least 18 years of age (or the age of majority in your jurisdiction) and have the legal authority to enter into a binding agreement.</p>
+          <p>These terms are supplemented by our <a href="/terms" class="text-white hover:underline">Terms of Use</a> (governing platform usage), <a href="/privacy" class="text-white hover:underline">Privacy Policy</a> (governing data handling), and <a href="/warranty" class="text-white hover:underline">Warranty Policy</a> (governing post-purchase coverage).</p>
+        </div>
+      </div>
+
+      <!-- 2. Products & Pricing -->
+      <div>
+        <h2 class="font-display text-2xl uppercase mb-4">2. Products & Pricing</h2>
+        <div class="text-sm text-brand-gray-400 leading-relaxed space-y-4">
+          <p><strong class="text-white">Product descriptions:</strong> We make every effort to accurately describe and photograph our products. However, we do not warrant that product descriptions, images, colors, or other content are 100% accurate or error-free. Slight variations in color may occur due to screen settings.</p>
+          <p><strong class="text-white">Pricing:</strong> All prices are displayed in your local currency where supported through Shopify Markets. Prices include applicable taxes where required by law and exclude shipping unless stated otherwise.</p>
+          <p><strong class="text-white">Regional pricing:</strong> SeeMyHealth uses purchasing power parity (PPP) adjusted pricing across 13 international markets. The price you see is the price you pay — there are no hidden currency conversion fees from us (your bank may apply its own conversion fees).</p>
+          <p><strong class="text-white">Price changes:</strong> We reserve the right to change product prices at any time. Price changes do not affect orders already placed and confirmed.</p>
+          <p><strong class="text-white">Errors:</strong> In the event of a pricing error, we reserve the right to cancel affected orders and issue a full refund. We will notify you if this occurs.</p>
+        </div>
+      </div>
+
+      <!-- 3. Orders & Payment -->
+      <div>
+        <h2 class="font-display text-2xl uppercase mb-4">3. Orders & Payment</h2>
+        <div class="text-sm text-brand-gray-400 leading-relaxed space-y-4">
+          <p><strong class="text-white">Order acceptance:</strong> Placing an order constitutes an offer to purchase. We reserve the right to accept or decline any order. An order is confirmed only when we send you an order confirmation email. Until that point, we may cancel the order for any reason.</p>
+          <p><strong class="text-white">Payment methods:</strong> We accept major credit cards (Visa, Mastercard, American Express), PayPal, Apple Pay, Google Pay, and Shop Pay through our payment processor, Shopify Payments. All payment processing is handled by Shopify's PCI-DSS compliant infrastructure — we never store your full card details.</p>
+          <p><strong class="text-white">Authorization:</strong> By placing an order, you represent that the payment information provided is accurate and that you are authorized to use the payment method.</p>
+          <p><strong class="text-white">Fraud prevention:</strong> We reserve the right to refuse or cancel orders that show signs of fraud, unauthorized transactions, or suspicious activity. We may request additional verification before processing high-value orders.</p>
+        </div>
+      </div>
+
+      <!-- 4. Shipping & Delivery -->
+      <div>
+        <h2 class="font-display text-2xl uppercase mb-4">4. Shipping & Delivery</h2>
+        <div class="text-sm text-brand-gray-400 leading-relaxed space-y-4">
+          <p><strong class="text-white">Shipping timelines:</strong> Estimated delivery times are provided at checkout and in your confirmation email. These are estimates only and are not guaranteed. Typical delivery is 2-10 business days depending on your location.</p>
+          <p><strong class="text-white">Fulfillment locations:</strong> Orders are fulfilled from the nearest available warehouse (United States, Kenya, Qatar, or China) to minimize delivery time and cost.</p>
+          <p><strong class="text-white">Free shipping:</strong> Standard shipping is free on all orders over the applicable threshold for your region. Express shipping options are available at additional cost.</p>
+          <p><strong class="text-white">Risk of loss:</strong> Risk of loss and title for items pass to you upon delivery to the carrier. Please inspect your order upon receipt and report any damage or discrepancies within 48 hours.</p>
+          <p><strong class="text-white">Customs and duties:</strong> For international shipments, import duties, taxes, and customs fees may apply depending on your country's regulations. These charges are the responsibility of the buyer unless the order ships DDP (Delivered Duty Paid) — which we offer for select markets.</p>
+          <p>For full details, see our <a href="/shipping" class="text-white hover:underline">Shipping & Delivery</a> page.</p>
+        </div>
+      </div>
+
+      <!-- 5. International Delivery Terms -->
+      <div>
+        <h2 class="font-display text-2xl uppercase mb-4">5. International Delivery Terms</h2>
+        <div class="text-sm text-brand-gray-400 leading-relaxed space-y-4">
+          <p>International orders are governed by the following Incoterms (International Commercial Terms):</p>
+          <ul class="list-disc list-inside space-y-2 pl-2">
+            <li><strong class="text-white">DDP (Delivered Duty Paid)</strong> — United States, Canada, United Kingdom: SeeMyHealth covers all import costs including duties and taxes. The price you pay at checkout is the total price.</li>
+            <li><strong class="text-white">DAP (Delivered at Place)</strong> — All other international markets: The buyer is responsible for import duties, taxes, and customs clearance fees upon delivery. These charges vary by country and are not included in the checkout price.</li>
+          </ul>
+          <p>We are not responsible for delays caused by customs inspection or processing. If a package is returned to us due to failure to pay customs duties, we will refund the product price minus original and return shipping costs.</p>
+        </div>
+      </div>
+
+      <!-- 6. Returns & Refunds -->
+      <div>
+        <h2 class="font-display text-2xl uppercase mb-4">6. Returns & Refunds</h2>
+        <div class="text-sm text-brand-gray-400 leading-relaxed space-y-4">
+          <p><strong class="text-white">30-day return policy:</strong> We offer a 30-day return policy from the date of delivery for unused, unopened products in their original packaging. To initiate a return, contact <a href="mailto:support@seemyhealth.ai" class="text-white hover:underline">support@seemyhealth.ai</a> with your order number.</p>
+          <p><strong class="text-white">Opened/used products:</strong> Products that have been opened or used may be returned within 30 days but are subject to a restocking fee of up to 15% of the purchase price, depending on condition.</p>
+          <p><strong class="text-white">Defective products:</strong> If your product arrives defective or damaged, we will replace it or issue a full refund at no cost to you — including return shipping. See our <a href="/warranty" class="text-white hover:underline">Warranty Policy</a> for coverage details.</p>
+          <p><strong class="text-white">Refund processing:</strong> Refunds are issued to the original payment method within 10 business days of receiving the returned item. You will receive an email confirmation when the refund is processed.</p>
+          <p><strong class="text-white">Non-refundable items:</strong> Shipping costs are non-refundable unless the return is due to a defect or error on our part. Hema One test strips and other consumable accessories are non-refundable once opened.</p>
+          <p><strong class="text-white">Exchanges:</strong> We offer free exchanges for size or color within 30 days. Contact support to arrange an exchange.</p>
+        </div>
+      </div>
+
+      <!-- 7. EU Consumer Rights -->
+      <div>
+        <h2 class="font-display text-2xl uppercase mb-4">7. EU, UK & EEA Consumer Rights</h2>
+        <div class="text-sm text-brand-gray-400 leading-relaxed space-y-4">
+          <p>If you are a consumer in the European Economic Area, United Kingdom, or Switzerland, you have the following additional rights:</p>
+          <p><strong class="text-white">14-day cooling-off period:</strong> You have the right to withdraw from an online purchase within 14 days of receiving the product, without giving any reason. This is in addition to our 30-day return policy. To exercise this right, notify us at <a href="mailto:support@seemyhealth.ai" class="text-white hover:underline">support@seemyhealth.ai</a> with a clear statement of your decision.</p>
+          <p><strong class="text-white">Refund timeline:</strong> Upon withdrawal, we will refund all payments (including standard delivery costs) within 14 days of receiving the returned product or proof of return shipment, whichever is earlier.</p>
+          <p><strong class="text-white">Exceptions:</strong> The right of withdrawal does not apply to products that have been unsealed after delivery where unsealing renders the product non-returnable for hygiene reasons (e.g., Hema One lancets and test strips).</p>
+          <p><strong class="text-white">Consumer guarantees:</strong> These Terms of Sale do not limit your statutory rights under EU/UK consumer protection law, including the right to a remedy for products that do not conform to the contract.</p>
+        </div>
+      </div>
+
+      <!-- 8. Pre-Orders -->
+      <div>
+        <h2 class="font-display text-2xl uppercase mb-4">8. Pre-Orders & Availability</h2>
+        <div class="text-sm text-brand-gray-400 leading-relaxed space-y-4">
+          <p>Some products may be available for pre-order before their official release date (e.g., Hema One). When you place a pre-order:</p>
+          <ul class="list-disc list-inside space-y-2 pl-2">
+            <li>Your payment method will be charged at the time of order (or upon shipment, depending on the product)</li>
+            <li>Estimated shipping dates are provided but are not guaranteed</li>
+            <li>You may cancel a pre-order for a full refund at any time before the product ships</li>
+            <li>If the product launch is significantly delayed (more than 60 days past the estimated date), we will notify you and offer the option to cancel for a full refund</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 9. Product Warranty -->
+      <div>
+        <h2 class="font-display text-2xl uppercase mb-4">9. Product Warranty</h2>
+        <div class="text-sm text-brand-gray-400 leading-relaxed space-y-4">
+          <p>All SeeMyHealth hardware products come with a 1-year limited warranty covering manufacturing defects. The warranty is subject to the terms and conditions described in our <a href="/warranty" class="text-white hover:underline">Warranty Policy</a>.</p>
+          <p>The warranty covers defects in materials and workmanship under normal use. It does not cover physical damage, unauthorized modifications, or consumable accessories (test strips, batteries).</p>
+          <p>This warranty is in addition to, and does not affect, your statutory rights as a consumer.</p>
+        </div>
+      </div>
+
+      <!-- 10. Limitation of Liability (Sale) -->
+      <div>
+        <h2 class="font-display text-2xl uppercase mb-4">10. Limitation of Liability</h2>
+        <div class="text-sm text-brand-gray-400 leading-relaxed space-y-4">
+          <p>To the fullest extent permitted by law, SeeMyHealth's total liability arising from any purchase shall not exceed the amount you paid for the product giving rise to the claim.</p>
+          <p>We are not liable for delays or failures in delivery caused by carriers, customs, natural disasters, or other circumstances beyond our reasonable control (force majeure).</p>
+          <p>Nothing in these Terms of Sale excludes or limits liability for death or personal injury caused by negligence, fraud, or any liability that cannot be excluded under applicable consumer protection law.</p>
+        </div>
+      </div>
+
+      <!-- 11. Governing Law -->
+      <div>
+        <h2 class="font-display text-2xl uppercase mb-4">11. Governing Law</h2>
+        <div class="text-sm text-brand-gray-400 leading-relaxed space-y-4">
+          <p>For users outside the EEA/UK/Switzerland: these Terms of Sale are governed by the laws of the State of Delaware, United States.</p>
+          <p>For users in the EEA/UK/Switzerland: these terms are governed by the laws of your country of residence. Mandatory consumer protection legislation of your jurisdiction applies regardless of governing law.</p>
+          <p>Dispute resolution is governed by the arbitration clause in our <a href="/terms" class="text-white hover:underline">Terms of Use</a> (Section 12), with the same EEA/UK/Swiss exemption.</p>
+        </div>
+      </div>
+
+      <!-- 12. Contact -->
+      <div>
+        <h2 class="font-display text-2xl uppercase mb-4">12. Contact Us</h2>
+        <div class="text-sm text-brand-gray-400 leading-relaxed space-y-4">
+          <p>For questions about your order, shipping, returns, or these Terms of Sale:</p>
+          <p>
+            <strong class="text-white">Order support:</strong> <a href="mailto:support@seemyhealth.ai" class="text-white hover:underline">support@seemyhealth.ai</a><br />
+            <strong class="text-white">Legal inquiries:</strong> <a href="mailto:legal@seemyhealth.ai" class="text-white hover:underline">legal@seemyhealth.ai</a><br />
+            <strong class="text-white">Website:</strong> <a href="https://seemyhealth.ai" class="text-white hover:underline">seemyhealth.ai</a>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Related Legal Pages -->
+  <section class="py-14 sm:py-18 bg-brand-dark border-t border-white/5">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
+      <p class="text-brand-gray-400 mb-6">Related legal documents</p>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="/terms" class="inline-flex items-center px-6 py-3 text-[11px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors">Terms of Use</a>
+        <a href="/privacy" class="inline-flex items-center px-6 py-3 text-[11px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors">Privacy Policy</a>
+        <a href="/shipping" class="inline-flex items-center px-6 py-3 text-[11px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors">Shipping & Delivery</a>
+        <a href="/warranty" class="inline-flex items-center px-6 py-3 text-[11px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors">Warranty</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
