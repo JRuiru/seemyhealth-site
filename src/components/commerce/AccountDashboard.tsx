@@ -343,16 +343,29 @@ export default function AccountDashboard() {
         </div>
       </div>
 
-      {/* Lifestyle strip */}
-      <div className="grid grid-cols-3 gap-3 rounded-2xl overflow-hidden">
-        <div className="aspect-[3/2] overflow-hidden">
-          <img src={`${CF_IMG}/lifestyle-athlete/public`} alt="Active lifestyle" loading="lazy" className="w-full h-full object-cover" />
+      {/* Lifestyle section */}
+      <div>
+        <div className="mb-6">
+          <h2 className="font-display text-2xl font-300 uppercase">
+            Seamlessly Integrating <span className="font-500">With Your Life</span>
+          </h2>
+          <p className="text-sm text-brand-gray-500 mt-1">
+            Health tracking that fits around you, not the other way around.
+          </p>
         </div>
-        <div className="aspect-[3/2] overflow-hidden">
-          <img src={`${CF_IMG}/lifestyle-friends-bar/public`} alt="Living well together" loading="lazy" className="w-full h-full object-cover" />
-        </div>
-        <div className="aspect-[3/2] overflow-hidden">
-          <img src={`${CF_IMG}/scale-pro-lifestyle/public`} alt="Health at home" loading="lazy" className="w-full h-full object-cover" />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="aspect-[3/4] rounded-2xl overflow-hidden sm:row-span-2">
+            <img src={`${CF_IMG}/lifestyle-sun-portrait/public`} alt="Outdoor wellness" loading="lazy" className="w-full h-full object-cover" />
+          </div>
+          <div className="aspect-[4/3] rounded-2xl overflow-hidden sm:col-span-2">
+            <img src={`${CF_IMG}/lifestyle-athlete/public`} alt="Active lifestyle" loading="lazy" className="w-full h-full object-cover" />
+          </div>
+          <div className="aspect-[3/4] rounded-2xl overflow-hidden sm:row-span-2">
+            <img src={`${CF_IMG}/scale-pro-lifestyle/public`} alt="Health at home" loading="lazy" className="w-full h-full object-cover" />
+          </div>
+          <div className="aspect-[4/3] rounded-2xl overflow-hidden sm:col-span-2">
+            <img src={`${CF_IMG}/lifestyle-friends-bar/public`} alt="Living well together" loading="lazy" className="w-full h-full object-cover" />
+          </div>
         </div>
       </div>
     </div>
