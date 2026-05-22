@@ -355,7 +355,7 @@ export default function AccountDashboard() {
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="aspect-[3/4] rounded-2xl overflow-hidden sm:row-span-2">
-            <img src={`${CF_IMG}/lifestyle-sun-portrait/public`} alt="Outdoor wellness" loading="lazy" className="w-full h-full object-cover" />
+            <img src={`${CF_IMG}/ring-one-sunset-meditation/public`} alt="Sunset meditation" loading="lazy" className="w-full h-full object-cover" />
           </div>
           <div className="aspect-[4/3] rounded-2xl overflow-hidden sm:col-span-2">
             <img src={`${CF_IMG}/lifestyle-athlete/public`} alt="Active lifestyle" loading="lazy" className="w-full h-full object-cover" />
