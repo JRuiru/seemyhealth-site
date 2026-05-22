@@ -273,31 +273,129 @@ export default function OrderHistory() {
       </div>
 
       {orders.length === 0 ? (
-        <div className="relative rounded-2xl overflow-hidden border border-white/5">
-          <div className="absolute inset-0">
-            <img
-              src={`${CF_IMG}/lifestyle-athlete/public`}
-              alt=""
-              className="w-full h-full object-cover opacity-20"
-              aria-hidden="true"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/80 to-brand-black/60" />
-          </div>
-          <div className="relative text-center py-20 px-6">
-            <div className="w-16 h-16 mx-auto mb-5 rounded-full bg-white/5 flex items-center justify-center">
-              <svg className="w-8 h-8 text-brand-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-              </svg>
+        <div className="space-y-10">
+          {/* Hero banner */}
+          <div className="relative rounded-2xl overflow-hidden">
+            <div className="absolute inset-0">
+              <img
+                src={`${CF_IMG}/lifestyle-athlete/public`}
+                alt=""
+                className="w-full h-full object-cover"
+                aria-hidden="true"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/80 to-brand-black/30" />
             </div>
-            <h3 className="text-xl font-medium text-white mb-2">Your first order is waiting</h3>
-            <p className="text-sm text-brand-gray-400 mb-8 max-w-md mx-auto">
-              Once you find the device that fits your life, your order details and tracking will show up right here.
+            <div className="relative py-16 sm:py-24 px-6 sm:px-10 max-w-lg">
+              <p className="text-[10px] uppercase tracking-[3px] text-brand-gray-400 mb-4">Your Health Journey</p>
+              <h2 className="font-display text-3xl sm:text-4xl font-300 uppercase leading-[0.95] text-white mb-3">
+                It Starts With<br /><span className="font-500">One Device</span>
+              </h2>
+              <p className="text-brand-gray-300 text-sm leading-relaxed mb-6">
+                Pick the one that fits your life. Every device connects to one app, building a picture of your health that gets clearer over time.
+              </p>
+              <a
+                href="/shop"
+                className="inline-flex items-center px-8 py-3.5 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+              >
+                Explore the Ecosystem
+              </a>
+            </div>
+          </div>
+
+          {/* Featured devices */}
+          <div>
+            <p className="text-[10px] uppercase tracking-[3px] text-brand-gray-500 mb-5">Most Popular</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                { name: "Ring One", slug: "ring-one", image: `${CF_IMG}/ring-hero-hands/public`, price: "$179", tagline: "24/7 health clarity on your finger", color: "#F97316" },
+                { name: "The Scale", slug: "scale", image: `${CF_IMG}/scale-white-bathroom/public`, price: "$99", tagline: "13+ body metrics in 10 seconds", color: "#3B82F6" },
+                { name: "BP Monitor", slug: "bp-monitor", image: `${CF_IMG}/bp-white-desk-display/public`, price: "$89", tagline: "Trusted readings, every time", color: "#EF4444" },
+              ].map((device) => (
+                <a
+                  key={device.slug}
+                  href={`/products/${device.slug}`}
+                  className="group rounded-2xl bg-brand-gray-900 border border-white/5 hover:border-white/15 overflow-hidden transition-all"
+                >
+                  <div className="aspect-[4/3] overflow-hidden relative">
+                    <img
+                      src={device.image}
+                      alt={device.name}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: device.color }} />
+                      <p className="text-sm font-medium text-white">{device.name}</p>
+                    </div>
+                    <p className="text-[11px] text-brand-gray-500 mb-3">{device.tagline}</p>
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-white font-medium">{device.price}</p>
+                      <span className="text-[10px] uppercase tracking-[1.5px] text-brand-gray-500 group-hover:text-white transition-colors flex items-center gap-1">
+                        View
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* More devices row */}
+          <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide pb-1">
+            {[
+              { name: "Scale Pro", slug: "scale-pro", image: `${CF_IMG}/scale-pro-black-bathroom/public`, price: "$179", color: "#3B82F6" },
+              { name: "Hydra One", slug: "hydra-one", image: `${CF_IMG}/bottle-white-kitchen/public`, price: "$79", color: "#06B6D4" },
+              { name: "Hema One", slug: "hema-one", image: `${CF_IMG}/hema-orange-kitchen-v2/public`, price: "$159", color: "#A855F7" },
+            ].map((device) => (
+              <a
+                key={device.slug}
+                href={`/products/${device.slug}`}
+                className="group flex items-center gap-3 flex-shrink-0 rounded-xl bg-brand-gray-900 border border-white/5 hover:border-white/15 p-3 pr-5 transition-colors"
+              >
+                <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                  <img src={device.image} alt={device.name} className="w-full h-full object-cover" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-1 h-1 rounded-full" style={{ backgroundColor: device.color }} />
+                    <p className="text-sm text-white">{device.name}</p>
+                  </div>
+                  <p className="text-[11px] text-brand-gray-500">{device.price}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {/* Testimonial */}
+          <div className="rounded-2xl bg-brand-gray-900 border border-white/5 p-6 sm:p-8">
+            <svg className="w-8 h-8 text-brand-gray-700 mb-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151C7.546 6.068 5.983 8.789 5.983 11H10v10H0z" />
+            </svg>
+            <p className="text-brand-gray-300 leading-relaxed mb-5">
+              "The sleep insights alone have changed how I plan my mornings. Watching the data come together across the Ring, the Scale, and the app... it just clicked."
             </p>
+            <div>
+              <p className="text-sm text-white font-medium">Sarah M.</p>
+              <p className="text-[11px] text-brand-gray-500">Early Tester</p>
+            </div>
+          </div>
+
+          {/* Final CTA */}
+          <div className="text-center py-6">
+            <p className="text-brand-gray-500 text-sm mb-4">Six devices. One app. Nothing hidden.</p>
             <a
               href="/shop"
-              className="inline-flex items-center px-8 py-3.5 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+              className="inline-flex items-center gap-2 px-10 py-4 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
             >
-              Explore Devices
+              Shop All Devices
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+              </svg>
             </a>
           </div>
         </div>
