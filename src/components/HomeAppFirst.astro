@@ -2,11 +2,11 @@
 const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
 
 const appFeatures = [
-  { title: "Journal & Mood", image: `${CF_IMG}/app-mood-tracking/public`, alt: "Mood tracking screen" },
-  { title: "Meals & Nutrition", image: `${CF_IMG}/app-nutrition-view/public`, alt: "Nutrition tracking screen" },
+  { title: "Journal & Mood", image: `${CF_IMG}/app-mood-journal/public`, alt: "Woman journalling her mood" },
+  { title: "Meals & Nutrition", image: `${CF_IMG}/app-meal-logging/public`, alt: "Person logging a meal" },
   { title: "Hydration", image: `${CF_IMG}/app-hydration-log/public`, alt: "Hydration logging screen" },
   { title: "Challenges", image: `${CF_IMG}/app-community-challenges/public`, alt: "Community challenges screen" },
-  { title: "Family Sharing", image: `${CF_IMG}/app-family-weight-view/public`, alt: "Family sharing dashboard" },
+  { title: "Family Sharing", image: `${CF_IMG}/app-hubby-progress/public`, alt: "Checking on hubby's weight loss progress" },
   { title: "Care Providers", image: `${CF_IMG}/app-video-consultation/public`, alt: "Video consultation screen" },
 ];
 ---
@@ -53,13 +53,57 @@ const appFeatures = [
     </div>
   </div>
 
-  <!-- CTA -->
-  <div class="max-w-7xl mx-auto px-6 lg:px-8 mt-6 sm:mt-8" data-scroll-reveal>
-    <a href="/app" class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[1.5px] font-medium text-white hover:text-brand-gray-300 transition-colors">
+  <!-- CTA + device teaser -->
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 mt-8 sm:mt-12" data-scroll-reveal>
+    <a href="/app" class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[1.5px] font-medium text-white hover:text-brand-gray-300 transition-colors mb-8 sm:mb-12">
       Explore the app
       <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
       </svg>
     </a>
+
+    <div class="border-t border-white/5 pt-8 sm:pt-12 flex items-start gap-4">
+      <div class="relative w-10 h-10 rounded-full border border-white/10 bg-white/[0.03] flex items-center justify-center shrink-0 mt-0.5 ecosystem-pulse">
+        <!-- Pulse rings -->
+        <div class="absolute inset-0 rounded-full border border-white/10 ecosystem-ring ecosystem-ring-1"></div>
+        <div class="absolute -inset-2 rounded-full border border-white/5 ecosystem-ring ecosystem-ring-2"></div>
+        <!-- Stacked layers icon -->
+        <svg class="w-5 h-5 text-brand-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z" />
+          <path d="M2 17l10 5 10-5" />
+          <path d="M2 12l10 5 10-5" />
+        </svg>
+      </div>
+      <div>
+        <p class="text-sm sm:text-base text-brand-gray-300 leading-relaxed max-w-lg">
+          The app is powerful on its own. But the experience is taken to another level when paired with our ecosystem of devices. Sleep stages, heart rate, blood pressure, body composition, hydration, blood markers, all flowing into one place.
+        </p>
+        <a href="/shop" class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[1.5px] font-medium text-white hover:text-brand-gray-300 transition-colors mt-3">
+          Meet the ecosystem
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
+
+<style>
+  .ecosystem-ring {
+    animation: ecosystem-expand 2.5s ease-out infinite;
+    opacity: 0;
+  }
+  .ecosystem-ring-2 {
+    animation-delay: 0.8s;
+  }
+
+  @keyframes ecosystem-expand {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ecosystem-ring { animation: none; }
+  }
+</style>
