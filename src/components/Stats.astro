@@ -3,7 +3,7 @@ const stats = [
   { value: 6, suffix: "", label: "Connected Devices" },
   { value: 4, suffix: "", label: "Shared Devices" },
   { value: 1, suffix: "", label: "App · Every Signal" },
-  { value: 0, suffix: "", label: "Data Sold", special: true },
+  { value: 0, suffix: "", label: "Data Sold. Ever.", special: true },
 ];
 ---
 
@@ -27,13 +27,10 @@ const stats = [
             )}
           </div>
           <p class:list={[
-            "text-[11px] uppercase tracking-[3px] mt-3",
+            "text-[10px] sm:text-[11px] uppercase tracking-[2px] sm:tracking-[3px] mt-3 whitespace-nowrap",
             stat.special ? "text-emerald-400/60" : "text-brand-gray-500"
           ]}>{stat.label}</p>
-          {stat.special && (
-            <p class="text-[10px] uppercase tracking-[2px] text-brand-gray-600 mt-1">Ever.</p>
-          )}
-          <div class="h-px bg-white/10 mt-6 origin-left" data-line-wipe></div>
+          <div class="h-px bg-white/10 mt-4 sm:mt-6 origin-left" data-line-wipe></div>
         </div>
       ))}
     </div>

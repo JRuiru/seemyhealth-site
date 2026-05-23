@@ -30,6 +30,7 @@ export interface Product {
   specImage?: string;
   benefitsImage?: string;
   videoThumbnail?: string;
+  ogImage?: string;
   specs: ProductSpec[];
   features: ProductFeature[];
   lifestyleImages: ProductImage[];
@@ -47,6 +48,7 @@ export const products: Record<string, Product> = {
     color: "#F97316",
     specImage: `${CF_IMG}/ring-studio-profile/public`,
     benefitsImage: `${CF_IMG}/ring-one-sunset-meditation/public`,
+    ogImage: `${CF_IMG}/og-ring-one/public`,
     specs: [
       { label: "Sensors", value: "PPG, Temperature, Accelerometer" },
       { label: "Battery", value: "Up to 7 days" },
@@ -105,6 +107,7 @@ export const products: Record<string, Product> = {
     streamId: "299bcfd1f9b9fb20b7d4f809a7b481fe",
     specImage: `${CF_IMG}/scale-base-side-profile/public`,
     benefitsImage: `${CF_IMG}/scale-bathroom-stepon-v3/public`,
+    ogImage: `${CF_IMG}/og-scale/public`,
     price: "$99",
     color: "#3B82F6",
     specs: [
@@ -163,6 +166,7 @@ export const products: Record<string, Product> = {
     streamId: "bc1265478cde805cec6ffaf93f0fd0ec",
     specImage: `${CF_IMG}/scale-pro-side-profile/public`,
     benefitsImage: `${CF_IMG}/scale-pro-athlete-gym/public`,
+    ogImage: `${CF_IMG}/og-scale-pro/public`,
     price: "$179",
     color: "#3B82F6",
     specs: [
@@ -219,6 +223,7 @@ export const products: Record<string, Product> = {
     specImage: `${CF_IMG}/bp-monitor-side-profile/public`,
     benefitsImage: `${CF_IMG}/bp-breakfast-reading/public`,
     videoThumbnail: `${CF_IMG}/bp-white-desk-display/public`,
+    ogImage: `${CF_IMG}/og-bp-monitor/public`,
     price: "$89",
     color: "#EF4444",
     specs: [
@@ -271,6 +276,7 @@ export const products: Record<string, Product> = {
     streamId: "323f4655be53eefdf3f08ecd6765c362",
     specImage: `${CF_IMG}/hydra-one-side-profile/public`,
     benefitsImage: `${CF_IMG}/bottle-treebark/public`,
+    ogImage: `${CF_IMG}/og-hydra-one/public`,
     price: "$79",
     color: "#06B6D4",
     specs: [
@@ -324,6 +330,7 @@ export const products: Record<string, Product> = {
     streamId: "8f576ad01105f0b3c8ff5495c066906e",
     specImage: `${CF_IMG}/hema-one-side-profile/public`,
     benefitsImage: `${CF_IMG}/hema-desk-results/public`,
+    ogImage: `${CF_IMG}/og-hema-one/public`,
     price: "$159",
     color: "#A855F7",
     specs: [

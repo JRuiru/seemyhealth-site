@@ -31,7 +31,7 @@ const otherProducts = productSlugs
 <Layout
   title={`Configure ${product.name} | SeeMyHealth`}
   description={`Choose your ${product.name} finish, size, and add to cart. ${product.description}`}
-  ogImage={product.image}
+  ogImage={product.ogImage || product.image}
   canonicalPath={`/configure/${slug}`}
 >
   <Navbar variant="product" productName={product.name} productColor={product.color} />

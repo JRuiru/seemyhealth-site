@@ -36,44 +36,19 @@ const testimonials = [
       </h2>
     </div>
 
-    <!-- Testimonials — featured first, then two side by side -->
-    <div class="grid lg:grid-cols-3 gap-4 sm:gap-6" data-scroll-stagger>
-
-      <!-- Featured testimonial (Dr. Amina) — spans full height -->
-      <div class="lg:row-span-1 rounded-2xl border border-white/5 bg-brand-black p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group hover:border-white/15 transition-all">
-        <!-- Accent glow -->
-        <div class="absolute top-0 left-0 w-32 h-32 rounded-full blur-[80px] opacity-10 pointer-events-none" style={`background: ${testimonials[0].color}`}></div>
-
-        <div class="relative">
-          <!-- Quote mark -->
-          <span class="font-display text-6xl text-white/[0.06] leading-none block mb-2">&ldquo;</span>
-          <p class="text-lg sm:text-xl text-brand-gray-200 leading-relaxed font-light">
-            {testimonials[0].quote}
-          </p>
-        </div>
-        <div class="relative flex items-center gap-3 mt-6 sm:mt-8">
-          <div class="w-10 h-10 rounded-full overflow-hidden shrink-0" style={`border: 2px solid ${testimonials[0].color}50`}>
-            <img src={testimonials[0].image} alt={testimonials[0].author} class="w-full h-full object-cover" loading="lazy" />
-          </div>
-          <div>
-            <div class="text-sm font-medium text-white">{testimonials[0].author}</div>
-            <div class="text-[11px] text-brand-gray-500 uppercase tracking-wider">{testimonials[0].role}</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Secondary testimonials -->
-      {testimonials.slice(1).map((t) => (
-        <div class="rounded-2xl border border-white/5 bg-brand-black p-6 sm:p-8 flex flex-col justify-between group hover:border-white/15 transition-all relative overflow-hidden">
-          <div class="absolute top-0 left-0 w-24 h-24 rounded-full blur-[60px] opacity-10 pointer-events-none" style={`background: ${t.color}`}></div>
+    <!-- Testimonials — horizontal scroll on mobile, 3-col grid on desktop -->
+    <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible" style="scroll-padding-left: 1.5rem;" data-scroll-stagger>
+      {testimonials.map((t, i) => (
+        <div class:list={["snap-start shrink-0 w-[78vw] sm:w-[70vw] lg:w-auto rounded-2xl border border-white/5 bg-brand-black p-6 sm:p-8 flex flex-col justify-between group hover:border-white/15 transition-all relative overflow-hidden", i === 0 && "ml-1.5 lg:ml-0"]}>
+          <div class:list={["absolute top-0 left-0 rounded-full opacity-10 pointer-events-none", i === 0 ? "w-32 h-32 blur-[80px]" : "w-24 h-24 blur-[60px]"]} style={`background: ${t.color}`}></div>
           <div class="relative">
-            <span class="font-display text-5xl text-white/[0.06] leading-none block mb-2">&ldquo;</span>
-            <p class="text-base text-brand-gray-300 leading-relaxed font-light">
+            <span class={`font-display ${i === 0 ? 'text-6xl' : 'text-5xl'} text-white/[0.06] leading-none block mb-2`}>&ldquo;</span>
+            <p class={`${i === 0 ? 'text-lg sm:text-xl text-brand-gray-200' : 'text-base text-brand-gray-300'} leading-relaxed font-light`}>
               {t.quote}
             </p>
           </div>
-          <div class="relative flex items-center gap-3 mt-6">
-            <div class="w-9 h-9 rounded-full overflow-hidden shrink-0" style={`border: 2px solid ${t.color}50`}>
+          <div class="relative flex items-center gap-3 mt-6 sm:mt-8">
+            <div class={`${i === 0 ? 'w-10 h-10' : 'w-9 h-9'} rounded-full overflow-hidden shrink-0`} style={`border: 2px solid ${t.color}50`}>
               <img src={t.image} alt={t.author} class="w-full h-full object-cover" loading="lazy" />
             </div>
             <div>
