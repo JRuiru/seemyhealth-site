@@ -390,7 +390,7 @@ export const products: Record<string, Product> = {
         title: "Trend Analysis",
         description: "See how your blood markers change over time. Spot deficiencies early and track the impact of dietary changes.",
         icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
-        image: `${CF_IMG}/hema-orange-kitchen-v2/public`,
+        image: `${CF_IMG}/hema-trends-monitoring/public`,
       },
       {
         title: "Share with Doctor",
