@@ -19,6 +19,21 @@ function getGreeting(): string {
   return "Good evening";
 }
 
+function getSubGreeting(): string {
+  const greetings = [
+    "Great to have you back.",
+    "Ready to level up your wellness?",
+    "Something new catching your eye?",
+    "Your wellness journey continues here.",
+    "Let's find your next favourite device.",
+    "Good things ahead.",
+    "Explore something new today.",
+    "Your next upgrade is waiting.",
+  ];
+  const today = new Date().getDate();
+  return greetings[today % greetings.length];
+}
+
 export default function AccountDashboard() {
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [loading, setLoading] = useState(true);
@@ -102,16 +117,16 @@ export default function AccountDashboard() {
             <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-emerald-500 border-2 border-brand-black" title="Online" />
           </div>
           <div>
-            <h1 className="font-display text-3xl sm:text-5xl font-300 uppercase leading-[0.95]">
-              {getGreeting()}, <span className="font-500">{customer.firstName}</span>
+            <h1 className="text-2xl sm:text-4xl font-300 leading-tight">
+              Hey, <span className="font-500">{customer.firstName}</span> <span className="text-xl sm:text-3xl">👋</span>
             </h1>
-            <p className="text-brand-gray-500 text-sm mt-1.5">
-              {customer.emailAddress?.emailAddress}
+            <p className="text-brand-gray-400 text-sm mt-1">
+              {getSubGreeting()}
             </p>
           </div>
         </div>
-        <p className="text-brand-gray-400 text-base max-w-xl">
-          This is your space. Track orders, explore new devices, and keep your health journey on course.
+        <p className="text-brand-gray-400 text-sm sm:text-base max-w-xl">
+          Track your orders, discover new devices, and find what fits your lifestyle.
         </p>
       </div>
 
@@ -354,17 +369,17 @@ export default function AccountDashboard() {
           </p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="aspect-[3/4] rounded-2xl overflow-hidden sm:row-span-2">
+          <div className="aspect-[3/4] rounded-2xl overflow-hidden sm:row-span-2 sm:order-1">
             <img src={`${CF_IMG}/ring-one-sunset-meditation/public`} alt="Sunset meditation" loading="lazy" className="w-full h-full object-cover" />
           </div>
-          <div className="aspect-[4/3] rounded-2xl overflow-hidden sm:col-span-2">
-            <img src={`${CF_IMG}/lifestyle-athlete/public`} alt="Active lifestyle" loading="lazy" className="w-full h-full object-cover" />
-          </div>
-          <div className="aspect-[3/4] rounded-2xl overflow-hidden sm:row-span-2">
+          <div className="aspect-[3/4] rounded-2xl overflow-hidden sm:row-span-2 order-2 sm:order-4">
             <img src={`${CF_IMG}/scale-pro-lifestyle/public`} alt="Health at home" loading="lazy" className="w-full h-full object-cover" />
           </div>
-          <div className="aspect-[4/3] rounded-2xl overflow-hidden sm:col-span-2">
+          <div className="aspect-[4/3] rounded-2xl overflow-hidden sm:col-span-2 order-3 sm:order-2">
             <img src={`${CF_IMG}/lifestyle-friends-bar/public`} alt="Living well together" loading="lazy" className="w-full h-full object-cover" />
+          </div>
+          <div className="aspect-[4/3] rounded-2xl overflow-hidden sm:col-span-2 order-4 sm:order-3">
+            <img src={`${CF_IMG}/lifestyle-athlete/public`} alt="Active lifestyle" loading="lazy" className="w-full h-full object-cover" />
           </div>
         </div>
       </div>
