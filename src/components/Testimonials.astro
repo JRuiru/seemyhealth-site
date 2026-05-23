@@ -37,9 +37,9 @@ const testimonials = [
     </div>
 
     <!-- Testimonials — horizontal scroll on mobile, 3-col grid on desktop -->
-    <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible" style="scroll-padding-left: 1.5rem;" data-scroll-stagger>
+    <div class="flex gap-4 overflow-x-auto no-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible" data-scroll-stagger>
       {testimonials.map((t, i) => (
-        <div class:list={["snap-start shrink-0 w-[78vw] sm:w-[70vw] lg:w-auto rounded-2xl border border-white/5 bg-brand-black p-6 sm:p-8 flex flex-col justify-between group hover:border-white/15 transition-all relative overflow-hidden", i === 0 && "ml-1.5 lg:ml-0"]}>
+        <div class:list={["shrink-0 w-[78vw] sm:w-[70vw] lg:w-auto rounded-2xl border border-white/5 bg-brand-black p-6 sm:p-8 flex flex-col justify-between group hover:border-white/15 transition-all relative overflow-hidden"]}>
           <div class:list={["absolute top-0 left-0 rounded-full opacity-10 pointer-events-none", i === 0 ? "w-32 h-32 blur-[80px]" : "w-24 h-24 blur-[60px]"]} style={`background: ${t.color}`}></div>
           <div class="relative">
             <span class={`font-display ${i === 0 ? 'text-6xl' : 'text-5xl'} text-white/[0.06] leading-none block mb-2`}>&ldquo;</span>

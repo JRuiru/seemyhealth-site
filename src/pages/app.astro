@@ -306,9 +306,9 @@ const allFeatures = [
     </div>
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth py-4 -mr-6 lg:-mr-8 pr-6 lg:pr-8 no-scrollbar" data-scroll-stagger>
+      <div class="flex gap-5 overflow-x-auto scroll-smooth py-4 -mx-6 px-6 lg:-mx-8 lg:px-8 no-scrollbar" data-scroll-stagger>
       {standAloneFeatures.map((f) => (
-        <div class="group relative shrink-0 w-[320px] sm:w-[380px] snap-start rounded-2xl overflow-hidden cursor-pointer">
+        <div class="group relative shrink-0 w-[320px] sm:w-[380px] rounded-2xl overflow-hidden cursor-pointer">
           {/* Background image */}
           <div class="aspect-[3/4] bg-brand-gray-800 relative">
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
@@ -397,9 +397,9 @@ const allFeatures = [
         <div class="relative">
           <div class="absolute left-0 right-0 top-[7px] h-px bg-white/10 z-10"></div>
 
-          <div class="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pt-10 pb-4 -mr-6 lg:-mr-8 pr-6 lg:pr-8 no-scrollbar">
+          <div class="flex gap-5 overflow-x-auto scroll-smooth pt-10 pb-4 -mx-6 px-6 lg:-mx-8 lg:px-8 no-scrollbar">
             {timeline.map((entry) => (
-              <div class="relative shrink-0 w-[280px] sm:w-[320px] snap-start group">
+              <div class="relative shrink-0 w-[280px] sm:w-[320px] group">
                 {/* Dot on the line */}
                 <div class="absolute -top-10 left-8 z-20">
                   <div class="w-[14px] h-[14px] rounded-full border-2" style={`background: ${entry.color}; border-color: ${entry.color};`}>

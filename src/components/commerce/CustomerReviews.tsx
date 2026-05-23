@@ -90,11 +90,11 @@ export default function CustomerReviews({ productName, accentColor }: Props) {
           </div>
         </div>
 
-        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 sm:overflow-visible">
+        <div className="flex gap-4 overflow-x-auto no-scrollbar -mx-6 px-6 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 sm:overflow-visible">
           {reviews.map((review, i) => (
             <div
               key={i}
-              className={`snap-start shrink-0 w-[78vw] sm:w-auto p-6 rounded-2xl bg-white/[0.03] border border-white/5${i === 0 ? " ml-1.5 sm:ml-0" : ""}`}
+              className="shrink-0 w-[78vw] sm:w-auto p-6 rounded-2xl bg-white/[0.03] border border-white/5"
             >
               <div className="flex items-center justify-between mb-3">
                 <Stars count={review.rating} />
