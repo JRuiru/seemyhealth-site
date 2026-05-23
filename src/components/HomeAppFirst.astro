@@ -27,10 +27,10 @@ const appFeatures = [
   </div>
 
   <!-- Horizontally scrollable app screenshot cards -->
-  <div class="max-w-7xl mx-auto pl-6 lg:pl-8">
-    <div class="flex gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 pr-6 lg:pr-8 no-scrollbar" data-scroll-stagger>
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth pb-6 -mx-6 px-6 lg:-mx-8 lg:px-8 no-scrollbar" data-scroll-stagger>
       {appFeatures.map((f) => (
-        <div class="group relative shrink-0 w-[200px] sm:w-[260px] lg:w-[280px] snap-start rounded-2xl overflow-hidden">
+        <div class="group relative shrink-0 w-[200px] sm:w-[260px] lg:w-[280px] rounded-2xl overflow-hidden">
           <!-- App screenshot -->
           <div class="aspect-[9/16] sm:aspect-[9/15] bg-brand-gray-900 relative overflow-hidden">
             <img
