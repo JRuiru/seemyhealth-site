@@ -6,6 +6,7 @@ export interface ProductFeature {
   description: string;
   icon: string;
   image?: string;
+  imagePosition?: string;
 }
 
 export interface ProductSpec {
@@ -77,7 +78,7 @@ export const products: Record<string, Product> = {
         title: "Activity & Exercise",
         description: "Automatic activity detection with steps, calories, and active minutes. No manual start needed. Ring One knows when you're moving.",
         icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
-        image: `${CF_IMG}/ring-fitness-body/public`,
+        image: `${CF_IMG}/ring-activity-fitness/public`,
       },
       {
         title: "Stress & Recovery",
@@ -134,25 +135,25 @@ export const products: Record<string, Product> = {
         title: "Body Composition",
         description: "Go beyond weight. See body fat, muscle mass, visceral fat, skeletal muscle, protein ratio, BMR, BMI, and more — 14 metrics from a single step.",
         icon: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
-        image: `${CF_IMG}/scale-bathroom-still/public`,
+        image: `${CF_IMG}/scale-body-comp-metrics/public`,
       },
       {
         title: "Shared by Design",
         description: "Not locked to any account. Open the app, reconnect to a device you've used before or scan and pair a new one, step on, and your reading saves to your own profile.",
         icon: "M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01",
-        image: `${CF_IMG}/scale-white-bathroom/public`,
+        image: `${CF_IMG}/scale-black-nutritionist/public`,
       },
       {
         title: "Family Profiles",
         description: "Unlimited user profiles. Open the app, connect to the device, and your reading saves to your own private dashboard.",
         icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
-        image: `${CF_IMG}/scale-black-nutritionist/public`,
+        image: `${CF_IMG}/scale-family-profiles/public`,
       },
       {
         title: "Trend Tracking",
         description: "See your weight and composition change over weeks and months. Understand the real trends behind daily fluctuations.",
         icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
-        image: `${CF_IMG}/scale-white-portrait/public`,
+        image: `${CF_IMG}/scale-trend-tracking/public`,
       },
     ],
     lifestyleImages: [
@@ -196,25 +197,26 @@ export const products: Record<string, Product> = {
         title: "Segmental Analysis",
         description: "See body fat and muscle mass for each arm, each leg, and your trunk separately. 8 electrodes with retractable handlebar grips send signals through different body sections independently.",
         icon: "M22 12h-4l-3 9L9 3l-3 9H2",
-        image: `${CF_IMG}/scale-pro-using/public`,
+        image: `${CF_IMG}/scale-pro-segmental-analytics/public`,
       },
       {
         title: "32 Body Metrics",
         description: "Weight, heart rate, BMI, fat ratio, muscle mass, bone mass, visceral fat, protein, subcutaneous fat, skeletal muscle, body cell mass, intracellular/extracellular water, minerals, adiposity level, and more.",
         icon: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
-        image: `${CF_IMG}/scale-pro-white-marble/public`,
+        image: `${CF_IMG}/scale-pro-32-metrics/public`,
+        imagePosition: "center 30%",
       },
       {
         title: "Family Profiles",
         description: "Unlimited user profiles. Open the app, connect to the device, and your reading saves to your own private dashboard.",
         icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
-        image: `${CF_IMG}/scale-pro-white-gym/public`,
+        image: `${CF_IMG}/scale-pro-family-profiles/public`,
       },
       {
         title: "Trend Tracking",
         description: "See your weight and composition change over weeks and months. Understand the real trends behind daily fluctuations.",
         icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
-        image: `${CF_IMG}/scale-pro-black-bathroom/public`,
+        image: `${CF_IMG}/scale-pro-trend-tracking/public`,
       },
     ],
     lifestyleImages: [

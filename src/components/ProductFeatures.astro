@@ -37,6 +37,7 @@ const { features, color = "#ffffff" } = Astro.props;
                     src={feature.image}
                     alt={feature.title}
                     class="w-full h-full object-cover"
+                    style={feature.imagePosition ? `object-position: ${feature.imagePosition}` : undefined}
                     loading="lazy"
                   />
                   <div class="absolute inset-0 bg-gradient-to-r from-transparent to-brand-black/40 hidden lg:block"></div>
