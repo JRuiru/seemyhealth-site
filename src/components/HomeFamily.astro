@@ -41,22 +41,22 @@ const familyMembers = [
   </div>
 
   <!-- Floating metric cards — the family's live data -->
-  <div class="max-w-7xl mx-auto px-6 lg:px-8 -mt-6 sm:-mt-10 relative z-10 pb-16 sm:pb-24">
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4" data-scroll-stagger>
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 -mt-6 sm:-mt-10 relative z-10 pb-10 sm:pb-16">
+    <div class="flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0" data-scroll-stagger>
       {familyMembers.map((m) => (
-        <div class="group rounded-lg sm:rounded-xl bg-brand-black/80 backdrop-blur-sm border border-white/10 hover:border-white/20 px-3 py-2 sm:p-5 transition-all overflow-hidden h-full">
-          <div class="flex items-center gap-1.5 sm:gap-3 sm:mb-3">
-            <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full shrink-0 animate-pulse" style={`background: ${m.color}`}></div>
+        <div class="group shrink-0 rounded-lg bg-brand-black/80 backdrop-blur-sm border border-white/10 hover:border-white/20 px-3 py-2 transition-all">
+          <div class="flex items-center gap-1.5">
+            <div class="w-1.5 h-1.5 rounded-full shrink-0 animate-pulse" style={`background: ${m.color}`}></div>
             <span class="text-[11px] sm:text-sm font-medium text-white shrink-0">{m.label}</span>
-            <span class="text-[9px] uppercase tracking-wider text-brand-gray-500 sm:hidden truncate min-w-0">{m.metric}</span>
+            <span class="mx-1 text-white/10">|</span>
+            <span class="text-[9px] sm:text-[10px] uppercase tracking-wider text-brand-gray-500 whitespace-nowrap">{m.metric}</span>
           </div>
-          <p class="text-[11px] sm:text-xs uppercase tracking-[1.5px] text-brand-gray-400 hidden sm:block truncate">{m.metric}</p>
         </div>
       ))}
     </div>
 
     <!-- Feature strip — horizontally scrollable on mobile, centered on desktop -->
-    <div class="flex gap-2 sm:gap-3 mt-6 sm:mt-10 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0 lg:flex-wrap lg:justify-center" data-scroll-reveal>
+    <div class="flex gap-2 sm:gap-3 mt-4 sm:mt-6 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0 lg:flex-wrap lg:justify-center" data-scroll-reveal>
       {[
         { label: "Monitor remotely", icon: "M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" },
         { label: "Privacy per person", icon: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" },
