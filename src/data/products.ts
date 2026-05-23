@@ -89,7 +89,7 @@ export const products: Record<string, Product> = {
       },
     ],
     lifestyleImages: [
-      { src: `${CF_IMG}/ring-reading-coffee/public`, alt: "Ring One while reading with coffee" },
+      { src: `${CF_IMG}/ring-man-smiling-lifestyle/public`, alt: "Man wearing Ring One at home" },
       { src: `${CF_IMG}/ring-cocktails/public`, alt: "Ring One at a social evening" },
       { src: `${CF_IMG}/ring-hand-closeup-black/public`, alt: "Ring One Phantom Black close-up on hand" },
       { src: `${CF_IMG}/ring-painting-aurora/public`, alt: "Ring One Aurora Gold while painting" },
