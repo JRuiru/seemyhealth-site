@@ -321,19 +321,19 @@ export const products: Record<string, Product> = {
         title: "LED Progress Ring",
         description: "Twelve LEDs around the lid show your daily progress at a glance. Full ring = goal hit. No phone needed.",
         icon: "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z",
-        image: `${CF_IMG}/bottle-black-gym-v2/public`,
+        image: `${CF_IMG}/bottle-led-progress-ring/public`,
       },
       {
         title: "Smart Reminders",
-        description: "Gentle LED pulses when you haven't sipped in a while. Adjusts to your schedule and activity level.",
+        description: "Gentle LED pulses on the bottle and notifications on your phone when you haven't sipped in a while. Adjusts to your schedule and activity level.",
         icon: "M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0",
-        image: `${CF_IMG}/bottle-white-park/public`,
+        image: `${CF_IMG}/bottle-smart-reminder/public`,
       },
       {
         title: "Hydration Insights",
         description: "See how hydration affects your sleep, energy, and recovery. The app correlates your intake with data from other SeeMyHealth devices.",
         icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
-        image: `${CF_IMG}/bottle-black-picnic/public`,
+        image: `${CF_IMG}/hydra-hydration-insights/public`,
       },
     ],
     lifestyleImages: [
@@ -344,6 +344,7 @@ export const products: Record<string, Product> = {
       { src: `${CF_IMG}/bottle-white-beach/public`, alt: "Hydra One white on beach sand" },
       { src: `${CF_IMG}/bottle-black-conference/public`, alt: "Hydra One Abyss Black at conference venue" },
       { src: `${CF_IMG}/bottle-white-airport/public`, alt: "Hydra One white at airport lounge" },
+      { src: `${CF_IMG}/bottle-black-bedside/public`, alt: "Hydra One Abyss Black on bedside table" },
     ],
   },
   "hema-one": {
