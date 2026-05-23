@@ -21,7 +21,7 @@ const reviewsByProduct: Record<string, Review[]> = {
   ],
   "scale": [
     { name: "Linda P.", rating: 5, date: "Apr 2026", title: "Way more than a scale", body: "Seeing my body fat and muscle mass trends over 3 months has been eye-opening. My weight barely changed but my composition improved dramatically.", verified: true },
-    { name: "David W.", rating: 5, date: "Mar 2026", title: "Whole family uses it", body: "Auto-recognition works great with 4 profiles. Everyone has their own private dashboard. Setup was painless.", verified: true },
+    { name: "David W.", rating: 5, date: "Mar 2026", title: "Whole family uses it", body: "Works great with 4 profiles. Everyone connects through the app and gets their own private dashboard. Setup was painless.", verified: true },
     { name: "Emma L.", rating: 4, date: "Feb 2026", title: "Solid metrics", body: "Good accuracy on body fat compared to my DEXA scan. The trend analysis is what keeps me coming back to the app every morning.", verified: true },
   ],
   "bp-monitor": [
@@ -90,11 +90,11 @@ export default function CustomerReviews({ productName, accentColor }: Props) {
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 sm:overflow-visible">
           {reviews.map((review, i) => (
             <div
               key={i}
-              className="p-6 rounded-2xl bg-white/[0.03] border border-white/5"
+              className={`snap-start shrink-0 w-[78vw] sm:w-auto p-6 rounded-2xl bg-white/[0.03] border border-white/5${i === 0 ? " ml-1.5 sm:ml-0" : ""}`}
             >
               <div className="flex items-center justify-between mb-3">
                 <Stars count={review.rating} />

@@ -45,7 +45,7 @@ export const productContent: Record<string, ProductContent> = {
     introLine1: "Beyond weight.",
     introLine2: "The full picture.",
     howItWorks: [
-      { title: "Step On", description: "Just step on the scale barefoot. Auto-recognition identifies you in seconds. No buttons, no setup.", icon: "M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M12 3a4 4 0 100 8 4 4 0 000-8z" },
+      { title: "Step On", description: "Open the app and connect to the scale. Step on barefoot and your reading saves to your profile. If you've used it before, just reconnect.", icon: "M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M12 3a4 4 0 100 8 4 4 0 000-8z" },
       { title: "Get Your Metrics", description: "In 10 seconds, see weight, body fat, muscle mass, bone density, water percentage, visceral fat, BMR, and more.", icon: "M22 12h-4l-3 9L9 3l-3 9H2" },
       { title: "Track Trends", description: "Open the app and see how your composition changes over weeks and months. Understand what's actually happening beyond daily fluctuations.", icon: "M3 17l6-6 4 4 8-8M14 7h7v7" },
     ],
@@ -53,7 +53,7 @@ export const productContent: Record<string, ProductContent> = {
       headline: "Know your body, not just your weight.",
       items: [
         { title: "13+ Body Metrics", description: "Body fat, muscle mass, bone density, visceral fat, water percentage, BMR, metabolic age, protein, and more, all from a single weigh-in." },
-        { title: "Family Profiles", description: "Unlimited user profiles with auto-recognition. Everyone in the household gets their own private dashboard." },
+        { title: "Family Profiles", description: "Unlimited user profiles. Open the app, connect to the device, and your reading saves to your own private dashboard." },
         { title: "Trend Analysis", description: "Daily weight fluctuates. Real trends don't. See your 7-day, 30-day, and 90-day trajectories to understand what's really changing." },
         { title: "Affordable Precision", description: "Accurate body composition at a fraction of the cost. Need segmental analysis? Upgrade to The Scale Pro." },
       ],
@@ -73,7 +73,7 @@ export const productContent: Record<string, ProductContent> = {
         { title: "Segmental Analysis", description: "See fat and muscle for each arm, leg, and trunk independently. Spot imbalances, track rehab progress, and train smarter." },
         { title: "32 Body Metrics", description: "Weight, heart rate, BMI, body fat, muscle mass, visceral fat, skeletal muscle, protein ratio, subcutaneous fat, bone mass, body cell mass, intracellular/extracellular water, minerals, and more." },
         { title: "Multi-Frequency BIA", description: "Multiple frequencies measure both intra- and extracellular water for significantly more accurate body composition than single-frequency scales." },
-        { title: "Family Profiles", description: "Unlimited user profiles with auto-recognition. Everyone in the household gets their own private dashboard." },
+        { title: "Family Profiles", description: "Unlimited user profiles. Open the app, connect to the device, and your reading saves to your own private dashboard." },
       ],
     },
   },

@@ -62,7 +62,7 @@ export const setupData: Record<string, DeviceSetup> = {
       },
       {
         title: "Profiles",
-        description: "Add household members in the app. The scale auto-recognizes each person after their first weigh-in.",
+        description: "Add household members in the app. Each person opens the app, connects to the scale, and their reading saves to their own profile.",
         tip: "Each person gets their own private dashboard.",
       },
       {
@@ -90,7 +90,7 @@ export const setupData: Record<string, DeviceSetup> = {
       },
       {
         title: "Profiles",
-        description: "Add household members in the app. The scale auto-recognizes each person after their first weigh-in.",
+        description: "Add household members in the app. Each person opens the app, connects to the scale, and their reading saves to their own profile.",
         tip: "Each person gets their own private dashboard with segmental data.",
       },
       {

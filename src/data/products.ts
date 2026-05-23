@@ -5,6 +5,7 @@ export interface ProductFeature {
   title: string;
   description: string;
   icon: string;
+  image?: string;
 }
 
 export interface ProductSpec {
@@ -64,21 +65,25 @@ export const products: Record<string, Product> = {
         title: "Sleep Intelligence",
         description: "Advanced sleep staging: light, deep, and REM, plus overnight HRV, skin temperature trends, and a morning recovery score so you know how to approach your day.",
         icon: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
+        image: `${CF_IMG}/ring-sleeping/public`,
       },
       {
         title: "Heart Health",
         description: "Continuous heart rate monitoring with resting HR trends, heart rate variability, and SpO2 readings. Always watching out for you, day and night.",
         icon: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
+        image: `${CF_IMG}/ring-yoga/public`,
       },
       {
         title: "Activity & Exercise",
         description: "Automatic activity detection with steps, calories, and active minutes. No manual start needed. Ring One knows when you're moving.",
         icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
+        image: `${CF_IMG}/ring-fitness-body/public`,
       },
       {
         title: "Stress & Recovery",
         description: "Real-time stress tracking based on HRV patterns. Get nudges to breathe when your body needs it, and see your recovery trend over time.",
         icon: "M12 3v18M3 12h18",
+        image: `${CF_IMG}/ring-reading-coffee/public`,
       },
     ],
     lifestyleImages: [
@@ -120,7 +125,7 @@ export const products: Record<string, Product> = {
       { label: "Battery", value: "3x AAA (included)" },
       { label: "Connectivity", value: "Bluetooth" },
       { label: "Compatibility", value: "iOS 17+, Android 15+" },
-      { label: "Users", value: "Unlimited profiles with auto-recognition" },
+      { label: "Users", value: "Unlimited profiles via app" },
       { label: "In the Box", value: "Smart Scale, 3x AAA batteries, user manual" },
       { label: "Colors", value: "Obsidian Black, Frost White" },
     ],
@@ -129,21 +134,25 @@ export const products: Record<string, Product> = {
         title: "Body Composition",
         description: "Go beyond weight. See body fat, muscle mass, visceral fat, skeletal muscle, protein ratio, BMR, BMI, and more — 14 metrics from a single step.",
         icon: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
+        image: `${CF_IMG}/scale-bathroom-still/public`,
       },
       {
         title: "Shared by Design",
-        description: "Not locked to any account. Anyone can walk up, connect via the app, and their reading saves to their own profile.",
+        description: "Not locked to any account. Open the app, reconnect to a device you've used before or scan and pair a new one, step on, and your reading saves to your own profile.",
         icon: "M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01",
+        image: `${CF_IMG}/scale-white-bathroom/public`,
       },
       {
         title: "Family Profiles",
-        description: "Unlimited user profiles with auto-recognition. Everyone in the household gets their own private dashboard.",
+        description: "Unlimited user profiles. Open the app, connect to the device, and your reading saves to your own private dashboard.",
         icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
+        image: `${CF_IMG}/scale-black-nutritionist/public`,
       },
       {
         title: "Trend Tracking",
         description: "See your weight and composition change over weeks and months. Understand the real trends behind daily fluctuations.",
         icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
+        image: `${CF_IMG}/scale-white-portrait/public`,
       },
     ],
     lifestyleImages: [
@@ -178,7 +187,7 @@ export const products: Record<string, Product> = {
       { label: "Battery", value: "Built-in rechargeable via USB-C, ~2 hours to full charge, several weeks battery life" },
       { label: "Connectivity", value: "Bluetooth" },
       { label: "Compatibility", value: "iOS 17+, Android 15+" },
-      { label: "Users", value: "Unlimited profiles with auto-recognition" },
+      { label: "Users", value: "Unlimited profiles via app" },
       { label: "In the Box", value: "Scale Pro, USB-C charging cable, user manual" },
       { label: "Colors", value: "Obsidian Black, Frost White" },
     ],
@@ -187,21 +196,25 @@ export const products: Record<string, Product> = {
         title: "Segmental Analysis",
         description: "See body fat and muscle mass for each arm, each leg, and your trunk separately. 8 electrodes with retractable handlebar grips send signals through different body sections independently.",
         icon: "M22 12h-4l-3 9L9 3l-3 9H2",
+        image: `${CF_IMG}/scale-pro-using/public`,
       },
       {
         title: "32 Body Metrics",
         description: "Weight, heart rate, BMI, fat ratio, muscle mass, bone mass, visceral fat, protein, subcutaneous fat, skeletal muscle, body cell mass, intracellular/extracellular water, minerals, adiposity level, and more.",
         icon: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
+        image: `${CF_IMG}/scale-pro-white-marble/public`,
       },
       {
         title: "Family Profiles",
-        description: "Unlimited user profiles with auto-recognition. Everyone in the household gets their own private dashboard.",
+        description: "Unlimited user profiles. Open the app, connect to the device, and your reading saves to your own private dashboard.",
         icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
+        image: `${CF_IMG}/scale-pro-white-gym/public`,
       },
       {
         title: "Trend Tracking",
         description: "See your weight and composition change over weeks and months. Understand the real trends behind daily fluctuations.",
         icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
+        image: `${CF_IMG}/scale-pro-black-bathroom/public`,
       },
     ],
     lifestyleImages: [
@@ -241,21 +254,25 @@ export const products: Record<string, Product> = {
         title: "One-Touch Reading",
         description: "Wrap the cuff, press the button. Your systolic, diastolic, and pulse rate appear in 30 seconds. No setup needed.",
         icon: "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z",
+        image: `${CF_IMG}/bp-desk-display/public`,
       },
       {
         title: "Irregular Heartbeat",
         description: "Automatic detection of irregular heartbeat patterns during measurement. Alerts you when something needs attention.",
         icon: "M22 12h-4l-3 9L9 3l-3 9H2",
+        image: `${CF_IMG}/bp-white/public`,
       },
       {
         title: "Doctor Sharing",
         description: "Toggle access for your doctor directly in the app. They get authenticated, see your full BP history in real time, and you can revoke access with a single switch.",
         icon: "M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13",
+        image: `${CF_IMG}/bp-black-desk-portrait/public`,
       },
       {
         title: "Morning & Evening",
         description: "Set reminders for consistent readings. The app tracks AM/PM patterns to catch trends your doctor would want to know about.",
         icon: "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z",
+        image: `${CF_IMG}/bp-breakfast-reading/public`,
       },
     ],
     lifestyleImages: [
@@ -294,21 +311,25 @@ export const products: Record<string, Product> = {
         title: "Auto Tracking",
         description: "Capacitive sensors detect every sip. No manual logging, just drink and the app updates automatically.",
         icon: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
+        image: `${CF_IMG}/bottle-white-office/public`,
       },
       {
         title: "LED Progress Ring",
         description: "Twelve LEDs around the lid show your daily progress at a glance. Full ring = goal hit. No phone needed.",
         icon: "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z",
+        image: `${CF_IMG}/bottle-black-gym-v2/public`,
       },
       {
         title: "Smart Reminders",
         description: "Gentle LED pulses when you haven't sipped in a while. Adjusts to your schedule and activity level.",
         icon: "M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0",
+        image: `${CF_IMG}/bottle-white-park/public`,
       },
       {
         title: "Hydration Insights",
         description: "See how hydration affects your sleep, energy, and recovery. The app correlates your intake with data from other SeeMyHealth devices.",
         icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
+        image: `${CF_IMG}/bottle-black-picnic/public`,
       },
     ],
     lifestyleImages: [
@@ -352,21 +373,25 @@ export const products: Record<string, Product> = {
         title: "Quick Results",
         description: "Place a tiny sample on the test strip and insert into Hema One. Glucose, hemoglobin, and uric acid results in 5 seconds. Full lipid profile (TC, HDL-C, LDL-C, triglycerides) in 15 seconds.",
         icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
+        image: `${CF_IMG}/hema-black-hand-v2/public`,
       },
       {
         title: "Comprehensive Markers",
         description: "Full lipid profile (total cholesterol, HDL-C, LDL-C, triglycerides), blood glucose, uric acid, and hemoglobin. The markers that matter most for everyday health.",
         icon: "M22 12h-4l-3 9L9 3l-3 9H2",
+        image: `${CF_IMG}/hema-black-lab/public`,
       },
       {
         title: "Trend Analysis",
         description: "See how your blood markers change over time. Spot deficiencies early and track the impact of dietary changes.",
         icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
+        image: `${CF_IMG}/hema-orange-kitchen-v2/public`,
       },
       {
         title: "Share with Doctor",
         description: "Grant your healthcare provider secure, authenticated access to your blood marker history with a single toggle. They see the longitudinal data they rarely get, and you stay in full control.",
         icon: "M4 12v8a2 2 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13",
+        image: `${CF_IMG}/hema-orange-doctor/public`,
       },
     ],
     lifestyleImages: [
