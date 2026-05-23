@@ -72,7 +72,8 @@ export const products: Record<string, Product> = {
         title: "Heart Health",
         description: "Continuous heart rate monitoring with resting HR trends, heart rate variability, and SpO2 readings. Always watching out for you, day and night.",
         icon: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
-        image: `${CF_IMG}/ring-yoga/public`,
+        image: `${CF_IMG}/ring-heart-health-runner/public`,
+        imagePosition: "center 80%",
       },
       {
         title: "Activity & Exercise",
@@ -142,6 +143,7 @@ export const products: Record<string, Product> = {
         description: "Not locked to any account. Open the app, reconnect to a device you've used before or scan and pair a new one, step on, and your reading saves to your own profile.",
         icon: "M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01",
         image: `${CF_IMG}/scale-black-nutritionist/public`,
+        imagePosition: "center 60%",
       },
       {
         title: "Family Profiles",
@@ -204,7 +206,7 @@ export const products: Record<string, Product> = {
         description: "Weight, heart rate, BMI, fat ratio, muscle mass, bone mass, visceral fat, protein, subcutaneous fat, skeletal muscle, body cell mass, intracellular/extracellular water, minerals, adiposity level, and more.",
         icon: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
         image: `${CF_IMG}/scale-pro-32-metrics/public`,
-        imagePosition: "center 30%",
+        imagePosition: "center 25%",
       },
       {
         title: "Family Profiles",
@@ -262,13 +264,13 @@ export const products: Record<string, Product> = {
         title: "Irregular Heartbeat",
         description: "Automatic detection of irregular heartbeat patterns during measurement. Alerts you when something needs attention.",
         icon: "M22 12h-4l-3 9L9 3l-3 9H2",
-        image: `${CF_IMG}/bp-white/public`,
+        image: `${CF_IMG}/bp-irregular-heartbeat/public`,
       },
       {
         title: "Doctor Sharing",
         description: "Toggle access for your doctor directly in the app. They get authenticated, see your full BP history in real time, and you can revoke access with a single switch.",
         icon: "M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13",
-        image: `${CF_IMG}/bp-black-desk-portrait/public`,
+        image: `${CF_IMG}/bp-doctor-sharing/public`,
       },
       {
         title: "Morning & Evening",

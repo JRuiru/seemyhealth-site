@@ -22,17 +22,17 @@ const { features, color = "#ffffff" } = Astro.props;
     <div class="relative" id="feature-stack">
       {features.map((feature, i) => (
         <div
-          class="feature-stack-card sticky top-24 sm:top-28 mb-6 sm:mb-8 last:mb-0"
+          class="feature-stack-card sticky top-20 sm:top-28 mb-4 sm:mb-8 last:mb-0"
           style={`z-index: ${i + 1};`}
         >
           <div
             class="rounded-2xl sm:rounded-3xl overflow-hidden border border-white/5 bg-brand-black shadow-2xl"
             style={`transform: translateY(${i * 8}px);`}
           >
-            <div class="grid lg:grid-cols-2 h-[380px] sm:h-[420px] lg:h-[400px]">
-              <!-- Image -->
+            <div class="relative lg:grid lg:grid-cols-2 h-[320px] sm:h-[380px] lg:h-[400px]">
+              <!-- Image — full bleed behind text on mobile, side-by-side on desktop -->
               {feature.image && (
-                <div class="relative h-48 sm:h-56 lg:h-full overflow-hidden">
+                <div class="absolute inset-0 lg:relative lg:inset-auto overflow-hidden">
                   <img
                     src={feature.image}
                     alt={feature.title}
@@ -41,7 +41,7 @@ const { features, color = "#ffffff" } = Astro.props;
                     loading="lazy"
                   />
                   <div class="absolute inset-0 bg-gradient-to-r from-transparent to-brand-black/40 hidden lg:block"></div>
-                  <div class="absolute inset-0 bg-gradient-to-t from-brand-black to-transparent lg:hidden"></div>
+                  <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/80 to-brand-black/10 lg:hidden"></div>
                   <!-- Card number -->
                   <div class="absolute top-4 left-4 sm:top-6 sm:left-6">
                     <span
@@ -55,7 +55,7 @@ const { features, color = "#ffffff" } = Astro.props;
               )}
 
               <!-- Content -->
-              <div class="flex flex-col justify-center p-6 sm:p-10 lg:p-12 -mt-6 lg:mt-0 relative overflow-hidden">
+              <div class="relative flex flex-col justify-end lg:justify-center px-5 py-5 sm:p-10 lg:p-12 h-full overflow-hidden z-10">
                 <svg
                   class="w-8 h-8 mb-5 hidden sm:block"
                   style={`color: ${color}`}
@@ -66,8 +66,8 @@ const { features, color = "#ffffff" } = Astro.props;
                 >
                   <path stroke-linecap="round" stroke-linejoin="round" d={feature.icon} />
                 </svg>
-                <h3 class="font-display text-2xl sm:text-3xl uppercase mb-3 sm:mb-4">{feature.title}</h3>
-                <p class="text-sm sm:text-base text-brand-gray-400 leading-relaxed">{feature.description}</p>
+                <h3 class="font-display text-xl sm:text-3xl uppercase mb-2 sm:mb-4">{feature.title}</h3>
+                <p class="text-[13px] sm:text-base text-brand-gray-400 leading-relaxed">{feature.description}</p>
               </div>
             </div>
           </div>
