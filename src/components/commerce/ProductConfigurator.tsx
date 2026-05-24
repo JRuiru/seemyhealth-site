@@ -486,7 +486,7 @@ export default function ProductConfigurator({ slug, accentColor }: Props) {
               {data.name}
             </h1>
             <p className="text-sm text-brand-gray-400 mb-3">
-              {slug === "ring-one" && "24/7 health tracking in a titanium ring."}
+              {slug === "ring-one" && "24/7 health tracking in a non-allergenic ring."}
               {slug === "scale" && "13+ body metrics beyond weight."}
               {slug === "scale-pro" && "Segmental body composition analysis."}
               {slug === "bp-monitor" && "Accurate blood pressure monitoring at home."}

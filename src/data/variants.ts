@@ -41,7 +41,7 @@ export const productVariants: Record<string, ProductVariantData> = {
     name: "Ring One",
     optionNames: ["Finish", "Size"],
     boxContents: ["Ring One", "Charging dock", "USB-C cable", "Quick start guide"],
-    deliveryEstimate: "5–7 business days",
+    deliveryEstimate: "Estimated at checkout",
     warrantyYears: 1,
     colorSwatches: {
       "Phantom Black": "#1a1a1a",
@@ -92,8 +92,8 @@ export const productVariants: Record<string, ProductVariantData> = {
     handle: "scale",
     name: "The Scale",
     optionNames: ["Color"],
-    boxContents: ["Smart Scale", "4× AAA batteries", "Quick start guide"],
-    deliveryEstimate: "5–7 business days",
+    boxContents: ["Smart Scale", "3× AAA batteries", "Quick start guide"],
+    deliveryEstimate: "Estimated at checkout",
     warrantyYears: 1,
     colorSwatches: {
       "Obsidian Black": "#1a1a1a",
@@ -126,8 +126,8 @@ export const productVariants: Record<string, ProductVariantData> = {
     handle: "scale-pro",
     name: "The Scale Pro",
     optionNames: ["Color"],
-    boxContents: ["The Scale Pro", "4× AAA batteries", "Quick start guide"],
-    deliveryEstimate: "5–7 business days",
+    boxContents: ["The Scale Pro", "USB-C charging cable", "Quick start guide"],
+    deliveryEstimate: "Estimated at checkout",
     warrantyYears: 1,
     colorSwatches: {
       "Obsidian Black": "#1a1a1a",
@@ -162,8 +162,8 @@ export const productVariants: Record<string, ProductVariantData> = {
     handle: "bp-monitor",
     name: "BP Monitor",
     optionNames: ["Color"],
-    boxContents: ["BP Monitor", "Adjustable arm cuff (22–42 cm)", "USB-C charging cable", "Carrying pouch", "Quick start guide"],
-    deliveryEstimate: "5–7 business days",
+    boxContents: ["BP Monitor", "Adjustable arm cuff (22–42 cm)", "USB-C cable (no batteries included)", "Quick start guide"],
+    deliveryEstimate: "Estimated at checkout",
     warrantyYears: 1,
     colorSwatches: {
       "Carbon Black": "#1a1a1a",
@@ -199,7 +199,7 @@ export const productVariants: Record<string, ProductVariantData> = {
     name: "Hydra One",
     optionNames: ["Color"],
     boxContents: ["Hydra One bottle (500 ml)", "USB-C charging cable", "Spare lid seal", "Quick start guide"],
-    deliveryEstimate: "5–7 business days",
+    deliveryEstimate: "Estimated at checkout",
     warrantyYears: 1,
     colorSwatches: {
       "Abyss Black": "#1a1a1a",
@@ -237,7 +237,7 @@ export const productVariants: Record<string, ProductVariantData> = {
     name: "Hema One",
     optionNames: ["Color"],
     boxContents: ["Hema One analyzer", "10× test strips", "Lancet device", "10× lancets", "USB-C charging cable", "Quick start guide"],
-    deliveryEstimate: "5–7 business days",
+    deliveryEstimate: "Estimated at checkout",
     warrantyYears: 1,
     colorSwatches: {
       "Stealth Black": "#1a1a1a",

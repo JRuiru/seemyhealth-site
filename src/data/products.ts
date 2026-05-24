@@ -33,6 +33,7 @@ export interface Product {
   benefitsImage?: string;
   videoThumbnail?: string;
   ogImage?: string;
+  seoTitle?: string;
   specs: ProductSpec[];
   features: ProductFeature[];
   lifestyleImages: ProductImage[];
@@ -43,7 +44,8 @@ export const products: Record<string, Product> = {
     name: "Ring One",
     tagline: "Sensing, Made Human",
     headline: "Health clarity\non your finger",
-    description: "24/7 heart rate, SpO2, sleep stages, activity tracking, and stress monitoring, all from a ring designed for daily wear. Wrapped in titanium, rated IP68 for showers, workouts, and everything in between.",
+    seoTitle: "Ring One Smart Ring | 24/7 Heart Rate, Sleep & SpO2 Tracking | SeeMyHealth",
+    description: "24/7 heart rate, SpO2, sleep stages, skin temperature, and stress monitoring from a smart ring weighing just 4-6g. 7-day battery, IP68 waterproof to 50m, and Bluetooth 5.2 sync to the SeeMyHealth app (iOS and Android). Available in sizes 6-13, Phantom Black ($179) and Aurora Gold ($199).",
     image: `${CF_IMG}/ring-hero-hands/public`,
     streamId: "11598e9e76e389bfaebbccb7c0c5a5fb",
     price: "$179",
@@ -56,7 +58,7 @@ export const products: Record<string, Product> = {
       { label: "Battery", value: "Up to 7 days" },
       { label: "Water Rating", value: "IP68, 50m depth" },
       { label: "Weight", value: "4-6g depending on size" },
-      { label: "Materials", value: "Titanium shell, biocompatible resin" },
+      { label: "Materials", value: "Non-allergenic shell, biocompatible resin" },
       { label: "Connectivity", value: "Bluetooth 5.2" },
       { label: "Sizes", value: "6, 7, 8, 9, 10, 11, 12, 13" },
       { label: "Finishes", value: "Phantom Black ($179), Aurora Gold ($199)" },
@@ -248,7 +250,7 @@ export const products: Record<string, Product> = {
       { label: "Range", value: "0-300 mmHg (pressure), 40-199 bpm (pulse)" },
       { label: "Accuracy", value: "±3 mmHg (pressure), ±5% (pulse)" },
       { label: "Cuff Size", value: "22-42cm (adjustable)" },
-      { label: "Battery", value: "Rechargeable, up to 200 readings" },
+      { label: "Power", value: "USB-C or 4× AAA batteries (not included)" },
       { label: "Memory", value: "Unlimited (synced to app)" },
       { label: "Connectivity", value: "Bluetooth 5.0" },
       { label: "Certification", value: "FDA cleared, CE marked" },

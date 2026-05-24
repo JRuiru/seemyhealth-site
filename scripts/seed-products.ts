@@ -58,10 +58,10 @@ const products: ProductDef[] = [
   {
     title: "Ring One",
     handle: "ring-one",
-    body_html: "24/7 heart rate, SpO2, sleep stages, activity tracking, and stress monitoring — all from a ring designed for daily wear.",
+    body_html: "24/7 heart rate, SpO2, sleep stages, skin temperature, and stress monitoring from a smart ring weighing just 4-6g. 7-day battery, IP68 waterproof to 50m, and Bluetooth 5.2 sync to the SeeMyHealth app (iOS &amp; Android). Available in sizes 6-13, Phantom Black ($179) and Aurora Gold ($199).",
     vendor: "SeeMyHealth",
     product_type: "Wearable",
-    tags: ["ring", "wearable", "heart-rate", "sleep", "spo2"],
+    tags: ["ring", "wearable", "smart-ring", "health-monitor", "fitness-tracker", "heart-rate", "sleep", "spo2", "hrv"],
     options: [
       { name: "Finish", values: ["Phantom Black", "Aurora Gold"] },
       { name: "Size", values: ["6", "7", "8", "9", "10", "11", "12", "13"] },
@@ -93,7 +93,7 @@ const products: ProductDef[] = [
     body_html: "Full body composition analysis with 4-point BIA for essential metrics. Step on, and see everything in the app instantly.",
     vendor: "SeeMyHealth",
     product_type: "Scale",
-    tags: ["scale", "body-composition", "weight", "bmi"],
+    tags: ["scale", "smart-scale", "body-composition", "weight", "bmi", "health-monitor", "body-fat", "muscle-mass"],
     options: [{ name: "Color", values: ["Obsidian Black", "Frost White"] }],
     variants: [
       { title: "Obsidian Black", price: "99.99", sku: "SCALE-BLK", inventory_management: "shopify", option1: "Obsidian Black" },
@@ -106,7 +106,7 @@ const products: ProductDef[] = [
     body_html: "8-point dual-frequency BIA with segmental analysis. Retractable handle for clinical-grade precision. See body fat and muscle mass for each arm, each leg, and your trunk.",
     vendor: "SeeMyHealth",
     product_type: "Scale",
-    tags: ["scale", "body-composition", "weight", "segmental", "pro"],
+    tags: ["scale", "smart-scale", "body-composition", "weight", "segmental", "pro", "health-monitor", "body-fat", "muscle-mass", "8-electrode"],
     options: [{ name: "Color", values: ["Obsidian Black", "Frost White"] }],
     variants: [
       { title: "Obsidian Black", price: "199.99", sku: "SCALE-PRO-BLK", inventory_management: "shopify", option1: "Obsidian Black" },
@@ -119,7 +119,7 @@ const products: ProductDef[] = [
     body_html: "Accurate blood pressure readings with irregular heartbeat detection. Validated against clinical standards. FDA cleared, CE marked.",
     vendor: "SeeMyHealth",
     product_type: "Monitor",
-    tags: ["blood-pressure", "heart", "medical", "fda-cleared"],
+    tags: ["blood-pressure", "bp-monitor", "heart", "medical", "fda-cleared", "health-monitor", "hypertension", "pulse"],
     options: [{ name: "Color", values: ["Carbon Black", "Opal White"] }],
     variants: [
       { title: "Carbon Black", price: "89.99", sku: "BP-MON-BLK", inventory_management: "shopify", option1: "Carbon Black" },
@@ -132,7 +132,7 @@ const products: ProductDef[] = [
     body_html: "Smart water bottle that tracks your daily intake automatically. LED ring shows your progress. Gentle reminders keep you on track.",
     vendor: "SeeMyHealth",
     product_type: "Bottle",
-    tags: ["hydration", "water", "smart-bottle"],
+    tags: ["hydration", "water", "smart-bottle", "water-bottle", "health-monitor", "fitness-tracker", "hydration-tracking"],
     options: [{ name: "Color", values: ["Abyss Black", "Glacier White"] }],
     variants: [
       { title: "Abyss Black", price: "59.99", sku: "HYDRA-BLK", inventory_management: "shopify", option1: "Abyss Black" },
@@ -145,7 +145,7 @@ const products: ProductDef[] = [
     body_html: "At-home blood analysis for key health markers. A small sample from your fingertip gives you lab-quality results in minutes.",
     vendor: "SeeMyHealth",
     product_type: "Analyzer",
-    tags: ["blood", "glucose", "cholesterol", "hemoglobin", "medical"],
+    tags: ["blood", "glucose", "cholesterol", "hemoglobin", "medical", "health-monitor", "blood-analysis", "lipid-panel", "uric-acid"],
     variants: [
       { title: "Default", price: "99.99", sku: "HEMA-ONE", inventory_management: "shopify" },
     ],

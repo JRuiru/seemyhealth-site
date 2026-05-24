@@ -67,7 +67,7 @@ const breadcrumbSchema = {
 ---
 
 <Layout
-  title={`${product.name} | SeeMyHealth`}
+  title={product.seoTitle || `${product.name} | SeeMyHealth`}
   description={product.description}
   ogImage={product.ogImage || product.image}
   ogType="product"
