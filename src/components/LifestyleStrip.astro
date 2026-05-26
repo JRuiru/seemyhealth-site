@@ -4,8 +4,8 @@ const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
 const images = [
   { src: `${CF_IMG}/ring-sleeping/public`, alt: "Sleep tracking with Ring One", aspect: "tall" },
   { src: `${CF_IMG}/lifestyle-athlete/public`, alt: "Fitness tracking", aspect: "wide" },
-  { src: `${CF_IMG}/ring-cocktails/public`, alt: "Ring One at a social evening", aspect: "tall" },
   { src: `${CF_IMG}/scale-pro-lifestyle/public`, alt: "Using The Scale Pro", aspect: "square" },
+  { src: `${CF_IMG}/ring-cocktails/public`, alt: "Ring One at a social evening", aspect: "tall" },
   { src: `${CF_IMG}/bottle-office-scene/public`, alt: "Hydra One on desk", aspect: "wide" },
   { src: `${CF_IMG}/lifestyle-sun-portrait/public`, alt: "Living well", aspect: "tall" },
 ];
@@ -26,7 +26,7 @@ const images = [
 
   <!-- Full-bleed masonry grid -->
   <div class="max-w-[1400px] mx-auto px-4">
-    <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+    <div class="grid grid-cols-2 lg:grid-cols-3 grid-flow-dense gap-3 sm:gap-4">
       {images.map((img, i) => (
         <div
           class:list={[
