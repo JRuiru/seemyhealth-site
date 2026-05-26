@@ -368,17 +368,19 @@ export default function AccountDashboard() {
             Health tracking that fits around you, not the other way around.
           </p>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="aspect-[3/4] rounded-2xl overflow-hidden sm:row-span-2 sm:order-1">
+        <div className="grid grid-cols-2 sm:grid-cols-4 sm:grid-rows-[240px_240px] lg:grid-rows-[280px_280px] gap-3">
+          {/* Mobile: portraits first row, landscapes second row */}
+          {/* Desktop: portraits on edges, landscapes stacked in middle */}
+          <div className="aspect-[3/4] sm:aspect-auto rounded-2xl overflow-hidden sm:col-start-1 sm:row-start-1 sm:row-end-3">
             <img src={`${CF_IMG}/ring-one-sunset-meditation/public`} alt="Sunset meditation" loading="lazy" className="w-full h-full object-cover" />
           </div>
-          <div className="aspect-[3/4] rounded-2xl overflow-hidden sm:row-span-2 order-2 sm:order-4">
+          <div className="aspect-[3/4] sm:aspect-auto rounded-2xl overflow-hidden sm:col-start-4 sm:row-start-1 sm:row-end-3">
             <img src={`${CF_IMG}/scale-pro-lifestyle/public`} alt="Health at home" loading="lazy" className="w-full h-full object-cover" />
           </div>
-          <div className="aspect-[4/3] rounded-2xl overflow-hidden sm:col-span-2 order-3 sm:order-2">
+          <div className="aspect-[4/3] sm:aspect-auto rounded-2xl overflow-hidden sm:col-start-2 sm:col-end-4 sm:row-start-1">
             <img src={`${CF_IMG}/lifestyle-friends-bar/public`} alt="Living well together" loading="lazy" className="w-full h-full object-cover" />
           </div>
-          <div className="aspect-[4/3] rounded-2xl overflow-hidden sm:col-span-2 order-4 sm:order-3">
+          <div className="aspect-[4/3] sm:aspect-auto rounded-2xl overflow-hidden sm:col-start-2 sm:col-end-4 sm:row-start-2">
             <img src={`${CF_IMG}/lifestyle-athlete/public`} alt="Active lifestyle" loading="lazy" className="w-full h-full object-cover" />
           </div>
         </div>
