@@ -110,7 +110,7 @@ export const products: Record<string, Product> = {
     name: "The Scale",
     tagline: "Beyond the Number",
     headline: "The whole picture,\nnot just weight",
-    description: "Full body composition analysis with 4-point BIA. Step on and see weight, body fat, muscle mass, visceral fat, and 14 metrics in the app instantly. Looking for segmental analysis? <a href='/products/scale-pro' class='underline hover:text-white transition-colors'>Check out The Scale Pro</a>.",
+    description: "Full body composition analysis with 4-point BIA. Step on and see weight, body fat, muscle mass, visceral fat, and 14 metrics in the app instantly.",
     image: `${CF_IMG}/scale-bathroom-still/public`,
     crossSellImage: `${CF_IMG}/scale-black-bathroom/public`,
     streamId: "299bcfd1f9b9fb20b7d4f809a7b481fe",
