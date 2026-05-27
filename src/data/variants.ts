@@ -135,7 +135,7 @@ export const productVariants: Record<string, ProductVariantData> = {
     },
     media: {
       "Obsidian Black": [
-        { type: "video", url: "", poster: `${CF_IMG}/scale-pro-black-config/public`, alt: "Scale Pro Obsidian Black video" },
+        { type: "video", url: `${CF_STREAM}/33080cc3455454c641be760f8e49b2b1/downloads/default.mp4`, poster: `${CF_IMG}/scale-pro-black-config/public`, alt: "Scale Pro Obsidian Black video" },
         { type: "model", url: "/models/scale-pro-black-3d.glb", poster: `${CF_IMG}/scale-pro-black-config/public`, alt: "Scale Pro Obsidian Black 3D" },
         { type: "image", url: `${CF_IMG}/scale-pro-black-bathroom/public`, alt: "Scale Pro Obsidian Black in dark bathroom" },
         { type: "image", url: `${CF_IMG}/scale-pro-using/public`, alt: "Scale Pro in use" },

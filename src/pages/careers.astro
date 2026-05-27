@@ -1,0 +1,273 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+export const prerender = true;
+
+const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
+
+const values = [
+  {
+    title: "Build What Matters",
+    description: "We don't build features for slide decks. If it doesn't help someone understand their body better, it doesn't ship. Every person here works on things real people use.",
+    icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+  },
+  {
+    title: "Ship Weekly, Not Yearly",
+    description: "We push updates every week and put them in front of real users. Ideas get tested fast. If something doesn't work, we learn and move on. Perfectionism doesn't ship.",
+    icon: "M13 10V3L4 14h7v7l9-11h-7z",
+  },
+  {
+    title: "Your Area, Your Call",
+    description: "No layers of approval. No waiting for permission. You'll own entire projects from start to finish. When something breaks in your area, you fix it. When it wins, that's yours too.",
+    icon: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
+  },
+  {
+    title: "Remote-First, Human Always",
+    description: "Work from wherever you think best. We default to async — write it down, share it, move on. We get on calls when it actually helps, not out of habit.",
+    icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+  },
+];
+
+const milestones = [
+  { year: "2023", event: "SeeMyHealth founded. Mission: make health monitoring accessible and beautiful." },
+  { year: "2024", event: "Ring One and Smart Scale enter development. Hardware prototyping begins." },
+  { year: "2025", event: "Full ecosystem launches: six devices, one app, everything connected." },
+  { year: "2026", event: "Global expansion. 13 markets, 4 warehouses, headless commerce live." },
+];
+
+const hiringSteps = [
+  { step: "1", title: "Apply", description: "Send us your CV and a short note on what excites you about SeeMyHealth." },
+  { step: "2", title: "Intro call", description: "A 30-minute video chat to get to know each other. No trick questions." },
+  { step: "3", title: "Live task", description: "A practical exercise done together over a call. We want to see how you think, not test you in isolation." },
+  { step: "4", title: "Team meet", description: "Meet the people you'd work with. Ask us anything." },
+  { step: "5", title: "Offer", description: "We move fast. Expect a decision within a week of your final interview." },
+];
+
+// Add open roles here. When empty, the page shows a general interest CTA.
+const openRoles: { title: string; team: string; location: string; type: string; href: string }[] = [
+  // Example:
+  // { title: "Senior iOS Engineer", team: "Mobile", location: "Remote", type: "Full-time", href: "mailto:careers@seemyhealth.ai?subject=Senior iOS Engineer" },
+];
+
+const perks = [
+  "Competitive salary + equity",
+  "Remote-first, work from anywhere",
+  "Health device kit on day one",
+  "Flexible hours, async culture",
+  "Learning & conference budget",
+  "Generous PTO",
+];
+---
+
+<Layout title="Careers | SeeMyHealth" description="Join SeeMyHealth and help build the future of personal health monitoring. See open roles and learn what it's like to work with us." canonicalPath="/careers">
+  <Navbar />
+
+  <!-- Hero -->
+  <section class="relative pt-32 pb-24 sm:pt-40 sm:pb-32 overflow-hidden">
+    <div class="absolute inset-0">
+      <img
+        src={`${CF_IMG}/lifestyle-friends-bar/public`}
+        alt="The SeeMyHealth team"
+        class="w-full h-full object-cover opacity-20"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-brand-black via-brand-black/80 to-brand-black"></div>
+    </div>
+
+    <div class="relative max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-6" data-scroll-reveal>Careers</p>
+      <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-300 uppercase leading-[0.95] mb-8" data-scroll-reveal>
+        Build the Future of<br /><span class="font-500">Health Monitoring</span>
+      </h1>
+      <p class="text-lg sm:text-xl text-brand-gray-400 leading-relaxed max-w-2xl mx-auto" data-scroll-reveal>
+        We're a small team making devices and software that help people understand their bodies. If that excites you, we'd love to hear from you.
+      </p>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="mb-16" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">How We Work</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
+          What to <span class="font-500">Expect</span>
+        </h2>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-4" data-scroll-stagger>
+        {values.map((value, i) => (
+          <div class:list={[
+            "group relative rounded-2xl border border-white/5 bg-brand-black p-8 sm:p-10 transition-all duration-300 hover:border-white/15 overflow-hidden",
+            i === 0 ? "sm:col-span-3 sm:flex sm:items-start sm:gap-10" : "",
+          ]}>
+            <div class="absolute top-0 left-0 w-px h-0 bg-white group-hover:h-full transition-all duration-500"></div>
+            <p class:list={[
+              "font-display font-300 text-brand-gray-800 group-hover:text-brand-gray-600 transition-colors leading-none mb-6",
+              i === 0 ? "text-7xl sm:text-8xl sm:mb-0 sm:shrink-0" : "text-6xl",
+            ]}>
+              {String(i + 1).padStart(2, '0')}
+            </p>
+            <div>
+              <h3 class="font-display text-xl uppercase mb-3">{value.title}</h3>
+              <p class:list={[
+                "text-sm text-brand-gray-500 leading-relaxed",
+                i === 0 ? "max-w-lg" : "",
+              ]}>{value.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- What We've Built -->
+  <section class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <div class="mb-16" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Momentum</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
+          What We've <span class="font-500">Built So Far</span>
+        </h2>
+      </div>
+
+      <div class="relative">
+        <div class="absolute left-[27px] top-0 bottom-0 w-px bg-white/10"></div>
+
+        <div class="space-y-10" data-scroll-stagger>
+          {milestones.map((item) => (
+            <div class="flex gap-8 items-start">
+              <div class="relative flex-shrink-0">
+                <div class="w-[55px] h-[55px] rounded-full border border-white/10 flex items-center justify-center bg-brand-black">
+                  <span class="font-display text-sm font-400">{item.year}</span>
+                </div>
+              </div>
+              <div class="pt-3">
+                <p class="text-brand-gray-400 leading-relaxed">{item.event}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Open Roles -->
+  <section class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <div class="mb-12" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Opportunities</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
+          Open <span class="font-500">Roles</span>
+        </h2>
+      </div>
+
+      {openRoles.length > 0 ? (
+        <div class="space-y-3" data-scroll-stagger>
+          {openRoles.map((role) => (
+            <a href={role.href} class="group flex items-center justify-between p-6 rounded-xl border border-white/5 hover:border-white/15 transition-colors">
+              <div>
+                <h3 class="text-white font-medium mb-1">{role.title}</h3>
+                <div class="flex items-center gap-3 text-[11px] uppercase tracking-[1.5px] text-brand-gray-500">
+                  <span>{role.team}</span>
+                  <span class="text-brand-gray-700">/</span>
+                  <span>{role.location}</span>
+                  <span class="text-brand-gray-700">/</span>
+                  <span>{role.type}</span>
+                </div>
+              </div>
+              <svg class="w-5 h-5 text-brand-gray-600 group-hover:text-white group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="rounded-2xl border border-white/5 bg-brand-gray-900 p-10 sm:p-14 text-center" data-scroll-reveal>
+          <p class="text-brand-gray-400 leading-relaxed max-w-md mx-auto mb-6">
+            No open roles right now, but we're always interested in great people. Send us your CV and tell us what you'd bring to SeeMyHealth.
+          </p>
+          <a
+            href="mailto:careers@seemyhealth.ai?subject=General Interest"
+            class="inline-flex items-center justify-center px-8 py-3 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+          >
+            Get in touch
+          </a>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Perks -->
+  <section class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-12" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Benefits</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
+          What You <span class="font-500">Get</span>
+        </h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-scroll-stagger>
+        {perks.map((perk) => (
+          <div class="flex items-center gap-3 p-5 rounded-xl border border-white/5 bg-brand-black">
+            <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <span class="text-sm text-brand-gray-400">{perk}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Hiring Process -->
+  <section class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-14" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">No Surprises</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
+          How We <span class="font-500">Hire</span>
+        </h2>
+      </div>
+
+      <div class="relative">
+        <!-- Connecting line -->
+        <div class="hidden sm:block absolute top-[28px] left-0 right-0 h-px bg-white/10"></div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-6 sm:gap-4" data-scroll-stagger>
+          {hiringSteps.map((s) => (
+            <div class="text-center">
+              <div class="relative w-14 h-14 rounded-full border border-white/10 bg-brand-black flex items-center justify-center mx-auto mb-4">
+                <span class="font-display text-lg font-400">{s.step}</span>
+              </div>
+              <h3 class="text-sm font-medium text-white mb-2">{s.title}</h3>
+              <p class="text-[12px] text-brand-gray-500 leading-relaxed">{s.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center" data-scroll-reveal>
+      <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-6">
+        Think You'd <span class="font-500">Fit In?</span>
+      </h2>
+      <p class="text-brand-gray-400 leading-relaxed mb-10 max-w-lg mx-auto">
+        We don't hire for titles. We hire for curiosity, craft, and the drive to build things that matter.
+      </p>
+      <a
+        href="mailto:careers@seemyhealth.ai"
+        class="inline-flex items-center justify-center px-10 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
+      >
+        careers@seemyhealth.ai
+      </a>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
