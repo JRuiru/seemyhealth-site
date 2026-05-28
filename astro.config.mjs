@@ -9,7 +9,15 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.seemyhealth.ai',
-  integrations: [react(), sitemap()],
+  integrations: [
+    react(),
+    sitemap({
+      filter: (page) =>
+        !['/privacy/', '/terms/', '/terms/sale/', '/account/', '/account/orders/', '/404/'].some(
+          (path) => page.includes(path)
+        ),
+    }),
+  ],
 
   vite: {
     plugins: [tailwindcss()],
