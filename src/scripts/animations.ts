@@ -690,47 +690,47 @@ export function initHowItWorksCarousel() {
   updateDots(0);
   animateActiveCard(0);
 
-  // Continuous rotation: 120° per face, pause on each face
-  const tl = gsap.timeline({ repeat: -1 });
+  let autoTimer: ReturnType<typeof setTimeout> | null = null;
+  let isInteracting = false;
 
-  for (let i = 0; i < 3; i++) {
-    const targetAngle = -(i + 1) * 120;
-    tl.to(carousel, {
-      rotateY: targetAngle,
-      duration: 1.2,
-      ease: "power2.inOut",
-      onStart: () => {
-        currentStep = (i + 1) % 3;
-        updateDots(currentStep);
-      },
-      onComplete: () => {
-        animateActiveCard(currentStep);
-      },
-    });
-    // Pause on each face
-    tl.to({}, { duration: 2.5 });
-  }
-
-  // Pause on hover
-  carousel.parentElement?.parentElement?.addEventListener("mouseenter", () => tl.pause());
-  carousel.parentElement?.parentElement?.addEventListener("mouseleave", () => tl.resume());
-
-  // Jump to a specific face
-  function goToFace(i: number) {
-    tl.pause();
+  // Go to a specific face (dot index 0=Step1, 1=Step2, 2=Step3)
+  function goToFace(i: number, autoAdvance = false) {
+    if (autoTimer) clearTimeout(autoTimer);
     currentStep = i;
     updateDots(i);
     gsap.to(carousel, {
       rotateY: -i * 120,
-      duration: 0.8,
+      duration: autoAdvance ? 1.2 : 0.8,
       ease: "power2.inOut",
       onComplete: () => {
         animateActiveCard(i);
-        tl.seek((i * (1.2 + 2.5)) + 1.2);
-        setTimeout(() => tl.resume(), 2500);
+        scheduleNext();
       },
     });
   }
+
+  // Auto-advance to next face after pause
+  function scheduleNext() {
+    if (autoTimer) clearTimeout(autoTimer);
+    if (isInteracting) return;
+    autoTimer = setTimeout(() => {
+      goToFace((currentStep + 1) % 3, true);
+    }, 2500);
+  }
+
+  // Start auto-rotation
+  scheduleNext();
+
+  // Pause on hover
+  const section = carousel.parentElement!.parentElement!;
+  section.addEventListener("mouseenter", () => {
+    isInteracting = true;
+    if (autoTimer) clearTimeout(autoTimer);
+  });
+  section.addEventListener("mouseleave", () => {
+    isInteracting = false;
+    scheduleNext();
+  });
 
   // Click dots to jump to a face
   dots.forEach((dot, i) => {
@@ -739,20 +739,21 @@ export function initHowItWorksCarousel() {
 
   // Swipe support for mobile
   let touchStartX = 0;
-  const wrapper = carousel.parentElement!.parentElement!;
-  wrapper.addEventListener("touchstart", (e) => {
+  section.addEventListener("touchstart", (e) => {
     touchStartX = e.touches[0].clientX;
-    tl.pause();
+    isInteracting = true;
+    if (autoTimer) clearTimeout(autoTimer);
   }, { passive: true });
-  wrapper.addEventListener("touchend", (e) => {
+  section.addEventListener("touchend", (e) => {
     const dx = e.changedTouches[0].clientX - touchStartX;
+    isInteracting = false;
     if (Math.abs(dx) > 40) {
       const next = dx < 0
         ? (currentStep + 1) % 3
         : (currentStep - 1 + 3) % 3;
       goToFace(next);
     } else {
-      tl.resume();
+      scheduleNext();
     }
   }, { passive: true });
 }
