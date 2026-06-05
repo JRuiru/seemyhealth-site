@@ -1,0 +1,435 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { products } from '../../data/products';
+
+export const prerender = true;
+
+const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
+
+const deviceList = Object.entries(products).map(([slug, p]) => ({
+  slug,
+  name: p.name,
+  color: p.color,
+  image: p.crossSellImage || p.image,
+}));
+---
+
+<Layout
+  title="Customer Reviews | SeeMyHealth"
+  description="Read honest reviews from SeeMyHealth customers. Share your experience with Ring One, The Scale, BP Monitor, Hydra One, and more."
+  canonicalPath="/reviews"
+>
+  <Navbar variant="default" />
+
+  <!-- Hero -->
+  <section class="pt-36 pb-16 sm:pt-44 sm:pb-20 bg-brand-black">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8 text-center">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4" data-scroll-reveal>Reviews</p>
+      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95] mb-6" data-scroll-reveal>
+        Real people.<br /><span class="font-500">Real results.</span>
+      </h1>
+      <p class="text-lg text-brand-gray-400 max-w-2xl mx-auto" data-scroll-reveal>
+        Hear from customers who use SeeMyHealth devices every day. Your feedback helps us build better products.
+      </p>
+
+      <!-- Aggregate stats -->
+      <div class="flex items-center justify-center gap-8 mt-10" data-scroll-reveal>
+        <div>
+          <p class="text-3xl font-700 text-brand-gray-100" id="total-rating">—</p>
+          <p class="text-xs uppercase tracking-widest text-brand-gray-500 mt-1">Avg Rating</p>
+        </div>
+        <div class="w-px h-10 bg-white/10"></div>
+        <div>
+          <p class="text-3xl font-700 text-brand-gray-100" id="total-count">—</p>
+          <p class="text-xs uppercase tracking-widest text-brand-gray-500 mt-1">Reviews</p>
+        </div>
+        <div class="w-px h-10 bg-white/10"></div>
+        <div>
+          <p class="text-3xl font-700 text-brand-gray-100">{deviceList.length}</p>
+          <p class="text-xs uppercase tracking-widest text-brand-gray-500 mt-1">Devices</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product filter -->
+  <section class="pb-8 bg-brand-black border-b border-white/5">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      <div class="flex flex-wrap gap-3 justify-center" id="product-filters">
+        <button
+          class="filter-btn active px-5 py-2.5 rounded-full text-sm font-500 transition-all border"
+          data-filter="all"
+          style="--filter-color: #f5f5f5"
+        >
+          All Devices
+        </button>
+        {deviceList.map((d) => (
+          <button
+            class="filter-btn px-5 py-2.5 rounded-full text-sm font-500 transition-all border"
+            data-filter={d.slug}
+            style={`--filter-color: ${d.color}`}
+          >
+            {d.name}
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Write a review CTA -->
+  <section class="py-12 bg-brand-black border-b border-white/5">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      <div class="bg-[#141414] border border-[#1a1a1a] rounded-xl p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6" id="write-review-card">
+        <div>
+          <h2 class="text-xl font-600 text-brand-gray-100 mb-2">Share your experience</h2>
+          <p class="text-sm text-brand-gray-400">Bought a SeeMyHealth device? We would love to hear your honest feedback.</p>
+        </div>
+        <button
+          id="open-review-form"
+          class="shrink-0 px-6 py-3 rounded-full text-sm font-600 uppercase tracking-wider border-2 border-[#F97316] text-[#F97316] hover:bg-[#F97316] hover:text-white transition-colors"
+        >
+          Write a Review
+        </button>
+      </div>
+
+      <!-- Review form (hidden by default) -->
+      <div id="review-form-wrapper" class="hidden mt-6">
+        <div class="bg-[#141414] border border-[#1a1a1a] rounded-xl p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-600 text-brand-gray-100">Write a Review</h3>
+            <button id="close-review-form" class="text-brand-gray-500 hover:text-brand-gray-100 transition-colors text-2xl leading-none">&times;</button>
+          </div>
+          <form id="review-form" class="space-y-5">
+            <!-- Product select -->
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-brand-gray-500 mb-2">Product</label>
+              <select id="review-product" required class="w-full bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg px-4 py-3 text-brand-gray-100 text-sm focus:outline-none focus:border-[#333]">
+                <option value="">Select a device</option>
+                {deviceList.map((d) => (
+                  <option value={d.slug}>{d.name}</option>
+                ))}
+              </select>
+            </div>
+            <!-- Rating -->
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-brand-gray-500 mb-2">Rating</label>
+              <div id="star-rating" class="flex gap-1 cursor-pointer">
+                {[1,2,3,4,5].map((i) => (
+                  <svg data-star={i} class="w-8 h-8 text-[#2a2a2a] hover:text-[#F97316] transition-colors" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <input type="hidden" id="review-rating" value="0" />
+            </div>
+            <!-- Name & Email -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs uppercase tracking-widest text-brand-gray-500 mb-2">Name</label>
+                <input id="review-name" type="text" required placeholder="Your name" class="w-full bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg px-4 py-3 text-brand-gray-100 text-sm placeholder:text-brand-gray-600 focus:outline-none focus:border-[#333]" />
+              </div>
+              <div>
+                <label class="block text-xs uppercase tracking-widest text-brand-gray-500 mb-2">Email</label>
+                <input id="review-email" type="email" required placeholder="your@email.com" class="w-full bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg px-4 py-3 text-brand-gray-100 text-sm placeholder:text-brand-gray-600 focus:outline-none focus:border-[#333]" />
+              </div>
+            </div>
+            <!-- Title -->
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-brand-gray-500 mb-2">Title</label>
+              <input id="review-title" type="text" required placeholder="Summarize your experience" class="w-full bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg px-4 py-3 text-brand-gray-100 text-sm placeholder:text-brand-gray-600 focus:outline-none focus:border-[#333]" />
+            </div>
+            <!-- Body -->
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-brand-gray-500 mb-2">Your Review</label>
+              <textarea id="review-body" required rows="4" placeholder="What did you like? What could be better?" class="w-full bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg px-4 py-3 text-brand-gray-100 text-sm placeholder:text-brand-gray-600 focus:outline-none focus:border-[#333] resize-none"></textarea>
+            </div>
+            <!-- Submit -->
+            <div class="flex items-center gap-4">
+              <button type="submit" id="review-submit" class="px-8 py-3 rounded-full bg-[#F97316] text-white text-sm font-600 uppercase tracking-wider hover:bg-[#ea6c10] transition-colors">
+                Submit Review
+              </button>
+              <span id="review-status" class="text-sm text-brand-gray-400"></span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews list -->
+  <section class="py-16 sm:py-20 bg-brand-black">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      <!-- Loading skeletons -->
+      <div id="reviews-loading" class="space-y-4">
+        {[1,2,3].map(() => (
+          <div class="bg-[#141414] border border-[#1a1a1a] rounded-xl p-6 animate-pulse">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-full bg-[#1a1a1a]"></div>
+              <div class="space-y-2">
+                <div class="h-3 w-24 bg-[#1a1a1a] rounded"></div>
+                <div class="h-2 w-16 bg-[#1a1a1a] rounded"></div>
+              </div>
+            </div>
+            <div class="h-3 w-48 bg-[#1a1a1a] rounded mb-3"></div>
+            <div class="h-2 w-full bg-[#1a1a1a] rounded mb-2"></div>
+            <div class="h-2 w-3/4 bg-[#1a1a1a] rounded"></div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Reviews container -->
+      <div id="reviews-list" class="hidden space-y-4"></div>
+
+      <!-- Empty state -->
+      <div id="reviews-empty" class="hidden text-center py-16">
+        <p class="text-4xl mb-4">💬</p>
+        <p class="text-xl font-500 text-brand-gray-100 mb-2">No reviews yet</p>
+        <p class="text-sm text-brand-gray-500">Be the first to share your experience with SeeMyHealth.</p>
+      </div>
+
+      <!-- Load more -->
+      <div class="text-center mt-10" id="load-more-wrapper" style="display:none">
+        <button id="load-more" class="px-8 py-3 rounded-full border border-[#1a1a1a] text-sm font-500 text-brand-gray-400 hover:text-brand-gray-100 hover:border-[#333] transition-colors">
+          Load More Reviews
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  .filter-btn {
+    border-color: #1a1a1a;
+    color: #6b6b6b;
+    background: transparent;
+  }
+  .filter-btn:hover {
+    border-color: var(--filter-color);
+    color: var(--filter-color);
+  }
+  .filter-btn.active {
+    border-color: var(--filter-color);
+    color: var(--filter-color);
+    background: color-mix(in srgb, var(--filter-color) 10%, transparent);
+  }
+</style>
+
+<script>
+(function () {
+  const API = '/api';
+  let currentFilter = 'all';
+  let currentPage = 1;
+  let allReviews: any[] = [];
+  let selectedRating = 0;
+
+  const $ = (sel: string) => document.querySelector(sel);
+  const $$ = (sel: string) => document.querySelectorAll(sel);
+
+  // Star rating
+  function renderStars(rating: number, color = '#F97316', size = 'w-4 h-4') {
+    return Array.from({ length: 5 }, (_, i) =>
+      `<svg class="${size} ${i < rating ? '' : 'opacity-20'}" fill="${i < rating ? color : '#3a3a3a'}" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`
+    ).join('');
+  }
+
+  function renderReviewCard(r: any) {
+    const date = new Date(r.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    const initials = (r.reviewer?.name || 'A').charAt(0).toUpperCase();
+    const name = r.reviewer?.name || 'Anonymous';
+    const verified = r.verified === 'buyer' || r.verified === true;
+
+    return `
+      <div class="bg-[#141414] border border-[#1a1a1a] rounded-xl p-6 review-card" data-product="${r.product_handle || ''}">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-[#1a1a1a] flex items-center justify-center text-sm font-600 text-brand-gray-400">${initials}</div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-600 text-brand-gray-100">${name}</span>
+                ${verified ? '<span class="text-[10px] uppercase tracking-wider text-emerald-500 font-600">Verified</span>' : ''}
+              </div>
+              <span class="text-xs text-brand-gray-600">${date}</span>
+            </div>
+          </div>
+          <div class="flex gap-0.5">${renderStars(r.rating)}</div>
+        </div>
+        ${r.title ? `<h3 class="text-sm font-600 text-brand-gray-100 mb-2">${r.title}</h3>` : ''}
+        ${r.body ? `<p class="text-sm text-brand-gray-400 leading-relaxed">${r.body}</p>` : ''}
+        ${r.product_title ? `<p class="text-xs text-brand-gray-600 mt-3">${r.product_title}</p>` : ''}
+      </div>
+    `;
+  }
+
+  async function loadReviews(page = 1) {
+    try {
+      const res = await fetch(`${API}/reviews/all?page=${page}&per_page=10`);
+      const data = await res.json();
+      return data.reviews || [];
+    } catch {
+      return [];
+    }
+  }
+
+  async function loadSummaries() {
+    const handles = ['ring-one', 'scale', 'scale-pro', 'bp-monitor', 'hydra-one', 'hema-one'];
+    const results = await Promise.all(
+      handles.map(h => fetch(`${API}/reviews/summary?handle=${h}`).then(r => r.json()).catch(() => ({ rating: 0, count: 0 })))
+    );
+    let totalRating = 0, totalCount = 0, ratedProducts = 0;
+    results.forEach(r => {
+      totalCount += r.count || 0;
+      if (r.count > 0) { totalRating += r.rating; ratedProducts++; }
+    });
+    const avgRating = ratedProducts > 0 ? (totalRating / ratedProducts).toFixed(1) : '—';
+    const el = (id: string) => document.getElementById(id);
+    if (el('total-rating')) el('total-rating')!.textContent = avgRating === '—' ? '—' : `${avgRating}/5`;
+    if (el('total-count')) el('total-count')!.textContent = String(totalCount);
+  }
+
+  function displayReviews() {
+    const list = $('#reviews-list') as HTMLElement;
+    const loading = $('#reviews-loading') as HTMLElement;
+    const empty = $('#reviews-empty') as HTMLElement;
+    const loadMore = $('#load-more-wrapper') as HTMLElement;
+
+    loading.classList.add('hidden');
+
+    const filtered = currentFilter === 'all'
+      ? allReviews
+      : allReviews.filter(r => r.product_handle === currentFilter);
+
+    if (filtered.length === 0) {
+      list.classList.add('hidden');
+      empty.classList.remove('hidden');
+      loadMore.style.display = 'none';
+      return;
+    }
+
+    empty.classList.add('hidden');
+    list.classList.remove('hidden');
+    list.innerHTML = filtered.map(renderReviewCard).join('');
+  }
+
+  // Filters
+  $$('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = (btn as HTMLElement).dataset.filter || 'all';
+      displayReviews();
+    });
+  });
+
+  // Review form toggle
+  $('#open-review-form')?.addEventListener('click', () => {
+    $('#review-form-wrapper')?.classList.remove('hidden');
+    $('#write-review-card')?.classList.add('hidden');
+  });
+  $('#close-review-form')?.addEventListener('click', () => {
+    $('#review-form-wrapper')?.classList.add('hidden');
+    $('#write-review-card')?.classList.remove('hidden');
+  });
+
+  // Star rating interaction
+  $$('#star-rating svg').forEach(star => {
+    star.addEventListener('click', () => {
+      selectedRating = parseInt((star as HTMLElement).dataset.star || '0');
+      (document.getElementById('review-rating') as HTMLInputElement).value = String(selectedRating);
+      $$('#star-rating svg').forEach((s, i) => {
+        (s as HTMLElement).style.color = i < selectedRating ? '#F97316' : '#2a2a2a';
+      });
+    });
+    star.addEventListener('mouseenter', () => {
+      const val = parseInt((star as HTMLElement).dataset.star || '0');
+      $$('#star-rating svg').forEach((s, i) => {
+        (s as HTMLElement).style.color = i < val ? '#F97316' : '#2a2a2a';
+      });
+    });
+  });
+  $('#star-rating')?.addEventListener('mouseleave', () => {
+    $$('#star-rating svg').forEach((s, i) => {
+      (s as HTMLElement).style.color = i < selectedRating ? '#F97316' : '#2a2a2a';
+    });
+  });
+
+  // Submit review
+  $('#review-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const status = $('#review-status') as HTMLElement;
+    const submit = $('#review-submit') as HTMLButtonElement;
+
+    if (selectedRating === 0) {
+      status.textContent = 'Please select a rating';
+      status.style.color = '#EF4444';
+      return;
+    }
+
+    submit.disabled = true;
+    submit.textContent = 'Submitting...';
+    status.textContent = '';
+
+    try {
+      const res = await fetch(`${API}/reviews`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          product_handle: (document.getElementById('review-product') as HTMLSelectElement).value,
+          rating: selectedRating,
+          title: (document.getElementById('review-title') as HTMLInputElement).value,
+          body: (document.getElementById('review-body') as HTMLTextAreaElement).value,
+          reviewer_name: (document.getElementById('review-name') as HTMLInputElement).value,
+          reviewer_email: (document.getElementById('review-email') as HTMLInputElement).value,
+        }),
+      });
+
+      if (res.ok) {
+        status.textContent = 'Thank you! Your review has been submitted and is pending approval.';
+        status.style.color = '#22c55e';
+        (document.getElementById('review-form') as HTMLFormElement).reset();
+        selectedRating = 0;
+        $$('#star-rating svg').forEach(s => { (s as HTMLElement).style.color = '#2a2a2a'; });
+      } else {
+        const err = await res.json();
+        status.textContent = err.error || 'Something went wrong. Please try again.';
+        status.style.color = '#EF4444';
+      }
+    } catch {
+      status.textContent = 'Network error. Please try again.';
+      status.style.color = '#EF4444';
+    }
+
+    submit.disabled = false;
+    submit.textContent = 'Submit Review';
+  });
+
+  // Load more
+  $('#load-more')?.addEventListener('click', async () => {
+    currentPage++;
+    const more = await loadReviews(currentPage);
+    if (more.length > 0) {
+      allReviews = [...allReviews, ...more];
+      displayReviews();
+    }
+    if (more.length < 10) {
+      ($('#load-more-wrapper') as HTMLElement).style.display = 'none';
+    }
+  });
+
+  // Init
+  async function init() {
+    loadSummaries();
+    const reviews = await loadReviews(1);
+    allReviews = reviews;
+    displayReviews();
+    if (reviews.length >= 10) {
+      ($('#load-more-wrapper') as HTMLElement).style.display = '';
+    }
+  }
+
+  init();
+})();
+</script>

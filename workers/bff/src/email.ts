@@ -18,10 +18,11 @@ const MODEL_LABELS: Record<string, string> = {
   distribution: "Distribution Partner",
   haas: "Hardware-as-a-Service",
   // Providers page
-  hospital: "Hospital / Health System",
-  clinic: "Clinic / Practice",
-  telehealth: "Telehealth Platform",
-  pharmacy: "Pharmacy",
+  nutrition: "Nutritionist / Dietitian",
+  therapy: "Therapist / Counsellor",
+  physio: "Physiotherapist / Rehab",
+  fitness: "Fitness / Personal Training",
+  wellness: "Wellness Studio / Spa",
   // Insurance page
   "health-plan": "Health Plan / Payer",
   employer: "Employer Benefits",
@@ -77,6 +78,11 @@ export async function sendSalesNotification(
       email: data.email,
       model: MODEL_LABELS[data.model] || data.model,
       message: data.message || "",
+      timestamp: new Date().toLocaleString("en-US", {
+        dateStyle: "medium",
+        timeStyle: "short",
+        timeZone: "Africa/Nairobi",
+      }),
     },
   });
 }

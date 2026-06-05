@@ -39,6 +39,9 @@ interface Env {
   SALES_EMAIL: string;
   SENDGRID_SALES_TEMPLATE_ID: string;
   SENDGRID_ACK_TEMPLATE_ID: string;
+  JUDGEME_SHOP_DOMAIN: string;
+  JUDGEME_PUBLIC_TOKEN: string;
+  JUDGEME_PRIVATE_TOKEN: string;
   ALLOWED_ORIGINS: string;
 }
 
@@ -457,6 +460,120 @@ export default {
       }
 
       // ============================================================
+      // ============================================================
+      // REVIEWS (Judge.me)
+      // ============================================================
+
+      // GET /api/reviews?handle=ring-one&page=1&per_page=5
+      if (path === "/api/reviews" && request.method === "GET") {
+        const handle = url.searchParams.get("handle");
+        const page = url.searchParams.get("page") || "1";
+        const perPage = url.searchParams.get("per_page") || "5";
+
+        const params = new URLSearchParams({
+          api_token: env.JUDGEME_PRIVATE_TOKEN,
+          shop_domain: env.JUDGEME_SHOP_DOMAIN,
+          per_page: perPage,
+          page,
+        });
+
+        if (handle) {
+          // Get Shopify product ID from handle first
+          const productRes = await fetch(
+            `https://judge.me/api/v1/widgets/product_review?api_token=${env.JUDGEME_PUBLIC_TOKEN}&shop_domain=${env.JUDGEME_SHOP_DOMAIN}&handle=${handle}`
+          );
+          const productData = (await productRes.json()) as { product_external_id?: number };
+          if (productData.product_external_id) {
+            params.set("product_id", String(productData.product_external_id));
+          }
+        }
+
+        const res = await fetch(`https://judge.me/api/v1/reviews?${params}`);
+        const data = await res.json();
+        return json(data, 200, cors);
+      }
+
+      // GET /api/reviews/summary?handle=ring-one — rating + count for a product
+      if (path === "/api/reviews/summary" && request.method === "GET") {
+        const handle = url.searchParams.get("handle") || "";
+        const res = await fetch(
+          `https://judge.me/api/v1/widgets/product_review?api_token=${env.JUDGEME_PUBLIC_TOKEN}&shop_domain=${env.JUDGEME_SHOP_DOMAIN}&handle=${handle}`
+        );
+        const data = (await res.json()) as { widget?: string };
+        // Extract rating and count from widget HTML
+        const widgetHtml = data.widget || "";
+        const ratingMatch = widgetHtml.match(/data-average-rating='([\d.]+)'/);
+        const countMatch = widgetHtml.match(/data-number-of-reviews='(\d+)'/);
+        return json({
+          handle,
+          rating: ratingMatch ? parseFloat(ratingMatch[1]) : 0,
+          count: countMatch ? parseInt(countMatch[1]) : 0,
+        }, 200, cors);
+      }
+
+      // GET /api/reviews/all — all reviews across all products (for /reviews page)
+      if (path === "/api/reviews/all" && request.method === "GET") {
+        const page = url.searchParams.get("page") || "1";
+        const perPage = url.searchParams.get("per_page") || "10";
+        const params = new URLSearchParams({
+          api_token: env.JUDGEME_PRIVATE_TOKEN,
+          shop_domain: env.JUDGEME_SHOP_DOMAIN,
+          per_page: perPage,
+          page,
+        });
+        const res = await fetch(`https://judge.me/api/v1/reviews?${params}`);
+        const data = await res.json();
+        return json(data, 200, cors);
+      }
+
+      // POST /api/reviews — submit a new review
+      if (path === "/api/reviews" && request.method === "POST") {
+        const body = (await request.json()) as {
+          product_handle: string;
+          rating: number;
+          title: string;
+          body: string;
+          reviewer_name: string;
+          reviewer_email: string;
+        };
+
+        if (!body.product_handle || !body.rating || !body.reviewer_email) {
+          return error("Missing required fields", 400, cors);
+        }
+
+        // Get product external ID
+        const widgetRes = await fetch(
+          `https://judge.me/api/v1/widgets/product_review?api_token=${env.JUDGEME_PUBLIC_TOKEN}&shop_domain=${env.JUDGEME_SHOP_DOMAIN}&handle=${body.product_handle}`
+        );
+        const widgetData = (await widgetRes.json()) as { product_external_id?: number };
+
+        if (!widgetData.product_external_id) {
+          return error("Product not found", 404, cors);
+        }
+
+        const res = await fetch("https://judge.me/api/v1/reviews", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            shop_domain: env.JUDGEME_SHOP_DOMAIN,
+            platform: "shopify",
+            id: widgetData.product_external_id,
+            name: body.reviewer_name,
+            email: body.reviewer_email,
+            rating: body.rating,
+            title: body.title,
+            body: body.body,
+          }),
+        });
+
+        if (!res.ok) {
+          const errText = await res.text();
+          return error(`Judge.me error: ${errText}`, res.status, cors);
+        }
+
+        return json({ submitted: true }, 201, cors);
+      }
+
       // WEBHOOKS
       // ============================================================
 
