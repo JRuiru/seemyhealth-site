@@ -1,0 +1,191 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+export const prerender = true;
+
+const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
+
+const steps = [
+  {
+    num: "1",
+    title: "Share your link",
+    description: "Send your personal invite link to friends and family via text, email, or social media.",
+    icon: "M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 1 1 0-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 1 0 5.367-2.684 3 3 0 0 0-5.367 2.684zm0 9.316a3 3 0 1 0 5.368 2.684 3 3 0 0 0-5.368-2.684z",
+  },
+  {
+    num: "2",
+    title: "They join SeeMyHealth",
+    description: "Your friend downloads the app and creates their account using your referral link.",
+    icon: "M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM3 20a6 6 0 0 1 12 0v1H3v-1z",
+  },
+  {
+    num: "3",
+    title: "You both benefit",
+    description: "Once they make their first purchase, you both get rewarded. Health is better together.",
+    icon: "M12 8v13m0-13V6a2 2 0 1 1 2 2h-2zm0 0V5.5A2.5 2.5 0 1 0 9.5 8H12zm-7 4h14M5 12a2 2 0 1 1 0-4h14a2 2 0 1 1 0 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7",
+  },
+];
+
+const devices = [
+  { name: "Ring One", image: "ring-gold-hands-portrait", color: "#F97316", href: "/products/ring-one" },
+  { name: "The Scale", image: "scale-black-nutritionist", color: "#3B82F6", href: "/products/scale" },
+  { name: "BP Monitor", image: "bp-black-poster", color: "#EF4444", href: "/products/bp-monitor" },
+  { name: "Hydra One", image: "bottle-black-picnic", color: "#06B6D4", href: "/products/hydra-one" },
+  { name: "Hema One", image: "hema-orange-kitchen-v2", color: "#A855F7", href: "/products/hema-one" },
+];
+
+const inviteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Invite Friends | SeeMyHealth",
+  description: "Share SeeMyHealth with friends and family. Health is better together.",
+};
+---
+
+<Layout
+  title="Invite Friends | SeeMyHealth"
+  description="Share SeeMyHealth with friends and family. Invite them to join the complete health ecosystem."
+  canonicalPath="/invite"
+  jsonLd={inviteSchema}
+>
+  <Navbar />
+
+  <!-- Hero -->
+  <section class="relative pt-32 pb-24 sm:pt-40 sm:pb-32 overflow-hidden">
+    <div class="absolute inset-0">
+      <img
+        src={`${CF_IMG}/lifestyle-friends-bar/public`}
+        alt="Friends sharing health journeys together"
+        class="w-full h-full object-cover opacity-40"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-brand-black/60 via-brand-black/50 to-brand-black"></div>
+    </div>
+
+    <div class="relative max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-6" data-scroll-reveal>Invite Friends</p>
+      <p id="inviter-line" class="text-lg text-brand-gray-300 mb-4 hidden" data-scroll-reveal>
+        <span id="inviter-name"></span> invited you to join SeeMyHealth
+      </p>
+      <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-300 uppercase leading-[0.95] mb-8" data-scroll-reveal>
+        Health Is Better<br /><span class="font-500">Together</span>
+      </h1>
+      <p class="text-lg sm:text-xl text-brand-gray-400 leading-relaxed max-w-2xl mx-auto mb-10" data-scroll-reveal>
+        Share SeeMyHealth with the people you care about. When they join, you both get rewarded.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center" data-scroll-reveal>
+        <a href="https://apps.apple.com/app/seemyhealth" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white text-brand-black font-semibold text-sm uppercase tracking-wider hover:bg-brand-gray-100 transition-colors duration-300">
+          Download the App
+        </a>
+        <a href="#how-it-works" class="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/20 text-white font-semibold text-sm uppercase tracking-wider hover:border-white/40 transition-colors duration-300">
+          How It Works
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4" data-scroll-reveal>How It Works</p>
+        <h2 class="font-display text-3xl sm:text-4xl font-300 uppercase leading-tight" data-scroll-reveal>
+          Three Steps to <span class="font-500">Share the Movement</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+        {steps.map((step) => (
+          <div class="text-center" data-scroll-reveal>
+            <div class="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center mx-auto mb-6">
+              <svg class="w-7 h-7 text-brand-gray-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d={step.icon} />
+              </svg>
+            </div>
+            <p class="text-sm font-semibold text-brand-gray-500 uppercase tracking-wider mb-2">Step {step.num}</p>
+            <h3 class="text-lg font-semibold text-white mb-3">{step.title}</h3>
+            <p class="text-sm text-brand-gray-400 leading-relaxed">{step.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- The Ecosystem -->
+  <section class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4" data-scroll-reveal>The Ecosystem</p>
+        <h2 class="font-display text-3xl sm:text-4xl font-300 uppercase leading-tight mb-4" data-scroll-reveal>
+          Five Devices. <span class="font-500">One Picture of Your Health.</span>
+        </h2>
+        <p class="text-brand-gray-400 max-w-xl mx-auto" data-scroll-reveal>
+          Share the complete health ecosystem with the people you care about.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        {devices.map((device) => (
+          <a href={device.href} class="group" data-scroll-reveal>
+            <div class="bg-brand-dark rounded-xl border border-white/5 overflow-hidden transition-all duration-300 group-hover:border-white/10">
+              <img
+                src={`${CF_IMG}/${device.image}/public`}
+                alt={device.name}
+                class="w-full aspect-[4/5] object-cover"
+              />
+              <div class="p-4 text-center">
+                <p class="text-xs font-semibold uppercase tracking-wider mb-1" style={`color: ${device.color}`}>
+                  {device.name}
+                </p>
+                <p class="text-[11px] text-brand-gray-500 uppercase tracking-wider">Explore</p>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Download CTA -->
+  <section class="py-24 sm:py-32 bg-brand-dark border-t border-white/5">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
+      <img
+        src={`${CF_IMG}/app-hero-triple-phones/public`}
+        alt="SeeMyHealth app on multiple devices"
+        class="w-full max-w-md mx-auto rounded-2xl mb-12"
+        data-scroll-reveal
+      />
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4" data-scroll-reveal>Get Started</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-300 uppercase leading-tight mb-4" data-scroll-reveal>
+        Download <span class="font-500">SeeMyHealth</span>
+      </h2>
+      <p class="text-brand-gray-400 max-w-lg mx-auto mb-10" data-scroll-reveal>
+        Available on iOS and Android. Your health data syncs automatically across all your devices.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center" data-scroll-reveal>
+        <a href="https://apps.apple.com/app/seemyhealth" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white text-brand-black font-semibold text-sm uppercase tracking-wider hover:bg-brand-gray-100 transition-colors duration-300">
+          App Store
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=ai.seemyhealth" class="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/20 text-white font-semibold text-sm uppercase tracking-wider hover:border-white/40 transition-colors duration-300">
+          Google Play
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name');
+    if (name) {
+      const line = document.getElementById('inviter-line');
+      const span = document.getElementById('inviter-name');
+      if (line && span) {
+        span.textContent = name;
+        line.classList.remove('hidden');
+      }
+    }
+  </script>
+</Layout>
