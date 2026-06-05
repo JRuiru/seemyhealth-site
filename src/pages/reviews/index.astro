@@ -102,15 +102,38 @@ const deviceList = Object.entries(products).map(([slug, p]) => ({
             <button id="close-review-form" class="text-brand-gray-500 hover:text-brand-gray-100 transition-colors text-2xl leading-none">&times;</button>
           </div>
           <form id="review-form" class="space-y-5">
-            <!-- Product select -->
+            <!-- Product select (custom) -->
             <div>
               <label class="block text-xs uppercase tracking-widest text-brand-gray-500 mb-2">Product</label>
-              <select id="review-product" required class="w-full bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg px-4 py-3 text-brand-gray-100 text-sm focus:outline-none focus:border-[#333]">
-                <option value="">Select a device</option>
-                {deviceList.map((d) => (
-                  <option value={d.slug}>{d.name}</option>
-                ))}
-              </select>
+              <input type="hidden" id="review-product" required value="" />
+              <div class="relative" id="product-dropdown">
+                <button type="button" id="dropdown-trigger" class="w-full bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl px-4 py-4 text-left flex items-center justify-between hover:border-[#333] transition-colors group">
+                  <div class="flex items-center gap-3" id="dropdown-selected">
+                    <span class="text-sm text-brand-gray-500">Select a device</span>
+                  </div>
+                  <svg class="w-4 h-4 text-brand-gray-500 group-hover:text-brand-gray-300 transition-transform" id="dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div id="dropdown-menu" class="hidden absolute z-50 left-0 right-0 mt-2 bg-[#111] border border-[#1a1a1a] rounded-xl overflow-hidden shadow-2xl shadow-black/50">
+                  {deviceList.map((d) => (
+                    <button
+                      type="button"
+                      class="dropdown-option w-full flex items-center gap-4 px-4 py-3.5 hover:bg-[#1a1a1a] transition-colors text-left"
+                      data-slug={d.slug}
+                      data-name={d.name}
+                      data-color={d.color}
+                      data-image={d.image}
+                    >
+                      <img src={d.image} alt={d.name} class="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
+                      <div class="flex-1 min-w-0">
+                        <p class="text-sm font-500 text-brand-gray-100">{d.name}</p>
+                      </div>
+                      <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style={`background-color: ${d.color}`}></div>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
             <!-- Rating -->
             <div>
@@ -228,6 +251,49 @@ const deviceList = Object.entries(products).map(([slug, p]) => ({
 
   const $ = (sel: string) => document.querySelector(sel);
   const $$ = (sel: string) => document.querySelectorAll(sel);
+
+  // Custom product dropdown
+  const dropdownTrigger = $('#dropdown-trigger');
+  const dropdownMenu = $('#dropdown-menu');
+  const dropdownArrow = $('#dropdown-arrow');
+  const dropdownSelected = $('#dropdown-selected');
+  let dropdownOpen = false;
+
+  dropdownTrigger?.addEventListener('click', () => {
+    dropdownOpen = !dropdownOpen;
+    dropdownMenu?.classList.toggle('hidden', !dropdownOpen);
+    (dropdownArrow as HTMLElement).style.transform = dropdownOpen ? 'rotate(180deg)' : '';
+  });
+
+  document.addEventListener('click', (e) => {
+    if (dropdownOpen && !$('#product-dropdown')?.contains(e.target as Node)) {
+      dropdownOpen = false;
+      dropdownMenu?.classList.add('hidden');
+      (dropdownArrow as HTMLElement).style.transform = '';
+    }
+  });
+
+  $$('.dropdown-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const el = opt as HTMLElement;
+      const slug = el.dataset.slug || '';
+      const name = el.dataset.name || '';
+      const color = el.dataset.color || '';
+      const image = el.dataset.image || '';
+
+      (document.getElementById('review-product') as HTMLInputElement).value = slug;
+      (dropdownSelected as HTMLElement).innerHTML = `
+        <img src="${image}" alt="${name}" class="w-8 h-8 rounded-lg object-cover" />
+        <span class="text-sm font-500 text-brand-gray-100">${name}</span>
+        <span class="w-2 h-2 rounded-full" style="background-color: ${color}"></span>
+      `;
+      (dropdownTrigger as HTMLElement).style.borderColor = color;
+
+      dropdownOpen = false;
+      dropdownMenu?.classList.add('hidden');
+      (dropdownArrow as HTMLElement).style.transform = '';
+    });
+  });
 
   // Star rating
   function renderStars(rating: number, color = '#F97316', size = 'w-4 h-4') {
