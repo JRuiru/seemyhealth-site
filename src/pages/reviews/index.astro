@@ -485,6 +485,43 @@ const deviceList = Object.entries(products).map(([slug, p]) => ({
     }
   });
 
+  // Pre-fill from URL params (from email one-click stars)
+  function applyUrlParams() {
+    const params = new URLSearchParams(window.location.search);
+    const rating = parseInt(params.get('rating') || '0');
+    const product = params.get('product') || '';
+
+    if (rating >= 1 && rating <= 5) {
+      // Open the form
+      $('#review-form-wrapper')?.classList.remove('hidden');
+      $('#write-review-card')?.classList.add('hidden');
+
+      // Set star rating
+      selectedRating = rating;
+      (document.getElementById('review-rating') as HTMLInputElement).value = String(rating);
+      $$('#star-rating svg').forEach((s, i) => {
+        (s as HTMLElement).style.color = i < rating ? '#F97316' : '#2a2a2a';
+      });
+    }
+
+    if (product) {
+      // Find and click the matching dropdown option
+      const option = document.querySelector(`.dropdown-option[data-slug="${product}"]`) as HTMLElement;
+      if (option) option.click();
+
+      // Also activate the filter for that product
+      const filterBtn = document.querySelector(`.filter-btn[data-filter="${product}"]`) as HTMLElement;
+      if (filterBtn) filterBtn.click();
+    }
+
+    // Scroll to review form if params present
+    if (rating >= 1 || product) {
+      setTimeout(() => {
+        $('#review-form-wrapper')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
+    }
+  }
+
   // Init
   async function init() {
     loadSummaries();
@@ -494,6 +531,7 @@ const deviceList = Object.entries(products).map(([slug, p]) => ({
     if (reviews.length >= 10) {
       ($('#load-more-wrapper') as HTMLElement).style.display = '';
     }
+    applyUrlParams();
   }
 
   init();

@@ -100,7 +100,7 @@ function getCookie(request: Request, name: string): string | null {
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const cors = corsHeaders(request, env);
 
     if (request.method === "OPTIONS") {
@@ -464,8 +464,47 @@ export default {
       // REVIEWS (Judge.me)
       // ============================================================
 
+      // ── Judge.me cache helper ──
+      // Cache GET responses to reduce Judge.me API calls
+      // POST /api/reviews invalidates all review caches
+      const cache = caches.default;
+      const CACHE_REVIEWS = 3600;   // 1 hour — review lists
+      const CACHE_SUMMARY = 3600;   // 1 hour — summaries
+
+      const PRODUCT_HANDLES = ["ring-one", "scale", "scale-pro", "bp-monitor", "hydra-one", "hema-one"];
+
+      async function invalidateReviewCaches(origin: string) {
+        const deletions: Promise<boolean>[] = [];
+        // Invalidate /api/reviews/all pages 1–5
+        for (let p = 1; p <= 5; p++) {
+          deletions.push(cache.delete(new Request(`${origin}/api/reviews/all?page=${p}&per_page=10`)));
+        }
+        // Invalidate per-product summaries
+        for (const h of PRODUCT_HANDLES) {
+          deletions.push(cache.delete(new Request(`${origin}/api/reviews/summary?handle=${h}`)));
+          // Invalidate per-product review lists page 1
+          deletions.push(cache.delete(new Request(`${origin}/api/reviews?handle=${h}&page=1&per_page=5`)));
+        }
+        await Promise.all(deletions);
+      }
+
+      function cachedJson(data: unknown, maxAge: number) {
+        return new Response(JSON.stringify(data), {
+          status: 200,
+          headers: {
+            ...cors,
+            "Content-Type": "application/json",
+            "Cache-Control": `public, max-age=${maxAge}`,
+          },
+        });
+      }
+
       // GET /api/reviews?handle=ring-one&page=1&per_page=5
       if (path === "/api/reviews" && request.method === "GET") {
+        const cacheKey = new Request(url.toString());
+        const cached = await cache.match(cacheKey);
+        if (cached) return cached;
+
         const handle = url.searchParams.get("handle");
         const page = url.searchParams.get("page") || "1";
         const perPage = url.searchParams.get("per_page") || "5";
@@ -478,7 +517,6 @@ export default {
         });
 
         if (handle) {
-          // Get Shopify product ID from handle first
           const productRes = await fetch(
             `https://judge.me/api/v1/widgets/product_review?api_token=${env.JUDGEME_PUBLIC_TOKEN}&shop_domain=${env.JUDGEME_SHOP_DOMAIN}&handle=${handle}`
           );
@@ -490,29 +528,41 @@ export default {
 
         const res = await fetch(`https://judge.me/api/v1/reviews?${params}`);
         const data = await res.json();
-        return json(data, 200, cors);
+        const response = cachedJson(data, CACHE_REVIEWS);
+        ctx.waitUntil(cache.put(cacheKey, response.clone()));
+        return response;
       }
 
       // GET /api/reviews/summary?handle=ring-one — rating + count for a product
       if (path === "/api/reviews/summary" && request.method === "GET") {
+        const cacheKey = new Request(url.toString());
+        const cached = await cache.match(cacheKey);
+        if (cached) return cached;
+
         const handle = url.searchParams.get("handle") || "";
         const res = await fetch(
           `https://judge.me/api/v1/widgets/product_review?api_token=${env.JUDGEME_PUBLIC_TOKEN}&shop_domain=${env.JUDGEME_SHOP_DOMAIN}&handle=${handle}`
         );
         const data = (await res.json()) as { widget?: string };
-        // Extract rating and count from widget HTML
         const widgetHtml = data.widget || "";
         const ratingMatch = widgetHtml.match(/data-average-rating='([\d.]+)'/);
         const countMatch = widgetHtml.match(/data-number-of-reviews='(\d+)'/);
-        return json({
+        const result = {
           handle,
           rating: ratingMatch ? parseFloat(ratingMatch[1]) : 0,
           count: countMatch ? parseInt(countMatch[1]) : 0,
-        }, 200, cors);
+        };
+        const response = cachedJson(result, CACHE_SUMMARY);
+        ctx.waitUntil(cache.put(cacheKey, response.clone()));
+        return response;
       }
 
       // GET /api/reviews/all — all reviews across all products (for /reviews page)
       if (path === "/api/reviews/all" && request.method === "GET") {
+        const cacheKey = new Request(url.toString());
+        const cached = await cache.match(cacheKey);
+        if (cached) return cached;
+
         const page = url.searchParams.get("page") || "1";
         const perPage = url.searchParams.get("per_page") || "10";
         const params = new URLSearchParams({
@@ -523,7 +573,9 @@ export default {
         });
         const res = await fetch(`https://judge.me/api/v1/reviews?${params}`);
         const data = await res.json();
-        return json(data, 200, cors);
+        const response = cachedJson(data, CACHE_REVIEWS);
+        ctx.waitUntil(cache.put(cacheKey, response.clone()));
+        return response;
       }
 
       // POST /api/reviews — submit a new review
@@ -570,6 +622,9 @@ export default {
           const errText = await res.text();
           return error(`Judge.me error: ${errText}`, res.status, cors);
         }
+
+        // Invalidate all review caches so fresh data shows immediately
+        ctx.waitUntil(invalidateReviewCaches(url.origin));
 
         return json({ submitted: true }, 201, cors);
       }
