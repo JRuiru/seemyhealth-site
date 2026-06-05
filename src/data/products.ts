@@ -294,7 +294,7 @@ export const products: Record<string, Product> = {
     tagline: "Stay Perfectly Hydrated",
     headline: "Drink smarter,\nnot harder",
     description: "Smart water bottle that tracks your daily intake automatically. LED ring shows your progress. Gentle reminders keep you on track without being annoying.",
-    image: "",
+    image: `${CF_IMG}/bottle-black-desk-work/public`,
     videoThumbnail: `${CF_IMG}/bottle-black-desk-work/public`,
     streamId: "323f4655be53eefdf3f08ecd6765c362",
     specImage: `${CF_IMG}/hydra-one-side-profile/public`,
