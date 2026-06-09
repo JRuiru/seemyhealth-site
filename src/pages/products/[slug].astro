@@ -37,7 +37,7 @@ const productSchema = {
   "@type": "Product",
   name: product.name,
   description: product.description,
-  image: product.image,
+  image: product.image || product.ogImage || product.crossSellImage,
   brand: {
     "@type": "Brand",
     name: "SeeMyHealth",
