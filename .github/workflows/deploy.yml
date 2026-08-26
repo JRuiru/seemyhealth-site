@@ -98,7 +98,7 @@ jobs:
           check() {
             local url="$1" expect="$2" attempt=1
             while [ "$attempt" -le 6 ]; do
-              code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$url" || echo 000)
+              code=$(curl -sL -o /dev/null -w '%{http_code}' --max-time 20 "$url" || echo 000)
               if [ "$code" = "$expect" ]; then
                 echo "  ok  $url -> $code"
                 return 0
