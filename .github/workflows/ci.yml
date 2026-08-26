@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install BFF dependencies
+        run: npm ci
+        working-directory: workers/bff
+
+      - name: Security audit
+        run: npm audit --audit-level=critical
+
+      - name: Typecheck site
+        run: npm run check
+
+      - name: Typecheck BFF Worker
+        run: npm run typecheck
+        working-directory: workers/bff
+
+      - name: Build site
+        run: npm run build
+
+      - name: Dry-run BFF Worker deploy
+        run: npx wrangler deploy -c wrangler.jsonc --dry-run
+        working-directory: workers/bff
+
+      - name: Assert no source maps in client bundle
+        run: |
+          if find dist/client -name '*.map' | grep -q .; then
+            echo "::error::Source maps found in dist/client — see CLAUDE.md (Client Bundle Security)"
+            find dist/client -name '*.map'
+            exit 1
+          fi
+          echo "No source maps in client bundle."

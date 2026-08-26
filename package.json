@@ -8,6 +8,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "check": "astro check",
+    "check:bff": "npm --prefix workers/bff run typecheck",
     "preview": "astro preview",
     "astro": "astro",
     "generate-types": "wrangler types",

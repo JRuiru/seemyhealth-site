@@ -69,6 +69,15 @@ scripts/
 - Navbar has 3 variants: `transparent` (homepage), `product` (product pages), `default` (other)
 - Product data is centralized in `src/data/products.ts`
 
+## Client Bundle Security
+
+**NEVER enable source maps in production builds.** Do not set `vite.build.sourcemap: true` (or `--sourcemap`) in `astro.config.mjs` or any production build command. Shipping `.map` files exposes the original `.astro`/`.tsx` source in browser DevTools. If maps are needed for local debugging, keep the change local and never commit or deploy it.
+
+Related rules:
+- Never put secrets in client-side code. Only `PUBLIC_*` env vars may reach the browser; everything else lives in Cloudflare Secrets and is accessed by the BFF Worker.
+- The frontend must never call Shopify directly — always go through `/api/*` on the BFF Worker.
+- Astro fingerprints in the HTML (`astro-island`, `data-astro-cid-*`, `/_astro/` paths) are expected and load-bearing for hydration. Do not attempt to strip or obfuscate them.
+
 ## Cloudflare Account
 
 - Account ID: `54224eb92112a4d5ebb72d97a7123203`

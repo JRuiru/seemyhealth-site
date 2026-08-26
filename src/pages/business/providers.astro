@@ -304,10 +304,11 @@ const outcomes = [
 
     function validateField(el: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): string | null {
       const val = el.value.trim();
-      if (el.hasAttribute("required") && !val) return `${el.placeholder || el.name} is required`;
+      const label = ("placeholder" in el && el.placeholder) || el.name;
+      if (el.hasAttribute("required") && !val) return `${label} is required`;
       if (el.type === "email" && val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) return "Please enter a valid email";
       const min = el.getAttribute("minlength");
-      if (min && val.length < Number(min)) return `${el.placeholder || el.name} must be at least ${min} characters`;
+      if (min && val.length < Number(min)) return `${label} must be at least ${min} characters`;
       return null;
     }
 

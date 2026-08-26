@@ -165,14 +165,16 @@ export default function CartDrawer() {
             </div>
           ) : (
             <div className="space-y-6">
-              {lines.map((line) => (
+              {lines.map((line) => {
+                // Prefer variant image, fall back to product featured image
+                const image = line.merchandise.image || line.merchandise.product.featuredImage;
+                return (
                 <div key={line.id} className="flex gap-4">
-                  {/* Thumbnail — prefer variant image, fall back to product featured image */}
                   <div className="w-20 h-20 rounded-xl overflow-hidden bg-brand-gray-900 shrink-0">
-                    {(line.merchandise.image || line.merchandise.product.featuredImage) ? (
+                    {image ? (
                       <img
-                        src={(line.merchandise.image || line.merchandise.product.featuredImage).url}
-                        alt={(line.merchandise.image || line.merchandise.product.featuredImage).altText || ""}
+                        src={image.url}
+                        alt={image.altText || ""}
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -231,7 +233,8 @@ export default function CartDrawer() {
                     </svg>
                   </button>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
