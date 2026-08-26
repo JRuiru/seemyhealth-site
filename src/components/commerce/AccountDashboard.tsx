@@ -19,6 +19,18 @@ function getGreeting(): string {
   return "Good evening";
 }
 
+// Fresh Shopify customer records (just created via Google sign-up) can take a
+// moment to become queryable on the Customer Account API, so give it a few
+// tries before treating a null customer as "not logged in".
+async function getCustomerWithRetry(attempts = 3, delayMs = 900): Promise<Customer | null> {
+  for (let i = 0; i < attempts; i++) {
+    const customer = await getCustomer();
+    if (customer) return customer;
+    if (i < attempts - 1) await new Promise((resolve) => setTimeout(resolve, delayMs));
+  }
+  return null;
+}
+
 function getSubGreeting(): string {
   const greetings = [
     "Great to have you back.",
@@ -48,7 +60,12 @@ export default function AccountDashboard() {
       return;
     }
 
-    getCustomer()
+    const freshLogin = params.get("welcome") === "1";
+    if (freshLogin) {
+      window.history.replaceState({}, "", "/account");
+    }
+
+    (freshLogin ? getCustomerWithRetry() : getCustomer())
       .then((c) => {
         if (!c) {
           const lastAttempt = sessionStorage.getItem("smh_login_attempt");

@@ -32,6 +32,7 @@ interface Env {
   SHOPIFY_STORE_DOMAIN: string;
   SHOPIFY_STOREFRONT_TOKEN: string;
   SHOPIFY_ADMIN_TOKEN: string;
+  SHOPIFY_MYSHOPIFY_DOMAIN: string;
   SHOPIFY_CUSTOMER_CLIENT_ID: string;
   SHOPIFY_SHOP_ID: string;
   WEBHOOK_SECRET: string;
@@ -97,6 +98,51 @@ function getCookie(request: Request, name: string): string | null {
   const header = request.headers.get("Cookie") || "";
   const match = header.match(new RegExp(`(?:^|;\\s*)${name}=([^;]*)`));
   return match ? decodeURIComponent(match[1]) : null;
+}
+
+// Immediately confirm a customer's pending email marketing consent as single
+// opt-in, since Shopify's native double opt-in confirmation email links to
+// the Online Store theme (`customer.subscribe_url`), which doesn't exist in
+// this headless setup.
+async function confirmSingleOptIn(env: Env, customerId: number): Promise<void> {
+  const graphqlUrl = `https://${env.SHOPIFY_MYSHOPIFY_DOMAIN}/admin/api/2026-01/graphql.json`;
+
+  const res = await fetch(graphqlUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Shopify-Access-Token": env.SHOPIFY_ADMIN_TOKEN,
+    },
+    body: JSON.stringify({
+      query: `
+        mutation confirmOptIn($input: CustomerEmailMarketingConsentUpdateInput!) {
+          customerEmailMarketingConsentUpdate(input: $input) {
+            customer { id }
+            userErrors { field message }
+          }
+        }
+      `,
+      variables: {
+        input: {
+          customerId: `gid://shopify/Customer/${customerId}`,
+          emailMarketingConsent: {
+            marketingState: "SUBSCRIBED",
+            marketingOptInLevel: "SINGLE_OPT_IN",
+          },
+        },
+      },
+    }),
+  });
+
+  const data = (await res.json()) as {
+    data?: { customerEmailMarketingConsentUpdate?: { userErrors?: { field: string; message: string }[] } };
+    errors?: unknown;
+  };
+
+  const userErrors = data.data?.customerEmailMarketingConsentUpdate?.userErrors;
+  if (!res.ok || data.errors || (userErrors && userErrors.length > 0)) {
+    throw new Error(`customerEmailMarketingConsentUpdate failed: ${JSON.stringify(data.errors || userErrors)}`);
+  }
 }
 
 export default {
@@ -182,7 +228,7 @@ export default {
 
         // Store tokens in secure httpOnly cookies
         // Access token is short-lived, refresh token is long-lived
-        return redirect(`${SITE_ORIGIN}/account`, [
+        return redirect(`${SITE_ORIGIN}/account?welcome=1`, [
           cookie("smh_access_token", tokens.access_token, tokens.expires_in),
           cookie("smh_refresh_token", tokens.refresh_token, 60 * 60 * 24 * 30), // 30 days
           cookie("smh_id_token", tokens.id_token, 60 * 60 * 24 * 30),
@@ -659,6 +705,17 @@ export default {
         const topic = request.headers.get("X-Shopify-Topic") || "";
         const payload = JSON.parse(rawBody);
         console.log(`Webhook received: ${topic}`, payload.id);
+
+        if (topic === "customers/email_marketing_consent_update") {
+          const state = payload.email_marketing_consent?.state;
+          if (state === "pending") {
+            try {
+              await confirmSingleOptIn(env, payload.customer_id);
+            } catch (e: any) {
+              console.error("Failed to auto-confirm marketing consent:", e.message);
+            }
+          }
+        }
 
         return json({ received: true }, 200, cors);
       }
