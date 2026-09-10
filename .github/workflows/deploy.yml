@@ -57,16 +57,16 @@ jobs:
       - name: Assert no source maps in client bundle
         if: steps.filter.outputs.site == 'true'
         run: |
-          if find dist/client -name '*.map' | grep -q .; then
-            echo "::error::Source maps found in dist/client — see CLAUDE.md (Client Bundle Security)"
-            find dist/client -name '*.map'
+          if find dist -name '*.map' | grep -q .; then
+            echo "::error::Source maps found in dist — see CLAUDE.md (Client Bundle Security)"
+            find dist -name '*.map'
             exit 1
           fi
           echo "No source maps in client bundle."
 
       - name: Deploy Pages
         if: steps.filter.outputs.site == 'true'
-        run: npx wrangler pages deploy dist/client --project-name=seemyhealth-site --commit-dirty=true
+        run: npx wrangler pages deploy dist --project-name=seemyhealth-site --commit-dirty=true
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

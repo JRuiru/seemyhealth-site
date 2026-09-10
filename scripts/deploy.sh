@@ -55,7 +55,7 @@ echo ""
 
 # 2. Deploy Cloudflare Pages (static site + SSR worker)
 echo "▸ Deploying Pages..."
-npx wrangler pages deploy dist/client \
+npx wrangler pages deploy dist \
   --project-name=seemyhealth-site \
   --commit-dirty=true
 echo "  ✓ Pages deployed"

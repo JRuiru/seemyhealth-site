@@ -12,12 +12,10 @@
     "check:bff": "npm --prefix workers/bff run typecheck",
     "preview": "astro preview",
     "astro": "astro",
-    "generate-types": "wrangler types",
     "upload": "./scripts/upload-assets.sh",
     "deploy": "./scripts/deploy.sh"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "14.3.1",
     "@astrojs/react": "6.0.5",
     "@astrojs/sitemap": "3.7.4",
     "@tailwindcss/vite": "4.3.0",

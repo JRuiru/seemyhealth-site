@@ -46,9 +46,9 @@ jobs:
 
       - name: Assert no source maps in client bundle
         run: |
-          if find dist/client -name '*.map' | grep -q .; then
-            echo "::error::Source maps found in dist/client — see CLAUDE.md (Client Bundle Security)"
-            find dist/client -name '*.map'
+          if find dist -name '*.map' | grep -q .; then
+            echo "::error::Source maps found in dist — see CLAUDE.md (Client Bundle Security)"
+            find dist -name '*.map'
             exit 1
           fi
           echo "No source maps in client bundle."

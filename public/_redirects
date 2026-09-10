@@ -1,0 +1,3 @@
+# Universal-link fallbacks: anyone WITHOUT the app who opens a practice QR URL lands here.
+# One static page serves every slug (the page reads the slug from the path client-side).
+/practice/* /practice 200

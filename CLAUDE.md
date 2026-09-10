@@ -4,7 +4,7 @@ Premium medical-grade health monitoring device ecommerce site. See `ARCHITECTURE
 
 ## Tech Stack
 
-- **Framework:** Astro 6.3 with SSR on Cloudflare Workers
+- **Framework:** Astro 7 (fully static build — every page prerendered; no SSR adapter)
 - **Styling:** Tailwind CSS 4 (theme in `src/styles/global.css`)
 - **Animations:** GSAP 3.15 + ScrollTrigger + Lenis smooth scroll
 - **Hosting:** Cloudflare Pages + Workers
@@ -18,7 +18,7 @@ Premium medical-grade health monitoring device ecommerce site. See `ARCHITECTURE
 # Astro frontend (Cloudflare Pages)
 npm run dev          # Dev server
 npm run build        # Production build
-npx wrangler pages deploy dist/client --project-name seemyhealth-site  # Deploy frontend
+npx wrangler pages deploy dist --project-name seemyhealth-site  # Deploy frontend
 
 # BFF Worker (Cloudflare Worker)
 cd workers/bff
@@ -29,7 +29,11 @@ npx wrangler deploy --config wrangler.jsonc  # Deploy worker
 SHOPIFY_STORE_DOMAIN=shop.seemyhealth.ai SHOPIFY_ADMIN_TOKEN=shpat_xxx npx tsx scripts/seed-products.ts
 ```
 
-**Important:** Deploy `dist/client` NOT `dist` — Astro's Cloudflare adapter splits output into `dist/client` (static) and `dist/server` (worker).
+**Important:** The site build is fully static — there is no Astro SSR worker. The store's
+server side is the separate BFF Worker (`workers/bff`, routed at `/api/*`); Astro pages are
+prerendered shells with React islands that call it. If SSR pages are ever needed, re-add
+`@astrojs/cloudflare` — and remove any root vite version override first (a pinned override
+once silently downgraded Astro's own vite requirement and broke the build).
 
 ## Project Structure
 
