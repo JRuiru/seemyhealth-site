@@ -1,3 +1,5 @@
 # Universal-link fallbacks: anyone WITHOUT the app who opens a practice QR URL lands here.
-# One static page serves every slug (the page reads the slug from the path client-side).
-/practice/* /practice 200
+# One static page serves every slug — the page reads the slug from the still-visible URL.
+# The target lives OUTSIDE the wildcard: a target inside it loops via Pages' trailing-slash 308.
+/practice /practice-handoff/ 200
+/practice/* /practice-handoff/ 200

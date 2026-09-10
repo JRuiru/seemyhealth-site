@@ -1,22 +1,26 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Navbar from '../../components/Navbar.astro';
-import Footer from '../../components/Footer.astro';
-import AppStoreButtons from '../../components/AppStoreButtons.astro';
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import AppStoreButtons from '../components/AppStoreButtons.astro';
 
 export const prerender = true;
 
 // The universal-link fallback for printed practice QR codes
 // (https://seemyhealth.ai/practice/{slug}[/location/{id}]). With the app installed the tap never
 // reaches the browser — iOS hands the URL to the app. Anyone landing HERE doesn't have the app,
-// so the page's one job is the handoff: name the clinic (slug read client-side; one static page
-// serves every slug via the /practice/* rewrite in public/_redirects) and get the app installed.
+// so the page's one job is the handoff: name the clinic (slug read client-side from the
+// still-visible /practice/... URL) and get the app installed.
+//
+// Served from /practice-handoff deliberately — OUTSIDE the /practice/* wildcard — because a
+// rewrite target inside its own wildcard loops: /practice/x → /practice, Pages 308s the
+// trailing slash, /practice/ matches the wildcard again, forever.
 ---
 
 <Layout
   title="Check In | SeeMyHealth"
   description="Check in at your clinic with the SeeMyHealth app."
-  canonicalPath="/practice"
+  canonicalPath="/practice-handoff"
   noindex
 >
   <Navbar />

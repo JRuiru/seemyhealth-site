@@ -15,7 +15,7 @@ export default defineConfig({
         ![
           '/privacy/', '/terms/', '/terms/sale/', '/account/', '/account/orders/', '/404/',
           // App-handoff pages: universal-link fallbacks, not content.
-          '/practice/', '/payments/return/',
+          '/practice-handoff/', '/payments/return/',
         ].some(
           (path) => page.includes(path)
         ),
