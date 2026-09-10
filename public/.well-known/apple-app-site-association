@@ -1,0 +1,19 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "2QSN6768PN.ai.seemyhealth.app",
+          "2QSN6768PN.ai.seemyhealth.app.dev"
+        ],
+        "components": [
+          { "/": "/practice/*", "comment": "Printed practice QR — opens the arrival/check-in flow" },
+          { "/": "/appointment/*", "comment": "Appointment detail" },
+          { "/": "/payments/return", "comment": "Hosted checkout return — lands on appointments" },
+          { "/": "/invite/*", "comment": "Community invites" },
+          { "/": "/app/*", "comment": "Generic app routes: /app/{section}[/{sub}]" }
+        ]
+      }
+    ]
+  }
+}

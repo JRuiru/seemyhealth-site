@@ -1,0 +1,6 @@
+# Apple fetches this (via its CDN) to authorize universal links into the iOS app.
+# It must be HTTP 200, un-redirected JSON; the file is extensionless, so without this
+# rule it would be served as application/octet-stream.
+/.well-known/apple-app-site-association
+  Content-Type: application/json
+  Cache-Control: public, max-age=3600
