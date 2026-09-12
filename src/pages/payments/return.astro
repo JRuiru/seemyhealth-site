@@ -45,11 +45,17 @@ export const prerender = true;
           </defs>
         </svg>
 
+        <!-- Neutral by default: this page cannot know the outcome (the webhook does), so the
+             static copy must not claim success before the script reads ?status= — with scripts
+             off, a failed return would otherwise read "Payment Received". -->
         <div
           id="status-icon"
           class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/5 border border-white/10 mb-6"
         >
-          <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <svg data-icon="pending" class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l3.75 2.25M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <svg data-icon="success" hidden class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
           </svg>
         </div>
@@ -58,11 +64,11 @@ export const prerender = true;
           id="status-headline"
           class="font-display text-2xl sm:text-3xl font-300 uppercase tracking-wide text-white leading-snug mb-3"
         >
-          Payment Received
+          Finishing Up Your Payment
         </h1>
         <p id="status-subtext" class="text-sm text-brand-gray-400 max-w-md mx-auto leading-relaxed">
-          You're all set. Your appointment updates in the SeeMyHealth app as soon as the payment
-          is confirmed — usually within a few seconds.
+          Your appointment updates in the SeeMyHealth app as soon as the payment is confirmed —
+          usually within a few seconds.
         </p>
       </div>
 
@@ -89,10 +95,20 @@ export const prerender = true;
 <script>
   // Flutterwave appends ?status=successful|cancelled|failed (plus tx_ref / transaction_id).
   // The words change; the truth doesn't — the app confirms the charge by webhook either way.
+  // The static default is neutral; this only upgrades the copy in whichever direction the
+  // gateway hinted. Fixed strings via textContent — the query value never touches the DOM.
   const flwStatus = new URLSearchParams(window.location.search).get('status');
-  if (flwStatus && flwStatus !== 'successful' && flwStatus !== 'completed') {
-    const headline = document.getElementById('status-headline');
-    const subtext = document.getElementById('status-subtext');
+  const headline = document.getElementById('status-headline');
+  const subtext = document.getElementById('status-subtext');
+
+  if (flwStatus === 'successful' || flwStatus === 'completed') {
+    if (headline) headline.textContent = 'Payment Received';
+    if (subtext)
+      subtext.textContent =
+        "You're all set. Your appointment updates in the SeeMyHealth app as soon as the payment is confirmed — usually within a few seconds.";
+    document.querySelector('[data-icon="pending"]')?.setAttribute('hidden', '');
+    document.querySelector('[data-icon="success"]')?.removeAttribute('hidden');
+  } else if (flwStatus) {
     if (headline) headline.textContent = 'Payment Not Completed';
     if (subtext)
       subtext.textContent =
