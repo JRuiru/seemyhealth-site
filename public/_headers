@@ -4,3 +4,10 @@
 /.well-known/apple-app-site-association
   Content-Type: application/json
   Cache-Control: public, max-age=3600
+
+# Android's Play Services fetches this to verify App Links into the Android app.
+# It must be HTTP 200, un-redirected JSON. The .json extension already sets the type;
+# the explicit rule keeps it correct if the host ever guesses differently.
+/.well-known/assetlinks.json
+  Content-Type: application/json
+  Cache-Control: public, max-age=3600

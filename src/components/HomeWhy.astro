@@ -1,0 +1,252 @@
+---
+// The why: your health apps float around a busy phone, it spins away and they are flung off,
+// and it comes back with one app. The section holds on screen while the scene plays, captions
+// follow the scene's beats, and once the phone has presented, scrolling zooms into the black of
+// its calm screen, which hands over to the next section.
+// The scene is hosted by Spline (prod.spline.design); it goes live only when someone presses
+// Update in Spline's Export panel.
+// From 15 Oct to 1 Nov the section goes Halloween by itself: the script sets data-season and the
+// copy swaps, and the scene reads the same attribute to raise its moon and bats. ?season=halloween
+// previews it any day.
+const SCENE_URL = 'https://prod.spline.design/XKs8dXyyQ1ZSgadg/scene.splinecode';
+
+// Where the presented phone sends people. The store listings are not linked yet, so both badges go
+// to the App page until they are.
+const APP_STORE_URL = '/app';
+const GOOGLE_PLAY_URL = '/app';
+
+const captions = [
+  {
+    beat: 'busy',
+    title: 'So this is your phone, huh?', text: '16 apps. 250 notifications. Not one of them talks to the others.',
+    spooky: { title: 'Spooky phone you’ve got there.', text: '16 apps. 250 notifications. All rattling their chains, and not one of them talks to the others.' },
+  },
+  { beat: 'spin', title: 'What if you just… let go?', text: '', spooky: { title: 'Poof! Watch them vanish.', text: '' } },
+  {
+    beat: 'present',
+    title: 'One app. All of you.', text: 'Sleep, heart, meals and meds, every trend in one place.',
+    spooky: { title: 'One app. No ghosts.', text: 'Sleep, heart, meals and meds, every trend in one place. Nothing lurking in the corners.' },
+  },
+];
+---
+
+<section class="group relative bg-brand-black h-[220vh]" data-why>
+  <div class="sticky top-0 h-screen overflow-hidden">
+    <!-- The scene, in a band that leaves room for the heading above and the caption below -->
+    <div class="absolute inset-x-0 top-[17vh] lg:top-[24vh] bottom-[19vh] will-change-transform" style="transform-origin: 50% 38%" data-why-zoom>
+      <canvas class="absolute inset-0 w-full h-full" data-why-scene={SCENE_URL} aria-label="Sixteen health apps around a phone are flung away, leaving one app"></canvas>
+    </div>
+
+    <!-- Heading -->
+    <div class="absolute inset-x-0 top-0 pt-20 sm:pt-24 lg:pt-28 px-6 text-center pointer-events-none" data-why-chrome>
+      <!-- At Halloween the heading answers itself once the phone presents (data-calm): the two
+           lines share one grid cell and cross-fade -->
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 group-data-[season=halloween]:text-[#ff8a2a] mb-3">
+        <span class="group-data-[season=halloween]:hidden">Be Honest</span>
+        <span class="hidden group-data-[season=halloween]:inline-grid justify-items-center">
+          <span class="[grid-area:1/1] transition-opacity duration-500 group-data-[calm]:opacity-0">Trick or Treat</span>
+          <span class="[grid-area:1/1] opacity-0 transition-opacity duration-500 group-data-[calm]:opacity-100">Treat</span>
+        </span>
+      </p>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-300 uppercase leading-[0.95]">
+        <span class="block group-data-[season=halloween]:hidden">How many health apps<br /><span class="font-500">are you juggling?</span></span>
+        <span class="hidden group-data-[season=halloween]:grid justify-items-center">
+          <span class="[grid-area:1/1] transition-opacity duration-500 group-data-[calm]:opacity-0">How many health apps<br /><span class="font-500">are haunting you?</span></span>
+          <span class="[grid-area:1/1] opacity-0 transition-opacity duration-500 group-data-[calm]:opacity-100">Boo-bye, clutter.<br /><span class="font-500">Ghost free at last.</span></span>
+        </span>
+      </h2>
+    </div>
+
+    <!-- Captions: one per beat of the scene -->
+    <div class="absolute inset-x-0 bottom-0 h-[19vh] px-6 pointer-events-none" aria-live="polite" data-why-chrome>
+      {captions.map((c) => (
+        <div
+          class:list={[
+            "absolute inset-x-6 text-center opacity-0 translate-y-2 transition duration-500 ease-out",
+            // The presented caption carries the app badges too, so on a phone it rises from the
+            // bottom edge into the space under the phone instead of running off the screen
+            c.beat === 'present' ? "top-2 max-sm:top-auto max-sm:bottom-4" : "top-2",
+          ]}
+          data-why-caption={c.beat}
+        >
+          <div class="group-data-[season=halloween]:hidden">
+            <p class="font-display text-xl sm:text-3xl font-400 uppercase leading-tight">{c.title}</p>
+            {c.text && <p class="mt-2 text-sm sm:text-base text-brand-gray-400 max-w-md mx-auto">{c.text}</p>}
+          </div>
+          <div class="hidden group-data-[season=halloween]:block">
+            <p class="font-display text-xl sm:text-3xl font-400 uppercase leading-tight">{c.spooky.title}</p>
+            {c.spooky.text && <p class="mt-2 text-sm sm:text-base text-brand-gray-400 max-w-md mx-auto">{c.spooky.text}</p>}
+          </div>
+          <!-- Get the app, under the presented phone. The official badges, unaltered: Google's image
+               carries its own clear space (the badge is 168 of its 250px height), so it is drawn
+               taller and that space trimmed with negative margins, to stand as tall as Apple's. -->
+          {c.beat === 'present' && (
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 pointer-events-auto">
+              <a href={APP_STORE_URL} class="block">
+                <img src="/badges/download-on-the-app-store.svg" alt="Download on the App Store" class="h-10 w-auto" height="40" />
+              </a>
+              <a href={GOOGLE_PLAY_URL} class="block">
+                <img src="/badges/get-it-on-google-play.png" alt="Get it on Google Play" class="h-[59.5px] w-auto -my-[9.75px] -mx-[9.75px]" height="60" />
+              </a>
+              <a href="/app" class="ml-1 text-[12px] uppercase tracking-[1.5px] text-white/70 hover:text-white transition-colors">Learn more &rarr;</a>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <!-- Fades the zoom into the next section's black -->
+    <div class="absolute inset-0 bg-brand-black opacity-0 pointer-events-none" data-why-fade></div>
+  </div>
+</section>
+
+<script>
+  const section = document.querySelector<HTMLElement>('[data-why]');
+  const canvas = section?.querySelector<HTMLCanvasElement>('canvas[data-why-scene]');
+  const zoomLayer = section?.querySelector<HTMLElement>('[data-why-zoom]');
+  const fade = section?.querySelector<HTMLElement>('[data-why-fade]');
+  const chrome = section ? Array.from(section.querySelectorAll<HTMLElement>('[data-why-chrome]')) : [];
+  const captionEls = section ? Array.from(section.querySelectorAll<HTMLElement>('[data-why-caption]')) : [];
+
+  if (section && canvas && zoomLayer && fade) {
+    // --- Season: set before the scene loads, so the scene reads the same answer
+    const today = new Date();
+    const halloween = new URLSearchParams(location.search).get('season') === 'halloween'
+      || (today.getMonth() === 9 && today.getDate() >= 15) || (today.getMonth() === 10 && today.getDate() <= 1);
+    if (halloween) section.dataset.season = 'halloween';
+
+    // --- Loading: fetch the runtime and scene once the page has loaded, or at once if the
+    // section is scrolled to first. The scene's script runs inline and announces its beats.
+    let started = false;
+    const start = async () => {
+      if (started) return;
+      started = true;
+      loader.disconnect();
+      const { Application } = await import('@splinetool/runtime');
+      const app = new Application(canvas, { htmlContentMode: 'inline' });
+      await app.load(canvas.dataset.whyScene ?? '');
+    };
+    const loader = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) start();
+    }, { rootMargin: '600px 0px' });
+    loader.observe(section);
+    const whenIdle = () => ('requestIdleCallback' in window ? requestIdleCallback(() => start(), { timeout: 2000 }) : setTimeout(start, 1200));
+    if (document.readyState === 'complete') whenIdle();
+    else window.addEventListener('load', whenIdle, { once: true });
+
+    // --- Captions follow the scene's beats
+    let presented = false;
+    const showCaption = (beat: string) => {
+      const key = beat === 'presented' ? 'present' : beat;
+      section.toggleAttribute('data-calm', key === 'present');
+      captionEls.forEach((el) => {
+        const on = el.dataset.whyCaption === key;
+        el.classList.toggle('opacity-0', !on);
+        el.classList.toggle('translate-y-2', !on);
+        // A caption out of sight takes no taps or focus, so its links can't be hit while hidden
+        el.inert = !on;
+      });
+    };
+    window.addEventListener('why:beat', (e) => {
+      const beat = (e as CustomEvent<string>).detail;
+      if (beat === 'busy') presented = false;
+      if (beat === 'presented') presented = true;
+      showCaption(beat);
+    });
+    // If the scene never arrives, the answer still does
+    window.addEventListener('why:go', (e) => {
+      if ((e as CustomEvent<string>).detail !== 'calm') return;
+      setTimeout(() => {
+        if (!captionEls.some((el) => !el.classList.contains('opacity-0'))) { presented = true; showCaption('present'); }
+      }, 6000);
+    });
+
+    // --- Scroll drives three events:
+    //   1. in     the section arrives: the busy phone, apps floating (the scene starts it)
+    //   2. turn   scrolling on past SPIN_AT asks the scene for 'calm': it spins, flings the apps,
+    //             presents one app
+    //   3. out    scrolling past EXIT_AT once it has presented: ONE move, not scrubbed. The page
+    //             zooms into the black of the phone's screen while Lenis glides to the next
+    //             section, input paused for that moment, then hands control back on landing.
+    //   back     scrolling up from the next section: the same ONE move in reverse. The page
+    //             glides back to the presented phone while the zoom pulls out of the black.
+    // Further up, back above the turn, the page asks for 'busy': the phone turns back and the apps
+    // fly in. That is the scene's own arrival, never the turn rewound, and either destination can
+    // be asked for mid-motion: the scene eases out of wherever the phone is.
+    const SPIN_AT = 0.2;       // share of the section's scroll that starts the turn
+    const EXIT_AT = 0.55;      // share of the scroll that starts the exit, once presented
+    const RETURN_TO = 0.45;    // where the way back lands: the presented phone, short of EXIT_AT
+    const UNSPIN_BELOW = 0.12; // back above the turn (a gap below SPIN_AT, so it cannot flicker)
+    const ZOOM_SECONDS = 1.1;
+    const GLIDE_SECONDS = 1.3;
+    let zoom = 0;
+    let spun = false;
+    let exitStart = -1;        // ms timestamp the exit began; -1 = not exiting
+    let backStart = -1;        // ms timestamp the way back began; -1 = not returning
+    let exited = false;        // landed on the next section
+    let lastP = 0;
+    const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
+    const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const go = (detail: string) => window.dispatchEvent(new CustomEvent('why:go', { detail }));
+    const range = () => section.offsetHeight - innerHeight;
+    const progress = () => clamp01((scrollY - section.offsetTop) / range());
+
+    // One glide with input paused, then control comes back
+    const glide = async (top: number, done: () => void) => {
+      const { getLenis } = await import('../scripts/animations');
+      const lenis = getLenis();
+      if (lenis) {
+        lenis.scrollTo(top, { duration: GLIDE_SECONDS, easing: easeInOutCubic, lock: true, force: true, onComplete: done });
+      } else {
+        window.scrollTo({ top, behavior: 'smooth' });
+        setTimeout(done, GLIDE_SECONDS * 1000);
+      }
+    };
+
+    const exit = () => {
+      exitStart = performance.now();
+      // The next section starts where this one ends. (Not nextElementSibling: Astro places this
+      // component's <script> tag there, which has no position, so the glide went nowhere.)
+      glide(section.offsetTop + section.offsetHeight, () => { exitStart = -1; exited = true; });
+    };
+
+    const back = () => {
+      backStart = performance.now();
+      glide(section.offsetTop + RETURN_TO * range(), () => { backStart = -1; exited = false; });
+    };
+
+    const frame = (now: number) => {
+      const p = progress();
+      const down = p > lastP;
+      lastP = p;
+      const moving = exitStart >= 0 || backStart >= 0;
+      if (!spun && p >= SPIN_AT) { spun = true; go('calm'); }
+      if (spun && p < UNSPIN_BELOW) { spun = false; presented = false; go('busy'); }
+      // The landing sits a full screen below where progress tops out, so the way back starts on
+      // the first upward move away from it, measured in pixels rather than progress
+      const landing = section.offsetTop + section.offsetHeight;
+      if (!moving && exited && scrollY < landing - 4 && scrollY > section.offsetTop) back();
+      if (!moving && presented && down && !exited && p >= EXIT_AT) exit();
+
+      if (exitStart >= 0) {
+        const t = clamp01((now - exitStart) / (ZOOM_SECONDS * 1000));
+        zoom = t * t * t;                        // slow start, fast plunge
+      } else if (backStart >= 0) {
+        const t = clamp01((now - backStart) / (ZOOM_SECONDS * 1000));
+        zoom = Math.pow(1 - t, 3);               // the plunge in reverse: fast pull-out, soft landing
+      } else {
+        zoom += ((exited ? 1 : 0) - zoom) * 0.12;
+      }
+      zoomLayer.style.transform = `scale(${1 + zoom * 11})`;
+      fade.style.opacity = String(clamp01((zoom - 0.45) / 0.45));
+      chrome.forEach((el) => { el.style.opacity = String(1 - clamp01(zoom / 0.2)); });
+      if (running) requestAnimationFrame(frame);
+    };
+    let running = false;
+    new IntersectionObserver((entries) => {
+      const on = entries.some((e) => e.isIntersecting);
+      if (on && !running) { running = true; requestAnimationFrame(frame); }
+      running = on;
+    }).observe(section);
+  }
+</script>

@@ -74,7 +74,7 @@ const breadcrumbSchema = {
   canonicalPath={`/products/${slug}`}
   jsonLd={[productSchema, breadcrumbSchema]}
 >
-  <Navbar variant="product" productName={product.name} productColor={product.color} />
+  <Navbar />
 
   <!-- GA4: view_item for product detail page -->
   <script define:vars={{ slug, productName: product.name, price: numericPrice }}>

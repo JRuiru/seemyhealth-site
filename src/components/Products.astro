@@ -6,8 +6,8 @@ const products = [
   {
     name: "Ring One",
     slug: "ring-one",
-    tagline: "Sensing, made human",
-    description: "24/7 heart rate, SpO2, sleep, activity, and stress from your finger. Always with you, always looking out for you.",
+    tagline: "Wear it. Forget it.",
+    description: "Heart rate, SpO2, sleep, activity and stress, around the clock, from your finger. No screen, no buzzing, no fuss.",
     image: `${CF_IMG}/ring-hero-hands/public`,
     price: "From $179.99",
     features: ["Heart Rate", "SpO2", "Sleep Stages", "Stress"],
@@ -18,8 +18,8 @@ const products = [
   {
     name: "The Scale",
     slug: "scale",
-    tagline: "Beyond the number",
-    description: "14 body composition metrics from a single step. Weight, body fat, muscle mass, and more. Shared by design, no account lock-in.",
+    tagline: "More than a number.",
+    description: "14 body composition readings from a single step. Weight, body fat, muscle mass and more. The whole household can use it, no lock-in.",
     image: `${CF_IMG}/scale-black-bathroom/public`,
     price: "From $99.99",
     features: ["Body Composition", "Multi-User", "Shared Device", "14 Metrics"],
@@ -30,8 +30,8 @@ const products = [
   {
     name: "The Scale Pro",
     slug: "scale-pro",
-    tagline: "Segmental precision",
-    description: "8-point multi-frequency BIA with retractable handle. Segmental analysis for arms, legs, and trunk. 32 metrics total.",
+    tagline: "Arms, legs, trunk. Itemised.",
+    description: "8-point multi-frequency BIA with a retractable handle, reading arms, legs and trunk separately. 32 metrics in all.",
     image: `${CF_IMG}/scale-pro-black-bathroom/public`,
     price: "From $149.99",
     features: ["Segmental Analysis", "32 Metrics", "Shared Device", "Multi-Frequency"],
@@ -42,8 +42,8 @@ const products = [
   {
     name: "BP Monitor",
     slug: "bp-monitor",
-    tagline: "Blood pressure, simplified",
-    description: "Accurate blood pressure with irregular heartbeat detection. Reliable monitoring made effortless.",
+    tagline: "Thirty seconds. Done.",
+    description: "Blood pressure and pulse at home, with irregular heartbeat detection, filed straight into your history.",
     image: `${CF_IMG}/bp-black-desk-portrait/public`,
     price: "$89.99",
     features: ["Systolic", "Diastolic", "Pulse", "Irregular HB"],
@@ -54,8 +54,8 @@ const products = [
   {
     name: "Hydra One",
     slug: "hydra-one",
-    tagline: "Stay perfectly hydrated",
-    description: "Smart water bottle that tracks intake and reminds you to drink. LED indicators sync with the app.",
+    tagline: "Your bottle keeps count.",
+    description: "Tracks every sip and nudges you when you fall behind. Its lights stay in step with the app.",
     image: `${CF_IMG}/bottle-black-conference/public`,
     price: "$79",
     features: ["Intake", "Reminders", "LED Sync", "500ml"],
@@ -66,8 +66,8 @@ const products = [
   {
     name: "Hema One",
     slug: "hema-one",
-    tagline: "Your blood, your data",
-    description: "At-home blood analysis for key health markers. Lab-quality results in minutes, from your fingertip.",
+    tagline: "Blood work, minus the waiting room.",
+    description: "Seven blood markers from a fingertip, at your kitchen table, in seconds.",
     image: `${CF_IMG}/hema-black-lab/public`,
     price: "$159",
     features: ["Lipid Profile", "Glucose", "Uric Acid", "Hemoglobin"],
@@ -78,31 +78,30 @@ const products = [
 ];
 ---
 
-<section id="products" class="relative bg-brand-black overflow-hidden" data-products-horizontal>
+<section id="products" class="relative bg-brand-black overflow-hidden pb-16 sm:pb-24" data-products-showcase>
   <!-- Section header -->
   <div class="pt-16 sm:pt-20 pb-8 max-w-7xl mx-auto px-6 lg:px-8" data-scroll-reveal>
-    <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Six Devices</p>
+    <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Here's the Thing</p>
     <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95]">
-      The <span class="font-500">Ecosystem</span>
+      Other apps borrow your data.<br />
+      <span class="font-500">We built the devices.</span>
     </h2>
+    <p class="text-brand-gray-400 leading-relaxed max-w-2xl mt-5">
+      Other apps take whatever your gadgets hand them and hope it all lines up. We didn't fancy hoping. So we made the ring, the scales, the cuff, the bottle and the analyser ourselves, right alongside the app.
+    </p>
   </div>
 
-  <!-- Horizontal scroll track -->
-  <div class="relative" data-products-track-wrap>
-    <!-- Progress bar -->
-    <div class="sticky top-0 z-10 px-6 lg:px-8 pt-3 pb-4">
-      <div class="max-w-7xl mx-auto">
-        <div class="h-[1px] bg-white/10 rounded-full overflow-hidden">
-          <div class="h-full bg-white/40 rounded-full origin-left" style="transform: scaleX(0)" data-products-progress></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sliding panels -->
-    <div class="flex" data-products-track style={`width: ${products.length * 100}vw`}>
+  <!-- Stage: every card shares one grid cell, and one holds it at a time -->
+  <div class="relative">
+    <div class="grid" data-products-stage>
       {products.map((product, i) => (
-        <div class="w-screen flex-shrink-0 px-6 lg:px-8" data-product-panel>
-          <div class="max-w-7xl mx-auto min-h-[80vh] lg:h-[80vh] pt-8 pb-4">
+        <div
+          class="[grid-area:1/1] px-6 lg:px-8"
+          style={i === 0 ? undefined : "opacity:0;visibility:hidden"}
+          aria-hidden={i === 0 ? undefined : "true"}
+          data-product-panel
+        >
+          <div class="max-w-7xl mx-auto lg:h-[62vh] pt-4 pb-4">
             <div class="group w-full h-full">
               <div class="grid lg:grid-cols-2 gap-6 lg:gap-20 items-center h-full">
 
@@ -195,6 +194,29 @@ const products = [
       ))}
     </div>
 
-    <div class="h-8"></div>
+    <!-- Device tabs: the active one's bar fills while it holds the stage -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 mt-8 flex flex-col lg:flex-row lg:items-end gap-8">
+      <div class="flex-1 grid grid-cols-3 sm:grid-cols-6 gap-x-4 gap-y-5">
+        {products.map((product, i) => (
+          <button
+            type="button"
+            class:list={["text-left text-[11px] uppercase tracking-[1.5px] transition-colors hover:text-white", i === 0 ? "text-white" : "text-brand-gray-500"]}
+            aria-current={i === 0 ? "true" : undefined}
+            data-product-tab
+          >
+            <span class="block h-[2px] mb-3 bg-white/10 rounded-full overflow-hidden">
+              <span class="block h-full origin-left" style={`background: ${product.color}; transform: scaleX(0)`} data-product-tab-fill></span>
+            </span>
+            {product.name}
+          </button>
+        ))}
+      </div>
+      <a
+        href="/shop"
+        class="self-start lg:self-auto shrink-0 inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors"
+      >
+        View All Devices
+      </a>
+    </div>
   </div>
 </section>
