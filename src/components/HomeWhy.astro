@@ -34,7 +34,10 @@ const captions = [
   <div class="sticky top-0 h-screen overflow-hidden">
     <!-- The scene, in a band that leaves room for the heading above and the caption below -->
     <div class="absolute inset-x-0 top-[17vh] lg:top-[24vh] bottom-[19vh] will-change-transform" style="transform-origin: 50% 38%" data-why-zoom>
-      <canvas class="absolute inset-0 w-full h-full" data-why-scene={SCENE_URL} aria-label="Sixteen health apps around a phone are flung away, leaving one app"></canvas>
+      <!-- The scene is watched, never touched: Spline's runtime claims touches on its canvas (to orbit
+           the camera), which swallowed a swipe there and left the page stuck on a phone. Touches
+           and clicks pass through to the page instead. -->
+      <canvas class="absolute inset-0 w-full h-full pointer-events-none" data-why-scene={SCENE_URL} aria-label="Sixteen health apps around a phone are flung away, leaving one app"></canvas>
     </div>
 
     <!-- Heading -->
