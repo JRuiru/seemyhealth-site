@@ -3,12 +3,10 @@ import CartIcon from './commerce/CartIcon';
 import AccountMenu from './commerce/AccountMenu';
 
 interface Props {
-  variant?: 'default' | 'transparent' | 'product';
-  productName?: string;
-  productColor?: string;
+  variant?: 'default' | 'transparent';
 }
 
-const { variant = 'default', productName, productColor } = Astro.props;
+const { variant = 'default' } = Astro.props;
 
 const navLinks = [
   { label: "Ring One", href: "/products/ring-one" },
@@ -21,7 +19,14 @@ const navLinks = [
 ];
 
 const isTransparent = variant === 'transparent';
-const isProduct = variant === 'product';
+
+// The page you are on lights up its own link; a device's configure page counts as that device
+const path = Astro.url.pathname.replace(/\/$/, '');
+const isActive = (href: string) => {
+  if (path === href) return true;
+  const device = href.match(/^\/products\/(.+)$/)?.[1];
+  return device ? path === `/configure/${device}` : false;
+};
 ---
 
 <nav
@@ -44,15 +49,6 @@ const isProduct = variant === 'product';
           class="w-8 h-8 rounded-lg"
         />
         <span class="text-base font-semibold text-white tracking-wide">SeeMyHealth</span>
-        {isProduct && productName && (
-          <span class="hidden sm:flex items-center gap-2 ml-2 pl-4 border-l border-white/10">
-            <span
-              class="w-2 h-2 rounded-full"
-              style={`background-color: ${productColor || '#fff'}`}
-            ></span>
-            <span class="text-[12px] uppercase tracking-[2px] text-brand-gray-400">{productName}</span>
-          </span>
-        )}
       </a>
 
       <!-- Desktop Nav -->
@@ -60,7 +56,11 @@ const isProduct = variant === 'product';
         {navLinks.map((link) => (
           <a
             href={link.href}
-            class="text-[12px] 2xl:text-[13px] uppercase tracking-[1.5px] 2xl:tracking-[2px] text-brand-gray-400 hover:text-white transition-colors duration-300 whitespace-nowrap"
+            aria-current={isActive(link.href) ? 'page' : undefined}
+            class:list={[
+              "text-[12px] 2xl:text-[13px] uppercase tracking-[1.5px] 2xl:tracking-[2px] hover:text-white transition-colors duration-300 whitespace-nowrap",
+              isActive(link.href) ? "text-white" : "text-brand-gray-400",
+            ]}
           >
             {link.label}
           </a>
@@ -96,14 +96,19 @@ const isProduct = variant === 'product';
       {navLinks.map((link) => (
         <a
           href={link.href}
-          class="block py-3 text-[13px] uppercase tracking-[2px] text-brand-gray-400 hover:text-white transition-colors"
+          aria-current={isActive(link.href) ? 'page' : undefined}
+          class:list={[
+            "block py-3 text-[13px] uppercase tracking-[2px] hover:text-white transition-colors",
+            isActive(link.href) ? "text-white" : "text-brand-gray-400",
+          ]}
         >
           {link.label}
         </a>
       ))}
+      <!-- An action, not a page: the same pill as the desktop button, so it never reads as the active link -->
       <a
         href="/shop"
-        class="block py-3 mt-2 text-[13px] uppercase tracking-[1.5px] font-medium text-white"
+        class="flex items-center justify-center !mt-4 px-6 py-3 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors"
       >
         Shop Now
       </a>
