@@ -31,9 +31,11 @@ const captions = [
 ---
 
 <section class="group relative bg-brand-black h-[220vh]" data-why>
-  <div class="sticky top-0 h-screen overflow-hidden">
+  <!-- Sized to the screen with the browser's bars showing (svh), so on a phone nothing sits behind
+       the address bar or the bottom toolbar: the app badges under the presented phone included -->
+  <div class="sticky top-0 h-[100svh] overflow-hidden">
     <!-- The scene, in a band that leaves room for the heading above and the caption below -->
-    <div class="absolute inset-x-0 top-[17vh] lg:top-[24vh] bottom-[19vh] will-change-transform" style="transform-origin: 50% 38%" data-why-zoom>
+    <div class="absolute inset-x-0 top-[max(15svh,10.5rem)] sm:top-[17svh] lg:top-[24svh] bottom-[28svh] sm:bottom-[19svh] will-change-transform" style="transform-origin: 50% 38%" data-why-zoom>
       <!-- The scene is watched, never touched: Spline's runtime claims touches on its canvas (to orbit
            the camera), which swallowed a swipe there and left the page stuck on a phone. Touches
            and clicks pass through to the page instead. -->
@@ -61,7 +63,8 @@ const captions = [
     </div>
 
     <!-- Captions: one per beat of the scene -->
-    <div class="absolute inset-x-0 bottom-0 h-[19vh] px-6 pointer-events-none" aria-live="polite" data-why-chrome>
+    <!-- Taller on a phone, where the presented caption carries the badges and Learn more -->
+    <div class="absolute inset-x-0 bottom-0 h-[28svh] sm:h-[19svh] px-6 pointer-events-none" aria-live="polite" data-why-chrome>
       {captions.map((c) => (
         <div
           class:list={[
