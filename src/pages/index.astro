@@ -2,13 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Hero from '../components/Hero.astro';
-import HomeProblem from '../components/HomeProblem.astro';
-import HomeFamily from '../components/HomeFamily.astro';
-import HomeTrust from '../components/HomeTrust.astro';
-import HomeAppFirst from '../components/HomeAppFirst.astro';
+import HomeWhy from '../components/HomeWhy.astro';
 import Products from '../components/Products.astro';
-import HowItWorks from '../components/HowItWorks.astro';
-import Stats from '../components/Stats.astro';
+import HomeConnect from '../components/HomeConnect.astro';
+import HomePerks from '../components/HomePerks.astro';
 import Testimonials from '../components/Testimonials.astro';
 import CTA from '../components/CTA.astro';
 import Footer from '../components/Footer.astro';
@@ -23,7 +20,7 @@ const orgSchema = {
   url: "https://www.seemyhealth.ai",
   logo: "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/logo/public",
   sameAs: [],
-  description: "Health monitoring devices designed around you. Track body composition, blood pressure, hydration, blood markers, heart rate, SpO2, and sleep. Download the C-MyHealth app on iOS and Android.",
+  description: "One app and a family of health devices built together. Track body composition, blood pressure, hydration, blood markers, heart rate, SpO2 and sleep, and bring in Apple Health or Health Connect. On iOS and Android.",
 };
 
 const webSiteSchema = {
@@ -36,41 +33,32 @@ const webSiteSchema = {
 ---
 
 <Layout
-  title="SeeMyHealth | One App. Six Devices. Nothing Hidden."
-  description="One app, six devices, nothing hidden. Smart ring, smart scale, BP monitor, smart water bottle, and blood analyzer. Try it free for a month."
+  title="SeeMyHealth | Hey. Your Body's Talking."
+  description="One app for every health app you're juggling, plus a ring, scales, a BP monitor, a smart bottle and a blood analyser we built ourselves. Already have devices? Bring them. Your first month is on us."
   canonicalPath="/"
   jsonLd={[orgSchema, webSiteSchema]}
 >
   <Navbar variant="transparent" />
 
-  <!-- 1. Hero — See Your Health -->
+  <!-- 1. Hero -->
   <Hero />
 
-  <!-- 2. The problem — fragmented health data → we connect everything -->
-  <HomeProblem />
+  <!-- 2. Why: many apps become one (Spline scene) -->
+  <HomeWhy />
 
-  <!-- 3. Family wellness — not just you, your whole family -->
-  <HomeFamily />
-
-  <!-- 5. Trust & privacy — your data stays yours -->
-  <HomeTrust />
-
-  <!-- 6. The app — works from day one -->
-  <HomeAppFirst />
-
-  <!-- 7. The devices -->
+  <!-- 3. How we differ from aggregators: our own devices, each taking centre stage -->
   <Products />
 
-  <!-- 8. How it works — Download. Connect. See. -->
-  <HowItWorks />
+  <!-- 4. Already have devices: Apple Health and Health Connect -->
+  <HomeConnect />
 
-  <!-- 9. Stats -->
-  <Stats />
+  <!-- 5. Perks: privacy, community, family -->
+  <HomePerks />
 
-  <!-- 10. Social proof -->
+  <!-- 6. Early testers -->
   <Testimonials />
 
-  <!-- 11. Final CTA -->
+  <!-- 7. The offer: one month free -->
   <CTA />
 
   <Footer />

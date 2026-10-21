@@ -1,0 +1,104 @@
+---
+// What comes with an account, whichever devices somebody owns: privacy, community, family.
+const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
+
+const perks = [
+  {
+    overline: "Privacy",
+    title: "Your data stays yours.",
+    text: "We don't sell it. We won't sell it. You pick who sees what, and you can delete the lot whenever you like.",
+    link: { label: "Read our privacy policy", href: "/privacy" },
+    image: `${CF_IMG}/ring-reading-coffee/public`,
+    alt: "Man reading with a coffee, wearing Ring One",
+  },
+  {
+    overline: "Community",
+    title: "Better together.",
+    text: "Challenges, groups, and people who'll cheer when you hit your steps. And tease you a little when you don't.",
+    image: `${CF_IMG}/lifestyle-friends-bar/public`,
+    alt: "Two friends laughing over drinks",
+  },
+  {
+    overline: "Family",
+    title: "Keep tabs on your people.",
+    text: "Check on Mum's blood pressure without the awkward phone call. Everyone decides what they share.",
+    image: `${CF_IMG}/app-family-sharing/public`,
+    alt: "Three generations sharing their health on the sofa",
+  },
+];
+---
+
+<section class="relative bg-brand-black border-t border-white/5 py-20 sm:py-28 overflow-hidden" data-perks>
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 flex items-end justify-between gap-6 mb-10 sm:mb-14" data-scroll-reveal>
+    <div>
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Oh, and</p>
+      <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95]">
+        You're more than<br />
+        <span class="font-500">your numbers.</span>
+      </h2>
+    </div>
+    <div class="hidden sm:flex gap-3 shrink-0">
+      <button type="button" aria-label="Previous" class="w-12 h-12 rounded-full border border-white/20 hover:border-white/50 flex items-center justify-center transition-colors disabled:opacity-30" data-perks-prev>
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+      </button>
+      <button type="button" aria-label="Next" class="w-12 h-12 rounded-full border border-white/20 hover:border-white/50 flex items-center justify-center transition-colors disabled:opacity-30" data-perks-next>
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Swipeable row: cards snap to the content edge, and the next one peeks in -->
+  <div
+    class="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-6 scroll-px-6 lg:px-[max(2rem,calc((100vw-72rem)/2+2rem))] lg:scroll-px-[max(2rem,calc((100vw-72rem)/2+2rem))]"
+    data-perks-track
+  >
+    {perks.map((perk) => (
+      <div class="group relative shrink-0 snap-start w-[84vw] sm:w-[62vw] lg:w-auto lg:h-[78vh] lg:max-h-[760px] aspect-[2/3] sm:aspect-[4/5] rounded-3xl overflow-hidden bg-brand-gray-900">
+        <img
+          src={perk.image}
+          alt={perk.alt}
+          class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          loading="lazy"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-black/60 via-transparent to-transparent"></div>
+
+        <!-- Frosted explainer -->
+        <div class="absolute inset-x-4 bottom-4 sm:inset-x-5 sm:bottom-5 p-5 sm:p-8 rounded-2xl bg-brand-black/35 backdrop-blur-xl backdrop-saturate-150 border border-white/15">
+          <p class="text-[11px] uppercase tracking-[3px] text-white/60 mb-3">{perk.overline}</p>
+          <p class="font-display text-2xl sm:text-4xl font-400 uppercase leading-tight mb-3">{perk.title}</p>
+          <p class="text-sm sm:text-base text-white/80 leading-relaxed max-w-md">{perk.text}</p>
+          {perk.link && (
+            <a href={perk.link.href} class="inline-block mt-5 text-[12px] uppercase tracking-[1.5px] text-white/60 hover:text-white transition-colors">
+              {perk.link.label} &rarr;
+            </a>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  // Arrow buttons step one card at a time; touch and trackpads swipe the row natively.
+  document.querySelectorAll<HTMLElement>("[data-perks]").forEach((section) => {
+    const track = section.querySelector<HTMLElement>("[data-perks-track]");
+    const prev = section.querySelector<HTMLButtonElement>("[data-perks-prev]");
+    const next = section.querySelector<HTMLButtonElement>("[data-perks-next]");
+    if (!track || !prev || !next) return;
+
+    const step = () => {
+      const card = track.firstElementChild as HTMLElement | null;
+      return card ? card.offsetWidth + parseFloat(getComputedStyle(track).columnGap || "0") : track.clientWidth;
+    };
+    const update = () => {
+      prev.disabled = track.scrollLeft <= 4;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    };
+
+    prev.addEventListener("click", () => track.scrollBy({ left: -step() }));
+    next.addEventListener("click", () => track.scrollBy({ left: step() }));
+    track.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  });
+</script>

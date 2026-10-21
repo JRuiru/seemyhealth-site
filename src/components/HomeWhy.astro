@@ -1,0 +1,52 @@
+---
+// The why: scattered apps fly into one phone, the phone turns, and they are one app.
+// The scene is built in Spline; until its URL is set the stage draws the scattered apps still.
+interface Props {
+  scene?: string;
+}
+
+const { scene } = Astro.props;
+
+const scattered = [
+  { name: "Sleep app", color: "#6366F1" },
+  { name: "Fitness tracker", color: "#F97316" },
+  { name: "BP readings", color: "#EF4444" },
+  { name: "Lab PDFs", color: "#A855F7" },
+  { name: "Nutrition app", color: "#22C55E" },
+  { name: "Doctor portal", color: "#06B6D4" },
+];
+---
+
+<section class="relative bg-brand-black border-t border-white/5 py-20 sm:py-28 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14" data-scroll-reveal>
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Be Honest</p>
+      <h2 class="font-display text-4xl sm:text-5xl lg:text-7xl font-300 uppercase leading-[0.95] mb-5">
+        How many health apps<br />
+        <span class="font-500">are you juggling?</span>
+      </h2>
+      <p class="text-brand-gray-400 leading-relaxed">
+        A sleep app. A step counter. Blood pressure on a sticky note. Lab results in a PDF you'll never open again. Yeah, we thought so. Let's make that one.
+      </p>
+    </div>
+
+    <div class="relative mx-auto w-full max-w-4xl aspect-[4/3] sm:aspect-[16/9] rounded-3xl border border-white/10 bg-white/[0.02] overflow-hidden" data-why-stage>
+      {scene ? (
+        <spline-viewer url={scene} loading-anim-type="none" class="absolute inset-0 w-full h-full"></spline-viewer>
+      ) : (
+        <div class="absolute inset-0 flex flex-wrap items-center justify-center content-center gap-3 sm:gap-4 p-8">
+          {scattered.map((app) => (
+            <span class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/10 bg-brand-dark text-[11px] sm:text-xs uppercase tracking-[1.5px] text-brand-gray-300">
+              <span class="w-2 h-2 rounded-full" style={`background-color: ${app.color}`}></span>
+              {app.name}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+{scene && (
+  <script is:inline type="module" src="https://unpkg.com/@splinetool/viewer@2.0.72/build/spline-viewer.js"></script>
+)}

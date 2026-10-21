@@ -1,0 +1,54 @@
+---
+// For somebody who already owns a watch or a scale: the app reads the phone's own health store.
+const platforms = [
+  {
+    name: "Apple Health",
+    device: "iPhone",
+    icon: "M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.6 4.5c2.1 0 3.6 1.2 5.4 3.2 1.8-2 3.3-3.2 5.4-3.2 3.6 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21z",
+  },
+  {
+    name: "Health Connect",
+    device: "Android",
+    icon: "M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM8.25 12h7.5M12 8.25v7.5",
+  },
+];
+
+const reads = ["Steps & activity", "Heart rate & HRV", "Blood oxygen", "Sleep", "Weight & body fat", "Temperature"];
+---
+
+<section class="relative bg-brand-dark border-t border-white/5 py-20 sm:py-28">
+  <div class="max-w-5xl mx-auto px-6 lg:px-8" data-scroll-reveal>
+    <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Hang On</p>
+      <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95] mb-5">
+        Wait. You already<br />
+        <span class="font-500">have devices?</span>
+      </h2>
+      <p class="text-brand-gray-400 leading-relaxed">
+        And you want to keep them? Really? Okay, fine. If you insist, we've got you. If it talks to Apple Health or Health Connect, it talks to us. One tap to switch it on, one tap to switch it off.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-10">
+      {platforms.map((p) => (
+        <div class="flex items-center gap-4 p-6 rounded-2xl border border-white/10 bg-white/[0.02]">
+          <div class="w-12 h-12 shrink-0 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d={p.icon} />
+            </svg>
+          </div>
+          <div>
+            <p class="font-display text-xl sm:text-2xl font-400 uppercase">{p.name}</p>
+            <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-500">{p.device}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      {reads.map((r) => (
+        <span class="px-4 py-2 rounded-full border border-white/10 text-[11px] uppercase tracking-[1.5px] text-brand-gray-300">{r}</span>
+      ))}
+    </div>
+  </div>
+</section>
