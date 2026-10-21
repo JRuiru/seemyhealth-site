@@ -1,6 +1,8 @@
 ---
 // For somebody who already owns a watch or a scale: the app reads the phone's own health store.
-const platforms = [
+// Apple Health keeps a plain heart until the app is approved: Apple's "Works with Apple Health"
+// badge is licensed only for an approved app, and only on that app's own pages.
+const platforms: { name: string; device: string; icon?: string; logo?: string }[] = [
   {
     name: "Apple Health",
     device: "iPhone",
@@ -9,7 +11,8 @@ const platforms = [
   {
     name: "Health Connect",
     device: "Android",
-    icon: "M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM8.25 12h7.5M12 8.25v7.5",
+    // Google's logo, shown on white as its guidelines ask
+    logo: "/badges/health-connect.png",
   },
 ];
 
@@ -32,11 +35,17 @@ const reads = ["Steps & activity", "Heart rate & HRV", "Blood oxygen", "Sleep", 
     <div class="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-10">
       {platforms.map((p) => (
         <div class="flex items-center gap-4 p-6 rounded-2xl border border-white/10 bg-white/[0.02]">
-          <div class="w-12 h-12 shrink-0 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
-            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d={p.icon} />
-            </svg>
-          </div>
+          {p.logo ? (
+            <div class="w-12 h-12 shrink-0 rounded-xl bg-white flex items-center justify-center">
+              <img src={p.logo} alt="" class="w-8 h-8" width="32" height="32" loading="lazy" />
+            </div>
+          ) : (
+            <div class="w-12 h-12 shrink-0 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d={p.icon} />
+              </svg>
+            </div>
+          )}
           <div>
             <p class="font-display text-xl sm:text-2xl font-400 uppercase">{p.name}</p>
             <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-500">{p.device}</p>
