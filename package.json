@@ -18,6 +18,7 @@
   "dependencies": {
     "@astrojs/react": "6.0.5",
     "@astrojs/sitemap": "3.7.4",
+    "@splinetool/runtime": "2.0.101",
     "@tailwindcss/vite": "4.3.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
