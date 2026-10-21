@@ -1,62 +1,215 @@
 ---
-// For somebody who already owns a watch or a scale: the app reads the phone's own health store.
-// Each platform in its owner's own artwork. Apple's badge is used unaltered: at least 30px tall,
-// a quarter of its height clear on every side, one per page (developer.apple.com/health-fitness/works-with-apple-health).
-const platforms: { name: string; device: string; badge?: string; logo?: string }[] = [
+// For somebody who already owns a tracker, told as a chat: we ask, they answer, the coach stares,
+// and we come round with an aside or two. Then two options: bring the tracker's data in through the
+// phone's health store, or fill what a wrist can't measure with our devices. Then the wink: both.
+// Apple's badge is used unaltered: at least 30px tall, a quarter of its height clear on every
+// side, one per page (developer.apple.com/health-fitness/works-with-apple-health). Health
+// Connect's logo sits on white, as Google's guidelines ask.
+const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
+
+// The thread, in order. `us` is SeeMyHealth, `you` the visitor; an aside is a smaller, quieter
+// afterthought; the image is the coach, sent as a message.
+type Message =
+  | { from: 'us' | 'you'; text: string; aside?: boolean }
+  | { from: 'us'; image: string; alt: string };
+const chat: Message[] = [
+  { from: 'us', text: 'Hang on.' },
+  { from: 'us', text: 'You already have a fitness tracker?' },
+  { from: 'you', text: 'Um… yes?' },
+  { from: 'us', image: `${CF_IMG}/fitness-ring-portrait/public`, alt: 'A coach in a training vest staring straight at you' },
+  { from: 'us', text: 'Cool. Keep it.' },
+  { from: 'us', text: '(for now)', aside: true },
+  { from: 'us', text: "Seriously, we're not mad." },
+  { from: 'us', text: '(or are we?)', aside: true },
+];
+const chatText = chat.map((m) => ('text' in m ? m.text : '')).join(' ');
+
+const options = [
   {
-    name: "Apple Health",
-    device: "iPhone",
-    badge: "/badges/works-with-apple-health.svg",
+    overline: "Option one",
+    title: "Keep what you've got.",
+    text: "Your watch already counts steps, heart rate and sleep. Switch on Apple Health or Health Connect and it all lands in SeeMyHealth. One tap on, one tap off.",
+    image: `${CF_IMG}/challenge-accepted/public`,
+    alt: "Man grinning at his phone after a workout",
+    // The man stands at the left of a wide photo
+    position: "object-left",
+    platforms: true,
   },
   {
-    name: "Health Connect",
-    device: "Android",
-    // Google's logo, shown on white as its guidelines ask
-    logo: "/badges/health-connect.png",
+    overline: "Option two",
+    title: "Fill the gaps.",
+    text: "Blood pressure. Weight and body composition. How much you've had to drink. The stuff a wrist can't measure, from devices built to talk to the app.",
+    image: `${CF_IMG}/bp-morning-check/public`,
+    alt: "Woman taking her blood pressure at the table in the morning",
+    position: "object-center",
+    link: { label: "See the devices", href: "/shop" },
   },
 ];
-
-const reads = ["Steps & activity", "Heart rate & HRV", "Blood oxygen", "Sleep", "Weight & body fat", "Temperature"];
 ---
 
-<section class="relative bg-brand-dark border-t border-white/5 py-20 sm:py-28">
-  <div class="max-w-5xl mx-auto px-6 lg:px-8" data-scroll-reveal>
-    <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
-      <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Hang On</p>
-      <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-300 uppercase leading-[0.95] mb-5">
-        Wait. You already<br />
-        <span class="font-500">have devices?</span>
-      </h2>
-      <p class="text-brand-gray-400 leading-relaxed">
-        And you want to keep them? Really? Okay, fine. If you insist, we've got you. If it talks to Apple Health or Health Connect, it talks to us. One tap to switch it on, one tap to switch it off.
+<section class="relative bg-brand-dark border-t border-white/5 py-20 sm:py-28 overflow-hidden" data-connect>
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <!-- The setup, as a chat: each message pops in after a beat of typing, from whoever sends it -->
+    <div class="max-w-2xl mx-auto mb-14 sm:mb-20">
+    <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-6">Quick Question</p>
+    <div class="flex flex-col gap-3" aria-label={chatText} data-connect-chat>
+      {chat.map((m) => 'image' in m ? (
+        <div class="hidden self-start w-[72%] sm:w-80 lg:w-96 rounded-3xl rounded-bl-md overflow-hidden border border-white/10 bg-brand-gray-900 opacity-0 translate-y-3 scale-95 origin-bottom-left transition duration-500 ease-out" data-connect-msg="us">
+          <img src={m.image} alt={m.alt} class="w-full aspect-square object-cover" loading="lazy" />
+        </div>
+      ) : (
+        <p
+          class:list={[
+            "hidden max-w-[85%] sm:max-w-[28rem] rounded-3xl border opacity-0 translate-y-3 transition duration-500 ease-out",
+            m.from === 'you'
+              ? "self-end rounded-br-md bg-white text-brand-black border-white px-5 py-3 text-base sm:text-lg font-medium"
+              : m.aside
+                ? "self-start rounded-bl-md bg-white/[0.04] border-white/10 px-4 py-2 text-sm sm:text-base italic text-brand-gray-400"
+                : "self-start rounded-bl-md bg-white/[0.07] backdrop-blur-xl border-white/10 px-5 py-3.5 sm:px-6 sm:py-4 font-display text-2xl sm:text-4xl font-300 uppercase leading-tight",
+          ]}
+          data-connect-msg={m.from}
+        >
+          {m.text}
+        </p>
+      ))}
+      <!-- Typing dots, moved to wherever the next message will appear -->
+      <p class="hidden px-5 py-4 rounded-3xl border" aria-hidden="true" data-connect-typing>
+        <span class="flex gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-current animate-bounce [animation-delay:-0.3s]"></span>
+          <span class="w-2 h-2 rounded-full bg-current animate-bounce [animation-delay:-0.15s]"></span>
+          <span class="w-2 h-2 rounded-full bg-current animate-bounce"></span>
+        </span>
+      </p>
+      <p class="mt-6 text-center text-brand-gray-400 leading-relaxed opacity-0 transition duration-700" data-connect-after>
+        You've got two ways to play this. Pick one.
       </p>
     </div>
+    </div>
 
-    <div class="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-10">
-      {platforms.map((p) => (
-        <div class="flex items-center gap-4 p-6 rounded-2xl border border-white/10 bg-white/[0.02]">
-          {p.badge ? (
-            <>
-              <img src={p.badge} alt="Works with Apple Health" class="h-11 w-auto" height="44" loading="lazy" />
-              <p class="ml-auto text-[11px] uppercase tracking-[2px] text-brand-gray-500">{p.device}</p>
-            </>
-          ) : (
-            <>
-              <div class="w-12 h-12 shrink-0 rounded-xl bg-white flex items-center justify-center">
-                <img src={p.logo} alt="" class="w-8 h-8" width="32" height="32" loading="lazy" />
+    <!-- The two options. Swipeable on a phone, side by side from a tablet up. -->
+    <div
+      class="-mx-6 px-6 md:mx-0 md:px-0 flex md:grid md:grid-cols-2 gap-4 sm:gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory scroll-px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      data-scroll-reveal
+    >
+      {options.map((o) => (
+        <div class="shrink-0 w-[84vw] md:w-auto snap-start flex flex-col rounded-3xl overflow-hidden border border-white/10 bg-white/[0.03]">
+          <div class="relative aspect-square sm:aspect-[5/4] overflow-hidden bg-brand-gray-900">
+            <img src={o.image} alt={o.alt} class={`absolute inset-0 w-full h-full object-cover ${o.position}`} loading="lazy" />
+          </div>
+          <div class="flex flex-col flex-1 p-6 sm:p-8">
+            <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-3">{o.overline}</p>
+            <p class="font-display text-3xl sm:text-4xl font-400 uppercase leading-tight mb-3">{o.title}</p>
+            <p class="text-sm sm:text-base text-brand-gray-400 leading-relaxed">{o.text}</p>
+            {o.platforms && (
+              <div class="mt-auto pt-6 flex flex-wrap items-center gap-4">
+                <img src="/badges/works-with-apple-health.svg" alt="Works with Apple Health" class="h-11 w-auto" height="44" loading="lazy" />
+                <!-- Drawn to match Apple's badge beside it: same height, white, rounded, a hairline edge -->
+                <div class="h-11 inline-flex items-center gap-2 pl-2.5 pr-3.5 rounded-[10px] bg-white border border-black text-black font-sans" role="img" aria-label="Works with Health Connect">
+                  <img src="/badges/health-connect.png" alt="" class="w-8 h-8" width="32" height="32" loading="lazy" />
+                  <span class="flex flex-col leading-none">
+                    <span class="text-[10px] tracking-[0.2px]">Works with</span>
+                    <span class="mt-0.5 text-[17px] font-medium tracking-[-0.3px]">Health Connect</span>
+                  </span>
+                </div>
               </div>
-              <p class="font-display text-xl sm:text-2xl font-400 uppercase">{p.name}</p>
-              <p class="ml-auto text-[11px] uppercase tracking-[2px] text-brand-gray-500">{p.device}</p>
-            </>
-          )}
+            )}
+            {o.link && (
+              <div class="mt-auto pt-6">
+                <a href={o.link.href} class="inline-flex items-center px-6 py-3 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors">
+                  {o.link.label} &rarr;
+                </a>
+              </div>
+            )}
+          </div>
         </div>
       ))}
     </div>
 
-    <div class="flex flex-wrap items-center justify-center gap-3">
-      {reads.map((r) => (
-        <span class="px-4 py-2 rounded-full border border-white/10 text-[11px] uppercase tracking-[1.5px] text-brand-gray-300">{r}</span>
-      ))}
+    <!-- The wink -->
+    <div class="mt-12 sm:mt-16 flex items-center justify-center gap-5" data-scroll-reveal>
+      <img
+        src={`${CF_IMG}/ring-gold-shh-portrait/public`}
+        alt="Woman wearing Ring One with a finger to her lips"
+        class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover object-top border border-white/15"
+        loading="lazy"
+      />
+      <p class="font-display text-2xl sm:text-4xl font-300 uppercase leading-tight">
+        Or both.<br />
+        <span class="font-500">We won't tell your watch.</span>
+      </p>
     </div>
   </div>
 </section>
+
+<script>
+  // The chat plays once, when it scrolls into view. Each message waits for a beat of typing from
+  // whoever sends it; an aside lands after a longer pause, for timing. Messages take no space until
+  // they arrive, so the thread grows like a real one.
+  document.querySelectorAll<HTMLElement>("[data-connect-chat]").forEach((chat) => {
+    const messages = Array.from(chat.querySelectorAll<HTMLElement>("[data-connect-msg]"));
+    const typing = chat.querySelector<HTMLElement>("[data-connect-typing]");
+    const after = chat.querySelector<HTMLElement>("[data-connect-after]");
+    const reveal = (el: HTMLElement) => {
+      el.classList.remove("hidden");
+      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove("opacity-0", "translate-y-3", "scale-95")));
+    };
+    // The thread keeps its finished height from the start, so the cards below never jump as it grows
+    let played = false;
+    const reserve = () => {
+      if (played) return;
+      chat.style.minHeight = "";
+      messages.forEach((m) => m.classList.remove("hidden"));
+      const full = chat.offsetHeight + (typing?.offsetHeight ?? 0);
+      messages.forEach((m) => m.classList.add("hidden"));
+      chat.style.minHeight = `${full}px`;
+    };
+    reserve();
+    addEventListener("resize", reserve);
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      messages.forEach(reveal);
+      if (after) reveal(after);
+      return;
+    }
+    const TYPING_MS = 700;
+    const GAP_MS = 300;
+    const ASIDE_PAUSE_MS = 600;   // the beat before "(for now)" lands
+    const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    // Typing looks like the sender: our dots on the left in glass, yours on the right in white
+    const typingAs = (from: string) => {
+      if (!typing) return;
+      const ours = from === "us";
+      typing.classList.toggle("self-start", ours);
+      typing.classList.toggle("rounded-bl-md", ours);
+      typing.classList.toggle("bg-white/[0.07]", ours);
+      typing.classList.toggle("border-white/10", ours);
+      typing.classList.toggle("text-white/60", ours);
+      typing.classList.toggle("self-end", !ours);
+      typing.classList.toggle("rounded-br-md", !ours);
+      typing.classList.toggle("bg-white", !ours);
+      typing.classList.toggle("border-white", !ours);
+      typing.classList.toggle("text-brand-black/50", !ours);
+    };
+    const play = async () => {
+      played = true;
+      for (const msg of messages) {
+        const aside = msg.classList.contains("italic");
+        if (aside) await wait(ASIDE_PAUSE_MS);
+        if (typing) {
+          typingAs(msg.dataset.connectMsg ?? "us");
+          msg.before(typing);
+          typing.classList.remove("hidden");
+        }
+        await wait(aside ? TYPING_MS * 0.6 : TYPING_MS);
+        typing?.classList.add("hidden");
+        reveal(msg);
+        await wait(GAP_MS);
+      }
+      if (after) reveal(after);
+    };
+    new IntersectionObserver((entries, observer) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      observer.disconnect();
+      play();
+    }, { threshold: 0.2 }).observe(chat);
+  });
+</script>
