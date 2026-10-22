@@ -5,9 +5,8 @@
 // its calm screen, which hands over to the next section.
 // The scene is hosted by Spline (prod.spline.design); it goes live only when someone presses
 // Update in Spline's Export panel.
-// From 15 Oct to 1 Nov the section goes Halloween by itself: the script sets data-season and the
-// copy swaps, and the scene reads the same attribute to raise its moon and bats. ?season=halloween
-// previews it any day.
+// At Halloween (src/lib/season.ts) the script sets data-season and the copy swaps, and the scene
+// reads the same attribute to raise its moon and bats. ?season=halloween previews it any day.
 const SCENE_URL = 'https://prod.spline.design/XKs8dXyyQ1ZSgadg/scene.splinecode';
 
 // Where the presented phone sends people. The store listings are not linked yet, so both badges go
@@ -107,6 +106,8 @@ const captions = [
 </section>
 
 <script>
+  import { currentSeason } from '../lib/season';
+
   const section = document.querySelector<HTMLElement>('[data-why]');
   const canvas = section?.querySelector<HTMLCanvasElement>('canvas[data-why-scene]');
   const zoomLayer = section?.querySelector<HTMLElement>('[data-why-zoom]');
@@ -116,10 +117,8 @@ const captions = [
 
   if (section && canvas && zoomLayer && fade) {
     // --- Season: set before the scene loads, so the scene reads the same answer
-    const today = new Date();
-    const halloween = new URLSearchParams(location.search).get('season') === 'halloween'
-      || (today.getMonth() === 9 && today.getDate() >= 15) || (today.getMonth() === 10 && today.getDate() <= 1);
-    if (halloween) section.dataset.season = 'halloween';
+    const season = currentSeason();
+    if (season) section.dataset.season = season;
 
     // --- Loading: fetch the runtime and scene once the page has loaded, or at once if the
     // section is scrolled to first. The scene's script runs inline and announces its beats.
