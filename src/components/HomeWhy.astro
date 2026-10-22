@@ -140,21 +140,88 @@ const captions = [
       : fetch(sceneUrl, { priority: 'low' } as RequestInit)
           .then((r) => (r.ok ? r.arrayBuffer() : null))
           .catch(() => null);
+    // --- The GPU can be taken back. A phone reclaims it from a page left in the background, or
+    // short of memory, and the canvas goes blank for good: Spline notes a lost WebGPU device and
+    // carries on, and a lost WebGL context is never restored. So the page watches for either and
+    // builds the scene again on a fresh canvas, from the bytes it already has, once the page is
+    // in view. WebGPU says so only on the device, which Spline keeps to itself, so the page
+    // watches every device the adapter hands out and listens to the one the scene took last.
+    type Lostable = { lost: Promise<unknown> };
+    let device: Lostable | null = null;
+    let lost = false;
+    let rebuilds = 0;
+    const MAX_REBUILDS = 3;    // a GPU that keeps failing stops being asked; the captions still read
+    const adapter = (window as Window & { GPUAdapter?: { prototype: { requestDevice?: (...a: unknown[]) => Promise<Lostable> } } }).GPUAdapter?.prototype;
+    const requestDevice = adapter?.requestDevice;
+    if (adapter && requestDevice) {
+      adapter.requestDevice = async function (this: unknown, ...args: unknown[]) {
+        const d = await requestDevice.apply(this, args);
+        device = d;
+        d.lost.then(() => { if (d === device) onLost(); });
+        return d;
+      };
+    }
+
+    let scene = canvas;
+    let app: { dispose(): void } | null = null;
+    const watchContext = (c: HTMLCanvasElement) => c.addEventListener('webglcontextlost', (e) => { e.preventDefault(); onLost(); });
+    watchContext(scene);
+
+    const build = async () => {
+      const { Application } = await import('@splinetool/runtime');
+      const next = new Application(scene, { htmlContentMode: 'inline' });
+      app = next;
+      // A copy each time: a buffer handed to the engine may come back emptied
+      const bytes = await sceneBytes;
+      await (bytes ? next.start(bytes.slice(0)) : next.load(sceneUrl));
+      if (app === next) reveal();
+    };
+
     let started = false;
     const start = async () => {
       if (started) return;
       started = true;
       loader.disconnect();
       await heroRevealed;
-      const { Application } = await import('@splinetool/runtime');
-      const app = new Application(canvas, { htmlContentMode: 'inline' });
-      const bytes = await sceneBytes;
-      await (bytes ? app.start(bytes) : app.load(sceneUrl));
-      reveal();
+      await build().catch(() => { if (lost) rebuild(); });
     };
+
+    function onLost() {
+      if (lost) return;
+      lost = true;
+      device = null;
+      if (document.visibilityState === 'visible') rebuild();
+    }
+
+    // The old scene goes first, taking its `spline` global with it, so its frame loop stops at its
+    // next frame instead of steering the new one; then a fresh canvas, faded out until it plays
+    let rebuilding = false;
+    async function rebuild() {
+      if (!lost || rebuilding || rebuilds >= MAX_REBUILDS) return;
+      rebuilding = true;
+      rebuilds++;
+      try { app?.dispose(); } catch { /* a lost GPU can refuse its own teardown */ }
+      app = null;
+      const fresh = scene.cloneNode(false) as HTMLCanvasElement;
+      fresh.classList.add('opacity-0');
+      scene.replaceWith(fresh);
+      scene = fresh;
+      watchContext(scene);
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      lost = false;
+      // A scene built again starts on the busy phone, so it is sent back to where the page is
+      window.addEventListener('why:beat', () => { reveal(); if (spun) go('calm'); }, { once: true });
+      await build().catch(() => {});
+      rebuilding = false;
+      if (lost) rebuild();
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') rebuild();
+    });
+
     // The scene fades in rather than popping in half-built: from its first beat, so the apps'
     // pop-in plays as it appears, or once loading finishes if the scene says nothing
-    const reveal = () => requestAnimationFrame(() => requestAnimationFrame(() => canvas.classList.remove('opacity-0')));
+    const reveal = () => requestAnimationFrame(() => requestAnimationFrame(() => scene.classList.remove('opacity-0')));
     window.addEventListener('why:beat', reveal, { once: true });
     const loader = new IntersectionObserver((entries) => {
       if (entries.some((e) => e.isIntersecting)) start();
