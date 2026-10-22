@@ -23,6 +23,8 @@ export interface Product {
   name: string;
   tagline: string;
   headline: string;
+  // The hero's line and the shop card's, in the site's voice; `description` is for search engines
+  heroLine: string;
   description: string;
   image: string;
   crossSellImage?: string;
@@ -42,8 +44,9 @@ export interface Product {
 export const products: Record<string, Product> = {
   "ring-one": {
     name: "Ring One",
-    tagline: "Sensing, Made Human",
-    headline: "Health clarity\non your finger",
+    tagline: "The quiet one",
+    headline: "Small ring.\nBig hints.",
+    heroLine: "Ring One sits on your finger day and night, picking up your sleep, heart rate and movement. You forget it's there. The app doesn't.",
     seoTitle: "Ring One Smart Ring | 24/7 Heart Rate, Sleep & SpO2 Tracking | SeeMyHealth",
     description: "24/7 heart rate, SpO2, sleep stages, skin temperature, and stress monitoring from a smart ring weighing just 4-6g. 7-day battery, IP68 waterproof to 50m, and Bluetooth 5.2 sync to the SeeMyHealth app (iOS and Android). Available in sizes 6-13, Phantom Black ($179) and Aurora Gold ($199).",
     image: `${CF_IMG}/ring-hero-hands/public`,
@@ -65,27 +68,27 @@ export const products: Record<string, Product> = {
     ],
     features: [
       {
-        title: "Sleep Intelligence",
-        description: "Advanced sleep staging: light, deep, and REM, plus overnight HRV, skin temperature trends, and a morning recovery score so you know how to approach your day.",
+        title: "Sleep",
+        description: "Light, deep and REM, plus overnight HRV and skin temperature. By morning there's a recovery score waiting, so you can plan your day around the night you actually had.",
         icon: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
         image: `${CF_IMG}/ring-sleeping/public`,
       },
       {
-        title: "Heart Health",
-        description: "Continuous heart rate monitoring with resting HR trends, heart rate variability, and SpO2 readings. Always watching out for you, day and night.",
+        title: "Heart Rate",
+        description: "Resting heart rate, HRV and SpO2, picked up in the background. No buttons, no checking in. Just trends that build while you get on with things.",
         icon: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
         image: `${CF_IMG}/ring-heart-health-runner/public`,
         imagePosition: "center 80%",
       },
       {
-        title: "Activity & Exercise",
-        description: "Automatic activity detection with steps, calories, and active minutes. No manual start needed. Ring One knows when you're moving.",
+        title: "Movement",
+        description: "Steps, calories and active minutes, counted on their own. No start button. Ring One notices when you're moving.",
         icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
         image: `${CF_IMG}/ring-activity-fitness/public`,
       },
       {
         title: "Stress & Recovery",
-        description: "Real-time stress tracking based on HRV patterns. Get nudges to breathe when your body needs it, and see your recovery trend over time.",
+        description: "Your HRV shows when the day's been a lot. A gentle nudge to breathe, and a recovery trend to look back on.",
         icon: "M12 3v18M3 12h18",
         image: `${CF_IMG}/ring-reading-coffee/public`,
       },
@@ -108,8 +111,9 @@ export const products: Record<string, Product> = {
   },
   "scale": {
     name: "The Scale",
-    tagline: "Beyond the Number",
-    headline: "The whole picture,\nnot just weight",
+    tagline: "Beyond the number",
+    headline: "Step on.\nGet the full story.",
+    heroLine: "Weight is one number. The Scale gives you 14, from body fat to muscle mass, and sends them all to the app the moment you step off.",
     description: "Full body composition analysis with 4-point BIA. Step on and see weight, body fat, muscle mass, visceral fat, and 14 metrics in the app instantly.",
     image: `${CF_IMG}/scale-bathroom-still/public`,
     crossSellImage: `${CF_IMG}/scale-black-bathroom/public`,
@@ -131,31 +135,31 @@ export const products: Record<string, Product> = {
       { label: "Compatibility", value: "iOS 17+, Android 15+" },
       { label: "Users", value: "Unlimited profiles via app" },
       { label: "In the Box", value: "Smart Scale, 3x AAA batteries, user manual" },
-      { label: "Colors", value: "Obsidian Black, Frost White" },
+      { label: "Colours", value: "Obsidian Black, Frost White" },
     ],
     features: [
       {
         title: "Body Composition",
-        description: "Go beyond weight. See body fat, muscle mass, visceral fat, skeletal muscle, protein ratio, BMR, BMI, and more — 14 metrics from a single step.",
+        description: "Body fat, muscle mass, visceral fat, skeletal muscle, protein, BMR and more. 14 numbers from one step, and no extra effort.",
         icon: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
         image: `${CF_IMG}/scale-body-comp-metrics/public`,
       },
       {
         title: "Shared by Design",
-        description: "Not locked to any account. Open the app, reconnect to a device you've used before or scan and pair a new one, step on, and your reading saves to your own profile.",
+        description: "Not tied to one person. Anyone in the house opens the app, connects, steps on, and the reading lands in their own profile.",
         icon: "M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01",
         image: `${CF_IMG}/scale-black-nutritionist/public`,
         imagePosition: "center 60%",
       },
       {
         title: "Family Profiles",
-        description: "Unlimited user profiles. Open the app, connect to the device, and your reading saves to your own private dashboard.",
+        description: "Unlimited profiles, each one private. Your partner's weigh-in stays theirs, and yours stays yours.",
         icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
         image: `${CF_IMG}/scale-family-profiles/public`,
       },
       {
         title: "Trend Tracking",
-        description: "See your weight and composition change over weeks and months. Understand the real trends behind daily fluctuations.",
+        description: "Daily weight wobbles. Trends don't. See what's really changing across weeks and months.",
         icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
         image: `${CF_IMG}/scale-trend-tracking/public`,
       },
@@ -172,8 +176,9 @@ export const products: Record<string, Product> = {
   },
   "scale-pro": {
     name: "The Scale Pro",
-    tagline: "Segmental Precision",
-    headline: "See your body,\nsegment by segment",
+    tagline: "Segment by segment",
+    headline: "Left arm. Right leg.\nAll of you.",
+    heroLine: "Grab the handles and The Scale Pro reads each arm, each leg and your trunk on its own. 32 numbers, so you see where things are changing, not just whether they are.",
     description: "Multi-frequency BIA with 8 electrodes (4 feet + 4 hands) for detailed body composition. 32 metrics including segmental fat and muscle for each arm, leg, and trunk. The full picture, from home.",
     image: `${CF_IMG}/scale-pro-bathroom-still/public`,
     crossSellImage: `${CF_IMG}/scale-pro-black-bathroom/public`,
@@ -194,31 +199,31 @@ export const products: Record<string, Product> = {
       { label: "Compatibility", value: "iOS 17+, Android 15+" },
       { label: "Users", value: "Unlimited profiles via app" },
       { label: "In the Box", value: "Scale Pro, USB-C charging cable, user manual" },
-      { label: "Colors", value: "Obsidian Black, Frost White" },
+      { label: "Colours", value: "Obsidian Black, Frost White" },
     ],
     features: [
       {
         title: "Segmental Analysis",
-        description: "See body fat and muscle mass for each arm, each leg, and your trunk separately. 8 electrodes with retractable handlebar grips send signals through different body sections independently.",
+        description: "Fat and muscle for each arm, each leg and your trunk, read separately through 8 electrodes and the pull-out handles.",
         icon: "M22 12h-4l-3 9L9 3l-3 9H2",
         image: `${CF_IMG}/scale-pro-segmental-analytics/public`,
       },
       {
         title: "32 Body Metrics",
-        description: "Weight, heart rate, BMI, fat ratio, muscle mass, bone mass, visceral fat, protein, subcutaneous fat, skeletal muscle, body cell mass, intracellular/extracellular water, minerals, adiposity level, and more.",
+        description: "Weight, heart rate, BMI, body fat, muscle, bone mass, visceral fat, protein, skeletal muscle, body cell mass, water inside and outside your cells, minerals and more. For the detail lovers.",
         icon: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
         image: `${CF_IMG}/scale-pro-32-metrics/public`,
         imagePosition: "center 25%",
       },
       {
         title: "Family Profiles",
-        description: "Unlimited user profiles. Open the app, connect to the device, and your reading saves to your own private dashboard.",
+        description: "Unlimited profiles, each one private. Your partner's weigh-in stays theirs, and yours stays yours.",
         icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
         image: `${CF_IMG}/scale-pro-family-profiles/public`,
       },
       {
         title: "Trend Tracking",
-        description: "See your weight and composition change over weeks and months. Understand the real trends behind daily fluctuations.",
+        description: "Daily weight wobbles. Trends don't. See what's really changing across weeks and months.",
         icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
         image: `${CF_IMG}/scale-pro-trend-tracking/public`,
       },
@@ -233,9 +238,10 @@ export const products: Record<string, Product> = {
   },
   "bp-monitor": {
     name: "BP Monitor",
-    tagline: "Blood Pressure, Simplified",
-    headline: "Trusted readings,\nhome comfort",
-    description: "Accurate blood pressure readings with irregular heartbeat detection. Reliable enough to share directly with your doctor from the app.",
+    tagline: "Blood pressure, simplified",
+    headline: "Your blood pressure,\nfrom the sofa.",
+    heroLine: "Wrap, press, relax. Every reading lands in the app on its own, so your mornings and evenings line up without a notebook in sight.",
+    description: "Blood pressure and pulse readings at home, with irregular heartbeat detection, synced to the SeeMyHealth app so your history builds itself.",
     image: "",
     crossSellImage: `${CF_IMG}/bp-black-desk-portrait/public`,
     streamId: "1d73637dabb39e29daa4e516a616da0e",
@@ -258,25 +264,25 @@ export const products: Record<string, Product> = {
     features: [
       {
         title: "One-Touch Reading",
-        description: "Wrap the cuff, press the button. Your systolic, diastolic, and pulse rate appear in 30 seconds. No setup needed.",
+        description: "Wrap the cuff and press the button. About 30 seconds later your systolic, diastolic and pulse are on the screen and in the app.",
         icon: "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z",
         image: `${CF_IMG}/bp-desk-display/public`,
       },
       {
         title: "Irregular Heartbeat",
-        description: "Automatic detection of irregular heartbeat patterns during measurement. Alerts you when something needs attention.",
+        description: "If your rhythm is irregular during a reading, the monitor flags it and the app keeps the note with that reading.",
         icon: "M22 12h-4l-3 9L9 3l-3 9H2",
         image: `${CF_IMG}/bp-irregular-heartbeat/public`,
       },
       {
-        title: "Doctor Sharing",
-        description: "Toggle access for your doctor directly in the app. They get authenticated, see your full BP history in real time, and you can revoke access with a single switch.",
+        title: "Your Doctor, If You Like",
+        description: "Choose who sees your readings. Switch your doctor on in the app and they see your history as it builds. Switch them off whenever you like.",
         icon: "M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13",
         image: `${CF_IMG}/bp-doctor-sharing/public`,
       },
       {
         title: "Morning & Evening",
-        description: "Set reminders for consistent readings. The app tracks AM/PM patterns to catch trends your doctor would want to know about.",
+        description: "Set a morning and an evening reminder, and the app shows how the two compare over time.",
         icon: "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z",
         image: `${CF_IMG}/bp-breakfast-reading/public`,
       },
@@ -291,8 +297,9 @@ export const products: Record<string, Product> = {
   },
   "hydra-one": {
     name: "Hydra One",
-    tagline: "Stay Perfectly Hydrated",
-    headline: "Drink smarter,\nnot harder",
+    tagline: "Hydration, handled",
+    headline: "It counts the sips.\nYou just drink.",
+    heroLine: "Hydra One notices every sip and adds it up for you. The light ring on the lid fills as you go, and the app takes care of the rest.",
     description: "Smart water bottle that tracks your daily intake automatically. LED ring shows your progress. Gentle reminders keep you on track without being annoying.",
     image: "",
     crossSellImage: `${CF_IMG}/bottle-black-desk-work/public`,
@@ -316,25 +323,25 @@ export const products: Record<string, Product> = {
     features: [
       {
         title: "Auto Tracking",
-        description: "Capacitive sensors detect every sip. No manual logging, just drink and the app updates automatically.",
+        description: "The sensor picks up each sip and the app updates on its own. No logging, no guessing.",
         icon: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
         image: `${CF_IMG}/bottle-white-office/public`,
       },
       {
         title: "LED Progress Ring",
-        description: "Twelve LEDs around the lid show your daily progress at a glance. Full ring = goal hit. No phone needed.",
+        description: "Twelve lights round the lid fill up as your day goes. Full ring, goal done. No phone needed.",
         icon: "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z",
         image: `${CF_IMG}/bottle-led-progress-ring/public`,
       },
       {
         title: "Smart Reminders",
-        description: "Gentle LED pulses on the bottle and notifications on your phone when you haven't sipped in a while. Adjusts to your schedule and activity level.",
+        description: "A soft glow on the bottle and a nudge on your phone when it's been a while, timed around your day.",
         icon: "M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0",
         image: `${CF_IMG}/bottle-smart-reminder/public`,
       },
       {
         title: "Hydration Insights",
-        description: "See how hydration affects your sleep, energy, and recovery. The app correlates your intake with data from other SeeMyHealth devices.",
+        description: "See how what you drink lines up with your sleep, energy and recovery, next to your other SeeMyHealth devices.",
         icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
         image: `${CF_IMG}/hydra-hydration-insights/public`,
       },
@@ -352,9 +359,10 @@ export const products: Record<string, Product> = {
   },
   "hema-one": {
     name: "Hema One",
-    tagline: "Your Blood, Your Data",
-    headline: "Lab results,\nno lab visit",
-    description: "At-home blood analysis for key health markers. A small sample from your fingertip gives you lab-quality results in minutes, right in the app.",
+    tagline: "Your blood, your data",
+    headline: "Seven markers.\nOne fingertip.",
+    heroLine: "A drop from your fingertip, a strip and a few seconds. Cholesterol, glucose, haemoglobin and uric acid land in the app, ready to compare with last time.",
+    description: "At-home blood testing for cholesterol, glucose, haemoglobin and uric acid. A small fingertip sample gives results in seconds, right in the SeeMyHealth app.",
     image: `${CF_IMG}/hema-one-web/public`,
     streamId: "8f576ad01105f0b3c8ff5495c066906e",
     specImage: `${CF_IMG}/hema-one-side-profile/public`,
@@ -363,12 +371,12 @@ export const products: Record<string, Product> = {
     price: "$159",
     color: "#A855F7",
     specs: [
-      { label: "Markers", value: "Triglycerides, Total Cholesterol, HDL-C, LDL-C, Blood Glucose, Hemoglobin, Uric Acid" },
+      { label: "Markers", value: "Triglycerides, Total Cholesterol, HDL-C, LDL-C, Blood Glucose, Haemoglobin, Uric Acid" },
       { label: "Lipid Panel", value: "15 sec, ~13 μL sample" },
       { label: "Glucose", value: "5 sec, ~3 μL sample" },
-      { label: "Hemoglobin", value: "5 sec, ~4 μL sample" },
+      { label: "Haemoglobin", value: "5 sec, ~4 μL sample" },
       { label: "Uric Acid", value: "5 sec, ~4 μL sample" },
-      { label: "Hematocrit Range", value: "30–55%" },
+      { label: "Haematocrit Range", value: "30–55%" },
       { label: "Sample Method", value: "Fingertip microsampling" },
       { label: "Strip Recognition", value: "NFC automatic identification" },
       { label: "Display", value: "LED high-definition" },
@@ -379,25 +387,25 @@ export const products: Record<string, Product> = {
     features: [
       {
         title: "Quick Results",
-        description: "Place a tiny sample on the test strip and insert into Hema One. Glucose, hemoglobin, and uric acid results in 5 seconds. Full lipid profile (TC, HDL-C, LDL-C, triglycerides) in 15 seconds.",
+        description: "Put a small drop on the strip and slide it in. Glucose, haemoglobin and uric acid in about 5 seconds, and the full lipid panel in about 15.",
         icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
         image: `${CF_IMG}/hema-black-hand-v2/public`,
       },
       {
-        title: "Comprehensive Markers",
-        description: "Full lipid profile (total cholesterol, HDL-C, LDL-C, triglycerides), blood glucose, uric acid, and hemoglobin. The markers that matter most for everyday health.",
+        title: "Seven Markers",
+        description: "Total cholesterol, HDL, LDL and triglycerides, plus blood glucose, uric acid and haemoglobin. All from one small device on your kitchen table.",
         icon: "M22 12h-4l-3 9L9 3l-3 9H2",
         image: `${CF_IMG}/hema-black-lab/public`,
       },
       {
-        title: "Trend Analysis",
-        description: "See how your blood markers change over time. Spot deficiencies early and track the impact of dietary changes.",
+        title: "Over Time",
+        description: "One reading is a snapshot. Keep testing and see how your markers move alongside what you eat and how you live.",
         icon: "M3 17l6-6 4 4 8-8M14 7h7v7",
         image: `${CF_IMG}/hema-trends-monitoring/public`,
       },
       {
-        title: "Share with Doctor",
-        description: "Grant your healthcare provider secure, authenticated access to your blood marker history with a single toggle. They see the longitudinal data they rarely get, and you stay in full control.",
+        title: "Your Doctor, If You Like",
+        description: "Switch your doctor on in the app and they see your history as it builds. Switch them off whenever you like. It's your call, always.",
         icon: "M4 12v8a2 2 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13",
         image: `${CF_IMG}/hema-orange-doctor/public`,
       },
