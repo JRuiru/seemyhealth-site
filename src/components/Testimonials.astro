@@ -1,7 +1,17 @@
 ---
 const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
 
-const testimonials = [
+// A reviewer with a public profile links to it from the far right of their name
+type Testimonial = {
+  quote: string;
+  author: string;
+  role: string;
+  image: string;
+  color: string;
+  profile?: { network: "LinkedIn"; href: string };
+};
+
+const testimonials: Testimonial[] = [
   {
     quote: "The accuracy rivals lab-grade equipment, and the software experience is years ahead of anything else I've recommended to patients.",
     author: "Dr. Amina N.",
@@ -11,10 +21,11 @@ const testimonials = [
   },
   {
     quote: "The sleep insights alone have changed how I plan my mornings. Watching Ring One evolve from prototype to this, I'm genuinely blown away.",
-    author: "Sarah M.",
+    author: "Esther",
     role: "Beta Tester",
-    image: `${CF_IMG}/family-daughter/public`,
+    image: `${CF_IMG}/review-esther/public`,
     color: "#F97316",
+    profile: { network: "LinkedIn", href: "https://www.linkedin.com/in/esther-muiruri-cert-cii-ab2a573a7" },
   },
   {
     quote: "Seeing the app pull data from the Scale, the Ring, and Hydra One into a single dashboard... it just clicked. Something truly special.",
@@ -55,6 +66,19 @@ const testimonials = [
               <div class="text-sm font-medium text-white">{t.author}</div>
               <div class="text-[11px] text-brand-gray-500 uppercase tracking-wider">{t.role}</div>
             </div>
+            {t.profile && (
+              <a
+                href={t.profile.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${t.author} on ${t.profile.network}`}
+                class="ml-auto p-2 -m-2 text-brand-gray-500 hover:text-white transition-colors"
+              >
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.8 0 0 .77 0 1.73v20.54C0 23.23.8 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z" />
+                </svg>
+              </a>
+            )}
           </div>
         </div>
       ))}
