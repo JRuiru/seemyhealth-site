@@ -30,25 +30,26 @@ const appSchema = {
 
 const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
 
-// Why: each app on its own hears one word of what the body is saying
+// Why: each app on its own hears one word of what the body is saying. They arrive as three
+// notifications, then fold into one from us.
 const scattered = [
-  "Your sleep app has no idea you skipped lunch.",
-  "Your nutrition app is still using last month's weight.",
-  "And your step counter missed the week you've had.",
+  { app: "Sleep", color: "#6366F1", icon: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z", line: "Your sleep app has no idea you skipped lunch." },
+  { app: "Nutrition", color: "#22C55E", icon: "M3 3v7a3 3 0 006 0V3M6 3v18M17 3c-2 0-3 2-3 5s1 4 3 4v9", line: "Your nutrition app is still using last month's weight." },
+  { app: "Steps", color: "#F59E0B", icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z", line: "And your step counter missed the week you've had." },
 ];
 
 // What the app is, in three ideas, before what it does
 const pillars = [
-  { title: "One home", text: "Today at a glance: what you've eaten, how you slept, how much you've drunk and how you're feeling." },
-  { title: "Your goals", text: "Set the goals you care about, and watch each day add up against them." },
-  { title: "The long view", text: "Weeks and months of history, so a bad day stays a bad day and a trend gets a chance to show itself." },
+  { title: "One home", text: "Today at a glance: what you've eaten, how you slept, how much you've drunk and how you're feeling.", image: `${CF_IMG}/logging-food/public`, alt: "Woman checking the app on her phone at home" },
+  { title: "Your goals", text: "Set the goals you care about, and watch each day add up against them.", image: `${CF_IMG}/app-goals-achieved/public`, alt: "A day's goals all met in the app" },
+  { title: "The long view", text: "Weeks and months of history, so a bad day stays a bad day and a trend gets a chance to show itself.", image: `${CF_IMG}/scale-trend-tracking/public`, alt: "Weight and body composition trends over months" },
 ];
 
 // The three ways to use it, each a section further down
 const waysIn = [
-  { label: "Just the app", href: "#inside" },
-  { label: "With our devices", href: "#with-devices" },
-  { label: "With your watch", href: "#your-watch" },
+  { label: "Just the app", short: "Just the app", href: "#inside" },
+  { label: "With our devices", short: "Our devices", href: "#with-devices" },
+  { label: "With your watch", short: "Your watch", href: "#your-watch" },
 ];
 
 // What the app does on its own, in four themes; a tab shows one at a time
@@ -143,7 +144,7 @@ const timeline = [
     device: "App",
     text: "Water, steps and meals, all in one place. Goodnight.",
     color: "#737373",
-    image: `${CF_IMG}/app-goals-achieved/public`,
+    image: `${CF_IMG}/mood-tracking/public`,
   },
 ];
 
@@ -173,18 +174,6 @@ const faqs = [
     a: "No ads, and we don't sell it. We won't, ever. It's encrypted in transit (TLS 1.3) and at rest (AES-256), you pick who sees what, and you can delete the lot whenever you like.",
   },
 ];
-
-const allFeatures = [
-  "Every device, one dashboard",
-  "Apple Health & Health Connect",
-  "Meal logging & recipes",
-  "Mood & journalling",
-  "Sleep and recovery",
-  "Family sharing",
-  "Challenges & community",
-  "Unlimited history",
-];
-
 ---
 
 <Layout title="C-MyHealth App | SeeMyHealth" description="Download C-MyHealth, the SeeMyHealth app for iOS and Android. Journalling, mood tracking, meal logging, recipes, and guided programs, no device required. Add devices for 24/7 vitals, sleep staging, and cross-device insights." ogImage="https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/og-app/public" canonicalPath="/app" jsonLd={appSchema}>
@@ -231,10 +220,26 @@ const allFeatures = [
   <!-- Why: every other app hears one word of what the body says -->
   <section class="py-24 sm:py-36 bg-brand-black border-t border-white/5">
     <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
-      <div class="flex flex-col gap-3 sm:gap-4 mb-12 sm:mb-16" data-scroll-stagger>
-        {scattered.map((line) => (
-          <p class="text-lg sm:text-2xl text-brand-gray-400 italic text-balance">{line}</p>
+      <div class="notifs relative mx-auto max-w-sm text-left mb-12 sm:mb-16" data-notifs aria-label="Three apps, each with one piece of the story">
+        {scattered.map((n, i) => (
+          <div class="notif notif-app" style={`--i: ${i}`}>
+            <span class="w-9 h-9 rounded-[10px] shrink-0 flex items-center justify-center" style={`background: ${n.color}`}>
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={n.icon} /></svg>
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="flex items-center justify-between text-[11px] uppercase tracking-[1px] text-white/50 mb-0.5"><span>{n.app}</span><span class="normal-case tracking-normal">now</span></span>
+              <span class="block text-[14px] leading-snug text-white">{n.line}</span>
+            </span>
+          </div>
         ))}
+        <!-- Ours arrives on top once the three have folded behind it -->
+        <div class="notif notif-us">
+          <img src={`${CF_IMG}/logo/public`} alt="" class="w-9 h-9 rounded-[10px] shrink-0" />
+          <span class="min-w-0 flex-1">
+            <span class="flex items-center justify-between text-[11px] uppercase tracking-[1px] text-white/50 mb-0.5"><span>SeeMyHealth</span><span class="normal-case tracking-normal">now</span></span>
+            <span class="block text-[14px] leading-snug text-white">Skipped lunch, old weight, long week. Got all three, in one place.</span>
+          </span>
+        </div>
       </div>
       <div data-scroll-reveal>
         <h2 class="font-display text-4xl sm:text-6xl font-300 uppercase leading-[0.95] mb-6 text-balance">
@@ -261,10 +266,15 @@ const allFeatures = [
       </div>
       <div class="grid sm:grid-cols-3 gap-4 sm:gap-6" data-scroll-stagger>
         {pillars.map((pillar, i) => (
-          <div class="rounded-2xl border border-white/5 bg-white/[0.02] p-6 sm:p-8">
-            <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-600 mb-6">0{i + 1}</p>
-            <h3 class="font-display text-2xl sm:text-3xl font-400 uppercase leading-tight mb-3">{pillar.title}</h3>
-            <p class="text-sm text-brand-gray-400 leading-relaxed text-pretty">{pillar.text}</p>
+          <div class="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
+            <div class="relative aspect-[4/3] bg-brand-gray-900">
+              <img src={pillar.image} alt={pillar.alt} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+              <span class="absolute top-4 left-4 text-[11px] uppercase tracking-[3px] text-white/80 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full">0{i + 1}</span>
+            </div>
+            <div class="p-6 sm:p-8">
+              <h3 class="font-display text-2xl sm:text-3xl font-400 uppercase leading-tight mb-3">{pillar.title}</h3>
+              <p class="text-sm text-brand-gray-400 leading-relaxed text-pretty">{pillar.text}</p>
+            </div>
           </div>
         ))}
       </div>
@@ -282,7 +292,7 @@ const allFeatures = [
   </section>
 
   <!-- What's inside: the app on its own, one theme at a time -->
-  <section id="inside" class="py-20 sm:py-28 bg-brand-black border-t border-white/5" data-themes>
+  <section id="inside" class="scroll-mt-28 sm:scroll-mt-32 py-20 sm:py-28 bg-brand-black border-t border-white/5" data-themes data-way>
     <div class="max-w-6xl mx-auto px-6 lg:px-8">
       <div class="mb-10 sm:mb-12 max-w-2xl" data-scroll-reveal>
         <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Just the app</p>
@@ -300,21 +310,25 @@ const allFeatures = [
             aria-controls={`panel-${t.key}`}
             aria-selected={i === 0 ? "true" : "false"}
             data-theme-tab={t.key}
-            class="shrink-0 px-5 py-2.5 text-[12px] uppercase tracking-[1.5px] font-medium rounded-full border transition-colors aria-selected:bg-white aria-selected:text-brand-black aria-selected:border-white text-white border-white/20 hover:border-white/40"
+            class="relative overflow-hidden shrink-0 px-5 py-2.5 text-[12px] uppercase tracking-[1.5px] font-medium rounded-full border transition-colors aria-selected:bg-white aria-selected:text-brand-black aria-selected:border-white text-white border-white/20 hover:border-white/40"
           >
             {t.label}
+            <span class="absolute left-0 bottom-0 h-[2px] w-full bg-current opacity-40 origin-left scale-x-0" data-tab-progress aria-hidden="true"></span>
           </button>
         ))}
       </div>
 
+      <!-- The panels share one grid cell, so the section keeps the tallest one's height and nothing
+           below it jumps when a theme changes -->
+      <div class="grid">
       {themes.map((t, i) => (
         <div
           id={`panel-${t.key}`}
           role="tabpanel"
           aria-labelledby={`tab-${t.key}`}
           data-theme-panel={t.key}
-          hidden={i !== 0}
-          class="grid md:grid-cols-2 gap-8 md:gap-12 items-center"
+          inert={i !== 0}
+          class:list={["[grid-area:1/1] grid md:grid-cols-2 gap-8 md:gap-12 items-center transition-opacity duration-500 inert:opacity-0 inert:pointer-events-none"]}
         >
           <div class="relative aspect-[4/5] max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5">
             <img src={t.image} alt={t.alt} class="absolute inset-0 w-full h-full object-cover" loading={i === 0 ? "eager" : "lazy"} />
@@ -335,11 +349,12 @@ const allFeatures = [
           </div>
         </div>
       ))}
+      </div>
     </div>
   </section>
 
   <!-- Our devices: a day, each moment something a phone can't catch, sent straight to the app -->
-  <section id="with-devices" class="py-20 sm:py-28 bg-brand-dark border-t border-white/5 overflow-hidden">
+  <section id="with-devices" data-way class="scroll-mt-28 sm:scroll-mt-32 py-20 sm:py-28 bg-brand-dark border-t border-white/5 overflow-hidden">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="mb-14 max-w-2xl" data-scroll-reveal>
         <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">SeeMyHealth devices</p>
@@ -387,6 +402,12 @@ const allFeatures = [
 
                   {/* Bottom text */}
                   <div class="absolute bottom-0 left-0 right-0 p-5 z-10">
+                    {entry.device !== "App" && (
+                      <span class="inline-flex items-center gap-1.5 mb-3 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-[10px] uppercase tracking-[1.5px] text-white/80">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                        Saved to the app
+                      </span>
+                    )}
                     <h3 class="font-display text-xl uppercase font-300 text-white mb-1.5">{entry.title}</h3>
                     <p class="text-[13px] text-white/60 leading-relaxed">{entry.text}</p>
                   </div>
@@ -411,7 +432,7 @@ const allFeatures = [
   </section>
 
   <!-- Keep what you've got: after our own devices, a watch's data comes in through the phone's health store -->
-  <section id="your-watch" class="py-20 sm:py-28 bg-brand-black border-t border-white/5">
+  <section id="your-watch" data-way class="scroll-mt-28 sm:scroll-mt-32 py-20 sm:py-28 bg-brand-black border-t border-white/5">
     <div class="max-w-6xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
       <div class="relative aspect-[4/3] max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5 md:order-2" data-scroll-reveal>
         <img src={`${CF_IMG}/challenge-accepted/public`} alt="Man grinning at his phone after a workout" class="absolute inset-0 w-full h-full object-cover object-left" loading="lazy" />
@@ -483,26 +504,11 @@ const allFeatures = [
       </div>
 
       <!-- Confidence message -->
-      <div class="rounded-xl border border-white/5 bg-white/[0.02] p-6 max-w-2xl mx-auto mb-10" data-scroll-reveal>
+      <div class="rounded-xl border border-white/5 bg-white/[0.02] p-6 max-w-2xl mx-auto" data-scroll-reveal>
         <p class="text-center text-sm text-brand-gray-400 leading-relaxed">
           Try all of it free for a month. <span class="text-white font-medium">No limits, no commitment.</span>{' '}
           If it's not for you, cancel before the trial ends and you won't pay a thing.
         </p>
-      </div>
-
-      <!-- Features list -->
-      <div class="rounded-2xl border border-white/10 bg-brand-gray-900 p-8 sm:p-10 max-w-3xl mx-auto" data-scroll-reveal>
-        <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-6 text-center">Everything included in every plan</p>
-        <div class="grid sm:grid-cols-2 gap-4 text-left max-w-lg mx-auto">
-          {allFeatures.map((item) => (
-            <div class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-              <span class="text-sm text-brand-gray-400">{item}</span>
-            </div>
-          ))}
-        </div>
       </div>
 
       <AppStoreButtons class="justify-center mt-10" />
@@ -541,7 +547,7 @@ const allFeatures = [
   </section>
 
   <!-- Final CTA -->
-  <section class="py-20 sm:py-28 bg-brand-black border-t border-white/5">
+  <section id="get" data-cta-end class="scroll-mt-20 py-20 sm:py-28 bg-brand-black border-t border-white/5">
     <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
       <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
         Start your free trial. <span class="font-500">Add devices when you're ready.</span>
@@ -553,6 +559,27 @@ const allFeatures = [
       <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600 mt-8">iOS &amp; Android · Apple Health · Health Connect</p>
     </div>
   </section>
+
+  <!-- While reading the how: which of the three ways you're in -->
+  <nav class="fixed top-[72px] sm:top-[88px] inset-x-0 z-40 flex justify-center px-4 pointer-events-none opacity-0 -translate-y-2 transition duration-300" data-ways-bar aria-label="Three ways in">
+    <div class="flex gap-1 p-1 rounded-full bg-brand-black/70 backdrop-blur-xl border border-white/10 pointer-events-auto">
+      {waysIn.map((way) => (
+        <a href={way.href} data-way-link={way.href.slice(1)} class="px-3.5 sm:px-4 py-2 text-[11px] uppercase tracking-[1.2px] font-medium rounded-full text-white/60 hover:text-white transition-colors aria-[current=true]:bg-white aria-[current=true]:text-brand-black whitespace-nowrap">
+          {way.short}
+        </a>
+      ))}
+    </div>
+  </nav>
+
+  <!-- Phones: getting the app is always a tap away, between the hero and the closing buttons -->
+  <div class="sm:hidden fixed inset-x-0 bottom-0 z-40 px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] bg-brand-black/85 backdrop-blur-xl border-t border-white/10 flex items-center gap-3 translate-y-full transition-transform duration-300" data-get-bar>
+    <img src={`${CF_IMG}/logo/public`} alt="" class="w-9 h-9 rounded-[10px] shrink-0" />
+    <div class="min-w-0 flex-1">
+      <p class="text-[13px] text-white font-medium leading-tight">C-MyHealth</p>
+      <p class="text-[11px] text-white/50 leading-tight">1 month free. Cancel anytime.</p>
+    </div>
+    <a href="#get" class="shrink-0 px-5 py-2.5 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full">Get the app</a>
+  </div>
 
   <Footer />
 </Layout>
@@ -586,16 +613,116 @@ const allFeatures = [
     }
   });
 
-  // What's inside: one theme at a time
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Why: three notifications arrive one by one, fold behind each other, and ours lands on top.
+  // Once only; with reduced motion it starts folded.
+  const notifs = document.querySelector<HTMLElement>('[data-notifs]');
+  if (notifs) {
+    const NOTIF_GAP_MS = 700;      // between one app's notification and the next
+    const HOLD_MS = 1600;          // all three on screen, long enough to read
+    const OURS_AFTER_FOLD_MS = 450;
+    const play = () => {
+      const apps = Array.from(notifs.querySelectorAll<HTMLElement>('.notif-app'));
+      apps.forEach((n, i) => setTimeout(() => n.classList.add('is-in'), i * NOTIF_GAP_MS));
+      const fold = apps.length * NOTIF_GAP_MS + HOLD_MS;
+      setTimeout(() => { notifs.dataset.state = 'folded'; }, fold);
+      setTimeout(() => { notifs.dataset.state = 'ours'; }, fold + OURS_AFTER_FOLD_MS);
+    };
+    if (reducedMotion) {
+      notifs.querySelectorAll('.notif-app').forEach((n) => n.classList.add('is-in'));
+      notifs.dataset.state = 'ours';
+    } else {
+      const once = new IntersectionObserver((entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        once.disconnect();
+        play();
+      }, { threshold: 0.6 });
+      once.observe(notifs);
+    }
+  }
+
+  // What's inside: one theme at a time. While the section is on screen the themes take turns,
+  // each tab filling a line as it waits; the first tap hands control to the reader for good.
   const themeTabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-tab]'));
   const themePanels = Array.from(document.querySelectorAll<HTMLElement>('[data-theme-panel]'));
+  const THEME_SECONDS = 5;
+  let themeTimer = 0;
+  let themesAuto = !reducedMotion;
+  const showTheme = (tab: HTMLButtonElement) => {
+    const key = tab.dataset.themeTab;
+    themeTabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+    themePanels.forEach((p) => { p.inert = p.dataset.themePanel !== key; });
+    // On a phone the tabs scroll sideways; keep the one showing in sight, without moving the page
+    tab.parentElement?.scrollTo({ left: tab.offsetLeft - 24, behavior: 'smooth' });
+  };
+  const resetProgress = () => themeTabs.forEach((t) => {
+    const bar = t.querySelector<HTMLElement>('[data-tab-progress]');
+    if (bar) { bar.style.transition = 'none'; bar.style.transform = 'scaleX(0)'; }
+  });
+  const runProgress = (tab: HTMLButtonElement) => {
+    const bar = tab.querySelector<HTMLElement>('[data-tab-progress]');
+    if (!bar) return;
+    void bar.offsetWidth;   // start from empty
+    bar.style.transition = `transform ${THEME_SECONDS}s linear`;
+    bar.style.transform = 'scaleX(1)';
+  };
+  const stopThemes = () => { clearTimeout(themeTimer); resetProgress(); };
+  const nextTheme = () => {
+    const current = themeTabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+    const tab = themeTabs[(current + 1) % themeTabs.length];
+    showTheme(tab);
+    startThemes();
+  };
+  const startThemes = () => {
+    stopThemes();
+    if (!themesAuto) return;
+    const current = themeTabs.find((t) => t.getAttribute('aria-selected') === 'true');
+    if (current) runProgress(current);
+    themeTimer = window.setTimeout(nextTheme, THEME_SECONDS * 1000);
+  };
   themeTabs.forEach((tab) => {
     tab.addEventListener('click', () => {
-      const key = tab.dataset.themeTab;
-      themeTabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
-      themePanels.forEach((p) => { p.hidden = p.dataset.themePanel !== key; });
+      themesAuto = false;
+      stopThemes();
+      showTheme(tab);
     });
   });
+  const themesSection = document.querySelector('[data-themes]');
+  if (themesSection) {
+    new IntersectionObserver((entries) => {
+      if (entries[entries.length - 1].isIntersecting) startThemes();
+      else stopThemes();
+    }, { threshold: 0.35 }).observe(themesSection);
+  }
+
+  // The ways bar: shown while one of the three ways is under the reading line, that one lit up
+  const waysBar = document.querySelector<HTMLElement>('[data-ways-bar]');
+  const wayLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-way-link]'));
+  const waySections = Array.from(document.querySelectorAll<HTMLElement>('[data-way]'));
+  if (waysBar && waySections.length) {
+    const inView = new Set<string>();
+    const reading = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) inView.add(e.target.id); else inView.delete(e.target.id); });
+      const current = waySections.find((sec) => inView.has(sec.id))?.id;
+      waysBar.classList.toggle('opacity-0', !current);
+      waysBar.classList.toggle('-translate-y-2', !current);
+      wayLinks.forEach((a) => a.setAttribute('aria-current', String(a.dataset.wayLink === current)));
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    waySections.forEach((sec) => reading.observe(sec));
+  }
+
+  // The phone bar: after the hero, until the closing buttons are in view
+  const getBar = document.querySelector<HTMLElement>('[data-get-bar]');
+  const heroSection = document.querySelector('section');   // the hero is the page's first section
+  const ctaEnd = document.querySelector('[data-cta-end]');
+  if (getBar && heroSection && ctaEnd) {
+    let pastHero = false;
+    let atEnd = false;
+    const update = () => getBar.classList.toggle('translate-y-full', !pastHero || atEnd);
+    new IntersectionObserver(([e]) => { pastHero = !e.isIntersecting; update(); }).observe(heroSection);
+    new IntersectionObserver(([e]) => { atEnd = e.isIntersecting || e.boundingClientRect.top < 0; update(); }).observe(ctaEnd);
+  }
 
   // FAQ accordion
   document.querySelectorAll('.faq-trigger').forEach((btn) => {
@@ -626,4 +753,54 @@ const allFeatures = [
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+
+  /* Why: notifications. Listed, each sits a row lower; folded, the three tuck behind the top one,
+     smaller and dimmer the older they are; then ours takes the top. */
+  .notifs {
+    --h: 76px;
+    --gap: 10px;
+    height: calc(3 * var(--h) + 2 * var(--gap));
+    transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .notifs[data-state='folded'],
+  .notifs[data-state='ours'] { height: calc(var(--h) + 24px); }
+  .notif {
+    position: absolute;
+    inset-inline: 0;
+    height: var(--h);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 14px;
+    border-radius: 20px;
+    background: rgb(36, 36, 38);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+  }
+  .notif-app {
+    top: calc(var(--i) * (var(--h) + var(--gap)));
+    opacity: 0;
+    transform: translateY(-14px) scale(0.96);
+    z-index: calc(3 - var(--i));
+  }
+  .notif-app.is-in { opacity: 1; transform: none; }
+  .notifs[data-state='folded'] .notif-app,
+  .notifs[data-state='ours'] .notif-app {
+    transform: translateY(calc(-1 * var(--i) * (var(--h) + var(--gap)) + (var(--i) + 1) * 8px)) scale(calc(1 - (var(--i) + 1) * 0.05));
+    opacity: calc(0.75 - var(--i) * 0.2);
+  }
+  /* Folded behind ours, a card shows only its edge, never its words through the one in front */
+  .notif-app > * { transition: opacity 0.3s ease; }
+  .notifs[data-state='folded'] .notif-app > *,
+  .notifs[data-state='ours'] .notif-app > * { opacity: 0; }
+  .notif-us {
+    top: 0;
+    z-index: 5;
+    opacity: 0;
+    transform: translateY(-14px) scale(0.96);
+    background: rgb(46, 46, 48);
+  }
+  .notifs[data-state='ours'] .notif-us { opacity: 1; transform: none; }
 </style>
