@@ -6,7 +6,8 @@ type Testimonial = {
   quote: string;
   author: string;
   role: string;
-  image: string;
+  // Without a headshot, the reviewer's initial stands in
+  image?: string;
   color: string;
   profile?: { network: "LinkedIn"; href: string };
 };
@@ -14,10 +15,10 @@ type Testimonial = {
 const testimonials: Testimonial[] = [
   {
     quote: "The accuracy rivals lab-grade equipment, and the software experience is years ahead of anything else I've recommended to patients.",
-    author: "Dr. Amina N.",
+    author: "Dr Adella",
     role: "Clinical Advisor",
-    image: `${CF_IMG}/family-grandma/public`,
     color: "#A855F7",
+    profile: { network: "LinkedIn", href: "https://www.linkedin.com/in/adella-wambui-8b1b6689" },
   },
   {
     quote: "The sleep insights alone have changed how I plan my mornings. Watching Ring One evolve from prototype to this, I'm genuinely blown away.",
@@ -60,7 +61,13 @@ const testimonials: Testimonial[] = [
           </div>
           <div class="relative flex items-center gap-3 mt-6 sm:mt-8">
             <div class={`${i === 0 ? 'w-10 h-10' : 'w-9 h-9'} rounded-full overflow-hidden shrink-0`} style={`border: 2px solid ${t.color}50`}>
-              <img src={t.image} alt={t.author} class="w-full h-full object-cover" loading="lazy" />
+              {t.image ? (
+                <img src={t.image} alt={t.author} class="w-full h-full object-cover" loading="lazy" />
+              ) : (
+                <span class="w-full h-full flex items-center justify-center text-sm font-medium text-white" style={`background: ${t.color}33`} aria-hidden="true">
+                  {t.author.replace(/^Dr /, '').charAt(0)}
+                </span>
+              )}
             </div>
             <div>
               <div class="text-sm font-medium text-white">{t.author}</div>
