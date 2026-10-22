@@ -30,6 +30,27 @@ const appSchema = {
 
 const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
 
+// Why: each app on its own hears one word of what the body is saying
+const scattered = [
+  "Your sleep app has no idea you skipped lunch.",
+  "Your scale doesn't know you slept four hours.",
+  "And your step counter missed the week you've had.",
+];
+
+// What the app is, in three ideas, before what it does
+const pillars = [
+  { title: "One home", text: "Today at a glance: what you've eaten, how you slept, how much you've drunk and how you're feeling." },
+  { title: "Your goals", text: "Set the goals you care about, and watch each day add up against them." },
+  { title: "The long view", text: "Weeks and months of history, so a bad day stays a bad day and a trend gets a chance to show itself." },
+];
+
+// The three ways to use it, each a section further down
+const waysIn = [
+  { label: "Just the app", href: "#inside" },
+  { label: "With our devices", href: "#with-devices" },
+  { label: "With your watch", href: "#your-watch" },
+];
+
 // What the app does on its own, in four themes; a tab shows one at a time
 const themes = [
   {
@@ -207,13 +228,66 @@ const allFeatures = [
     </div>
   </section>
 
+  <!-- Why: every other app hears one word of what the body says -->
+  <section class="py-24 sm:py-36 bg-brand-black border-t border-white/5">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
+      <div class="flex flex-col gap-3 sm:gap-4 mb-12 sm:mb-16" data-scroll-stagger>
+        {scattered.map((line) => (
+          <p class="text-lg sm:text-2xl text-brand-gray-400 italic text-balance">{line}</p>
+        ))}
+      </div>
+      <div data-scroll-reveal>
+        <h2 class="font-display text-4xl sm:text-6xl font-300 uppercase leading-[0.95] mb-6 text-balance">
+          Each one hears a word.<br /> <span class="font-500">Nobody hears the sentence.</span>
+        </h2>
+        <p class="text-brand-gray-400 sm:text-lg leading-relaxed text-pretty">
+          Your body keeps dropping hints, and they only make sense together. SeeMyHealth puts them side by side, so the late coffee shows up next to the bad night, and your good days start to show what they share. No diagnosis, no lecture. Just a clearer view of you.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What the app is, before what it does -->
+  <section class="py-20 sm:py-28 bg-brand-dark border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto text-center mb-14 sm:mb-16" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">The app</p>
+        <h2 class="font-display text-4xl sm:text-6xl font-300 uppercase leading-[0.95] mb-6 text-balance">
+          One app. <span class="font-500">All of you.</span>
+        </h2>
+        <p class="text-brand-gray-400 sm:text-lg leading-relaxed text-pretty">
+          Sleep, meals, mood, water, weight and the rest usually live in a dozen places. SeeMyHealth puts them on one screen, day by day, so you can see how it all fits together.
+        </p>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-4 sm:gap-6" data-scroll-stagger>
+        {pillars.map((pillar, i) => (
+          <div class="rounded-2xl border border-white/5 bg-white/[0.02] p-6 sm:p-8">
+            <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-600 mb-6">0{i + 1}</p>
+            <h3 class="font-display text-2xl sm:text-3xl font-400 uppercase leading-tight mb-3">{pillar.title}</h3>
+            <p class="text-sm text-brand-gray-400 leading-relaxed text-pretty">{pillar.text}</p>
+          </div>
+        ))}
+      </div>
+      <div class="mt-14 sm:mt-16 text-center" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-5">Three ways in</p>
+        <div class="flex flex-wrap justify-center gap-3">
+          {waysIn.map((way) => (
+            <a href={way.href} class="px-6 py-3 text-[12px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors">
+              {way.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- What's inside: the app on its own, one theme at a time -->
   <section id="inside" class="py-20 sm:py-28 bg-brand-black border-t border-white/5" data-themes>
     <div class="max-w-6xl mx-auto px-6 lg:px-8">
       <div class="mb-10 sm:mb-12 max-w-2xl" data-scroll-reveal>
-        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">No devices needed</p>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Just the app</p>
         <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] text-balance">
-          Plenty to do. <span class="font-500">Before any devices.</span>
+          Start with the app. <span class="font-500">Nothing else needed.</span>
         </h2>
       </div>
 
@@ -264,35 +338,16 @@ const allFeatures = [
     </div>
   </section>
 
-  <!-- Keep what you've got: a watch's data comes in through the phone's health store -->
-  <section class="py-20 sm:py-28 bg-brand-dark border-t border-white/5">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-      <div class="relative aspect-[4/3] max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5 md:order-2" data-scroll-reveal>
-        <img src={`${CF_IMG}/challenge-accepted/public`} alt="Man grinning at his phone after a workout" class="absolute inset-0 w-full h-full object-cover object-left" loading="lazy" />
-      </div>
-      <div class="min-w-0" data-scroll-reveal>
-        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Already have a watch?</p>
-        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
-          Keep it. <span class="font-500">Seriously.</span>
-        </h2>
-        <p class="text-brand-gray-400 leading-relaxed mb-8 text-pretty">
-          Switch on Apple Health or Health Connect and your watch's steps, heart rate and sleep land in SeeMyHealth, next to everything else. One tap on, one tap off.
-        </p>
-        <HealthPlatformBadges />
-      </div>
-    </div>
-  </section>
-
-  <!-- With devices: a day, each moment something a phone can't catch -->
-  <section id="with-devices" class="py-20 sm:py-28 bg-brand-black border-t border-white/5 overflow-hidden">
+  <!-- Our devices: a day, each moment something a phone can't catch, sent straight to the app -->
+  <section id="with-devices" class="py-20 sm:py-28 bg-brand-dark border-t border-white/5 overflow-hidden">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="mb-14 max-w-2xl" data-scroll-reveal>
-        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">With devices</p>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">SeeMyHealth devices</p>
         <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
-          Add a device. <span class="font-500">Catch more.</span>
+          Our devices. <span class="font-500">Built to talk to it.</span>
         </h2>
         <p class="text-brand-gray-400 leading-relaxed text-pretty">
-          Each device picks up something a phone can't. Here's a day with a few of them.
+          Each one picks up something a phone can't and sends it straight to the app. No exporting, no typing numbers in. Here's a day with a few of them.
         </p>
       </div>
     </div>
@@ -351,6 +406,25 @@ const allFeatures = [
         <a href="/shop" class="shrink-0 inline-flex items-center px-6 py-3 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors">
           See the devices &rarr;
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Keep what you've got: after our own devices, a watch's data comes in through the phone's health store -->
+  <section id="your-watch" class="py-20 sm:py-28 bg-brand-black border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+      <div class="relative aspect-[4/3] max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5 md:order-2" data-scroll-reveal>
+        <img src={`${CF_IMG}/challenge-accepted/public`} alt="Man grinning at his phone after a workout" class="absolute inset-0 w-full h-full object-cover object-left" loading="lazy" />
+      </div>
+      <div class="min-w-0" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Already have a watch?</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
+          Keep it. <span class="font-500">Seriously.</span>
+        </h2>
+        <p class="text-brand-gray-400 leading-relaxed mb-8 text-pretty">
+          Switch on Apple Health or Health Connect and your watch's steps, heart rate and sleep land in SeeMyHealth too, next to everything else. One tap on, one tap off.
+        </p>
+        <HealthPlatformBadges />
       </div>
     </div>
   </section>
