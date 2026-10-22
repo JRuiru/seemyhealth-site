@@ -42,7 +42,7 @@ const scattered = [
 const pillars = [
   { title: "One home", text: "Today at a glance: what you've eaten, how you slept, how much you've drunk and how you're feeling.", image: `${CF_IMG}/logging-food/public`, alt: "Woman checking the app on her phone at home" },
   { title: "Your goals", text: "Set the goals you care about, and watch each day add up against them.", image: `${CF_IMG}/app-goals-achieved/public`, alt: "A day's goals all met in the app" },
-  { title: "The long view", text: "Weeks and months of history, so a bad day stays a bad day and a trend gets a chance to show itself.", image: `${CF_IMG}/scale-trend-tracking/public`, alt: "Weight and body composition trends over months" },
+  { title: "The long view", premium: true, text: "Weeks and months of history, so a bad day stays a bad day and a trend gets a chance to show itself.", image: `${CF_IMG}/scale-trend-tracking/public`, alt: "Weight and body composition trends over months" },
 ];
 
 // The three ways to use it, each a section further down
@@ -52,7 +52,9 @@ const waysIn = [
   { label: "With your watch", short: "Your watch", href: "#your-watch" },
 ];
 
-// What the app does on its own, in four themes; a tab shows one at a time
+// What the app does on its own, in four themes; a tab shows one at a time. Logging is free; an
+// item marked premium is one of the app's four PremiumFeatures (trends, meal planning, fasting,
+// family data), so this list follows Features/Subscription in the iOS app.
 const themes = [
   {
     key: "eat",
@@ -60,7 +62,13 @@ const themes = [
     title: "Eat.",
     bold: "Without the guesswork.",
     text: "Search or scan what you eat, find recipes you'll actually cook, plan the week, and set a fasting window if that's your thing. Water counts too.",
-    items: ["Meal logging by search or barcode", "Recipes and weekly meal plans", "Fasting schedules", "Water goals and reminders"],
+    items: [
+      { label: "Meal logging by search or barcode" },
+      { label: "Water goals and reminders" },
+      { label: "Recipes to browse" },
+      { label: "Meal plans and full recipes", premium: true },
+      { label: "Fasting schedules", premium: true },
+    ],
     image: `${CF_IMG}/app-meal-logging/public`,
     alt: "Logging a meal in the SeeMyHealth app",
   },
@@ -70,7 +78,7 @@ const themes = [
     title: "Feel.",
     bold: "Then write it down.",
     text: "Quick mood check-ins and a journal that's there when you want it. Give it a few weeks and your good days start to show what they have in common.",
-    items: ["Mood check-ins", "Journalling", "Habit streaks"],
+    items: [{ label: "Mood check-ins" }, { label: "Journalling" }, { label: "Habit streaks" }],
     image: `${CF_IMG}/app-mood-journal/public`,
     alt: "A mood check-in and journal entry in the app",
   },
@@ -80,7 +88,11 @@ const themes = [
     title: "Your people.",
     bold: "All of them.",
     text: "Share what you choose with family, keep tabs on Mum, and drag your friends into a challenge or two.",
-    items: ["Family sharing, on your terms", "Groups and community", "Challenges with friends"],
+    items: [
+      { label: "Your family circle" },
+      { label: "Groups and challenges with friends" },
+      { label: "Your family's numbers, when they share", premium: true },
+    ],
     image: `${CF_IMG}/app-family-sharing/public`,
     alt: "Family members sharing their progress in the app",
   },
@@ -90,9 +102,37 @@ const themes = [
     title: "Care.",
     bold: "When you want it.",
     text: "Book a provider, have a video visit, and keep the follow-ups in the same place as everything else.",
-    items: ["Book a provider", "Video visits", "Follow-ups in the app"],
+    items: [{ label: "Book a provider" }, { label: "Video visits" }, { label: "Follow-ups in the app" }],
     image: `${CF_IMG}/app-video-consultation/public`,
     alt: "A video visit with a care provider in the app",
+  },
+];
+
+// Free and Premium, as the app draws the line: logging is free, reading back what it adds up to is
+// Premium (Features/Subscription in the iOS app)
+const tiers = [
+  {
+    name: "Free",
+    price: "$0, always",
+    items: [
+      "Log meals, water, mood and your journal",
+      "Food search and recipes to browse",
+      "Today's sleep, steps and calories",
+      "Every device's readings, and Apple Health or Health Connect",
+      "Your family circle, groups and challenges",
+    ],
+  },
+  {
+    name: "Premium",
+    price: "Everything free, plus",
+    premium: true,
+    items: [
+      "Trends and history for every measure",
+      "Meal plans and full recipes",
+      "Fasting schedules",
+      "Cycle tracking",
+      "Your family's numbers, when they share",
+    ],
   },
 ];
 
@@ -154,6 +194,10 @@ const faqs = [
     a: "C-MyHealth is the SeeMyHealth app, published under a shorter, App Store-friendly name. Search for either \"C-MyHealth\" or \"SeeMyHealth\" on the App Store or Google Play and you'll find the same app, built and run by SeeMyHealth.",
   },
   {
+    q: "What's free, and what's Premium?",
+    a: "Logging is free: meals, water, mood, your journal, today's sleep, steps and calories, every device's readings, groups and challenges. Premium adds the long view: trends and history, meal plans and full recipes, fasting, cycle tracking and your family's numbers. Premium is free for your first month.",
+  },
+  {
     q: "Is the app useful without a device?",
     a: "Yes. Meals, recipes, fasting, water, mood, journalling, family sharing and challenges all work on their own. Devices add what a phone can't measure, like body composition, blood pressure and sleep stages.",
   },
@@ -208,7 +252,7 @@ const faqs = [
             </p>
             <div>
               <AppStoreButtons />
-              <p class="text-[12px] text-white/30 mt-4">1-month free trial. Cancel anytime.</p>
+              <p class="text-[12px] text-white/30 mt-4">Free to download. Premium free for a month.</p>
               <p class="text-[11px] text-white/25 mt-1.5">Listed on the App Store &amp; Google Play as C-MyHealth.</p>
             </div>
           </div>
@@ -270,6 +314,7 @@ const faqs = [
             <div class="relative aspect-[4/3] bg-brand-gray-900">
               <img src={pillar.image} alt={pillar.alt} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
               <span class="absolute top-4 left-4 text-[11px] uppercase tracking-[3px] text-white/80 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full">0{i + 1}</span>
+              {pillar.premium && <span class="absolute top-4 right-4 text-[10px] uppercase tracking-[1.5px] text-amber-200 bg-black/50 backdrop-blur-md border border-amber-300/30 px-2.5 py-1 rounded-full">Premium</span>}
             </div>
             <div class="p-6 sm:p-8">
               <h3 class="font-display text-2xl sm:text-3xl font-400 uppercase leading-tight mb-3">{pillar.title}</h3>
@@ -342,7 +387,8 @@ const faqs = [
               {t.items.map((item) => (
                 <li class="flex items-center gap-3 text-sm text-brand-gray-300">
                   <span class="w-1.5 h-1.5 rounded-full bg-white/60 shrink-0"></span>
-                  {item}
+                  {item.label}
+                  {item.premium && <span class="text-[10px] uppercase tracking-[1.5px] text-amber-300/90 border border-amber-300/30 rounded-full px-2 py-0.5">Premium</span>}
                 </li>
               ))}
             </ul>
@@ -457,11 +503,29 @@ const faqs = [
     <div class="max-w-4xl mx-auto px-6 lg:px-8">
       <div class="text-center mb-16" data-scroll-reveal>
         <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
-          One plan. <span class="font-500">Every feature.</span>
+          Free to use.<br /> <span class="font-500">Premium when you want more.</span>
         </h2>
-        <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto">
-          No paywalls, no hidden tiers, no ads. One subscription unlocks everything, whether you use the app alone or with every device.
+        <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto text-pretty">
+          Logging is free, and stays free. Premium is for reading it all back: the trends, the plans and your family. No ads on either.
         </p>
+      </div>
+
+      <!-- What's free and what Premium adds, side by side -->
+      <div class="grid sm:grid-cols-2 gap-4 sm:gap-6 max-w-3xl mx-auto mb-14" data-scroll-reveal>
+        {tiers.map((tier) => (
+          <div class:list={["rounded-2xl border p-6 sm:p-8", tier.premium ? "border-amber-300/20 bg-amber-300/[0.03]" : "border-white/10 bg-brand-gray-900"]}>
+            <p class:list={["text-[11px] uppercase tracking-[3px] mb-1", tier.premium ? "text-amber-200/80" : "text-brand-gray-500"]}>{tier.name}</p>
+            <p class="font-display text-2xl font-400 uppercase mb-5">{tier.price}</p>
+            <ul class="flex flex-col gap-3">
+              {tier.items.map((item) => (
+                <li class="flex items-start gap-2.5 text-sm text-brand-gray-300">
+                  <svg class:list={["w-4 h-4 mt-0.5 shrink-0", tier.premium ? "text-amber-300" : "text-green-500"]} fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
 
       <!-- Pricing toggle + cards -->
@@ -480,7 +544,7 @@ const faqs = [
 
       <div class="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto mb-10" data-scroll-reveal>
         <div id="card-monthly" class="rounded-2xl border border-white/10 bg-brand-gray-900 p-8 text-center transition-all duration-300">
-          <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-4">Monthly</p>
+          <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-4">Premium, monthly</p>
           <div class="flex items-baseline justify-center gap-1 mb-2">
             <span class="font-display text-5xl font-300">$8</span>
             <span class="text-brand-gray-500 text-lg">/month</span>
@@ -493,7 +557,7 @@ const faqs = [
           <div class="absolute -top-3 left-1/2 -translate-x-1/2">
             <span class="text-[10px] uppercase tracking-[1.5px] font-medium text-brand-black bg-green-400 px-3 py-1 rounded-full">Best Value</span>
           </div>
-          <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-4">Annual</p>
+          <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-4">Premium, annual</p>
           <div class="flex items-baseline justify-center gap-1 mb-2">
             <span class="font-display text-5xl font-300">$70</span>
             <span class="text-brand-gray-500 text-lg">/year</span>
@@ -506,13 +570,13 @@ const faqs = [
       <!-- Confidence message -->
       <div class="rounded-xl border border-white/5 bg-white/[0.02] p-6 max-w-2xl mx-auto" data-scroll-reveal>
         <p class="text-center text-sm text-brand-gray-400 leading-relaxed">
-          Try all of it free for a month. <span class="text-white font-medium">No limits, no commitment.</span>{' '}
-          If it's not for you, cancel before the trial ends and you won't pay a thing.
+          Try Premium free for a month. <span class="text-white font-medium">No commitment.</span>{' '}
+          If it's not for you, cancel before the trial ends and you won't pay a thing. Everything free stays free.
         </p>
       </div>
 
       <AppStoreButtons class="justify-center mt-10" />
-      <p class="text-center text-[11px] text-brand-gray-600 mt-4">Subscribe and start your free trial in-app</p>
+      <p class="text-center text-[11px] text-brand-gray-600 mt-4">Download free, and start your Premium trial in the app</p>
     </div>
   </section>
 
@@ -550,10 +614,10 @@ const faqs = [
   <section id="get" data-cta-end class="scroll-mt-20 py-20 sm:py-28 bg-brand-black border-t border-white/5">
     <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
       <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
-        Start your free trial. <span class="font-500">Add devices when you're ready.</span>
+        Download it free. <span class="font-500">Add devices when you're ready.</span>
       </h2>
       <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto mb-10">
-        1-month free. Cancel anytime. No device required.
+        Free to use, no device needed. Premium is free for your first month.
       </p>
       <AppStoreButtons class="justify-center" />
       <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600 mt-8">iOS &amp; Android · Apple Health · Health Connect</p>
@@ -576,7 +640,7 @@ const faqs = [
     <img src={`${CF_IMG}/logo/public`} alt="" class="w-9 h-9 rounded-[10px] shrink-0" />
     <div class="min-w-0 flex-1">
       <p class="text-[13px] text-white font-medium leading-tight">C-MyHealth</p>
-      <p class="text-[11px] text-white/50 leading-tight">1 month free. Cancel anytime.</p>
+      <p class="text-[11px] text-white/50 leading-tight">Free to download</p>
     </div>
     <a href="#get" class="shrink-0 px-5 py-2.5 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full">Get the app</a>
   </div>
