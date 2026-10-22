@@ -611,7 +611,7 @@ const faqs = [
   </section>
 
   <!-- Final CTA -->
-  <section id="get" data-cta-end class="scroll-mt-20 py-20 sm:py-28 bg-brand-black border-t border-white/5">
+  <section id="get" data-cta-end class="relative overflow-hidden scroll-mt-20 py-20 sm:py-28 bg-brand-black border-t border-white/5">
     <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
       <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
         Still scrolling? <span class="font-500">Download it free.</span>
@@ -619,9 +619,16 @@ const faqs = [
       <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto mb-10">
         Free to use, no device needed, and Premium's on us for the first month. Add devices whenever you like. We're not pushy. Okay, maybe a little.
       </p>
-      <AppStoreButtons class="justify-center" />
+      <div data-cta-buttons>
+        <AppStoreButtons class="justify-center" />
+      </div>
       <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600 mt-8">iOS &amp; Android · Apple Health · Health Connect</p>
     </div>
+    <!-- A Rive thumb that has been scrolling all page taps the first button. Only the thumb is
+         Rive: the buttons stay real links underneath, and the page presses the one it lands on.
+         The artboard is 600 x 320 with the fingertip's tap point at (150, 200); the thumb's base runs
+         off its bottom edge, so the canvas fades out there rather than cutting it off. -->
+    <canvas class="absolute pointer-events-none w-[600px] h-[320px] max-w-none [mask-image:linear-gradient(to_bottom,black_60%,transparent)]" width="600" height="320" data-cta-thumb hidden aria-hidden="true"></canvas>
   </section>
 
   <!-- While reading the how: which of the three ways you're in -->
@@ -786,6 +793,78 @@ const faqs = [
     const update = () => getBar.classList.toggle('translate-y-full', !pastHero || atEnd);
     new IntersectionObserver(([e]) => { pastHero = !e.isIntersecting; update(); }).observe(heroSection);
     new IntersectionObserver(([e]) => { atEnd = e.isIntersecting || e.boundingClientRect.top < 0; update(); }).observe(ctaEnd);
+  }
+
+  // Still scrolling? The thumb. Its runtime and file load only when this section is near, never
+  // with reduced motion or Data Saver, and it plays once.
+  const ctaSection = document.querySelector<HTMLElement>('[data-cta-end]');
+  const thumbCanvas = document.querySelector<HTMLCanvasElement>('[data-cta-thumb]');
+  const ctaButton = document.querySelector<HTMLAnchorElement>('[data-cta-buttons] a');
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+  if (ctaSection && thumbCanvas && ctaButton && !reducedMotion && !saveData) {
+    const ART_W = 600, ART_H = 320;
+    const TAP_X = 150, TAP_Y = 200;   // the fingertip's tap point on the artboard
+    const SCROLL_REACH_X = 480;       // the thumb's right edge while it scrolls, before it comes over
+    const PLAY_SECONDS = 3.8;         // the thumb's whole visit, then it is torn down
+    let tapped = false;
+    // Lines the artboard's tap point up with the centre of the first button. On a narrow screen the
+    // thumb shrinks until its scrolling, off to the right of the button, still fits on screen.
+    const place = () => {
+      const s = ctaSection.getBoundingClientRect();
+      const b = ctaButton.getBoundingClientRect();
+      const cx = b.left + b.width / 2;
+      const k = Math.min(1, (innerWidth - 12 - cx) / (SCROLL_REACH_X - TAP_X));
+      thumbCanvas.style.width = `${ART_W * k}px`;
+      thumbCanvas.style.height = `${ART_H * k}px`;
+      thumbCanvas.style.left = `${cx - s.left - TAP_X * k}px`;
+      thumbCanvas.style.top = `${b.top - s.top + b.height / 2 - TAP_Y * k}px`;
+    };
+    const press = () => {
+      ctaButton.style.transition = 'transform 120ms ease-out';
+      ctaButton.style.transform = 'scale(0.94)';
+      setTimeout(() => { ctaButton.style.transform = ''; }, 160);
+    };
+    // Somebody who taps first needs no demonstration
+    ctaSection.addEventListener('pointerdown', () => { tapped = true; }, { once: true });
+    const loader = new IntersectionObserver(async (entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      loader.disconnect();
+      const [{ Rive, Layout, Fit, RuntimeLoader }, { default: wasmUrl }] = await Promise.all([
+        import('@rive-app/canvas-lite'),
+        import('@rive-app/canvas-lite/rive.wasm?url'),
+      ]);
+      RuntimeLoader.setWasmUrl(wasmUrl);
+      const thumb = new Rive({
+        canvas: thumbCanvas,
+        src: '/media/cta-thumb.riv',
+        artboard: 'CtaThumb',
+        stateMachine: 'CtaThumb',
+        autoplay: true,
+        // The file's view model: `play` and `skip` go in, `tapped` comes back at the press
+        autoBind: true,
+        layout: new Layout({ fit: Fit.Contain }),
+        onLoad: () => {
+          place();
+          thumb.resizeDrawingSurfaceToCanvas();
+          thumb.viewModelInstance?.trigger('tapped')?.on(press);
+          // Waits until the section is mostly on screen, so the joke lands where it can be seen
+          const show = new IntersectionObserver((seen) => {
+            if (!seen.some((e) => e.isIntersecting)) return;
+            show.disconnect();
+            if (tapped) { thumb.cleanup(); return; }
+            thumbCanvas.hidden = false;
+            thumb.viewModelInstance?.trigger('play')?.trigger();
+            setTimeout(() => { thumb.cleanup(); thumbCanvas.remove(); }, PLAY_SECONDS * 1000);
+          }, { threshold: 0.7 });
+          show.observe(ctaSection);
+        },
+      });
+      ctaSection.addEventListener('pointerdown', () => {
+        thumb.viewModelInstance?.trigger('skip')?.trigger();
+      }, { once: true });
+      addEventListener('resize', () => { place(); thumb.resizeDrawingSurfaceToCanvas(); });
+    }, { rootMargin: '400px 0px' });
+    loader.observe(ctaSection);
   }
 
   // FAQ accordion
