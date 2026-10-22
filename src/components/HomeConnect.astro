@@ -5,18 +5,26 @@
 // Apple's badge is used unaltered: at least 30px tall, a quarter of its height clear on every
 // side, one per page (developer.apple.com/health-fitness/works-with-apple-health). Health
 // Connect's logo sits on white, as Google's guidelines ask.
+import type { Season } from '../lib/season';
+
 const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
 
 // The thread, in order. `us` is SeeMyHealth, `you` the visitor; an aside is a smaller, quieter
 // afterthought; the image is the coach, sent as a message.
 type Message =
   | { from: 'us' | 'you'; text: string; aside?: boolean }
-  | { from: 'us'; image: string; alt: string };
+  | { from: 'us'; image: string; alt: string; seasonal?: Record<Season, { clip: string; alt: string }> };
 const chat: Message[] = [
   { from: 'us', text: 'Hang on.' },
   { from: 'us', text: 'You already have a fitness tracker?' },
   { from: 'you', text: 'Um… yes?' },
-  { from: 'us', image: `${CF_IMG}/fitness-ring-portrait/public`, alt: 'A coach in a training vest staring straight at you' },
+  {
+    from: 'us',
+    image: `${CF_IMG}/fitness-ring-portrait/public`,
+    alt: 'A coach in a training vest staring straight at you',
+    // A muted loop in season; the still stays for the rest of the year
+    seasonal: { halloween: { clip: '/media/coach-halloween', alt: 'The coach dressed as a vampire, eyeing your tracker, then grinning' } },
+  },
   { from: 'us', text: 'Cool. Keep it.' },
   { from: 'us', text: '(for now)', aside: true },
   { from: 'us', text: "Seriously, we're not mad." },
@@ -55,7 +63,22 @@ const options = [
     <div class="flex flex-col gap-3" aria-label={chatText} data-connect-chat>
       {chat.map((m) => 'image' in m ? (
         <div class="hidden self-start w-[72%] sm:w-80 lg:w-96 rounded-3xl rounded-bl-md overflow-hidden border border-white/10 bg-brand-gray-900 opacity-0 translate-y-3 scale-95 origin-bottom-left transition duration-500 ease-out" data-connect-msg="us">
-          <img src={m.image} alt={m.alt} class="w-full aspect-square object-cover" loading="lazy" />
+          <img src={m.image} alt={m.alt} class="w-full aspect-square object-cover" loading="lazy" data-connect-still />
+          {m.seasonal && Object.entries(m.seasonal).map(([season, c]) => (
+            <video
+              class="hidden w-full aspect-square object-cover"
+              poster={`${c.clip}.jpg`}
+              aria-label={c.alt}
+              muted
+              loop
+              playsinline
+              preload="none"
+              data-connect-clip={season}
+            >
+              <source src={`${c.clip}.webm`} type="video/webm" />
+              <source src={`${c.clip}.mp4`} type="video/mp4" />
+            </video>
+          ))}
         </div>
       ) : (
         <p
@@ -142,6 +165,18 @@ const options = [
 </section>
 
 <script>
+  import { currentSeason } from '../lib/season';
+
+  // In season, the coach's still gives way to that season's clip, which plays from the moment
+  // its bubble lands
+  const season = currentSeason();
+  document.querySelectorAll<HTMLVideoElement>("[data-connect-clip]").forEach((clip) => {
+    if (clip.dataset.connectClip !== season) return;
+    clip.parentElement?.querySelector("[data-connect-still]")?.classList.add("hidden");
+    clip.classList.remove("hidden");
+    clip.preload = "auto";
+  });
+
   // The chat plays once, when it scrolls into view. Each message waits for a beat of typing from
   // whoever sends it; an aside lands after a longer pause, for timing. Messages take no space until
   // they arrive, so the thread grows like a real one.
@@ -151,6 +186,7 @@ const options = [
     const after = chat.querySelector<HTMLElement>("[data-connect-after]");
     const reveal = (el: HTMLElement) => {
       el.classList.remove("hidden");
+      el.querySelectorAll<HTMLVideoElement>("video:not(.hidden)").forEach((v) => v.play().catch(() => {}));
       requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove("opacity-0", "translate-y-3", "scale-95")));
     };
     // The thread keeps its finished height from the start, so the cards below never jump as it grows
