@@ -38,7 +38,7 @@ const captions = [
       <!-- The scene is watched, never touched: Spline's runtime claims touches on its canvas (to orbit
            the camera), which swallowed a swipe there and left the page stuck on a phone. Touches
            and clicks pass through to the page instead. -->
-      <canvas class="absolute inset-0 w-full h-full pointer-events-none" data-why-scene={SCENE_URL} aria-label="Sixteen health apps around a phone are flung away, leaving one app"></canvas>
+      <canvas class="absolute inset-0 w-full h-full pointer-events-none opacity-0 transition-opacity duration-700 ease-out" data-why-scene={SCENE_URL} aria-label="Sixteen health apps around a phone are flung away, leaving one app"></canvas>
     </div>
 
     <!-- Heading -->
@@ -150,7 +150,12 @@ const captions = [
       const app = new Application(canvas, { htmlContentMode: 'inline' });
       const bytes = await sceneBytes;
       await (bytes ? app.start(bytes) : app.load(sceneUrl));
+      reveal();
     };
+    // The scene fades in rather than popping in half-built: from its first beat, so the apps'
+    // pop-in plays as it appears, or once loading finishes if the scene says nothing
+    const reveal = () => requestAnimationFrame(() => requestAnimationFrame(() => canvas.classList.remove('opacity-0')));
+    window.addEventListener('why:beat', reveal, { once: true });
     const loader = new IntersectionObserver((entries) => {
       if (entries.some((e) => e.isIntersecting)) start();
     }, { rootMargin: '600px 0px' });
