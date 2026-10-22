@@ -32,6 +32,16 @@ export function initHeroReveal() {
   const heroImage = hero.querySelector("[data-hero-image]");
   const heroContent = hero.querySelector("[data-hero-content]");
 
+  // The circle opens on a photo that is already decoded, or a slow phone opens it on nothing and
+  // decodes mid-animation. A photo that is slow to arrive gets 1.2 s before the reveal goes anyway.
+  const photo = heroImage?.querySelector("img");
+  const ready = photo
+    ? Promise.race([photo.decode().catch(() => {}), new Promise((r) => setTimeout(r, 1200))])
+    : Promise.resolve();
+  ready.then(() => revealHero(heroImage, heroContent));
+}
+
+function revealHero(heroImage: Element | null, heroContent: Element | null) {
   if (heroImage) {
     gsap.fromTo(
       heroImage,
@@ -58,6 +68,11 @@ export function initHeroReveal() {
         stagger: 0.15,
         ease: "power2.out",
         delay: 1.0,
+        // Heavy work below the fold (the why scene) waits for this, so it never stutters the reveal
+        onComplete: () => {
+          document.documentElement.dataset.heroRevealed = "";
+          window.dispatchEvent(new Event("hero:revealed"));
+        },
       }
     );
   }

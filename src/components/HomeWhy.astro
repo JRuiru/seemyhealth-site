@@ -122,11 +122,20 @@ const captions = [
 
     // --- Loading: fetch the runtime and scene once the page has loaded, or at once if the
     // section is scrolled to first. The scene's script runs inline and announces its beats.
+    // Either way it waits for the hero's reveal to finish: the section sits right under the hero,
+    // so it is "near" from the first frame, and the engine compiling its shaders (a third of a
+    // second in one block) stuttered the reveal. A visit that skips the reveal waits 3 s at most.
+    const heroRevealed = new Promise<void>((resolve) => {
+      if (!document.querySelector('[data-hero]') || 'heroRevealed' in document.documentElement.dataset) return resolve();
+      window.addEventListener('hero:revealed', () => resolve(), { once: true });
+      setTimeout(resolve, 3000);
+    });
     let started = false;
     const start = async () => {
       if (started) return;
       started = true;
       loader.disconnect();
+      await heroRevealed;
       const { Application } = await import('@splinetool/runtime');
       const app = new Application(canvas, { htmlContentMode: 'inline' });
       await app.load(canvas.dataset.whyScene ?? '');
