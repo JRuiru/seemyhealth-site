@@ -130,6 +130,16 @@ const captions = [
       window.addEventListener('hero:revealed', () => resolve(), { once: true });
       setTimeout(resolve, 3000);
     });
+    // The scene file is about 4 MB, so it downloads from the first moment, quietly: a download is
+    // off the main thread and costs the reveal nothing, and by the time anyone scrolls it is
+    // usually here. Data Saver skips it, and a failed download falls back to loading by URL.
+    const sceneUrl = canvas.dataset.whyScene ?? '';
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+    const sceneBytes: Promise<ArrayBuffer | null> = saveData
+      ? Promise.resolve(null)
+      : fetch(sceneUrl, { priority: 'low' } as RequestInit)
+          .then((r) => (r.ok ? r.arrayBuffer() : null))
+          .catch(() => null);
     let started = false;
     const start = async () => {
       if (started) return;
@@ -138,7 +148,8 @@ const captions = [
       await heroRevealed;
       const { Application } = await import('@splinetool/runtime');
       const app = new Application(canvas, { htmlContentMode: 'inline' });
-      await app.load(canvas.dataset.whyScene ?? '');
+      const bytes = await sceneBytes;
+      await (bytes ? app.start(bytes) : app.load(sceneUrl));
     };
     const loader = new IntersectionObserver((entries) => {
       if (entries.some((e) => e.isIntersecting)) start();
