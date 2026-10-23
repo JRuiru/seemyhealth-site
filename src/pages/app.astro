@@ -693,7 +693,7 @@ const faqs = [
          Rive: the buttons stay real links underneath, and the page presses the one it lands on.
          The artboard is 600 x 320 with the fingertip's tap point at (150, 200); the thumb's base runs
          off its bottom edge, so the canvas fades out there rather than cutting it off. -->
-    <canvas class="absolute pointer-events-none w-[600px] h-[320px] max-w-none [mask-image:linear-gradient(to_bottom,black_60%,transparent)]" width="600" height="320" data-cta-thumb hidden aria-hidden="true"></canvas>
+    <canvas class="absolute pointer-events-none w-[640px] h-[440px] max-w-none [mask-image:linear-gradient(to_bottom,black_82%,transparent)]" width="640" height="440" data-cta-thumb hidden aria-hidden="true"></canvas>
   </section>
 
   <!-- While reading the how: which of the three ways you're in -->
@@ -973,24 +973,40 @@ const faqs = [
   // somebody taps the section.
   const ctaSection = document.querySelector<HTMLElement>('[data-cta-end]');
   const thumbCanvas = document.querySelector<HTMLCanvasElement>('[data-cta-thumb]');
-  const ctaButton = document.querySelector<HTMLAnchorElement>('[data-cta-buttons] a');
-  if (ctaSection && thumbCanvas && ctaButton && !reducedMotion && !saveData) {
-    const ART_W = 600, ART_H = 320;
+  const [ctaButton, otherButton] = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-cta-buttons] a'));
+  if (ctaSection && thumbCanvas && ctaButton && otherButton && !reducedMotion && !saveData) {
+    const ART_W = 640, ART_H = 440;
     const TAP_X = 150, TAP_Y = 200;   // the fingertip's tap point on the artboard
-    const SCROLL_REACH_X = 480;       // the thumb's right edge while it scrolls, before it comes over
+    // How far the hand reaches right of the fingertip, at the tap and while pointing (artboard units,
+    // rive/cta-thumb/README.md), and how far the file can point (beyond, the fingertip leaves it)
+    const REACH_AT_TAP = 120, REACH_POINTING = 158;
+    const MAX_POINT_X = 335, MAX_POINT_Y = 135;
     const PLAY_SECONDS = 3.8;         // the thumb's whole visit, then it hides until the next one
     let tapped = false;
-    // Lines the artboard's tap point up with the centre of the first button. On a narrow screen the
-    // thumb shrinks until its scrolling, off to the right of the button, still fits on screen.
-    const place = () => {
+    // Lines the artboard's tap point up with the centre of the first button (iOS) and tells the file
+    // where the second (Android) is, to point at first. Measured afresh before every visit and when
+    // the section changes size: wherever the buttons have moved to since the file loaded, from a
+    // phone stacking them to fonts and images arriving late. On a narrow screen the thumb shrinks
+    // until the hand fits on screen at both buttons.
+    const place = (thumb?: { viewModelInstance?: { number: (n: string) => { value: number } | null } | null }) => {
       const s = ctaSection.getBoundingClientRect();
       const b = ctaButton.getBoundingClientRect();
-      const cx = b.left + b.width / 2;
-      const k = Math.min(1, (innerWidth - 12 - cx) / (SCROLL_REACH_X - TAP_X));
+      const o = otherButton.getBoundingClientRect();
+      const cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+      const ox = o.left + o.width / 2, oy = o.top + o.height / 2;
+      const room = innerWidth - 12;
+      // Never bigger than a real thumb would look beside the buttons: full size from about 560px wide
+      let k = Math.min(1, innerWidth / 560, (room - cx) / REACH_AT_TAP, (room - ox) / REACH_POINTING);
+      // Never so small that the other button is out of the file's reach
+      k = Math.max(k, Math.abs(ox - cx) / MAX_POINT_X, Math.abs(oy - cy) / MAX_POINT_Y, 0.4);
       thumbCanvas.style.width = `${ART_W * k}px`;
       thumbCanvas.style.height = `${ART_H * k}px`;
       thumbCanvas.style.left = `${cx - s.left - TAP_X * k}px`;
-      thumbCanvas.style.top = `${b.top - s.top + b.height / 2 - TAP_Y * k}px`;
+      thumbCanvas.style.top = `${cy - s.top - TAP_Y * k}px`;
+      const vm = thumb?.viewModelInstance;
+      const px = vm?.number('pointX'), py = vm?.number('pointY');
+      if (px) px.value = (ox - cx) / k;
+      if (py) py.value = (oy - cy) / k;
     };
     const press = () => {
       ctaButton.style.transition = 'transform 120ms ease-out';
@@ -1010,12 +1026,14 @@ const faqs = [
         artboard: 'CtaThumb',
         stateMachine: 'CtaThumb',
         autoplay: true,
-        // The file's view model: `play` and `skip` go in, `tapped` comes back at the press
+        // The file's view model: `play`, `skip` and where to point (`pointX`, `pointY`) go in,
+        // `tapped` comes back at the press
         autoBind: true,
         layout: new Layout({ fit: Fit.Contain }),
         onLoad: () => {
-          place();
-          thumb.resizeDrawingSurfaceToCanvas();
+          const replace = () => { place(thumb); thumb.resizeDrawingSurfaceToCanvas(); };
+          replace();
+          new ResizeObserver(replace).observe(ctaSection);
           thumb.viewModelInstance?.trigger('tapped')?.on(press);
           // A visit starts once the section is mostly on screen, so the joke lands where it can be
           // seen, and the next one waits for the section to leave the screen and come back. Between
@@ -1025,6 +1043,7 @@ const faqs = [
           const visit = () => {
             visiting = true;
             away = false;
+            replace();
             thumbCanvas.hidden = false;
             thumb.play();
             thumb.viewModelInstance?.trigger('play')?.trigger();
@@ -1044,7 +1063,7 @@ const faqs = [
       ctaSection.addEventListener('click', () => {
         thumb.viewModelInstance?.trigger('skip')?.trigger();
       }, { once: true });
-      addEventListener('resize', () => { place(); thumb.resizeDrawingSurfaceToCanvas(); });
+      addEventListener('resize', () => { place(thumb); thumb.resizeDrawingSurfaceToCanvas(); });
     }, { rootMargin: '400px 0px' });
     loader.observe(ctaSection);
   }
