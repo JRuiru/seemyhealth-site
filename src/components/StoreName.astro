@@ -1,0 +1,30 @@
+---
+// The app is listed as C-MyHealth, not SeeMyHealth, so wherever somebody is sent to a store they
+// are told the name the listing will show, beside its icon, and somebody reading on a laptop knows
+// what to find on their phone. `bold` is for a hero.
+interface Props {
+  bold?: boolean;
+  class?: string;
+}
+
+const { bold = false, class: className } = Astro.props;
+---
+
+<p class:list={[
+  "flex items-center",
+  bold ? "gap-3 text-sm sm:text-base text-white/85" : "gap-2.5 text-[13px] text-white/70",
+  className,
+]}>
+  <img
+    src="https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/logo/public"
+    alt=""
+    class:list={["shrink-0", bold ? "w-10 h-10 rounded-[11px]" : "w-7 h-7 rounded-[8px]"]}
+    width={bold ? 40 : 28}
+    height={bold ? 40 : 28}
+    loading="lazy"
+  />
+  <span class="flex flex-col text-left leading-snug">
+    <span>You'll find it as <strong class:list={["text-white", bold ? "font-bold text-base sm:text-lg" : "font-semibold"]}>C-MyHealth</strong></span>
+    <span class:list={["text-white/50", bold ? "text-[13px] sm:text-sm" : "text-[12px]"]}>on the App Store and Google Play</span>
+  </span>
+</p>

@@ -3,6 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import AppStoreButtons from '../components/AppStoreButtons.astro';
+import StoreName from '../components/StoreName.astro';
+import HealthPlatformBadges from '../components/HealthPlatformBadges.astro';
+import Testimonials from '../components/Testimonials.astro';
 
 export const prerender = true;
 
@@ -28,213 +31,200 @@ const appSchema = {
 
 const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
 
-const standAloneFeatures = [
+// Why: each app on its own hears one word of what the body is saying. They arrive as three
+// notifications, then fold into one from us.
+const scattered = [
+  { app: "Sleep", color: "#6366F1", icon: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z", line: "Your sleep app has no idea you skipped lunch." },
+  { app: "Nutrition", color: "#22C55E", icon: "M3 3v7a3 3 0 006 0V3M6 3v18M17 3c-2 0-3 2-3 5s1 4 3 4v9", line: "Your nutrition app is still using last month's weight." },
+  { app: "Steps", color: "#F59E0B", icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z", line: "And your step counter missed the week you've had." },
+];
+
+// What the app is, in three ideas, before what it does
+const pillars = [
+  { title: "One home", text: "Today, at a glance. What you ate, how you slept, how much water you've had (be honest) and how you're feeling.", image: `${CF_IMG}/logging-food/public`, alt: "Woman checking the app on her phone at home" },
+  { title: "Your goals", text: "Your goals, not ours. Set what matters to you and watch the days tick it off. No guilt trips included.", image: `${CF_IMG}/app-goals-achieved/public`, alt: "A day's goals all met in the app" },
+  { title: "The long view", premium: true, text: "One bad day is just a bad day. Weeks and months of history show you what's actually going on.", image: `${CF_IMG}/scale-trend-tracking/public`, alt: "Weight and body composition trends over months" },
+];
+
+// The three ways to use it, each a section further down
+const waysIn = [
+  { label: "Just the app", short: "Just the app", href: "#inside" },
+  { label: "With our devices", short: "Our devices", href: "#with-devices" },
+  { label: "With your watch", short: "Your watch", href: "#your-watch" },
+];
+
+// What the app does on its own, in four themes; a tab shows one at a time. Logging is free; an
+// item marked premium is one of the app's four PremiumFeatures (trends, meal planning, fasting,
+// family data), so this list follows Features/Subscription in the iOS app. Each tab wears the app's
+// own tab icon for that area: the Rive files in public/media/app-icons are copied unchanged from the
+// iOS app's Resources/Icons.
+const themes = [
   {
-    title: "Journal, mood & habits",
-    description: "Mood check-ins and journalling. Build self-awareness without needing a single device.",
-    icon: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
-    image: `${CF_IMG}/app-mood-journal/public`,
-  },
-  {
-    title: "Meals, nutrition & fasting",
-    description: "Log meals by search or barcode scan. Build nutrition plans, set fasting schedules, and get smart reminders.",
-    icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
+    key: "eat",
+    icon: "nutrition",
+    label: "Eat",
+    title: "Eat.",
+    bold: "Then tell us about it.",
+    text: "Search it or scan it, and it's logged. Add your allergies and we'll flag any food or recipe that contains one, before it's on your plate. Browse recipes you'll actually cook, plan the week, and yes, water counts too.",
+    items: [
+      { label: "Meal logging by search or barcode" },
+      { label: "Allergen flags on foods and recipes" },
+      { label: "Water goals and reminders" },
+      { label: "Recipes to browse" },
+      { label: "Meal plans and full recipes", premium: true },
+      { label: "Fasting schedules", premium: true },
+    ],
     image: `${CF_IMG}/app-meal-logging/public`,
+    alt: "Logging a meal in the SeeMyHealth app",
   },
   {
-    title: "Hydration tracking",
-    description: "Set daily goals and get reminders. Hydra One automates it, but the app works on its own.",
-    icon: "M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z",
-    image: `${CF_IMG}/app-hydration-log/public`,
+    key: "feel",
+    icon: "my-health",
+    label: "Feel",
+    title: "Feel.",
+    bold: "Then write it down.",
+    text: "Quick mood check-ins and a journal that never judges your handwriting. Give it a few weeks and your good days start to show what they have in common.",
+    items: [{ label: "Mood check-ins" }, { label: "Journalling" }, { label: "Habit streaks" }],
+    image: `${CF_IMG}/app-mood-journal/public`,
+    alt: "A mood check-in and journal entry in the app",
   },
   {
-    title: "Family data sharing",
-    description: "Share dashboards with family. Everyone stays informed with role-based access and privacy controls.",
-    icon: "M18 18.72a9.094 9.094 0 003.741-5.728M12 2.25c-4.97 0-9 4.03-9 9s4.03 9 9 9m0-18a8.96 8.96 0 015.672 2.018M12 2.25v0M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0",
+    key: "people",
+    icon: "community",
+    label: "Your people",
+    title: "Your people.",
+    bold: "All of them.",
+    text: "Build your family circle, keep tabs on Mum (she'll pretend to mind), and drag your friends into a challenge or two.",
+    items: [
+      { label: "Your family circle" },
+      { label: "Groups and challenges with friends" },
+      { label: "Your family's numbers, when they share", premium: true },
+    ],
     image: `${CF_IMG}/app-family-sharing/public`,
+    alt: "Family members sharing their progress in the app",
   },
   {
-    title: "Recipes & meal plans",
-    description: "Recipes, favourites, and weekly meal plans. Nutritional breakdown included with every recipe.",
-    icon: "M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25",
-    image: `${CF_IMG}/app-recipes/public`,
-  },
-  {
-    title: "Care provider access",
-    description: "Video consultations and follow-ups, all in-app.",
-    icon: "M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5",
+    key: "care",
+    icon: "providers",
+    label: "Care",
+    title: "Care.",
+    bold: "When you want it.",
+    text: "Book a provider, have a video visit in your pyjamas, and keep the follow-ups next to everything else.",
+    items: [{ label: "Book a provider" }, { label: "Video visits" }, { label: "Follow-ups in the app" }],
     image: `${CF_IMG}/app-video-consultation/public`,
-  },
-  {
-    title: "Community & challenges",
-    description: "Compete, share, and stay accountable. Challenges across recipes, journalling, nutrition, and more.",
-    icon: "M18 18.72a9.094 9.094 0 003.741-5.728M3.741 13.008A9 9 0 0112 3a9 9 0 018.259 10.008M12 12l-3 3m0 0l3 3m-3-3h12",
-    image: `${CF_IMG}/app-community-challenges/public`,
+    alt: "A video visit with a care provider in the app",
   },
 ];
 
+// Free and Premium, as the app draws the line: logging is free, reading back what it adds up to is
+// Premium (Features/Subscription in the iOS app)
+const tiers = [
+  {
+    name: "Free",
+    price: "$0, always",
+    items: [
+      "Log meals, water, mood and your journal",
+      "Food search and recipes to browse",
+      "Today's sleep, steps and calories",
+      "Every device's readings, and Apple Health or Health Connect",
+      "Your family circle, groups and challenges",
+    ],
+  },
+  {
+    name: "Premium",
+    price: "Everything free, plus",
+    premium: true,
+    items: [
+      "Trends and history for every measure",
+      "Meal plans and full recipes",
+      "Fasting schedules",
+      "Cycle tracking",
+      "Your family's numbers, when they share",
+    ],
+  },
+];
+
+// A day with a few devices: what each one catches that a phone can't
 const timeline = [
   {
     time: "6:30 AM",
     title: "Wake up",
     device: "Ring One",
-    insight: "Sleep score 82. Recovery: ready to train.",
+    text: "Your night's already in: sleep stages and a recovery score, waiting with your coffee.",
     color: "#F97316",
     image: `${CF_IMG}/ring-sleep-insights-ad/public`,
   },
   {
-    time: "6:45 AM",
-    title: "Morning journal",
-    device: "App",
-    insight: "Mood check-in, gratitude entry, set today's intention.",
-    color: "#737373",
-    image: `${CF_IMG}/lifestyle-sun-portrait/public`,
-  },
-  {
     time: "7:00 AM",
-    title: "Step on the scale",
+    title: "Step on",
     device: "The Scale Pro",
-    insight: "Muscle mass +0.3kg. Visceral fat down.",
+    text: "Weight, muscle and fat, arm by arm, saved before you've found your socks.",
     color: "#3B82F6",
     image: `${CF_IMG}/scale-pro-using/public`,
   },
   {
     time: "7:20 AM",
-    title: "Morning BP check",
+    title: "Morning reading",
     device: "BP Monitor",
-    insight: "118/76. 30-day trend steady. Shared with your doctor.",
+    text: "Wrap, press, done. It lines up next to last night's reading on its own.",
     color: "#EF4444",
     image: `${CF_IMG}/bp-morning-check/public`,
   },
   {
-    time: "9:00 AM",
-    title: "Scan, log, go",
-    device: "App",
-    insight: "Rushing to work. Scanned a protein bar, 230 cal, 20g protein. Logged before the first bite.",
-    color: "#737373",
-    image: `${CF_IMG}/logging-food/public`,
-  },
-  {
     time: "12:30 PM",
-    title: "Hydration check",
+    title: "Halfway there",
     device: "Hydra One",
-    insight: "1.2L of 2.5L. Pick it up before 3 PM.",
+    text: "Half your water by lunch. The lid's glowing about it.",
     color: "#06B6D4",
     image: `${CF_IMG}/bottle-black-desk-work/public`,
   },
   {
-    time: "1:00 PM",
-    title: "Nutritionist video call",
-    device: "App",
-    insight: "Lunch break consult. Shared meal logs and blood markers, got a revised plan in 15 min.",
-    color: "#737373",
-    image: `${CF_IMG}/app-nutritionist-call/public`,
-  },
-  {
-    time: "3:00 PM",
-    title: "Workout recorded",
-    device: "Ring One",
-    insight: "45 min strength session. Heart rate zones, calories, and recovery impact, all logged automatically.",
-    color: "#F97316",
-    image: `${CF_IMG}/lifestyle-athlete/public`,
-  },
-  {
-    time: "4:30 PM",
-    title: "Challenge accepted",
-    device: "App",
-    insight: "Friend invited you to a 7-day most-active challenge. You're in. Leaderboard is live.",
-    color: "#737373",
-    image: `${CF_IMG}/challenge-accepted/public`,
-  },
-  {
-    time: "5:30 PM",
-    title: "Check on hubby's progress",
-    device: "The Scale",
-    insight: "Family share: he's down 3kg this month. Muscle mass holding steady. Sent him a high-five.",
-    color: "#A855F7",
-    image: `${CF_IMG}/app-hubby-progress/public`,
-  },
-  {
-    time: "9:15 PM",
-    title: "Evening mood check-in",
-    device: "App",
-    insight: "How are you feeling? Quick tap. The app tracks patterns between mood, sleep, and nutrition over time.",
-    color: "#737373",
-    image: `${CF_IMG}/mood-tracking/public`,
+    time: "6:00 PM",
+    title: "At the gym",
+    device: "The Scale Pro",
+    text: "No scale at home? Use the gym's. Connect, step on, and the reading is yours alone.",
+    color: "#3B82F6",
+    image: `${CF_IMG}/scale-pro-white-gym/public`,
   },
   {
     time: "9:30 PM",
-    title: "Goals achieved",
+    title: "Day done",
     device: "App",
-    insight: "Hydration hit. Steps crushed. Meals on target. Goodnight.",
+    text: "Water, steps and meals, all tucked in. You should be too.",
     color: "#737373",
-    image: `${CF_IMG}/app-goals-achieved/public`,
+    image: `${CF_IMG}/mood-tracking/public`,
   },
-];
-
-const comparisonRows = [
-  { feature: "Mood tracking & journalling", appOnly: true, withDevices: true },
-  { feature: "Meal logging & recipes", appOnly: true, withDevices: true },
-  { feature: "Nutrition & fasting plans", appOnly: true, withDevices: true },
-  { feature: "Hydration tracking (manual)", appOnly: true, withDevices: true },
-  { feature: "Habit streaks", appOnly: true, withDevices: true },
-  { feature: "Family data sharing", appOnly: true, withDevices: true },
-  { feature: "Care provider access", appOnly: true, withDevices: true },
-  { feature: "Community & challenges", appOnly: true, withDevices: true },
-  { feature: "24/7 heart rate & SpO2", appOnly: false, withDevices: true },
-  { feature: "Sleep staging & recovery score", appOnly: false, withDevices: true },
-  { feature: "Body composition analysis", appOnly: false, withDevices: true },
-  { feature: "Blood pressure tracking", appOnly: false, withDevices: true },
-  { feature: "Auto hydration tracking (Hydra One)", appOnly: false, withDevices: true },
-  { feature: "Blood marker insights", appOnly: false, withDevices: true },
-  { feature: "Cross-device health correlations", appOnly: false, withDevices: true },
-  { feature: "Secure doctor sharing (with live data)", appOnly: false, withDevices: true },
 ];
 
 const faqs = [
   {
     q: "Why is the app called C-MyHealth instead of SeeMyHealth?",
-    a: "C-MyHealth is the SeeMyHealth app, published under a shorter, App Store-friendly name. Search for either \"C-MyHealth\" or \"SeeMyHealth\" on the App Store or Google Play and you'll find the same app, built and operated by SeeMyHealth.",
+    a: "Say it out loud. Same app, different name tag. SeeMyHealth makes it, and the App Store and Google Play list it as C-MyHealth, so that's the one to look for.",
   },
   {
-    q: "Is the app really useful without buying a device?",
-    a: "Yes. Mood tracking, journalling, meal logging, recipes, habit streaks, guided programs, and community challenges all work independently. The app is a complete wellness platform on its own. Devices make it smarter, but they're not required.",
+    q: "What's free, and what's Premium?",
+    a: "Everything you log is free, and stays free: meals, water, mood, your journal, today's sleep, steps and calories, every device's readings, groups and challenges. Premium is for the long view: trends and history, meal plans and full recipes, fasting, cycle tracking and your family's numbers. Your first month of Premium is on us, no strings.",
+  },
+  {
+    q: "Is the app useful without a device?",
+    a: "Have we not been shouting this the whole page? Yes. Log meals by search or barcode, with a flag on anything that contains one of your allergens. Drink your water, check in on your mood, keep a journal, rope your family and friends into a challenge, and book care when you need it. Your phone already counts your steps, and your watch can chip in too. Devices are the bonus round: they add what a phone can't measure, like body composition, blood pressure and sleep stages.",
   },
   {
     q: "What happens if I add a device later?",
-    a: "It just works. Pair a device and its data automatically flows into your existing dashboard. Your history is preserved, and the app immediately starts finding correlations between your manual entries and device data.",
-  },
-  {
-    q: "Do I need to buy devices to use the app?",
-    a: "No. The app is packed with features on its own — journalling, mood tracking, meals, recipes, hydration, challenges, and more. Devices aren't required but they unlock richer data like body composition, sleep stages, and blood markers. You can even use shared devices at home, a gym, or a friend's place.",
+    a: "It slots straight in. Pair it and its readings land right next to everything you've already logged. No new account, no starting over, no awkward introductions.",
   },
   {
     q: "Do I need to own a device to use one?",
-    a: "No. The Scale, The Scale Pro, BP Monitor, and Hema One aren't locked to any account. Walk up to any one at home, a gym, or a friend's place. Open the app, connect, and your reading saves to your profile. We engineered these devices to be shared.",
+    a: "Nope. The Scale, The Scale Pro, BP Monitor and Hema One aren't tied to one account. At home, at the gym or at a friend's place: open the app, connect, and the reading lands in your profile, not theirs. Borrowing has never been so guilt-free.",
   },
   {
-    q: "Can I use the app with non-SeeMyHealth devices?",
-    a: "Yes. The app reads from Apple Health on iPhone and Health Connect on Android, so your watch, your old scale and your running app can all show up in your dashboard. SeeMyHealth devices give you the most detail, but you don't have to start there.",
+    q: "Will it work with my watch?",
+    a: "Yes, and we've made our peace with it. The app reads from Apple Health on iPhone and Health Connect on Android, so your watch, your old scale and your running app can all show up. One tap on, one tap off. No hard feelings. Mostly.",
   },
   {
-    q: "What's the privacy story?",
-    a: "We don't sell your data. We don't run ads. Your health data is encrypted end-to-end (TLS 1.3 in transit, AES-256 at rest). You control who sees your data, and you can request full deletion at any time.",
+    q: "What happens to my data?",
+    a: "No ads, and we don't sell it. Not now, not ever, not even for a really good offer. It's encrypted in transit (TLS 1.3) and at rest (AES-256), you pick who sees what, and you can delete the lot whenever you like.",
   },
-  {
-    q: "What's the difference between this and my doctor's portal?",
-    a: "Your doctor's portal shows clinical snapshots. The app shows the full picture between visits. You can share your SeeMyHealth data with your doctor directly from the app with toggle-based access control.",
-  },
-];
-
-const allFeatures = [
-  "All device integrations",
-  "Unified health dashboard",
-  "Cross-device insights",
-  "Sleep intelligence",
-  "Meal logging & recipes",
-  "Mood tracking & journalling",
-  "Secure doctor sharing",
-  "Unlimited data history",
 ];
 ---
 
@@ -262,16 +252,16 @@ const allFeatures = [
           <div class="opacity-0 animate-[contentFadeIn_0.5s_ease-out_0.4s_forwards]">
             <p class="text-[10px] sm:text-[11px] uppercase tracking-[4px] text-white/50 mb-3 sm:mb-5">The SeeMyHealth App</p>
             <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-300 uppercase leading-[0.95] mb-3 sm:mb-6">
-              Works from <span class="font-500 italic">day one.</span><br class="hidden sm:block" />
+              Works from <span class="font-500 italic">day one.</span>{' '}<br class="hidden sm:block" />
               Smarter with devices.
             </h1>
             <p class="text-sm sm:text-lg text-white/60 leading-relaxed mb-5 sm:mb-8 max-w-2xl mx-auto">
               Start with journalling, mood, meals, and guided programs. No hardware needed. Add devices when you're ready.
             </p>
             <div>
-              <AppStoreButtons />
-              <p class="text-[12px] text-white/30 mt-4">1-month free trial. Cancel anytime.</p>
-              <p class="text-[11px] text-white/25 mt-1.5">Listed on the App Store &amp; Google Play as C-MyHealth.</p>
+              <AppStoreButtons class="justify-center" />
+              <StoreName bold class="justify-center mt-5" />
+              <p class="text-[12px] text-white/30 mt-2">Free to download. Premium free for a month.</p>
             </div>
           </div>
         </div>
@@ -279,65 +269,140 @@ const allFeatures = [
     </div>
   </section>
 
-  <!-- See what you get -->
-  <section class="py-20 sm:py-28 bg-brand-black border-t border-white/5">
-    <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-      <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
-        See what you get, <span class="font-500">in either mode.</span>
-      </h2>
-      <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto mb-8">
-        The app works beautifully on its own. Devices unlock the full picture.
-      </p>
-      <div class="flex justify-center gap-4">
-        <a href="#app-only" class="px-6 py-2.5 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors">
-          App only
-        </a>
-        <a href="#with-devices" class="px-6 py-2.5 text-[12px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors">
-          App + Devices
-        </a>
+  <!-- Why: every other app hears one word of what the body says -->
+  <section class="py-24 sm:py-36 bg-brand-black border-t border-white/5">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
+      <div class="notifs relative mx-auto max-w-sm text-left mb-12 sm:mb-16" data-notifs aria-label="Three apps, each with one piece of the story">
+        {scattered.map((n, i) => (
+          <div class="notif notif-app" style={`--i: ${i}`}>
+            <span class="w-9 h-9 rounded-[10px] shrink-0 flex items-center justify-center" style={`background: ${n.color}`}>
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={n.icon} /></svg>
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="flex items-center justify-between text-[11px] uppercase tracking-[1px] text-white/50 mb-0.5"><span>{n.app}</span><span class="normal-case tracking-normal">now</span></span>
+              <span class="block text-[14px] leading-snug text-white">{n.line}</span>
+            </span>
+          </div>
+        ))}
+        <!-- Ours arrives on top once the three have folded behind it -->
+        <div class="notif notif-us">
+          <img src={`${CF_IMG}/logo/public`} alt="" class="w-9 h-9 rounded-[10px] shrink-0" />
+          <span class="min-w-0 flex-1">
+            <span class="flex items-center justify-between text-[11px] uppercase tracking-[1px] text-white/50 mb-0.5"><span>SeeMyHealth</span><span class="normal-case tracking-normal">now</span></span>
+            <span class="block text-[14px] leading-snug text-white">Psst. We heard all three. Want the whole sentence?</span>
+          </span>
+        </div>
+      </div>
+      <div data-scroll-reveal>
+        <h2 class="font-display text-4xl sm:text-6xl font-300 uppercase leading-[0.95] mb-6 text-balance">
+          Each one hears a word.<br /> <span class="font-500">Nobody hears the sentence.</span>
+        </h2>
+        <p class="text-brand-gray-400 sm:text-lg leading-relaxed text-pretty">
+          Your body keeps dropping hints, and they only make sense together. SeeMyHealth puts them side by side, so that 4pm coffee finally gets caught next to the bad night. No diagnosis, no lecture. Just a clearer view of you (and maybe fewer 4pm coffees).
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- The wellness app, on its own -->
-  <section id="app-only" class="py-20 sm:py-28 bg-brand-black border-t border-white/5">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="mb-12" data-scroll-reveal>
-        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">No Devices Required</p>
-        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
-          The wellness app, <span class="font-500">on its own.</span>
+  <!-- What the app is, before what it does -->
+  <section class="py-20 sm:py-28 bg-brand-dark border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto text-center mb-14 sm:mb-16" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">The app</p>
+        <h2 class="font-display text-4xl sm:text-6xl font-300 uppercase leading-[0.95] mb-6 text-balance">
+          One app. <span class="font-500">All of you.</span>
         </h2>
+        <p class="text-brand-gray-400 sm:text-lg leading-relaxed text-pretty">
+          Sleep, meals, mood, water, weight. Right now they're scattered across a dozen apps and one very old notes file. SeeMyHealth puts them on one screen, so you can finally see how it all fits.
+        </p>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-4 sm:gap-6" data-scroll-stagger>
+        {pillars.map((pillar, i) => (
+          <div class="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
+            <div class="relative aspect-[4/3] bg-brand-gray-900">
+              <img src={pillar.image} alt={pillar.alt} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+              <span class="absolute top-4 left-4 text-[11px] uppercase tracking-[3px] text-white/80 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full">0{i + 1}</span>
+              {pillar.premium && <span class="absolute top-4 right-4 text-[10px] uppercase tracking-[1.5px] text-amber-200 bg-black/50 backdrop-blur-md border border-amber-300/30 px-2.5 py-1 rounded-full">Premium</span>}
+            </div>
+            <div class="p-6 sm:p-8">
+              <h3 class="font-display text-2xl sm:text-3xl font-400 uppercase leading-tight mb-3">{pillar.title}</h3>
+              <p class="text-sm text-brand-gray-400 leading-relaxed text-pretty">{pillar.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="mt-14 sm:mt-16 text-center" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-5">Pick your way in</p>
+        <div class="flex flex-wrap justify-center gap-3">
+          {waysIn.map((way) => (
+            <a href={way.href} class="px-6 py-3 text-[12px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors">
+              {way.label}
+            </a>
+          ))}
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="flex gap-5 overflow-x-auto scroll-smooth py-4 -mx-6 px-6 lg:-mx-8 lg:px-8 no-scrollbar" data-scroll-stagger>
-      {standAloneFeatures.map((f) => (
-        <div class="group relative shrink-0 w-[320px] sm:w-[380px] rounded-2xl overflow-hidden cursor-pointer">
-          {/* Background image */}
-          <div class="aspect-[3/4] bg-brand-gray-800 relative">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
-            {f.image ? (
-              <img src={f.image} alt={f.title} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-            ) : (
-              <div class="absolute inset-0 flex items-center justify-center">
-                <svg class="w-12 h-12 text-brand-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="0.75">
-                  <path stroke-linecap="round" stroke-linejoin="round" d={f.icon} />
-                </svg>
-              </div>
-            )}
-          </div>
-          {/* Category pill */}
-          <div class="absolute top-4 left-4 z-20">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-[11px] text-white tracking-wide">
-              {f.title}
+  <!-- What's inside: the app on its own, one theme at a time -->
+  <section id="inside" class="scroll-mt-28 sm:scroll-mt-32 py-20 sm:py-28 bg-brand-black border-t border-white/5" data-themes data-way>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="mb-10 sm:mb-12 max-w-2xl" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Just the app</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] text-balance">
+          Start with just the app. <span class="font-500">No shopping required.</span>
+        </h2>
+      </div>
+
+      <div class="flex gap-2 overflow-x-auto no-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0 mb-8" role="tablist" aria-label="What's in the app">
+        {themes.map((t, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`tab-${t.key}`}
+            aria-controls={`panel-${t.key}`}
+            aria-selected={i === 0 ? "true" : "false"}
+            data-theme-tab={t.key}
+            class="relative overflow-hidden shrink-0 px-5 py-2.5 text-[12px] uppercase tracking-[1.5px] font-medium rounded-full border transition-colors aria-selected:bg-white aria-selected:text-brand-black aria-selected:border-white text-white border-white/20 hover:border-white/40"
+          >
+            <span class="flex items-center gap-2">
+              <canvas class="w-[18px] h-[18px] -my-1 -ml-1" width="36" height="36" data-tab-icon={t.icon} hidden aria-hidden="true"></canvas>
+              {t.label}
             </span>
+            <span class="absolute left-0 bottom-0 h-[2px] w-full bg-current opacity-40 origin-left scale-x-0" data-tab-progress aria-hidden="true"></span>
+          </button>
+        ))}
+      </div>
+
+      <!-- The panels share one grid cell, so the section keeps the tallest one's height and nothing
+           below it jumps when a theme changes -->
+      <div class="grid">
+      {themes.map((t, i) => (
+        <div
+          id={`panel-${t.key}`}
+          role="tabpanel"
+          aria-labelledby={`tab-${t.key}`}
+          data-theme-panel={t.key}
+          inert={i !== 0}
+          class:list={["[grid-area:1/1] grid md:grid-cols-2 gap-8 md:gap-12 items-center transition-opacity duration-500 inert:opacity-0 inert:pointer-events-none"]}
+        >
+          <div class="relative aspect-[4/5] max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5">
+            <img src={t.image} alt={t.alt} class="absolute inset-0 w-full h-full object-cover" loading={i === 0 ? "eager" : "lazy"} />
           </div>
-          {/* Bottom text overlay */}
-          <div class="absolute bottom-0 left-0 right-0 p-6 z-20">
-            <p class="font-display text-2xl sm:text-3xl font-300 uppercase leading-[1.1] text-white">
-              {f.description.split('.')[0]}.
-            </p>
+          <div class="min-w-0">
+            <h3 class="font-display text-3xl sm:text-4xl font-300 uppercase leading-[0.95] mb-4 text-balance">
+              {t.title} <span class="font-500">{t.bold}</span>
+            </h3>
+            <p class="text-brand-gray-400 leading-relaxed mb-6 text-pretty">{t.text}</p>
+            <ul class="flex flex-col gap-3">
+              {t.items.map((item) => (
+                <li class="flex items-center gap-3 text-sm text-brand-gray-300">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white/60 shrink-0"></span>
+                  {item.label}
+                  {item.premium && <span class="text-[10px] uppercase tracking-[1.5px] text-amber-300/90 border border-amber-300/30 rounded-full px-2 py-0.5">Premium</span>}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       ))}
@@ -345,53 +410,16 @@ const allFeatures = [
     </div>
   </section>
 
-  <!-- Shared by design -->
-  <section class="py-16 sm:py-20 bg-brand-black border-t border-white/5">
-    <div class="max-w-5xl mx-auto px-6 lg:px-8">
-      <div class="rounded-2xl border border-white/5 bg-brand-gray-900 p-8 sm:p-12 lg:flex lg:items-center lg:gap-12" data-scroll-reveal>
-        <div class="lg:flex-1 mb-8 lg:mb-0">
-          <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Shared by design</p>
-          <h3 class="font-display text-3xl sm:text-4xl font-300 uppercase leading-[0.95] mb-4">
-            You don't need to own a device <span class="font-500">to use one.</span>
-          </h3>
-          <p class="text-brand-gray-400 leading-relaxed">
-            We engineered The Scale, The Scale Pro, BP Monitor, and Hema One to work with any account. Walk up to one at home, a gym, or a friend's place. Open the app, connect, and your reading saves to your profile. No setup, no re-pairing, no account switching. One device, shared by a whole family or an entire floor.
-          </p>
-        </div>
-        <div class="lg:w-[280px] shrink-0">
-          <div class="grid grid-cols-2 gap-3">
-            <div class="rounded-xl bg-brand-black border border-white/5 p-4 text-center">
-              <p class="text-2xl font-display font-500 mb-1">∞</p>
-              <p class="text-[10px] uppercase tracking-wider text-brand-gray-600">Users per device</p>
-            </div>
-            <div class="rounded-xl bg-brand-black border border-white/5 p-4 text-center">
-              <p class="text-2xl font-display font-500 mb-1">0</p>
-              <p class="text-[10px] uppercase tracking-wider text-brand-gray-600">Setup needed</p>
-            </div>
-            <div class="rounded-xl bg-brand-black border border-white/5 p-4 text-center">
-              <p class="text-2xl font-display font-500 mb-1">4</p>
-              <p class="text-[10px] uppercase tracking-wider text-brand-gray-600">Shared devices</p>
-            </div>
-            <div class="rounded-xl bg-brand-black border border-white/5 p-4 text-center">
-              <p class="text-2xl font-display font-500 mb-1">🔒</p>
-              <p class="text-[10px] uppercase tracking-wider text-brand-gray-600">Private to you</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- A day with the ecosystem -->
-  <section id="with-devices" class="py-20 sm:py-28 bg-brand-dark border-t border-white/5 overflow-hidden">
+  <!-- Our devices: a day, each moment something a phone can't catch, sent straight to the app -->
+  <section id="with-devices" data-way class="scroll-mt-28 sm:scroll-mt-32 py-20 sm:py-28 bg-brand-dark border-t border-white/5 overflow-hidden">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="mb-14 max-w-2xl" data-scroll-reveal>
-        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">With Devices</p>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">SeeMyHealth devices</p>
         <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
-          Unlock the <span class="font-500">full picture.</span>
+          Our devices. <span class="font-500">Built to talk to it.</span>
         </h2>
-        <p class="text-brand-gray-400 leading-relaxed">
-          Every device adds a layer of intelligence. Here's what a day looks like when everything's connected.
+        <p class="text-brand-gray-400 leading-relaxed text-pretty">
+          Each one catches something your phone can't, then tells the app straight away. No exporting. No squinting at a little screen and typing numbers in. Here's a day with a few of them.
         </p>
       </div>
     </div>
@@ -416,7 +444,6 @@ const allFeatures = [
 
                 {/* Card */}
                 <div class="relative rounded-2xl overflow-hidden h-full">
-                  {/* Background image */}
                   <div class="aspect-[3/4]">
                     <img src={entry.image} alt={entry.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20"></div>
@@ -432,8 +459,14 @@ const allFeatures = [
 
                   {/* Bottom text */}
                   <div class="absolute bottom-0 left-0 right-0 p-5 z-10">
+                    {entry.device !== "App" && (
+                      <span class="saved-chip inline-flex items-center gap-1.5 mb-3 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-[10px] uppercase tracking-[1.5px] text-white/80" data-saved-chip>
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" pathLength="1" d="M5 13l4 4L19 7" /></svg>
+                        Saved to the app
+                      </span>
+                    )}
                     <h3 class="font-display text-xl uppercase font-300 text-white mb-1.5">{entry.title}</h3>
-                    <p class="text-[13px] text-white/60 leading-relaxed">{entry.insight}</p>
+                    <p class="text-[13px] text-white/60 leading-relaxed">{entry.text}</p>
                   </div>
                 </div>
               </div>
@@ -444,119 +477,71 @@ const allFeatures = [
     </div>
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="mt-10 text-center" data-scroll-reveal>
-        <p class="text-sm text-brand-gray-500 leading-relaxed max-w-lg mx-auto">
-          No app-switching. No manual exports. Every device feeds the same dashboard, and the app finds patterns you'd never spot alone.
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-center" data-scroll-reveal>
+        <p class="text-sm text-brand-gray-500 leading-relaxed max-w-md text-pretty">
+          Every device lands in the same app. The shared ones are happy to be shared.
         </p>
+        <a href="/shop" class="shrink-0 inline-flex items-center px-6 py-3 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors">
+          See the devices &rarr;
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- Feature comparison table -->
-  <section class="py-20 sm:py-28 bg-brand-black border-t border-white/5">
-    <div class="max-w-4xl mx-auto px-6 lg:px-8">
-      <div class="text-center mb-12" data-scroll-reveal>
-        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">One App, Two Modes</p>
+  <!-- Keep what you've got: after our own devices, a watch's data comes in through the phone's health store -->
+  <section id="your-watch" data-way class="scroll-mt-28 sm:scroll-mt-32 py-20 sm:py-28 bg-brand-black border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+      <!-- The watch toss, in Rive: we wind up and throw the watch away, think better of it, and it comes
+           back and sends its numbers to the app. The bubble is page text, cued by the file. Until the
+           file plays (and for good with reduced motion or Data Saver) the card shows its last frame. -->
+      <div class="relative aspect-[4/3] max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5 md:order-2" role="img" aria-label="A cartoon hand throws a smartwatch away, then catches it on the way back, pats it, and the watch sends its heart rate and steps to the SeeMyHealth app" data-toss data-scroll-reveal>
+        <img src="/media/watch-toss-still.webp" alt="" class="absolute inset-0 w-full h-full" width="800" height="600" loading="lazy" data-toss-still />
+        <canvas class="absolute inset-0 w-full h-full" width="800" height="600" hidden aria-hidden="true" data-toss-canvas></canvas>
+        <p class="absolute top-[4%] right-[4%] whitespace-nowrap px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-3xl rounded-bl-md bg-white/[0.08] backdrop-blur-xl border border-white/10 font-display text-[13px] sm:text-lg font-300 uppercase leading-tight opacity-0 translate-y-2 scale-95 origin-bottom-left transition duration-300 ease-out" aria-hidden="true" data-toss-bubble></p>
+      </div>
+      <div class="min-w-0" data-scroll-reveal>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Already have a watch?</p>
         <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
-          Start anywhere. <span class="font-500">Grow when you're ready.</span>
+          Keep it. <span class="font-500">Seriously.</span>
         </h2>
-        <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto">
-          The app stands on its own, and gets smarter the more devices you add. Same subscription, more intelligence.
+        <p class="text-brand-gray-400 leading-relaxed mb-8 text-pretty">
+          We're not the jealous type. Switch on Apple Health or Health Connect and your watch's steps, heart rate and sleep land in SeeMyHealth too, right next to everything else. One tap on, one tap off.
         </p>
-      </div>
-
-      <div class="rounded-2xl border border-white/10 overflow-hidden" data-scroll-reveal>
-        <table class="w-full">
-          <!-- Header -->
-          <thead>
-            <tr class="bg-brand-gray-900">
-              <th class="text-left px-4 sm:px-6 py-4 text-[10px] uppercase tracking-[2px] text-brand-gray-500 font-normal"></th>
-              <th class="px-2 sm:px-6 py-4 text-[10px] uppercase tracking-[2px] text-brand-gray-500 font-normal text-center whitespace-nowrap">App Only</th>
-              <th class="px-2 sm:px-6 py-4 text-[10px] uppercase tracking-[2px] text-brand-gray-500 font-normal text-center whitespace-nowrap">App + Devices</th>
-            </tr>
-          </thead>
-          <tbody>
-            {comparisonRows.map((row, i) => (
-              <tr class={i % 2 === 0 ? "bg-brand-black" : "bg-white/[0.01]"}>
-                <td class="px-4 sm:px-6 py-3 text-sm text-brand-gray-400 border-t border-white/5">{row.feature}</td>
-                <td class="px-2 sm:px-6 py-3 text-center border-t border-white/5">
-                  {row.appOnly ? (
-                    <svg class="w-4 h-4 text-green-500 inline-block" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                  ) : (
-                    <span class="text-brand-gray-700">-</span>
-                  )}
-                </td>
-                <td class="px-2 sm:px-6 py-3 text-center border-t border-white/5">
-                  <svg class="w-4 h-4 text-green-500 inline-block" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                </td>
-              </tr>
-            ))}
-            <tr class="bg-brand-gray-900">
-              <td class="px-4 sm:px-6 py-4 border-t border-white/5"></td>
-              <td class="px-2 sm:px-6 py-4 text-center border-t border-white/5">
-                <span class="text-[10px] uppercase tracking-wider text-brand-gray-500">Free trial</span>
-              </td>
-              <td class="px-2 sm:px-6 py-4 text-center border-t border-white/5">
-                <span class="text-[10px] uppercase tracking-wider text-brand-gray-500">Free trial</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <HealthPlatformBadges />
       </div>
     </div>
   </section>
 
-  <!-- One app. Two journeys. -->
-  <section class="py-20 sm:py-28 bg-brand-dark border-t border-white/5">
-    <div class="max-w-5xl mx-auto px-6 lg:px-8">
-      <div class="text-center mb-12" data-scroll-reveal>
-        <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
-          One app. <span class="font-500">Two journeys.</span>
-        </h2>
-      </div>
-
-      <div class="grid sm:grid-cols-2 gap-6" data-scroll-stagger>
-        <!-- Maya -->
-        <div class="rounded-2xl bg-brand-black border border-white/5 p-8">
-          <div class="flex items-center gap-4 mb-6">
-            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-lg font-medium">M</div>
-            <div>
-              <p class="text-white font-medium">Maya, journalist, 31</p>
-            </div>
-          </div>
-          <p class="text-sm text-brand-gray-400 leading-relaxed">
-            "I started journalling my mood every morning and evening just to see if there was a pattern. Within two weeks the app showed me that my low days always follow nights where I stay on my phone past midnight. The meal log made me realise I skip lunch more than I thought, and the recipe suggestions actually got me batch-cooking on Sundays. No device needed, just the app and some honesty."
-          </p>
-          <p class="text-[10px] uppercase tracking-[2px] text-brand-gray-600 mt-4">App only</p>
-        </div>
-
-        <!-- Sarah -->
-        <div class="rounded-2xl bg-brand-black border border-white/5 p-8">
-          <div class="flex items-center gap-4 mb-6">
-            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-lg font-medium">S</div>
-            <div>
-              <p class="text-white font-medium">Sarah, marathon runner, 54</p>
-            </div>
-          </div>
-          <p class="text-sm text-brand-gray-400 leading-relaxed">
-            "The Scale showed me my muscle mass was climbing even when my weight stayed flat. Logging meals helped me spot that I wasn't eating enough protein on rest days. Ring One tracked my sleep, and I noticed I always felt motivated to train after nights where I actually slept well. Mood logging confirmed it. Now everything ties together and I know exactly when to push and when to rest."
-          </p>
-          <p class="text-[10px] uppercase tracking-[2px] text-brand-gray-600 mt-4">Ring One + The Scale Pro + App</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  <!-- Real people, real lives -->
+  <Testimonials />
   <!-- Pricing -->
   <section class="py-24 sm:py-32 bg-brand-black border-t border-white/5">
     <div class="max-w-4xl mx-auto px-6 lg:px-8">
       <div class="text-center mb-16" data-scroll-reveal>
         <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
-          One plan. <span class="font-500">Every feature.</span>
+          Free. Really.<br /> <span class="font-500">Premium when you want the long view.</span>
         </h2>
-        <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto">
-          No paywalls, no hidden tiers, no ads. One subscription unlocks everything, whether you use the app alone or with every device.
+        <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto text-pretty">
+          Logging is free, and stays free. Pinky promise. Premium is for reading it all back: the trends, the plans and your family. No ads on either, ever.
         </p>
+      </div>
+
+      <!-- What's free and what Premium adds, side by side -->
+      <div class="grid sm:grid-cols-2 gap-4 sm:gap-6 max-w-3xl mx-auto mb-14" data-scroll-reveal>
+        {tiers.map((tier) => (
+          <div class:list={["rounded-2xl border p-6 sm:p-8", tier.premium ? "border-amber-300/20 bg-amber-300/[0.03]" : "border-white/10 bg-brand-gray-900"]}>
+            <p class:list={["text-[11px] uppercase tracking-[3px] mb-1", tier.premium ? "text-amber-200/80" : "text-brand-gray-500"]}>{tier.name}</p>
+            <p class="font-display text-2xl font-400 uppercase mb-5">{tier.price}</p>
+            <ul class="flex flex-col gap-3">
+              {tier.items.map((item) => (
+                <li class="flex items-start gap-2.5 text-sm text-brand-gray-300">
+                  <svg class:list={["w-4 h-4 mt-0.5 shrink-0", tier.premium ? "text-amber-300" : "text-green-500"]} fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
 
       <!-- Pricing toggle + cards -->
@@ -565,7 +550,8 @@ const allFeatures = [
         <button
           id="billing-toggle"
           class="relative w-12 h-6 rounded-full bg-white/10 transition-colors"
-          aria-label="Toggle billing period"
+          aria-label="Show prices per year"
+          aria-pressed="false"
         >
           <span id="billing-knob" class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform" />
         </button>
@@ -575,12 +561,12 @@ const allFeatures = [
 
       <div class="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto mb-10" data-scroll-reveal>
         <div id="card-monthly" class="rounded-2xl border border-white/10 bg-brand-gray-900 p-8 text-center transition-all duration-300">
-          <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-4">Monthly</p>
+          <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-4">Premium, monthly</p>
           <div class="flex items-baseline justify-center gap-1 mb-2">
-            <span class="font-display text-5xl font-300">$8</span>
-            <span class="text-brand-gray-500 text-lg">/month</span>
+            <span class="font-display text-5xl font-300 tabular-nums" data-price data-month="8" data-year="96">$8</span>
+            <span class="text-brand-gray-500 text-lg" data-per>/month</span>
           </div>
-          <p class="text-brand-gray-500 text-sm mb-6">$96/year if billed monthly</p>
+          <p class="text-brand-gray-500 text-sm mb-6" data-note data-month-note="Billed monthly. Leave whenever." data-year-note="That's $8 a month, every month.">Billed monthly. Leave whenever.</p>
           <p class="text-[11px] text-brand-gray-600">Subscribe in-app via App Store or Google Play</p>
         </div>
 
@@ -588,42 +574,26 @@ const allFeatures = [
           <div class="absolute -top-3 left-1/2 -translate-x-1/2">
             <span class="text-[10px] uppercase tracking-[1.5px] font-medium text-brand-black bg-green-400 px-3 py-1 rounded-full">Best Value</span>
           </div>
-          <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-4">Annual</p>
+          <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-4">Premium, annual</p>
           <div class="flex items-baseline justify-center gap-1 mb-2">
-            <span class="font-display text-5xl font-300">$70</span>
-            <span class="text-brand-gray-500 text-lg">/year</span>
+            <span class="font-display text-5xl font-300 tabular-nums" data-price data-month="5.83" data-year="70">$5.83</span>
+            <span class="text-brand-gray-500 text-lg" data-per>/month</span>
           </div>
-          <p class="text-brand-gray-500 text-sm mb-6">Just $5.83/month, save $26</p>
+          <p class="text-brand-gray-500 text-sm mb-6" data-note data-month-note="Billed $70 a year. Save $26." data-year-note="Just $5.83 a month. Save $26.">Billed $70 a year. Save $26.</p>
           <p class="text-[11px] text-brand-gray-600">Subscribe in-app via App Store or Google Play</p>
         </div>
       </div>
 
       <!-- Confidence message -->
-      <div class="rounded-xl border border-white/5 bg-white/[0.02] p-6 max-w-2xl mx-auto mb-10" data-scroll-reveal>
+      <div class="rounded-xl border border-white/5 bg-white/[0.02] p-6 max-w-2xl mx-auto" data-scroll-reveal>
         <p class="text-center text-sm text-brand-gray-400 leading-relaxed">
-          We trust in the value of what we've built. That's why every plan starts with a
-          <span class="text-white font-medium">1-month free trial</span>.
-          experience everything, no limits, no commitment. If it's not for you, cancel before the trial ends and you won't be charged a thing.
+          Try Premium free for a month. <span class="text-white font-medium">No commitment.</span>{' '}
+          If it's not for you, cancel before the trial ends and you won't pay a thing. No hard feelings, and everything free stays free.
         </p>
       </div>
 
-      <!-- Features list -->
-      <div class="rounded-2xl border border-white/10 bg-brand-gray-900 p-8 sm:p-10 max-w-3xl mx-auto" data-scroll-reveal>
-        <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-6 text-center">Everything included in every plan</p>
-        <div class="grid sm:grid-cols-2 gap-4 text-left max-w-lg mx-auto">
-          {allFeatures.map((item) => (
-            <div class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-              <span class="text-sm text-brand-gray-400">{item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
       <AppStoreButtons class="justify-center mt-10" />
-      <p class="text-center text-[11px] text-brand-gray-600 mt-4">Subscribe and start your free trial in-app</p>
+      <p class="text-center text-[11px] text-brand-gray-600 mt-4">Download free, and start your Premium trial in the app</p>
     </div>
   </section>
 
@@ -632,7 +602,7 @@ const allFeatures = [
     <div class="max-w-3xl mx-auto px-6 lg:px-8">
       <div class="text-center mb-12" data-scroll-reveal>
         <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95]">
-          What you might <span class="font-500">be wondering.</span>
+          Go on. <span class="font-500">Ask.</span>
         </h2>
       </div>
 
@@ -658,47 +628,82 @@ const allFeatures = [
   </section>
 
   <!-- Final CTA -->
-  <section class="py-20 sm:py-28 bg-brand-black border-t border-white/5">
+  <section id="get" data-cta-end class="relative overflow-hidden scroll-mt-20 py-20 sm:py-28 bg-brand-black border-t border-white/5">
     <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
       <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
-        Start your free trial. <span class="font-500">Add devices when you're ready.</span>
+        Still here?<br /> <span class="font-500">Need a hand?</span>
       </h2>
       <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto mb-10">
-        1-month free. Cancel anytime. No device required.
+        Mhmm, thought so. Follow the thumb. It's free to use, no device needed, and Premium's on us for the first month.
       </p>
-      <AppStoreButtons class="justify-center" />
+      <div data-cta-buttons>
+        <AppStoreButtons class="justify-center" />
+      </div>
+      <StoreName class="justify-center mt-5" />
+      <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600 mt-8">iOS &amp; Android · Apple Health · Health Connect</p>
     </div>
+    <!-- A Rive thumb that has been scrolling all page taps the first button. Only the thumb is
+         Rive: the buttons stay real links underneath, and the page presses the one it lands on.
+         The artboard is 600 x 320 with the fingertip's tap point at (150, 200); the thumb's base runs
+         off its bottom edge, so the canvas fades out there rather than cutting it off. -->
+    <canvas class="absolute pointer-events-none w-[600px] h-[320px] max-w-none [mask-image:linear-gradient(to_bottom,black_60%,transparent)]" width="600" height="320" data-cta-thumb hidden aria-hidden="true"></canvas>
   </section>
 
-  <!-- Compatibility -->
-  <section class="bg-brand-black border-t border-white/5">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center" data-scroll-stagger>
-        <div>
-          <p class="font-display text-2xl sm:text-3xl font-300 mb-1">iOS & Android</p>
-          <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">Platform Support</p>
-        </div>
-        <div>
-          <p class="font-display text-2xl sm:text-3xl font-300 mb-1">Apple Health</p>
-          <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">Integration</p>
-        </div>
-        <div>
-          <p class="font-display text-2xl sm:text-3xl font-300 mb-1">Health Connect</p>
-          <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">Integration</p>
-        </div>
-        <div>
-          <p class="font-display text-2xl sm:text-3xl font-300 mb-1">BLE 5.0+</p>
-          <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">Connectivity</p>
-        </div>
-      </div>
+  <!-- While reading the how: which of the three ways you're in -->
+  <nav class="fixed top-[72px] sm:top-[88px] inset-x-0 z-40 flex justify-center px-4 pointer-events-none opacity-0 -translate-y-2 transition duration-300" data-ways-bar aria-label="Three ways in">
+    <div class="flex gap-1 p-1 rounded-full bg-brand-black/70 backdrop-blur-xl border border-white/10 pointer-events-auto">
+      {waysIn.map((way) => (
+        <a href={way.href} data-way-link={way.href.slice(1)} class="px-3.5 sm:px-4 py-2 text-[11px] uppercase tracking-[1.2px] font-medium rounded-full text-white/60 hover:text-white transition-colors aria-[current=true]:bg-white aria-[current=true]:text-brand-black whitespace-nowrap">
+          {way.short}
+        </a>
+      ))}
     </div>
-  </section>
+  </nav>
+
+  <!-- Phones: getting the app is always a tap away, between the hero and the closing buttons -->
+  <div class="sm:hidden fixed inset-x-0 bottom-0 z-40 px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] bg-brand-black/85 backdrop-blur-xl border-t border-white/10 flex items-center gap-3 translate-y-full transition-transform duration-300" data-get-bar>
+    <img src={`${CF_IMG}/logo/public`} alt="" class="w-9 h-9 rounded-[10px] shrink-0" />
+    <div class="min-w-0 flex-1">
+      <p class="text-[13px] text-white font-medium leading-tight">C-MyHealth</p>
+      <p class="text-[11px] text-white/50 leading-tight">Free to download</p>
+    </div>
+    <a href="#get" class="shrink-0 px-5 py-2.5 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full">Get the app</a>
+  </div>
 
   <Footer />
 </Layout>
 
 <script>
-  // Billing toggle
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+
+  // The Rive runtime, fetched the first time a section that animates with it comes near, with its
+  // wasm served from this site. Every caller shares the one load.
+  let riveLoad: Promise<typeof import('@rive-app/canvas-lite')> | undefined;
+  const loadRive = () => riveLoad ??= Promise.all([
+    import('@rive-app/canvas-lite'),
+    import('@rive-app/canvas-lite/rive.wasm?url'),
+  ]).then(([runtime, { default: wasmUrl }]) => {
+    runtime.RuntimeLoader.setWasmUrl(wasmUrl);
+    return runtime;
+  });
+
+  // Billing toggle: both plans are priced per month or per year, and the figures roll to the new
+  // period rather than jumping
+  const PRICE_ROLL_MS = 600;
+  const money = (v: number, cents: boolean) => `$${cents ? v.toFixed(2) : Math.round(v)}`;
+  const roll = (el: HTMLElement, from: number, to: number) => {
+    const cents = !Number.isInteger(to);
+    if (reducedMotion) { el.textContent = money(to, cents); return; }
+    const start = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / PRICE_ROLL_MS);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = money(from + (to - from) * eased, cents);
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
   const toggle = document.getElementById('billing-toggle');
   const knob = document.getElementById('billing-knob');
   const labelMonthly = document.getElementById('label-monthly');
@@ -714,6 +719,15 @@ const allFeatures = [
     toggle.classList.toggle('bg-white/10', !isAnnual);
     labelMonthly?.classList.toggle('text-white', !isAnnual);
     labelAnnual?.classList.toggle('text-white', isAnnual);
+    toggle.setAttribute('aria-pressed', String(isAnnual));
+    document.querySelectorAll<HTMLElement>('[data-price]').forEach((el) => {
+      const month = Number(el.dataset.month), year = Number(el.dataset.year);
+      roll(el, isAnnual ? month : year, isAnnual ? year : month);
+    });
+    document.querySelectorAll<HTMLElement>('[data-per]').forEach((el) => { el.textContent = isAnnual ? '/year' : '/month'; });
+    document.querySelectorAll<HTMLElement>('[data-note]').forEach((el) => {
+      el.textContent = (isAnnual ? el.dataset.yearNote : el.dataset.monthNote) ?? '';
+    });
 
     if (isAnnual) {
       cardAnnual?.classList.add('border-green-500/30', 'scale-[1.02]');
@@ -725,6 +739,331 @@ const allFeatures = [
       cardMonthly?.classList.remove('opacity-70');
     }
   });
+
+  // Our devices: each card's "Saved to the app" ticks in as the card comes into view, one after
+  // another when several arrive together. The chips stay put without script or with reduced motion.
+  const SAVED_STAGGER_MS = 180;
+  const chips = Array.from(document.querySelectorAll<HTMLElement>('[data-saved-chip]'));
+  if (!reducedMotion && chips.length) {
+    chips.forEach((c) => { c.dataset.pending = ''; });
+    const saved = new IntersectionObserver((entries) => {
+      entries.filter((e) => e.isIntersecting).forEach((e, i) => {
+        const chip = e.target as HTMLElement;
+        saved.unobserve(chip);
+        setTimeout(() => { delete chip.dataset.pending; }, i * SAVED_STAGGER_MS);
+      });
+    }, { threshold: 1 });
+    chips.forEach((c) => saved.observe(c));
+  }
+
+  // Why: three notifications arrive one by one, fold behind each other, and ours lands on top.
+  // It plays again whenever the stack comes back into view, from either direction; with reduced
+  // motion it starts folded and stays that way.
+  const notifs = document.querySelector<HTMLElement>('[data-notifs]');
+  if (notifs) {
+    const NOTIF_GAP_MS = 700;      // between one app's notification and the next
+    const HOLD_MS = 1600;          // all three on screen, long enough to read
+    const OURS_AFTER_FOLD_MS = 450;
+    const apps = Array.from(notifs.querySelectorAll<HTMLElement>('.notif-app'));
+    let timers: number[] = [];
+    let played = false;
+    const later = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
+    const play = () => {
+      played = true;
+      delete notifs.dataset.state;
+      apps.forEach((n, i) => later(i * NOTIF_GAP_MS, () => n.classList.add('is-in')));
+      const fold = apps.length * NOTIF_GAP_MS + HOLD_MS;
+      later(fold, () => { notifs.dataset.state = 'folded'; });
+      later(fold + OURS_AFTER_FOLD_MS, () => { notifs.dataset.state = 'ours'; });
+    };
+    // Off screen, the stack empties at its folded height, the height it already has once played,
+    // so emptying it never moves the page; it opens back out to the list on screen, as it plays.
+    const reset = () => {
+      timers.forEach(clearTimeout);
+      timers = [];
+      played = false;
+      apps.forEach((n) => n.classList.remove('is-in'));
+      notifs.dataset.state = 'reset';
+    };
+    if (reducedMotion) {
+      notifs.querySelectorAll('.notif-app').forEach((n) => n.classList.add('is-in'));
+      notifs.dataset.state = 'ours';
+    } else {
+      new IntersectionObserver((entries) => {
+        const e = entries[entries.length - 1];
+        if (!e.isIntersecting) { if (played) reset(); }
+        else if (e.intersectionRatio >= 0.6 && !played) play();
+      }, { threshold: [0, 0.6] }).observe(notifs);
+    }
+  }
+
+  // What's inside: one theme at a time. While the section is on screen the themes take turns,
+  // each tab filling a line as it waits; the first tap hands control to the reader for good.
+  const themeTabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-tab]'));
+  const themePanels = Array.from(document.querySelectorAll<HTMLElement>('[data-theme-panel]'));
+  const THEME_SECONDS = 5;
+  let themeTimer = 0;
+  // The tab icons: the app's own, black on the white tab that is showing and white on the rest, and
+  // the one that comes up plays its moment, as it does when that tab is picked in the app. They load
+  // only when the section is near, never with Data Saver, and hold still with reduced motion.
+  type TabIcon = { tab: HTMLButtonElement; show: (selected: boolean) => void };
+  const tabIcons: TabIcon[] = [];
+  const iconCanvases = Array.from(document.querySelectorAll<HTMLCanvasElement>('[data-tab-icon]'));
+  const themesNear = document.querySelector('[data-themes]');
+  if (themesNear && iconCanvases.length && !saveData) {
+    const loadIcons = new IntersectionObserver(async (entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      loadIcons.disconnect();
+      const { Rive } = await loadRive();
+      iconCanvases.forEach((canvas) => {
+        const tab = canvas.closest<HTMLButtonElement>('[data-theme-tab]');
+        if (!tab) return;
+        const icon = new Rive({
+          canvas,
+          src: `/media/app-icons/${canvas.dataset.tabIcon}.riv`,
+          stateMachine: 'State Machine 1',
+          autoplay: true,
+          autoBind: true,
+          onLoad: () => {
+            icon.resizeDrawingSurfaceToCanvas();
+            let selected = false;
+            const show = (now: boolean) => {
+              const ink = icon.viewModelInstance?.boolean('isLightMode');
+              if (ink) ink.value = now;
+              if (now && !selected && !reducedMotion) icon.viewModelInstance?.trigger('play')?.trigger();
+              selected = now;
+            };
+            show(tab.getAttribute('aria-selected') === 'true');
+            tabIcons.push({ tab, show });
+            canvas.hidden = false;
+          },
+        });
+      });
+    }, { rootMargin: '400px 0px' });
+    loadIcons.observe(themesNear);
+  }
+  let themesAuto = !reducedMotion;
+  const showTheme = (tab: HTMLButtonElement) => {
+    const key = tab.dataset.themeTab;
+    themeTabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+    themePanels.forEach((p) => { p.inert = p.dataset.themePanel !== key; });
+    tabIcons.forEach((icon) => icon.show(icon.tab === tab));
+    // On a phone the tabs scroll sideways; keep the one showing in sight, without moving the page
+    tab.parentElement?.scrollTo({ left: tab.offsetLeft - 24, behavior: 'smooth' });
+  };
+  const resetProgress = () => themeTabs.forEach((t) => {
+    const bar = t.querySelector<HTMLElement>('[data-tab-progress]');
+    if (bar) { bar.style.transition = 'none'; bar.style.transform = 'scaleX(0)'; }
+  });
+  const runProgress = (tab: HTMLButtonElement) => {
+    const bar = tab.querySelector<HTMLElement>('[data-tab-progress]');
+    if (!bar) return;
+    void bar.offsetWidth;   // start from empty
+    bar.style.transition = `transform ${THEME_SECONDS}s linear`;
+    bar.style.transform = 'scaleX(1)';
+  };
+  const stopThemes = () => { clearTimeout(themeTimer); resetProgress(); };
+  const nextTheme = () => {
+    const current = themeTabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+    const tab = themeTabs[(current + 1) % themeTabs.length];
+    showTheme(tab);
+    startThemes();
+  };
+  const startThemes = () => {
+    stopThemes();
+    if (!themesAuto) return;
+    const current = themeTabs.find((t) => t.getAttribute('aria-selected') === 'true');
+    if (current) runProgress(current);
+    themeTimer = window.setTimeout(nextTheme, THEME_SECONDS * 1000);
+  };
+  themeTabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      themesAuto = false;
+      stopThemes();
+      showTheme(tab);
+    });
+  });
+  const themesSection = document.querySelector('[data-themes]');
+  if (themesSection) {
+    new IntersectionObserver((entries) => {
+      if (entries[entries.length - 1].isIntersecting) startThemes();
+      else stopThemes();
+    }, { threshold: 0.35 }).observe(themesSection);
+  }
+
+  // The ways bar: shown while one of the three ways is under the reading line, that one lit up
+  const waysBar = document.querySelector<HTMLElement>('[data-ways-bar]');
+  const wayLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-way-link]'));
+  const waySections = Array.from(document.querySelectorAll<HTMLElement>('[data-way]'));
+  if (waysBar && waySections.length) {
+    const inView = new Set<string>();
+    const reading = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) inView.add(e.target.id); else inView.delete(e.target.id); });
+      const current = waySections.find((sec) => inView.has(sec.id))?.id;
+      waysBar.classList.toggle('opacity-0', !current);
+      waysBar.classList.toggle('-translate-y-2', !current);
+      wayLinks.forEach((a) => a.setAttribute('aria-current', String(a.dataset.wayLink === current)));
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    waySections.forEach((sec) => reading.observe(sec));
+  }
+
+  // The phone bar: after the hero, until the closing buttons are in view
+  const getBar = document.querySelector<HTMLElement>('[data-get-bar]');
+  const heroSection = document.querySelector('section');   // the hero is the page's first section
+  const ctaEnd = document.querySelector('[data-cta-end]');
+  if (getBar && heroSection && ctaEnd) {
+    let pastHero = false;
+    let atEnd = false;
+    const update = () => getBar.classList.toggle('translate-y-full', !pastHero || atEnd);
+    new IntersectionObserver(([e]) => { pastHero = !e.isIntersecting; update(); }).observe(heroSection);
+    new IntersectionObserver(([e]) => { atEnd = e.isIntersecting || e.boundingClientRect.top < 0; update(); }).observe(ctaEnd);
+  }
+
+  // Still here? Need a hand? The thumb. Its runtime and file load only when this section is near, never
+  // with reduced motion or Data Saver. It visits each time the section comes back into view, until
+  // somebody taps the section.
+  const ctaSection = document.querySelector<HTMLElement>('[data-cta-end]');
+  const thumbCanvas = document.querySelector<HTMLCanvasElement>('[data-cta-thumb]');
+  const ctaButton = document.querySelector<HTMLAnchorElement>('[data-cta-buttons] a');
+  if (ctaSection && thumbCanvas && ctaButton && !reducedMotion && !saveData) {
+    const ART_W = 600, ART_H = 320;
+    const TAP_X = 150, TAP_Y = 200;   // the fingertip's tap point on the artboard
+    const SCROLL_REACH_X = 480;       // the thumb's right edge while it scrolls, before it comes over
+    const PLAY_SECONDS = 3.8;         // the thumb's whole visit, then it hides until the next one
+    let tapped = false;
+    // Lines the artboard's tap point up with the centre of the first button. On a narrow screen the
+    // thumb shrinks until its scrolling, off to the right of the button, still fits on screen.
+    const place = () => {
+      const s = ctaSection.getBoundingClientRect();
+      const b = ctaButton.getBoundingClientRect();
+      const cx = b.left + b.width / 2;
+      const k = Math.min(1, (innerWidth - 12 - cx) / (SCROLL_REACH_X - TAP_X));
+      thumbCanvas.style.width = `${ART_W * k}px`;
+      thumbCanvas.style.height = `${ART_H * k}px`;
+      thumbCanvas.style.left = `${cx - s.left - TAP_X * k}px`;
+      thumbCanvas.style.top = `${b.top - s.top + b.height / 2 - TAP_Y * k}px`;
+    };
+    const press = () => {
+      ctaButton.style.transition = 'transform 120ms ease-out';
+      ctaButton.style.transform = 'scale(0.94)';
+      setTimeout(() => { ctaButton.style.transform = ''; }, 160);
+    };
+    // Somebody who taps the section needs no more demonstrations
+    ctaSection.addEventListener('pointerdown', () => { tapped = true; }, { once: true });
+    const loader = new IntersectionObserver(async (entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      loader.disconnect();
+      const { Rive, Layout, Fit } = await loadRive();
+      const thumb = new Rive({
+        canvas: thumbCanvas,
+        src: '/media/cta-thumb.riv',
+        artboard: 'CtaThumb',
+        stateMachine: 'CtaThumb',
+        autoplay: true,
+        // The file's view model: `play` and `skip` go in, `tapped` comes back at the press
+        autoBind: true,
+        layout: new Layout({ fit: Fit.Contain }),
+        onLoad: () => {
+          place();
+          thumb.resizeDrawingSurfaceToCanvas();
+          thumb.viewModelInstance?.trigger('tapped')?.on(press);
+          // A visit starts once the section is mostly on screen, so the joke lands where it can be
+          // seen, and the next one waits for the section to leave the screen and come back. Between
+          // visits the canvas is hidden and the file paused.
+          let visiting = false;
+          let away = true;
+          const visit = () => {
+            visiting = true;
+            away = false;
+            thumbCanvas.hidden = false;
+            thumb.play();
+            thumb.viewModelInstance?.trigger('play')?.trigger();
+            setTimeout(() => {
+              visiting = false;
+              thumbCanvas.hidden = true;
+              thumb.pause();
+            }, PLAY_SECONDS * 1000);
+          };
+          new IntersectionObserver((seen) => {
+            const e = seen[seen.length - 1];
+            if (!e.isIntersecting) away = true;
+            else if (e.intersectionRatio >= 0.7 && away && !visiting && !tapped) visit();
+          }, { threshold: [0, 0.7] }).observe(ctaSection);
+        },
+      });
+      ctaSection.addEventListener('pointerdown', () => {
+        thumb.viewModelInstance?.trigger('skip')?.trigger();
+      }, { once: true });
+      addEventListener('resize', () => { place(); thumb.resizeDrawingSurfaceToCanvas(); });
+    }, { rootMargin: '400px 0px' });
+    loader.observe(ctaSection);
+  }
+
+  // Keep it. Seriously: the watch toss. The runtime and file load only when the card is near, never
+  // with reduced motion or Data Saver, and it plays each time the card comes back into view. The page
+  // says the lines: one as the hand winds up, the punchline from when the file fires `joke`.
+  const toss = document.querySelector<HTMLElement>('[data-toss]');
+  const tossCanvas = document.querySelector<HTMLCanvasElement>('[data-toss-canvas]');
+  const tossStill = document.querySelector<HTMLElement>('[data-toss-still]');
+  const tossBubble = document.querySelector<HTMLElement>('[data-toss-bubble]');
+  if (toss && tossCanvas && tossStill && tossBubble && !reducedMotion && !saveData) {
+    const TOSS_SECONDS = 5.6;         // the whole scene, ending on its last frame
+    const SETUP_LINE = "We've already been through this… 😠";
+    // After the joke the face keeps up with the scene: watching it come back, the catch, the payoff
+    const PUNCHLINES: [number, string][] = [[0, 'JK 👀'], [1.4, 'JK 😉'], [3.0, 'JK 😈']];
+    const say = (line: string) => {
+      tossBubble.classList.add('opacity-0', 'translate-y-2', 'scale-95');
+      requestAnimationFrame(() => {
+        tossBubble.textContent = line;
+        requestAnimationFrame(() => tossBubble.classList.remove('opacity-0', 'translate-y-2', 'scale-95'));
+      });
+    };
+    const loadToss = new IntersectionObserver(async (entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      loadToss.disconnect();
+      const { Rive, Layout, Fit } = await loadRive();
+      const scene = new Rive({
+        canvas: tossCanvas,
+        src: '/media/watch-toss.riv',
+        artboard: 'WatchToss',
+        stateMachine: 'WatchToss',
+        autoplay: true,
+        autoBind: true,
+        layout: new Layout({ fit: Fit.Contain }),
+        onLoad: () => {
+          scene.resizeDrawingSurfaceToCanvas();
+          scene.viewModelInstance?.trigger('joke')?.on(() => {
+            PUNCHLINES.forEach(([after, line]) => setTimeout(() => say(line), after * 1000));
+          });
+          // Shown at once, waiting in its first pose: a canvas kept hidden until the visit keeps the
+          // clock running unseen, and the scene starts a second or more in
+          tossCanvas.hidden = false;
+          tossStill.hidden = true;
+          let visiting = false;
+          let away = true;
+          const visit = () => {
+            visiting = true;
+            away = false;
+            scene.play();
+            scene.viewModelInstance?.trigger('play')?.trigger();
+            say(SETUP_LINE);
+            setTimeout(() => {
+              visiting = false;
+              scene.pause();
+            }, TOSS_SECONDS * 1000);
+          };
+          // A visit starts once the card is mostly on screen; the next waits for it to leave and return
+          new IntersectionObserver((seen) => {
+            const e = seen[seen.length - 1];
+            if (!e.isIntersecting) away = true;
+            else if (e.intersectionRatio >= 0.6 && away && !visiting) visit();
+          }, { threshold: [0, 0.6] }).observe(toss);
+        },
+      });
+      addEventListener('resize', () => scene.resizeDrawingSurfaceToCanvas());
+    }, { rootMargin: '400px 0px' });
+    loadToss.observe(toss);
+  }
 
   // FAQ accordion
   document.querySelectorAll('.faq-trigger').forEach((btn) => {
@@ -747,6 +1086,16 @@ const allFeatures = [
 </script>
 
 <style>
+  /* "Saved to the app": the chip pops, then its tick draws */
+  .saved-chip {
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .saved-chip path {
+    stroke-dasharray: 1;
+    transition: stroke-dashoffset 0.35s ease 0.25s;
+  }
+  .saved-chip[data-pending] { opacity: 0; transform: scale(0.7); }
+  .saved-chip[data-pending] path { stroke-dashoffset: 1; }
   @keyframes glassFadeIn {
     from { opacity: 0; transform: translateY(20px) scale(0.98); backdrop-filter: blur(0); }
     to   { opacity: 1; transform: translateY(0) scale(1); backdrop-filter: blur(24px); }
@@ -755,4 +1104,55 @@ const allFeatures = [
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+
+  /* Why: notifications. Listed, each sits a row lower; folded, the three tuck behind the top one,
+     smaller and dimmer the older they are; then ours takes the top. */
+  .notifs {
+    --h: 76px;
+    --gap: 10px;
+    height: calc(3 * var(--h) + 2 * var(--gap));
+    transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .notifs[data-state='folded'],
+  .notifs[data-state='ours'],
+  .notifs[data-state='reset'] { height: calc(var(--h) + 24px); }
+  .notif {
+    position: absolute;
+    inset-inline: 0;
+    height: var(--h);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 14px;
+    border-radius: 20px;
+    background: rgb(36, 36, 38);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+  }
+  .notif-app {
+    top: calc(var(--i) * (var(--h) + var(--gap)));
+    opacity: 0;
+    transform: translateY(-14px) scale(0.96);
+    z-index: calc(3 - var(--i));
+  }
+  .notif-app.is-in { opacity: 1; transform: none; }
+  .notifs[data-state='folded'] .notif-app,
+  .notifs[data-state='ours'] .notif-app {
+    transform: translateY(calc(-1 * var(--i) * (var(--h) + var(--gap)) + (var(--i) + 1) * 8px)) scale(calc(1 - (var(--i) + 1) * 0.05));
+    opacity: calc(0.75 - var(--i) * 0.2);
+  }
+  /* Folded behind ours, a card shows only its edge, never its words through the one in front */
+  .notif-app > * { transition: opacity 0.3s ease; }
+  .notifs[data-state='folded'] .notif-app > *,
+  .notifs[data-state='ours'] .notif-app > * { opacity: 0; }
+  .notif-us {
+    top: 0;
+    z-index: 5;
+    opacity: 0;
+    transform: translateY(-14px) scale(0.96);
+    background: rgb(46, 46, 48);
+  }
+  .notifs[data-state='ours'] .notif-us { opacity: 1; transform: none; }
 </style>

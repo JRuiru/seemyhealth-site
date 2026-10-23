@@ -2,9 +2,7 @@
 // For somebody who already owns a tracker, told as a chat: we ask, they answer, the coach stares,
 // and we come round with an aside or two. Then two options: bring the tracker's data in through the
 // phone's health store, or fill what a wrist can't measure with our devices. Then the wink: both.
-// Apple's badge is used unaltered: at least 30px tall, a quarter of its height clear on every
-// side, one per page (developer.apple.com/health-fitness/works-with-apple-health). Health
-// Connect's logo sits on white, as Google's guidelines ask.
+import HealthPlatformBadges from './HealthPlatformBadges.astro';
 import type { Season } from '../lib/season';
 
 const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
@@ -124,17 +122,7 @@ const options = [
             <p class="font-display text-3xl sm:text-4xl font-400 uppercase leading-tight mb-3">{o.title}</p>
             <p class="text-sm sm:text-base text-brand-gray-400 leading-relaxed">{o.text}</p>
             {o.platforms && (
-              <div class="mt-auto pt-6 flex flex-wrap items-center gap-4">
-                <img src="/badges/works-with-apple-health.svg" alt="Works with Apple Health" class="h-11 w-auto" height="44" loading="lazy" />
-                <!-- Drawn to match Apple's badge beside it: same height, white, rounded, a hairline edge -->
-                <div class="h-11 inline-flex items-center gap-2 pl-2.5 pr-3.5 rounded-[10px] bg-white border border-black text-black font-sans" role="img" aria-label="Works with Health Connect">
-                  <img src="/badges/health-connect.png" alt="" class="w-8 h-8" width="32" height="32" loading="lazy" />
-                  <span class="flex flex-col leading-none">
-                    <span class="text-[10px] tracking-[0.2px]">Works with</span>
-                    <span class="mt-0.5 text-[17px] font-medium tracking-[-0.3px]">Health Connect</span>
-                  </span>
-                </div>
-              </div>
+              <HealthPlatformBadges class="mt-auto pt-6" />
             )}
             {o.link && (
               <div class="mt-auto pt-6">

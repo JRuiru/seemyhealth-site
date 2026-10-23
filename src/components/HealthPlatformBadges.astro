@@ -1,0 +1,22 @@
+---
+// Apple's badge is used unaltered: at least 30px tall, a quarter of its height clear on every
+// side, one per page (developer.apple.com/health-fitness/works-with-apple-health). Health
+// Connect's logo sits on white, as Google's guidelines ask.
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={["flex flex-wrap items-center gap-4", className]}>
+  <img src="/badges/works-with-apple-health.svg" alt="Works with Apple Health" class="h-11 w-auto" height="44" loading="lazy" />
+  <!-- Drawn to match Apple's badge beside it: same height, white, rounded, a hairline edge -->
+  <div class="h-11 inline-flex items-center gap-2 pl-2.5 pr-3.5 rounded-[10px] bg-white border border-black text-black font-sans" role="img" aria-label="Works with Health Connect">
+    <img src="/badges/health-connect.png" alt="" class="w-8 h-8" width="32" height="32" loading="lazy" />
+    <span class="flex flex-col leading-none">
+      <span class="text-[10px] tracking-[0.2px]">Works with</span>
+      <span class="mt-0.5 text-[17px] font-medium tracking-[-0.3px]">Health Connect</span>
+    </span>
+  </div>
+</div>

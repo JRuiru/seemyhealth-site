@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import AppStoreButtons from '../components/AppStoreButtons.astro';
+import StoreName from '../components/StoreName.astro';
 
 export const prerender = true;
 
@@ -84,6 +85,7 @@ export const prerender = true;
 
         <p class="text-[10px] uppercase tracking-[3px] text-brand-gray-600">Don't have it yet?</p>
         <AppStoreButtons class="justify-center" />
+        <StoreName class="justify-center -mt-2" />
       </div>
     </div>
   </section>
