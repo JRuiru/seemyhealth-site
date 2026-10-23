@@ -428,7 +428,9 @@ const faqs = [
                 ]}>
                   <span class="hidden md:block w-1.5 h-1.5 rounded-full bg-white/60 shrink-0"></span>
                   {item.phone ? <><span class="md:hidden">{item.phone}</span><span class="hidden md:inline">{item.label}</span></> : item.label}
-                  {item.premium && <span class="text-[10px] uppercase tracking-[1.5px] text-amber-300/90 md:border md:border-amber-300/30 md:rounded-full md:px-2 md:py-0.5">Premium</span>}
+                  {/* On a phone a Premium chip says so with its gold edge and a star, so the chips stay short */}
+                  {item.premium && <span class="md:hidden text-[11px] leading-none text-amber-300/90"><span aria-hidden="true">★</span><span class="sr-only">Premium</span></span>}
+                  {item.premium && <span class="hidden md:inline text-[10px] uppercase tracking-[1.5px] text-amber-300/90 border border-amber-300/30 rounded-full px-2 py-0.5">Premium</span>}
                 </li>
               ))}
             </ul>
