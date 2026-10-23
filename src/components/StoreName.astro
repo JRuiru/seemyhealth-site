@@ -1,6 +1,7 @@
 ---
 // The app is listed as C-MyHealth, not SeeMyHealth, so wherever somebody is sent to a store they
-// are told the name to look for, beside the icon they will see in the results. `bold` is for a hero.
+// are told the name the listing will show, beside its icon, and somebody reading on a laptop knows
+// what to find on their phone. `bold` is for a hero.
 interface Props {
   bold?: boolean;
   class?: string;
@@ -23,7 +24,7 @@ const { bold = false, class: className } = Astro.props;
     loading="lazy"
   />
   <span class="flex flex-col text-left leading-snug">
-    <span>Search <strong class:list={["text-white", bold ? "font-bold text-base sm:text-lg" : "font-semibold"]}>C-MyHealth</strong></span>
-    <span class:list={["text-white/50", bold ? "text-[13px] sm:text-sm" : "text-[12px]"]}>on the App Store or Google Play</span>
+    <span>You'll find it as <strong class:list={["text-white", bold ? "font-bold text-base sm:text-lg" : "font-semibold"]}>C-MyHealth</strong></span>
+    <span class:list={["text-white/50", bold ? "text-[13px] sm:text-sm" : "text-[12px]"]}>on the App Store and Google Play</span>
   </span>
 </p>
