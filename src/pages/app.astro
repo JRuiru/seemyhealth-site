@@ -356,7 +356,11 @@ const faqs = [
         </h2>
       </div>
 
-      <div class="flex gap-2 overflow-x-auto no-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0 mb-8" role="tablist" aria-label="What's in the app">
+      <!-- Never drawn like the pill bar of the three ways in. On a phone the themes are a column of
+           blocks beside the photo, the one showing in white; from a tablet up they are the app's own
+           tab bar, icon over label with a line under the one showing. -->
+      <div class="flex gap-3 md:block">
+      <div class="flex flex-col gap-1.5 w-[72px] shrink-0 md:w-auto md:grid md:grid-cols-4 md:gap-0 md:max-w-xl md:border-b md:border-white/10 md:mb-10" role="tablist" aria-label="What's in the app">
         {themes.map((t, i) => (
           <button
             type="button"
@@ -365,20 +369,21 @@ const faqs = [
             aria-controls={`panel-${t.key}`}
             aria-selected={i === 0 ? "true" : "false"}
             data-theme-tab={t.key}
-            class="relative overflow-hidden shrink-0 px-5 py-2.5 text-[12px] uppercase tracking-[1.5px] font-medium rounded-full border transition-colors aria-selected:bg-white aria-selected:text-brand-black aria-selected:border-white text-white border-white/20 hover:border-white/40"
+            class="group relative overflow-hidden flex flex-col items-center justify-center gap-1.5 h-20 px-1 rounded-xl border border-white/10 bg-white/[0.04] text-[9px] uppercase tracking-[1px] font-medium leading-tight text-center text-white/60 aria-selected:bg-white aria-selected:border-white aria-selected:text-brand-black transition-colors md:overflow-visible md:h-auto md:justify-start md:gap-2 md:pt-2 md:pb-3 md:rounded-none md:border-0 md:bg-transparent md:aria-selected:bg-transparent md:text-[11px] md:tracking-[1.5px] md:text-white/45 md:hover:text-white/80 md:aria-selected:text-white"
           >
-            <span class="flex items-center gap-2">
-              <canvas class="w-[18px] h-[18px] -my-1 -ml-1" width="36" height="36" data-tab-icon={t.icon} hidden aria-hidden="true"></canvas>
-              {t.label}
+            <span class="w-7 h-7 opacity-80 group-aria-selected:opacity-100 md:opacity-45 md:group-hover:opacity-80 md:group-aria-selected:opacity-100 transition-opacity" aria-hidden="true">
+              <canvas class="w-7 h-7" width="56" height="56" data-tab-icon={t.icon} hidden></canvas>
             </span>
-            <span class="absolute left-0 bottom-0 h-[2px] w-full bg-current opacity-40 origin-left scale-x-0" data-tab-progress aria-hidden="true"></span>
+            {t.label}
+            <span class="hidden md:block absolute inset-x-0 -bottom-px h-[2px] bg-white/30 opacity-0 group-aria-selected:opacity-100" aria-hidden="true"></span>
+            <span class="absolute inset-x-0 bottom-0 md:-bottom-px h-[3px] md:h-[2px] bg-current opacity-40 md:opacity-100 origin-left scale-x-0" data-tab-progress aria-hidden="true"></span>
           </button>
         ))}
       </div>
 
       <!-- The panels share one grid cell, so the section keeps the tallest one's height and nothing
            below it jumps when a theme changes -->
-      <div class="grid">
+      <div class="grid flex-1 min-w-0">
       {themes.map((t, i) => (
         <div
           id={`panel-${t.key}`}
@@ -393,11 +398,11 @@ const faqs = [
           <div class="relative aspect-[4/5] max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5">
             <img src={t.image} alt={t.alt} class="absolute inset-0 w-full h-full object-cover" loading={i === 0 ? "eager" : "lazy"} />
             <div class="md:hidden absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 to-transparent" aria-hidden="true"></div>
-            <div class="md:hidden absolute inset-x-3 bottom-3 p-5 rounded-2xl bg-black/35 backdrop-blur-xl border border-white/15">
-              <h3 class="font-display text-2xl font-300 uppercase leading-[0.95] mb-2 text-balance">
+            <div class="md:hidden absolute inset-x-2 bottom-2 p-3.5 rounded-2xl bg-black/35 backdrop-blur-xl border border-white/15">
+              <h3 class="font-display text-xl font-300 uppercase leading-[0.95] mb-1.5 text-balance">
                 {t.title} <span class="font-500">{t.bold}</span>
               </h3>
-              <p class="text-sm text-white/75 leading-relaxed text-pretty">{t.short ?? t.text}</p>
+              <p class="text-[13px] text-white/75 leading-snug text-pretty">{t.short ?? t.text}</p>
             </div>
           </div>
           <div class="min-w-0">
@@ -407,10 +412,10 @@ const faqs = [
               </h3>
               <p class="text-brand-gray-400 leading-relaxed mb-6 text-pretty">{t.text}</p>
             </div>
-            <ul class="flex flex-wrap gap-2 md:flex-col md:flex-nowrap md:gap-3">
+            <ul class="flex flex-wrap gap-1.5 md:flex-col md:flex-nowrap md:gap-3">
               {t.items.map((item) => (
                 <li class:list={[
-                  "flex items-center gap-2 md:gap-3 text-[13px] md:text-sm text-brand-gray-300 rounded-full border px-3 py-1.5 md:p-0 md:border-0 md:rounded-none",
+                  "flex items-center gap-1.5 md:gap-3 text-[12px] md:text-sm text-brand-gray-300 rounded-full border px-2.5 py-1 md:p-0 md:border-0 md:rounded-none",
                   item.premium ? "border-amber-300/30" : "border-white/10",
                 ]}>
                   <span class="hidden md:block w-1.5 h-1.5 rounded-full bg-white/60 shrink-0"></span>
@@ -422,6 +427,7 @@ const faqs = [
           </div>
         </div>
       ))}
+      </div>
       </div>
     </div>
   </section>
@@ -832,12 +838,14 @@ const faqs = [
   const themePanels = Array.from(document.querySelectorAll<HTMLElement>('[data-theme-panel]'));
   const THEME_SECONDS = 5;
   let themeTimer = 0;
-  // The tab icons: the app's own, black on the white tab that is showing and white on the rest, and
-  // the one that comes up plays its moment, as it does when that tab is picked in the app. They load
+  // The tab icons: the app's own, black on a phone's white block and white everywhere else (dimmed
+  // on the tabs not showing); the one that comes up
+  // plays its moment, as it does when that tab is picked in the app. They load
   // only when the section is near, never with Data Saver, and hold still with reduced motion.
   type TabIcon = { tab: HTMLButtonElement; show: (selected: boolean) => void };
   const tabIcons: TabIcon[] = [];
   const iconCanvases = Array.from(document.querySelectorAll<HTMLCanvasElement>('[data-tab-icon]'));
+  const blocks = matchMedia('(max-width: 767px)');   // the phone's column of blocks
   const themesNear = document.querySelector('[data-themes]');
   if (themesNear && iconCanvases.length && !saveData) {
     const loadIcons = new IntersectionObserver(async (entries) => {
@@ -856,9 +864,11 @@ const faqs = [
           onLoad: () => {
             icon.resizeDrawingSurfaceToCanvas();
             let selected = false;
+            const ink = icon.viewModelInstance?.boolean('isLightMode');
+            const inkFor = (now: boolean) => { if (ink) ink.value = now && blocks.matches; };
+            blocks.addEventListener('change', () => inkFor(selected));
             const show = (now: boolean) => {
-              const ink = icon.viewModelInstance?.boolean('isLightMode');
-              if (ink) ink.value = now;
+              inkFor(now);
               if (now && !selected && !reducedMotion) icon.viewModelInstance?.trigger('play')?.trigger();
               selected = now;
             };
