@@ -752,29 +752,43 @@ const faqs = [
   }
 
   // Why: three notifications arrive one by one, fold behind each other, and ours lands on top.
-  // Once only; with reduced motion it starts folded.
+  // It plays again whenever the stack comes back into view, from either direction; with reduced
+  // motion it starts folded and stays that way.
   const notifs = document.querySelector<HTMLElement>('[data-notifs]');
   if (notifs) {
     const NOTIF_GAP_MS = 700;      // between one app's notification and the next
     const HOLD_MS = 1600;          // all three on screen, long enough to read
     const OURS_AFTER_FOLD_MS = 450;
+    const apps = Array.from(notifs.querySelectorAll<HTMLElement>('.notif-app'));
+    let timers: number[] = [];
+    let played = false;
+    const later = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
     const play = () => {
-      const apps = Array.from(notifs.querySelectorAll<HTMLElement>('.notif-app'));
-      apps.forEach((n, i) => setTimeout(() => n.classList.add('is-in'), i * NOTIF_GAP_MS));
+      played = true;
+      delete notifs.dataset.state;
+      apps.forEach((n, i) => later(i * NOTIF_GAP_MS, () => n.classList.add('is-in')));
       const fold = apps.length * NOTIF_GAP_MS + HOLD_MS;
-      setTimeout(() => { notifs.dataset.state = 'folded'; }, fold);
-      setTimeout(() => { notifs.dataset.state = 'ours'; }, fold + OURS_AFTER_FOLD_MS);
+      later(fold, () => { notifs.dataset.state = 'folded'; });
+      later(fold + OURS_AFTER_FOLD_MS, () => { notifs.dataset.state = 'ours'; });
+    };
+    // Off screen, the stack empties at its folded height, the height it already has once played,
+    // so emptying it never moves the page; it opens back out to the list on screen, as it plays.
+    const reset = () => {
+      timers.forEach(clearTimeout);
+      timers = [];
+      played = false;
+      apps.forEach((n) => n.classList.remove('is-in'));
+      notifs.dataset.state = 'reset';
     };
     if (reducedMotion) {
       notifs.querySelectorAll('.notif-app').forEach((n) => n.classList.add('is-in'));
       notifs.dataset.state = 'ours';
     } else {
-      const once = new IntersectionObserver((entries) => {
-        if (!entries.some((e) => e.isIntersecting)) return;
-        once.disconnect();
-        play();
-      }, { threshold: 0.6 });
-      once.observe(notifs);
+      new IntersectionObserver((entries) => {
+        const e = entries[entries.length - 1];
+        if (!e.isIntersecting) { if (played) reset(); }
+        else if (e.intersectionRatio >= 0.6 && !played) play();
+      }, { threshold: [0, 0.6] }).observe(notifs);
     }
   }
 
@@ -1029,7 +1043,8 @@ const faqs = [
     transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .notifs[data-state='folded'],
-  .notifs[data-state='ours'] { height: calc(var(--h) + 24px); }
+  .notifs[data-state='ours'],
+  .notifs[data-state='reset'] { height: calc(var(--h) + 24px); }
   .notif {
     position: absolute;
     inset-inline: 0;
