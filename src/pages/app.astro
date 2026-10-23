@@ -491,8 +491,13 @@ const faqs = [
   <!-- Keep what you've got: after our own devices, a watch's data comes in through the phone's health store -->
   <section id="your-watch" data-way class="scroll-mt-28 sm:scroll-mt-32 py-20 sm:py-28 bg-brand-black border-t border-white/5">
     <div class="max-w-6xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-      <div class="relative aspect-[4/3] max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5 md:order-2" data-scroll-reveal>
-        <img src={`${CF_IMG}/challenge-accepted/public`} alt="Man grinning at his phone after a workout" class="absolute inset-0 w-full h-full object-cover object-left" loading="lazy" />
+      <!-- The watch toss, in Rive: we wind up and throw the watch away, think better of it, and it comes
+           back and sends its numbers to the app. The bubble is page text, cued by the file. Until the
+           file plays (and for good with reduced motion or Data Saver) the card shows its last frame. -->
+      <div class="relative aspect-[4/3] max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5 md:order-2" role="img" aria-label="A cartoon hand throws a smartwatch away, then catches it on the way back, pats it, and the watch sends its heart rate and steps to the SeeMyHealth app" data-toss data-scroll-reveal>
+        <img src="/media/watch-toss-still.webp" alt="" class="absolute inset-0 w-full h-full" width="800" height="600" loading="lazy" data-toss-still />
+        <canvas class="absolute inset-0 w-full h-full" width="800" height="600" hidden aria-hidden="true" data-toss-canvas></canvas>
+        <p class="absolute top-[4%] right-[4%] whitespace-nowrap px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-3xl rounded-bl-md bg-white/[0.08] backdrop-blur-xl border border-white/10 font-display text-[13px] sm:text-lg font-300 uppercase leading-tight opacity-0 translate-y-2 scale-95 origin-bottom-left transition duration-300 ease-out" aria-hidden="true" data-toss-bubble></p>
       </div>
       <div class="min-w-0" data-scroll-reveal>
         <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Already have a watch?</p>
@@ -992,6 +997,69 @@ const faqs = [
       addEventListener('resize', () => { place(); thumb.resizeDrawingSurfaceToCanvas(); });
     }, { rootMargin: '400px 0px' });
     loader.observe(ctaSection);
+  }
+
+  // Keep it. Seriously: the watch toss. The runtime and file load only when the card is near, never
+  // with reduced motion or Data Saver, and it plays each time the card comes back into view. The page
+  // says the lines: one as the hand winds up, the punchline when the file fires `joke`.
+  const toss = document.querySelector<HTMLElement>('[data-toss]');
+  const tossCanvas = document.querySelector<HTMLCanvasElement>('[data-toss-canvas]');
+  const tossStill = document.querySelector<HTMLElement>('[data-toss-still]');
+  const tossBubble = document.querySelector<HTMLElement>('[data-toss-bubble]');
+  if (toss && tossCanvas && tossStill && tossBubble && !reducedMotion && !saveData) {
+    const TOSS_SECONDS = 5.6;         // the whole scene, ending on its last frame
+    const SETUP_LINE = "We've already been through this…";
+    const PUNCHLINE = 'JK.';
+    const say = (line: string) => {
+      tossBubble.classList.add('opacity-0', 'translate-y-2', 'scale-95');
+      requestAnimationFrame(() => {
+        tossBubble.textContent = line;
+        requestAnimationFrame(() => tossBubble.classList.remove('opacity-0', 'translate-y-2', 'scale-95'));
+      });
+    };
+    const loadToss = new IntersectionObserver(async (entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      loadToss.disconnect();
+      const { Rive, Layout, Fit } = await loadRive();
+      const scene = new Rive({
+        canvas: tossCanvas,
+        src: '/media/watch-toss.riv',
+        artboard: 'WatchToss',
+        stateMachine: 'WatchToss',
+        autoplay: true,
+        autoBind: true,
+        layout: new Layout({ fit: Fit.Contain }),
+        onLoad: () => {
+          scene.resizeDrawingSurfaceToCanvas();
+          scene.viewModelInstance?.trigger('joke')?.on(() => say(PUNCHLINE));
+          // Shown at once, waiting in its first pose: a canvas kept hidden until the visit keeps the
+          // clock running unseen, and the scene starts a second or more in
+          tossCanvas.hidden = false;
+          tossStill.hidden = true;
+          let visiting = false;
+          let away = true;
+          const visit = () => {
+            visiting = true;
+            away = false;
+            scene.play();
+            scene.viewModelInstance?.trigger('play')?.trigger();
+            say(SETUP_LINE);
+            setTimeout(() => {
+              visiting = false;
+              scene.pause();
+            }, TOSS_SECONDS * 1000);
+          };
+          // A visit starts once the card is mostly on screen; the next waits for it to leave and return
+          new IntersectionObserver((seen) => {
+            const e = seen[seen.length - 1];
+            if (!e.isIntersecting) away = true;
+            else if (e.intersectionRatio >= 0.6 && away && !visiting) visit();
+          }, { threshold: [0, 0.6] }).observe(toss);
+        },
+      });
+      addEventListener('resize', () => scene.resizeDrawingSurfaceToCanvas());
+    }, { rootMargin: '400px 0px' });
+    loadToss.observe(toss);
   }
 
   // FAQ accordion
