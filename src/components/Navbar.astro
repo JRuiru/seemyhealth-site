@@ -31,7 +31,7 @@ const isActive = (href: string) => {
 
 <nav
   class:list={[
-    "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+    "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
     isTransparent
       ? "bg-brand-black/30 backdrop-blur-xl backdrop-saturate-150 border-b border-white/10"
       : "bg-brand-black/80 backdrop-blur-lg border-b border-white/5"
@@ -120,6 +120,34 @@ const isActive = (href: string) => {
   const btn = document.getElementById('mobile-menu-btn');
   const menu = document.getElementById('mobile-menu');
   const navbar = document.getElementById('navbar');
+
+  // The bar steps out of the way while somebody scrolls down the page and comes back the moment they
+  // scroll up. It stays near the top of the page and while the phone menu is open. Other fixed bars
+  // can follow it through <html data-nav-hidden>.
+  const NAV_SHOW_ABOVE = 120;   // px from the top, where the bar always shows
+  const NAV_DEADBAND = 6;       // px of scroll ignored, so a finger's wobble doesn't flicker it
+  let lastY = scrollY;
+  let ticking = false;
+  const setHidden = (hidden: boolean) => {
+    if (!navbar) return;
+    navbar.style.transform = hidden ? 'translateY(-100%)' : '';
+    document.documentElement.toggleAttribute('data-nav-hidden', hidden);
+  };
+  addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      const y = scrollY;
+      const dy = y - lastY;
+      if (Math.abs(dy) < NAV_DEADBAND) return;
+      lastY = y;
+      const menuOpen = menu ? !menu.classList.contains('hidden') : false;
+      setHidden(dy > 0 && y > NAV_SHOW_ABOVE && !menuOpen);
+    });
+  }, { passive: true });
+  // Keyboard users tabbing into the bar always see it
+  navbar?.addEventListener('focusin', () => setHidden(false));
 
   btn?.addEventListener('click', () => {
     menu?.classList.toggle('hidden');

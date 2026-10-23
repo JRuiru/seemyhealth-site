@@ -697,7 +697,7 @@ const faqs = [
   </section>
 
   <!-- While reading the how: which of the three ways you're in -->
-  <nav class="fixed top-[72px] sm:top-[88px] inset-x-0 z-40 flex justify-center px-4 pointer-events-none opacity-0 -translate-y-2 transition duration-300" data-ways-bar aria-label="Three ways in">
+  <nav class="fixed top-[72px] sm:top-[88px] inset-x-0 z-40 flex justify-center px-4 pointer-events-none opacity-0 -translate-y-2 transition-[top,opacity,translate] duration-300" data-ways-bar aria-label="Three ways in">
     <div class="flex gap-1 p-1 rounded-full bg-brand-black/70 backdrop-blur-xl border border-white/10 pointer-events-auto">
       {waysIn.map((way) => (
         <a href={way.href} data-way-link={way.href.slice(1)} class="px-3 sm:px-4 py-2 text-[11px] uppercase tracking-[1px] sm:tracking-[1.2px] font-medium rounded-full text-white/60 hover:text-white transition-colors aria-[current=true]:bg-white aria-[current=true]:text-brand-black whitespace-nowrap">
@@ -1136,6 +1136,8 @@ const faqs = [
 </script>
 
 <style>
+  /* The ways bar slides up into the top bar's place while the top bar is out of the way */
+  :root[data-nav-hidden] [data-ways-bar] { top: 12px; }
   /* "Saved to the app": the chip pops, then its tick draws */
   .saved-chip {
     transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
