@@ -73,7 +73,7 @@ const themes: Theme[] = [
     text: "Search it or scan it, and it's logged. Add your allergies and we'll flag any food or recipe that contains one, before it's on your plate. Browse recipes you'll actually cook, plan the week, and yes, water counts too.",
     // On a phone the words sit on the photo, so a long paragraph gets a short one there
     short: "Search it or scan it, and it's logged, with a flag on anything that contains one of your allergens. Water counts too.",
-    // `phone` is the chip's label on a phone, where the chips keep to two lines; an item with
+    // `phone` is the chip's label on a phone, where the chips sit under the photo and keep short; an item with
     // `phone: null` is left off there
     items: [
       { label: "Meal logging by search or barcode", phone: "Search & scan" },
@@ -419,9 +419,7 @@ const faqs = [
               </h3>
               <p class="text-brand-gray-400 leading-relaxed mb-6 text-pretty">{t.text}</p>
             </div>
-            <!-- On a phone the chips run under the column of blocks too (72px wide plus its 12px gap),
-                 so they span the section and keep to two lines -->
-            <ul class="-ml-[84px] md:ml-0 flex flex-wrap gap-1.5 md:flex-col md:flex-nowrap md:gap-3">
+            <ul class="flex flex-wrap gap-1.5 md:flex-col md:flex-nowrap md:gap-3">
               {t.items.map((item) => (
                 <li class:list={[
                   item.phone === null && "hidden md:flex",
