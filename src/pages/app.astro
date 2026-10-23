@@ -39,10 +39,11 @@ const scattered = [
   { app: "Steps", color: "#F59E0B", icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z", line: "And your step counter missed the week you've had." },
 ];
 
-// What the app is, in three ideas, before what it does
+// What the app is, in three ideas, before what it does. `position` keeps a face in the crop where
+// the photo is cut wider than it was shot (16:10 on a phone).
 const pillars = [
-  { title: "One home", text: "Today, at a glance. What you ate, how you slept, how much water you've had (be honest) and how you're feeling.", image: `${CF_IMG}/logging-food/public`, alt: "Woman checking the app on her phone at home" },
-  { title: "Your goals", text: "Your goals, not ours. Set what matters to you and watch the days tick it off. No guilt trips included.", image: `${CF_IMG}/app-goals-achieved/public`, alt: "A day's goals all met in the app" },
+  { title: "One home", text: "Today, at a glance. What you ate, how you slept, how much water you've had (be honest) and how you're feeling.", image: `${CF_IMG}/logging-food/public`, alt: "Woman checking the app on her phone at home", position: "object-top" },
+  { title: "Your goals", text: "Your goals, not ours. Set what matters to you and watch the days tick it off. No guilt trips included.", image: `${CF_IMG}/app-goals-achieved/public`, alt: "A day's goals all met in the app", position: "object-top" },
   { title: "The long view", premium: true, text: "One bad day is just a bad day. Weeks and months of history show you what's actually going on.", image: `${CF_IMG}/scale-trend-tracking/public`, alt: "Weight and body composition trends over months" },
 ];
 
@@ -329,7 +330,7 @@ const faqs = [
         {pillars.map((pillar, i) => (
           <div class="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
             <div class="relative aspect-[16/10] sm:aspect-[4/3] bg-brand-gray-900">
-              <img src={pillar.image} alt={pillar.alt} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+              <img src={pillar.image} alt={pillar.alt} class:list={["absolute inset-0 w-full h-full object-cover", pillar.position]} loading="lazy" />
               <span class="absolute top-4 left-4 text-[11px] uppercase tracking-[3px] text-white/80 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full">0{i + 1}</span>
               {pillar.premium && <span class="absolute top-4 right-4 text-[10px] uppercase tracking-[1.5px] text-amber-200 bg-black/50 backdrop-blur-md border border-amber-300/30 px-2.5 py-1 rounded-full">Premium</span>}
               <!-- The title sits on the photo in glass, so the card is only as tall as its photo and a line or two -->
@@ -343,10 +344,13 @@ const faqs = [
       </div>
       <div class="mt-14 sm:mt-16 text-center" data-scroll-reveal>
         <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-5">Pick your way in</p>
-        <div class="flex flex-wrap justify-center gap-3">
+        <!-- On a phone, three equal blocks in a row; from sm up, pills -->
+        <div class="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-3">
           {waysIn.map((way) => (
-            <a href={way.href} class="px-6 py-3 text-[12px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors">
-              {way.label}
+            <a href={way.href} class="flex flex-col items-center justify-center gap-2 px-2 py-4 rounded-xl border border-white/15 bg-white/[0.03] text-[11px] leading-tight uppercase tracking-[1.2px] font-medium text-white text-center hover:border-white/40 transition-colors sm:flex-row sm:px-6 sm:py-3 sm:rounded-full sm:bg-transparent sm:border-white/20 sm:text-[12px] sm:tracking-[1.5px]">
+              <span class="sm:hidden">{way.short}</span>
+              <span class="hidden sm:inline">{way.label}</span>
+              <span class="sm:hidden text-white/50 text-sm leading-none" aria-hidden="true">&darr;</span>
             </a>
           ))}
         </div>
