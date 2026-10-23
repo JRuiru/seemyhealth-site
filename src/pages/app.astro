@@ -977,8 +977,9 @@ const faqs = [
       ctaButton.style.transform = 'scale(0.94)';
       setTimeout(() => { ctaButton.style.transform = ''; }, 160);
     };
-    // Somebody who taps the section needs no more demonstrations
-    ctaSection.addEventListener('pointerdown', () => { tapped = true; }, { once: true });
+    // Somebody who taps the section needs no more demonstrations. A click, never a pointerdown: on a
+    // phone the finger that scrolls the page into this section lands on it, and the thumb never came.
+    ctaSection.addEventListener('click', () => { tapped = true; }, { once: true });
     const loader = new IntersectionObserver(async (entries) => {
       if (!entries.some((e) => e.isIntersecting)) return;
       loader.disconnect();
@@ -1020,7 +1021,7 @@ const faqs = [
           }, { threshold: [0, 0.7] }).observe(ctaSection);
         },
       });
-      ctaSection.addEventListener('pointerdown', () => {
+      ctaSection.addEventListener('click', () => {
         thumb.viewModelInstance?.trigger('skip')?.trigger();
       }, { once: true });
       addEventListener('resize', () => { place(); thumb.resizeDrawingSurfaceToCanvas(); });
