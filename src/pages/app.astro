@@ -55,10 +55,13 @@ const waysIn = [
 
 // What the app does on its own, in four themes; a tab shows one at a time. Logging is free; an
 // item marked premium is one of the app's four PremiumFeatures (trends, meal planning, fasting,
-// family data), so this list follows Features/Subscription in the iOS app.
+// family data), so this list follows Features/Subscription in the iOS app. Each tab wears the app's
+// own tab icon for that area: the Rive files in public/media/app-icons are copied unchanged from the
+// iOS app's Resources/Icons.
 const themes = [
   {
     key: "eat",
+    icon: "nutrition",
     label: "Eat",
     title: "Eat.",
     bold: "Then tell us about it.",
@@ -75,6 +78,7 @@ const themes = [
   },
   {
     key: "feel",
+    icon: "my-health",
     label: "Feel",
     title: "Feel.",
     bold: "Then write it down.",
@@ -85,6 +89,7 @@ const themes = [
   },
   {
     key: "people",
+    icon: "community",
     label: "Your people",
     title: "Your people.",
     bold: "All of them.",
@@ -99,6 +104,7 @@ const themes = [
   },
   {
     key: "care",
+    icon: "providers",
     label: "Care",
     title: "Care.",
     bold: "When you want it.",
@@ -358,7 +364,10 @@ const faqs = [
             data-theme-tab={t.key}
             class="relative overflow-hidden shrink-0 px-5 py-2.5 text-[12px] uppercase tracking-[1.5px] font-medium rounded-full border transition-colors aria-selected:bg-white aria-selected:text-brand-black aria-selected:border-white text-white border-white/20 hover:border-white/40"
           >
-            {t.label}
+            <span class="flex items-center gap-2">
+              <canvas class="w-[18px] h-[18px] -my-1 -ml-1" width="36" height="36" data-tab-icon={t.icon} hidden aria-hidden="true"></canvas>
+              {t.label}
+            </span>
             <span class="absolute left-0 bottom-0 h-[2px] w-full bg-current opacity-40 origin-left scale-x-0" data-tab-progress aria-hidden="true"></span>
           </button>
         ))}
@@ -660,6 +669,18 @@ const faqs = [
 
 <script>
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+
+  // The Rive runtime, fetched the first time a section that animates with it comes near, with its
+  // wasm served from this site. Every caller shares the one load.
+  let riveLoad: Promise<typeof import('@rive-app/canvas-lite')> | undefined;
+  const loadRive = () => riveLoad ??= Promise.all([
+    import('@rive-app/canvas-lite'),
+    import('@rive-app/canvas-lite/rive.wasm?url'),
+  ]).then(([runtime, { default: wasmUrl }]) => {
+    runtime.RuntimeLoader.setWasmUrl(wasmUrl);
+    return runtime;
+  });
 
   // Billing toggle: both plans are priced per month or per year, and the figures roll to the new
   // period rather than jumping
@@ -762,11 +783,51 @@ const faqs = [
   const themePanels = Array.from(document.querySelectorAll<HTMLElement>('[data-theme-panel]'));
   const THEME_SECONDS = 5;
   let themeTimer = 0;
+  // The tab icons: the app's own, black on the white tab that is showing and white on the rest, and
+  // the one that comes up plays its moment, as it does when that tab is picked in the app. They load
+  // only when the section is near, never with Data Saver, and hold still with reduced motion.
+  type TabIcon = { tab: HTMLButtonElement; show: (selected: boolean) => void };
+  const tabIcons: TabIcon[] = [];
+  const iconCanvases = Array.from(document.querySelectorAll<HTMLCanvasElement>('[data-tab-icon]'));
+  const themesNear = document.querySelector('[data-themes]');
+  if (themesNear && iconCanvases.length && !saveData) {
+    const loadIcons = new IntersectionObserver(async (entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      loadIcons.disconnect();
+      const { Rive } = await loadRive();
+      iconCanvases.forEach((canvas) => {
+        const tab = canvas.closest<HTMLButtonElement>('[data-theme-tab]');
+        if (!tab) return;
+        const icon = new Rive({
+          canvas,
+          src: `/media/app-icons/${canvas.dataset.tabIcon}.riv`,
+          stateMachine: 'State Machine 1',
+          autoplay: true,
+          autoBind: true,
+          onLoad: () => {
+            icon.resizeDrawingSurfaceToCanvas();
+            let selected = false;
+            const show = (now: boolean) => {
+              const ink = icon.viewModelInstance?.boolean('isLightMode');
+              if (ink) ink.value = now;
+              if (now && !selected && !reducedMotion) icon.viewModelInstance?.trigger('play')?.trigger();
+              selected = now;
+            };
+            show(tab.getAttribute('aria-selected') === 'true');
+            tabIcons.push({ tab, show });
+            canvas.hidden = false;
+          },
+        });
+      });
+    }, { rootMargin: '400px 0px' });
+    loadIcons.observe(themesNear);
+  }
   let themesAuto = !reducedMotion;
   const showTheme = (tab: HTMLButtonElement) => {
     const key = tab.dataset.themeTab;
     themeTabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
     themePanels.forEach((p) => { p.inert = p.dataset.themePanel !== key; });
+    tabIcons.forEach((icon) => icon.show(icon.tab === tab));
     // On a phone the tabs scroll sideways; keep the one showing in sight, without moving the page
     tab.parentElement?.scrollTo({ left: tab.offsetLeft - 24, behavior: 'smooth' });
   };
@@ -844,7 +905,6 @@ const faqs = [
   const ctaSection = document.querySelector<HTMLElement>('[data-cta-end]');
   const thumbCanvas = document.querySelector<HTMLCanvasElement>('[data-cta-thumb]');
   const ctaButton = document.querySelector<HTMLAnchorElement>('[data-cta-buttons] a');
-  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
   if (ctaSection && thumbCanvas && ctaButton && !reducedMotion && !saveData) {
     const ART_W = 600, ART_H = 320;
     const TAP_X = 150, TAP_Y = 200;   // the fingertip's tap point on the artboard
@@ -873,11 +933,7 @@ const faqs = [
     const loader = new IntersectionObserver(async (entries) => {
       if (!entries.some((e) => e.isIntersecting)) return;
       loader.disconnect();
-      const [{ Rive, Layout, Fit, RuntimeLoader }, { default: wasmUrl }] = await Promise.all([
-        import('@rive-app/canvas-lite'),
-        import('@rive-app/canvas-lite/rive.wasm?url'),
-      ]);
-      RuntimeLoader.setWasmUrl(wasmUrl);
+      const { Rive, Layout, Fit } = await loadRive();
       const thumb = new Rive({
         canvas: thumbCanvas,
         src: '/media/cta-thumb.riv',
