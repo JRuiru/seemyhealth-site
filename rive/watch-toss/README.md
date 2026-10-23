@@ -3,7 +3,9 @@
 The "Keep it. Seriously." scene on the app page (the section about keeping your own smartwatch),
 built with the Rive CLI. It replaces the photo in that section's 4:3 dark card.
 
-- Not linked to a Rive file yet (no `push:` in `rive.yaml`). `scene.rml` is the source.
+- Linked to the Rive file `watch-toss` (Drafts project, file 2677192; see `push:` in `rive.yaml`).
+  `scene.rml` carries the ids that tie each object to that file, so it is the source. Edit it, or
+  edit in the Rive editor and `rive pull` it back, then `rive push`.
 - Six single-frame poses (`Pose 1 Hold` … `Pose 6 Payoff`) each key every animated property, and
   the `Toss` timeline (330 frames, 5.5 s) runs Idle (pose 1) to End (pose 6): hold and bob, wind-up,
   throw, an empty beat, the boomerang return and catch, set down and two pats, then the blips fly
