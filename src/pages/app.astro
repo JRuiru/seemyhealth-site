@@ -631,10 +631,10 @@ const faqs = [
   <section id="get" data-cta-end class="relative overflow-hidden scroll-mt-20 py-20 sm:py-28 bg-brand-black border-t border-white/5">
     <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
       <h2 class="font-display text-4xl sm:text-5xl font-300 uppercase leading-[0.95] mb-4">
-        Still scrolling? <span class="font-500">Download it free.</span>
+        Still here?<br /> <span class="font-500">Need a hand?</span>
       </h2>
       <p class="text-brand-gray-400 leading-relaxed max-w-xl mx-auto mb-10">
-        Free to use, no device needed, and Premium's on us for the first month. Add devices whenever you like. We're not pushy. Okay, maybe a little.
+        Mhmm, thought so. Follow the thumb. It's free to use, no device needed, and Premium's on us for the first month.
       </p>
       <div data-cta-buttons>
         <AppStoreButtons class="justify-center" />
@@ -919,7 +919,7 @@ const faqs = [
     new IntersectionObserver(([e]) => { atEnd = e.isIntersecting || e.boundingClientRect.top < 0; update(); }).observe(ctaEnd);
   }
 
-  // Still scrolling? The thumb. Its runtime and file load only when this section is near, never
+  // Still here? Need a hand? The thumb. Its runtime and file load only when this section is near, never
   // with reduced motion or Data Saver. It visits each time the section comes back into view, until
   // somebody taps the section.
   const ctaSection = document.querySelector<HTMLElement>('[data-cta-end]');

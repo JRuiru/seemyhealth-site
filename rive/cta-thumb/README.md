@@ -1,6 +1,6 @@
 # cta-thumb
 
-The thumb on the app page's "Still scrolling?" section (`src/pages/app.astro`), built with the Rive CLI.
+The thumb on the app page's closing section ("Still here? Need a hand?") (`src/pages/app.astro`), built with the Rive CLI.
 
 - Linked to the Rive file `cta-thumb` (Drafts project, file 2675900; see `push:` in `rive.yaml`).
   `scene.rml` now carries the ids that tie each object to that file, so it is the source. Edit it,
