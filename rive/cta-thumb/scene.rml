@@ -136,7 +136,7 @@
             </StateMachineListenerSingle>
             <StateMachineLayer name="Thumb" id="0:8">
                 <AnyState x="160" y="-120" id="0:15">
-                    <StateTransition stateToId="0:14" id="0:124">
+                    <StateTransition stateToId="0:12" id="0:124">
                         <TransitionViewModelCondition id="0:125">
                             <TransitionPropertyViewModelComparator id="0:126">
                                 <BindablePropertyTrigger id="0:127">
@@ -151,7 +151,7 @@
                 <EntryState x="0" y="0" id="0:17">
                     <StateTransition stateToId="0:12" id="0:130"/>
                 </EntryState>
-                <!-- Idle: nothing visible until `play` -->
+                <!-- Idle: nothing visible until `play`; the thumb comes back here after each visit, or a skip -->
                 <AnimationState x="160" y="0" animationId="0:50" id="0:12">
                     <StateTransition stateToId="0:13" id="0:131">
                         <TransitionViewModelCondition id="0:132">
@@ -164,13 +164,11 @@
                         </TransitionViewModelCondition>
                     </StateTransition>
                 </AnimationState>
-                <!-- Tap: the whole moment, once -->
+                <!-- Tap: the whole moment, then back to idle for the next `play` -->
                 <AnimationState x="320" y="0" animationId="0:51" id="0:13">
-                    <StateTransition stateToId="0:14" enableExitTime="true"
+                    <StateTransition stateToId="0:12" enableExitTime="true"
                                      exitTimeIsPercetange="true" exitTime="100" id="0:137"/>
                 </AnimationState>
-                <!-- Done: the empty end pose; terminal -->
-                <AnimationState x="480" y="0" animationId="0:50" id="0:14"/>
             </StateMachineLayer>
         </StateMachine>
 

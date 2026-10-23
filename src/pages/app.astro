@@ -449,8 +449,8 @@ const faqs = [
                   {/* Bottom text */}
                   <div class="absolute bottom-0 left-0 right-0 p-5 z-10">
                     {entry.device !== "App" && (
-                      <span class="inline-flex items-center gap-1.5 mb-3 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-[10px] uppercase tracking-[1.5px] text-white/80">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      <span class="saved-chip inline-flex items-center gap-1.5 mb-3 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-[10px] uppercase tracking-[1.5px] text-white/80" data-saved-chip>
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" pathLength="1" d="M5 13l4 4L19 7" /></svg>
                         Saved to the app
                       </span>
                     )}
@@ -534,7 +534,8 @@ const faqs = [
         <button
           id="billing-toggle"
           class="relative w-12 h-6 rounded-full bg-white/10 transition-colors"
-          aria-label="Toggle billing period"
+          aria-label="Show prices per year"
+          aria-pressed="false"
         >
           <span id="billing-knob" class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform" />
         </button>
@@ -546,10 +547,10 @@ const faqs = [
         <div id="card-monthly" class="rounded-2xl border border-white/10 bg-brand-gray-900 p-8 text-center transition-all duration-300">
           <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-4">Premium, monthly</p>
           <div class="flex items-baseline justify-center gap-1 mb-2">
-            <span class="font-display text-5xl font-300">$8</span>
-            <span class="text-brand-gray-500 text-lg">/month</span>
+            <span class="font-display text-5xl font-300 tabular-nums" data-price data-month="8" data-year="96">$8</span>
+            <span class="text-brand-gray-500 text-lg" data-per>/month</span>
           </div>
-          <p class="text-brand-gray-500 text-sm mb-6">$96/year if billed monthly</p>
+          <p class="text-brand-gray-500 text-sm mb-6" data-note data-month-note="Billed monthly. Leave whenever." data-year-note="That's $8 a month, every month.">Billed monthly. Leave whenever.</p>
           <p class="text-[11px] text-brand-gray-600">Subscribe in-app via App Store or Google Play</p>
         </div>
 
@@ -559,10 +560,10 @@ const faqs = [
           </div>
           <p class="text-[11px] uppercase tracking-[3px] text-brand-gray-500 mb-4">Premium, annual</p>
           <div class="flex items-baseline justify-center gap-1 mb-2">
-            <span class="font-display text-5xl font-300">$70</span>
-            <span class="text-brand-gray-500 text-lg">/year</span>
+            <span class="font-display text-5xl font-300 tabular-nums" data-price data-month="5.83" data-year="70">$5.83</span>
+            <span class="text-brand-gray-500 text-lg" data-per>/month</span>
           </div>
-          <p class="text-brand-gray-500 text-sm mb-6">Just $5.83/month, save $26</p>
+          <p class="text-brand-gray-500 text-sm mb-6" data-note data-month-note="Billed $70 a year. Save $26." data-year-note="Just $5.83 a month. Save $26.">Billed $70 a year. Save $26.</p>
           <p class="text-[11px] text-brand-gray-600">Subscribe in-app via App Store or Google Play</p>
         </div>
       </div>
@@ -656,7 +657,24 @@ const faqs = [
 </Layout>
 
 <script>
-  // Billing toggle
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Billing toggle: both plans are priced per month or per year, and the figures roll to the new
+  // period rather than jumping
+  const PRICE_ROLL_MS = 600;
+  const money = (v: number, cents: boolean) => `$${cents ? v.toFixed(2) : Math.round(v)}`;
+  const roll = (el: HTMLElement, from: number, to: number) => {
+    const cents = !Number.isInteger(to);
+    if (reducedMotion) { el.textContent = money(to, cents); return; }
+    const start = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / PRICE_ROLL_MS);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = money(from + (to - from) * eased, cents);
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
   const toggle = document.getElementById('billing-toggle');
   const knob = document.getElementById('billing-knob');
   const labelMonthly = document.getElementById('label-monthly');
@@ -672,6 +690,15 @@ const faqs = [
     toggle.classList.toggle('bg-white/10', !isAnnual);
     labelMonthly?.classList.toggle('text-white', !isAnnual);
     labelAnnual?.classList.toggle('text-white', isAnnual);
+    toggle.setAttribute('aria-pressed', String(isAnnual));
+    document.querySelectorAll<HTMLElement>('[data-price]').forEach((el) => {
+      const month = Number(el.dataset.month), year = Number(el.dataset.year);
+      roll(el, isAnnual ? month : year, isAnnual ? year : month);
+    });
+    document.querySelectorAll<HTMLElement>('[data-per]').forEach((el) => { el.textContent = isAnnual ? '/year' : '/month'; });
+    document.querySelectorAll<HTMLElement>('[data-note]').forEach((el) => {
+      el.textContent = (isAnnual ? el.dataset.yearNote : el.dataset.monthNote) ?? '';
+    });
 
     if (isAnnual) {
       cardAnnual?.classList.add('border-green-500/30', 'scale-[1.02]');
@@ -684,7 +711,21 @@ const faqs = [
     }
   });
 
-  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Our devices: each card's "Saved to the app" ticks in as the card comes into view, one after
+  // another when several arrive together. The chips stay put without script or with reduced motion.
+  const SAVED_STAGGER_MS = 180;
+  const chips = Array.from(document.querySelectorAll<HTMLElement>('[data-saved-chip]'));
+  if (!reducedMotion && chips.length) {
+    chips.forEach((c) => { c.dataset.pending = ''; });
+    const saved = new IntersectionObserver((entries) => {
+      entries.filter((e) => e.isIntersecting).forEach((e, i) => {
+        const chip = e.target as HTMLElement;
+        saved.unobserve(chip);
+        setTimeout(() => { delete chip.dataset.pending; }, i * SAVED_STAGGER_MS);
+      });
+    }, { threshold: 1 });
+    chips.forEach((c) => saved.observe(c));
+  }
 
   // Why: three notifications arrive one by one, fold behind each other, and ours lands on top.
   // Once only; with reduced motion it starts folded.
@@ -796,7 +837,8 @@ const faqs = [
   }
 
   // Still scrolling? The thumb. Its runtime and file load only when this section is near, never
-  // with reduced motion or Data Saver, and it plays once.
+  // with reduced motion or Data Saver. It visits each time the section comes back into view, until
+  // somebody taps the section.
   const ctaSection = document.querySelector<HTMLElement>('[data-cta-end]');
   const thumbCanvas = document.querySelector<HTMLCanvasElement>('[data-cta-thumb]');
   const ctaButton = document.querySelector<HTMLAnchorElement>('[data-cta-buttons] a');
@@ -805,7 +847,7 @@ const faqs = [
     const ART_W = 600, ART_H = 320;
     const TAP_X = 150, TAP_Y = 200;   // the fingertip's tap point on the artboard
     const SCROLL_REACH_X = 480;       // the thumb's right edge while it scrolls, before it comes over
-    const PLAY_SECONDS = 3.8;         // the thumb's whole visit, then it is torn down
+    const PLAY_SECONDS = 3.8;         // the thumb's whole visit, then it hides until the next one
     let tapped = false;
     // Lines the artboard's tap point up with the centre of the first button. On a narrow screen the
     // thumb shrinks until its scrolling, off to the right of the button, still fits on screen.
@@ -824,7 +866,7 @@ const faqs = [
       ctaButton.style.transform = 'scale(0.94)';
       setTimeout(() => { ctaButton.style.transform = ''; }, 160);
     };
-    // Somebody who taps first needs no demonstration
+    // Somebody who taps the section needs no more demonstrations
     ctaSection.addEventListener('pointerdown', () => { tapped = true; }, { once: true });
     const loader = new IntersectionObserver(async (entries) => {
       if (!entries.some((e) => e.isIntersecting)) return;
@@ -847,16 +889,28 @@ const faqs = [
           place();
           thumb.resizeDrawingSurfaceToCanvas();
           thumb.viewModelInstance?.trigger('tapped')?.on(press);
-          // Waits until the section is mostly on screen, so the joke lands where it can be seen
-          const show = new IntersectionObserver((seen) => {
-            if (!seen.some((e) => e.isIntersecting)) return;
-            show.disconnect();
-            if (tapped) { thumb.cleanup(); return; }
+          // A visit starts once the section is mostly on screen, so the joke lands where it can be
+          // seen, and the next one waits for the section to leave the screen and come back. Between
+          // visits the canvas is hidden and the file paused.
+          let visiting = false;
+          let away = true;
+          const visit = () => {
+            visiting = true;
+            away = false;
             thumbCanvas.hidden = false;
+            thumb.play();
             thumb.viewModelInstance?.trigger('play')?.trigger();
-            setTimeout(() => { thumb.cleanup(); thumbCanvas.remove(); }, PLAY_SECONDS * 1000);
-          }, { threshold: 0.7 });
-          show.observe(ctaSection);
+            setTimeout(() => {
+              visiting = false;
+              thumbCanvas.hidden = true;
+              thumb.pause();
+            }, PLAY_SECONDS * 1000);
+          };
+          new IntersectionObserver((seen) => {
+            const e = seen[seen.length - 1];
+            if (!e.isIntersecting) away = true;
+            else if (e.intersectionRatio >= 0.7 && away && !visiting && !tapped) visit();
+          }, { threshold: [0, 0.7] }).observe(ctaSection);
         },
       });
       ctaSection.addEventListener('pointerdown', () => {
@@ -888,6 +942,16 @@ const faqs = [
 </script>
 
 <style>
+  /* "Saved to the app": the chip pops, then its tick draws */
+  .saved-chip {
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .saved-chip path {
+    stroke-dasharray: 1;
+    transition: stroke-dashoffset 0.35s ease 0.25s;
+  }
+  .saved-chip[data-pending] { opacity: 0; transform: scale(0.7); }
+  .saved-chip[data-pending] path { stroke-dashoffset: 1; }
   @keyframes glassFadeIn {
     from { opacity: 0; transform: translateY(20px) scale(0.98); backdrop-filter: blur(0); }
     to   { opacity: 1; transform: translateY(0) scale(1); backdrop-filter: blur(24px); }
