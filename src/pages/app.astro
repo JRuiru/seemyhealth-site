@@ -344,13 +344,12 @@ const faqs = [
       </div>
       <div class="mt-14 sm:mt-16 text-center" data-scroll-reveal>
         <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-5">Pick your way in</p>
-        <!-- On a phone, three equal blocks in a row; from sm up, pills -->
-        <div class="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-3">
+        <!-- Three equal blocks in a row, the same blocks as the themes' column -->
+        <div class="grid grid-cols-3 gap-2 sm:gap-3 max-w-xl mx-auto">
           {waysIn.map((way) => (
-            <a href={way.href} class="flex flex-col items-center justify-center gap-2 px-2 py-4 rounded-xl border border-white/15 bg-white/[0.03] text-[11px] leading-tight uppercase tracking-[1.2px] font-medium text-white text-center hover:border-white/40 transition-colors sm:flex-row sm:px-6 sm:py-3 sm:rounded-full sm:bg-transparent sm:border-white/20 sm:text-[12px] sm:tracking-[1.5px]">
-              <span class="sm:hidden">{way.short}</span>
-              <span class="hidden sm:inline">{way.label}</span>
-              <span class="sm:hidden text-white/50 text-sm leading-none" aria-hidden="true">&darr;</span>
+            <a href={way.href} class="flex flex-col items-center justify-center gap-2 sm:gap-2.5 px-2 py-4 sm:py-6 rounded-xl sm:rounded-2xl border border-white/15 bg-white/[0.03] text-[11px] sm:text-[12px] leading-tight uppercase tracking-[1.2px] sm:tracking-[1.5px] font-medium text-white text-center hover:border-white/40 hover:bg-white/[0.06] transition-colors">
+              <span class="min-h-[2.5em] sm:min-h-0 flex items-center">{way.short}</span>
+              <span class="text-white/50 text-sm sm:text-base leading-none" aria-hidden="true">&darr;</span>
             </a>
           ))}
         </div>
