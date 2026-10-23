@@ -58,7 +58,12 @@ const waysIn = [
 // family data), so this list follows Features/Subscription in the iOS app. Each tab wears the app's
 // own tab icon for that area: the Rive files in public/media/app-icons are copied unchanged from the
 // iOS app's Resources/Icons.
-const themes = [
+type ThemeItem = { label: string; phone?: string | null; premium?: boolean };
+type Theme = {
+  key: string; icon: string; label: string; title: string; bold: string;
+  text: string; short?: string; items: ThemeItem[]; image: string; alt: string;
+};
+const themes: Theme[] = [
   {
     key: "eat",
     icon: "nutrition",
@@ -68,13 +73,15 @@ const themes = [
     text: "Search it or scan it, and it's logged. Add your allergies and we'll flag any food or recipe that contains one, before it's on your plate. Browse recipes you'll actually cook, plan the week, and yes, water counts too.",
     // On a phone the words sit on the photo, so a long paragraph gets a short one there
     short: "Search it or scan it, and it's logged, with a flag on anything that contains one of your allergens. Water counts too.",
+    // `phone` is the chip's label on a phone, where the chips keep to two lines; an item with
+    // `phone: null` is left off there
     items: [
-      { label: "Meal logging by search or barcode" },
-      { label: "Allergen flags on foods and recipes" },
-      { label: "Water goals and reminders" },
-      { label: "Recipes to browse" },
-      { label: "Meal plans and full recipes", premium: true },
-      { label: "Fasting schedules", premium: true },
+      { label: "Meal logging by search or barcode", phone: "Search & scan" },
+      { label: "Allergen flags on foods and recipes", phone: "Allergen flags" },
+      { label: "Water goals and reminders", phone: "Water goals" },
+      { label: "Recipes to browse", phone: null },
+      { label: "Meal plans and full recipes", phone: "Meal plans", premium: true },
+      { label: "Fasting schedules", phone: "Fasting", premium: true },
     ],
     image: `${CF_IMG}/app-meal-logging/public`,
     alt: "Logging a meal in the SeeMyHealth app",
@@ -98,9 +105,9 @@ const themes = [
     bold: "All of them.",
     text: "Build your family circle, keep tabs on Mum (she'll pretend to mind), and drag your friends into a challenge or two.",
     items: [
-      { label: "Your family circle" },
-      { label: "Groups and challenges with friends" },
-      { label: "Your family's numbers, when they share", premium: true },
+      { label: "Your family circle", phone: "Family circle" },
+      { label: "Groups and challenges with friends", phone: "Groups & challenges" },
+      { label: "Your family's numbers, when they share", phone: "Family's numbers", premium: true },
     ],
     image: `${CF_IMG}/app-family-sharing/public`,
     alt: "Family members sharing their progress in the app",
@@ -369,7 +376,7 @@ const faqs = [
             aria-controls={`panel-${t.key}`}
             aria-selected={i === 0 ? "true" : "false"}
             data-theme-tab={t.key}
-            class="group relative overflow-hidden flex flex-col items-center justify-center gap-1.5 h-20 px-1 rounded-xl border border-white/10 bg-white/[0.04] text-[9px] uppercase tracking-[1px] font-medium leading-tight text-center text-white/60 aria-selected:bg-white aria-selected:border-white aria-selected:text-brand-black transition-colors md:overflow-visible md:h-auto md:justify-start md:gap-2 md:pt-2 md:pb-3 md:rounded-none md:border-0 md:bg-transparent md:aria-selected:bg-transparent md:text-[11px] md:tracking-[1.5px] md:text-white/45 md:hover:text-white/80 md:aria-selected:text-white"
+            class="group relative overflow-hidden flex flex-col items-center justify-center gap-1.5 h-[74px] px-1 rounded-xl border border-white/10 bg-white/[0.04] text-[9px] uppercase tracking-[1px] font-medium leading-tight text-center text-white/60 aria-selected:bg-white aria-selected:border-white aria-selected:text-brand-black transition-colors md:overflow-visible md:h-auto md:justify-start md:gap-2 md:pt-2 md:pb-3 md:rounded-none md:border-0 md:bg-transparent md:aria-selected:bg-transparent md:text-[11px] md:tracking-[1.5px] md:text-white/45 md:hover:text-white/80 md:aria-selected:text-white"
           >
             <span class="w-7 h-7 opacity-80 group-aria-selected:opacity-100 md:opacity-45 md:group-hover:opacity-80 md:group-aria-selected:opacity-100 transition-opacity" aria-hidden="true">
               <canvas class="w-7 h-7" width="56" height="56" data-tab-icon={t.icon} hidden></canvas>
@@ -395,7 +402,7 @@ const faqs = [
         >
           <!-- On a phone the words sit on the photo in a glass panel and the list becomes chips, so a
                theme fits about one screen; from a tablet up the words sit beside the photo -->
-          <div class="relative aspect-[4/5] max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5">
+          <div class="relative aspect-[4/5] min-h-[314px] md:min-h-0 max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5">
             <img src={t.image} alt={t.alt} class="absolute inset-0 w-full h-full object-cover" loading={i === 0 ? "eager" : "lazy"} />
             <div class="md:hidden absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 to-transparent" aria-hidden="true"></div>
             <div class="md:hidden absolute inset-x-2 bottom-2 p-3.5 rounded-2xl bg-black/35 backdrop-blur-xl border border-white/15">
@@ -412,14 +419,17 @@ const faqs = [
               </h3>
               <p class="text-brand-gray-400 leading-relaxed mb-6 text-pretty">{t.text}</p>
             </div>
-            <ul class="flex flex-wrap gap-1.5 md:flex-col md:flex-nowrap md:gap-3">
+            <!-- On a phone the chips run under the column of blocks too (72px wide plus its 12px gap),
+                 so they span the section and keep to two lines -->
+            <ul class="-ml-[84px] md:ml-0 flex flex-wrap gap-1.5 md:flex-col md:flex-nowrap md:gap-3">
               {t.items.map((item) => (
                 <li class:list={[
+                  item.phone === null && "hidden md:flex",
                   "flex items-center gap-1.5 md:gap-3 text-[12px] md:text-sm text-brand-gray-300 rounded-full border px-2.5 py-1 md:p-0 md:border-0 md:rounded-none",
                   item.premium ? "border-amber-300/30" : "border-white/10",
                 ]}>
                   <span class="hidden md:block w-1.5 h-1.5 rounded-full bg-white/60 shrink-0"></span>
-                  {item.label}
+                  {item.phone ? <><span class="md:hidden">{item.phone}</span><span class="hidden md:inline">{item.label}</span></> : item.label}
                   {item.premium && <span class="text-[10px] uppercase tracking-[1.5px] text-amber-300/90 md:border md:border-amber-300/30 md:rounded-full md:px-2 md:py-0.5">Premium</span>}
                 </li>
               ))}
