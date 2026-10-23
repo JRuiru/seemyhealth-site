@@ -35,7 +35,7 @@ const shopProducts = [
     slug: "scale-pro",
     badge: "Pro",
     shared: true,
-    shortFeatures: ["32 Body Metrics", "8-Point BIA", "Segmental Analysis", "Color Display"],
+    shortFeatures: ["32 Body Metrics", "8-Point BIA", "Segmental Analysis", "Colour Display"],
     image: `${CF_IMG}/scale-pro-black-bathroom/public`,
     secondImage: `${CF_IMG}/scale-pro-white-marble/public`,
     finishes: ["Obsidian Black", "Frost White"],
@@ -43,9 +43,9 @@ const shopProducts = [
   {
     ...products["bp-monitor"],
     slug: "bp-monitor",
-    badge: "Trusted Accuracy",
+    badge: null,
     shared: true,
-    shortFeatures: ["Accurate Readings", "Irregular HB Detection", "30s Reading", "Rechargeable"],
+    shortFeatures: ["Arm Cuff", "Irregular HB Detection", "30s Reading", "Rechargeable"],
     image: `${CF_IMG}/bp-white-desk-display/public`,
     secondImage: `${CF_IMG}/bp-black-desk-portrait/public`,
     finishes: ["Carbon Black", "Opal White"],
@@ -192,7 +192,7 @@ const shopProducts = [
                   />
                 </p>
 
-                <p class="text-sm text-brand-gray-500 leading-relaxed mb-8">{product.description}</p>
+                <p class="text-sm text-brand-gray-500 leading-relaxed mb-8">{product.heroLine}</p>
 
                 <!-- Quick features -->
                 <div class="grid grid-cols-2 gap-3 mb-8">

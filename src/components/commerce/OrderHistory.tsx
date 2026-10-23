@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { getCustomer, login, type Customer, type CustomerOrder } from "../../lib/shopify/auth-client";
 
+import { products } from "../../data/products";
+
 const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
 
 const statusMap: Record<string, { label: string; color: string; icon: string }> = {
@@ -307,9 +309,9 @@ export default function OrderHistory() {
             <p className="text-[10px] uppercase tracking-[3px] text-brand-gray-500 mb-5">Most Popular</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
-                { name: "Ring One", slug: "ring-one", image: `${CF_IMG}/ring-hero-hands/public`, price: "$179", tagline: "24/7 health clarity on your finger", color: "#F97316" },
-                { name: "The Scale", slug: "scale", image: `${CF_IMG}/scale-white-bathroom/public`, price: "$99", tagline: "13+ body metrics in 10 seconds", color: "#3B82F6" },
-                { name: "BP Monitor", slug: "bp-monitor", image: `${CF_IMG}/bp-white-desk-display/public`, price: "$89", tagline: "Trusted readings, every time", color: "#EF4444" },
+                { name: "Ring One", slug: "ring-one", image: `${CF_IMG}/ring-hero-hands/public`, price: "$179", tagline: products["ring-one"].tagline, color: "#F97316" },
+                { name: "The Scale", slug: "scale", image: `${CF_IMG}/scale-white-bathroom/public`, price: "$99", tagline: products["scale"].tagline, color: "#3B82F6" },
+                { name: "BP Monitor", slug: "bp-monitor", image: `${CF_IMG}/bp-white-desk-display/public`, price: "$89", tagline: products["bp-monitor"].tagline, color: "#EF4444" },
               ].map((device) => (
                 <a
                   key={device.slug}
