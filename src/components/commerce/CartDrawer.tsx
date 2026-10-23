@@ -149,7 +149,7 @@ export default function CartDrawer() {
         </div>
 
         {/* Cart items */}
-        <div className="flex-1 overflow-y-auto px-6 py-6">
+        <div data-lenis-prevent className="flex-1 overflow-y-auto overscroll-contain px-6 py-6">
           {lines.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <svg className="w-16 h-16 text-brand-gray-700 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>

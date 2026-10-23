@@ -36,7 +36,7 @@ export default function RingSizeGuide({ open, onClose, accentColor, onSelectSize
       />
 
       {/* Modal */}
-      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-brand-gray-950 border border-white/10 rounded-t-3xl sm:rounded-3xl mx-auto">
+      <div data-lenis-prevent className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto overscroll-contain bg-brand-gray-950 border border-white/10 rounded-t-3xl sm:rounded-3xl mx-auto">
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-5 bg-brand-gray-950/95 backdrop-blur-sm border-b border-white/5">
           <div>
