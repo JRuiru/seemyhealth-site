@@ -66,6 +66,8 @@ const themes = [
     title: "Eat.",
     bold: "Then tell us about it.",
     text: "Search it or scan it, and it's logged. Add your allergies and we'll flag any food or recipe that contains one, before it's on your plate. Browse recipes you'll actually cook, plan the week, and yes, water counts too.",
+    // On a phone the words sit on the photo, so a long paragraph gets a short one there
+    short: "Search it or scan it, and it's logged, with a flag on anything that contains one of your allergens. Water counts too.",
     items: [
       { label: "Meal logging by search or barcode" },
       { label: "Allergen flags on foods and recipes" },
@@ -384,22 +386,36 @@ const faqs = [
           aria-labelledby={`tab-${t.key}`}
           data-theme-panel={t.key}
           inert={i !== 0}
-          class:list={["[grid-area:1/1] grid md:grid-cols-2 gap-8 md:gap-12 items-center transition-opacity duration-500 inert:opacity-0 inert:pointer-events-none"]}
+          class:list={["[grid-area:1/1] grid md:grid-cols-2 gap-4 md:gap-12 items-start md:items-center transition-opacity duration-500 inert:opacity-0 inert:pointer-events-none"]}
         >
+          <!-- On a phone the words sit on the photo in a glass panel and the list becomes chips, so a
+               theme fits about one screen; from a tablet up the words sit beside the photo -->
           <div class="relative aspect-[4/5] max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5">
             <img src={t.image} alt={t.alt} class="absolute inset-0 w-full h-full object-cover" loading={i === 0 ? "eager" : "lazy"} />
+            <div class="md:hidden absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 to-transparent" aria-hidden="true"></div>
+            <div class="md:hidden absolute inset-x-3 bottom-3 p-5 rounded-2xl bg-black/35 backdrop-blur-xl border border-white/15">
+              <h3 class="font-display text-2xl font-300 uppercase leading-[0.95] mb-2 text-balance">
+                {t.title} <span class="font-500">{t.bold}</span>
+              </h3>
+              <p class="text-sm text-white/75 leading-relaxed text-pretty">{t.short ?? t.text}</p>
+            </div>
           </div>
           <div class="min-w-0">
-            <h3 class="font-display text-3xl sm:text-4xl font-300 uppercase leading-[0.95] mb-4 text-balance">
-              {t.title} <span class="font-500">{t.bold}</span>
-            </h3>
-            <p class="text-brand-gray-400 leading-relaxed mb-6 text-pretty">{t.text}</p>
-            <ul class="flex flex-col gap-3">
+            <div class="hidden md:block">
+              <h3 class="font-display text-4xl font-300 uppercase leading-[0.95] mb-4 text-balance">
+                {t.title} <span class="font-500">{t.bold}</span>
+              </h3>
+              <p class="text-brand-gray-400 leading-relaxed mb-6 text-pretty">{t.text}</p>
+            </div>
+            <ul class="flex flex-wrap gap-2 md:flex-col md:flex-nowrap md:gap-3">
               {t.items.map((item) => (
-                <li class="flex items-center gap-3 text-sm text-brand-gray-300">
-                  <span class="w-1.5 h-1.5 rounded-full bg-white/60 shrink-0"></span>
+                <li class:list={[
+                  "flex items-center gap-2 md:gap-3 text-[13px] md:text-sm text-brand-gray-300 rounded-full border px-3 py-1.5 md:p-0 md:border-0 md:rounded-none",
+                  item.premium ? "border-amber-300/30" : "border-white/10",
+                ]}>
+                  <span class="hidden md:block w-1.5 h-1.5 rounded-full bg-white/60 shrink-0"></span>
                   {item.label}
-                  {item.premium && <span class="text-[10px] uppercase tracking-[1.5px] text-amber-300/90 border border-amber-300/30 rounded-full px-2 py-0.5">Premium</span>}
+                  {item.premium && <span class="text-[10px] uppercase tracking-[1.5px] text-amber-300/90 md:border md:border-amber-300/30 md:rounded-full md:px-2 md:py-0.5">Premium</span>}
                 </li>
               ))}
             </ul>
