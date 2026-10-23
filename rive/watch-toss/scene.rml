@@ -25,6 +25,7 @@
         skip (trigger, in)   from any state, goes to the End pose (the payoff)
         joke (trigger, out)  fired by the timeline when "Just kidding." should appear
     -->
+    <ImageAsset file="logo.webp" name="logo" id="0:99"/>
     <Artboard defaultStateMachineId="0:103" viewModelId="0:104" viewModelInstanceId="0:108" styleId="0:102" clip="true" width="800" height="600" name="WatchToss" id="0:101">
         <LayoutComponentStyle name="Artboard Style" id="0:102"/>
         <Node x="398" y="300" opacity="0" name="Pat Marks" id="0:110">
@@ -389,21 +390,11 @@
         </Shape>
         <Node x="628" y="300" name="Phone" id="0:173">
             <Node y="-8" scaleX="0.9" scaleY="0.9" opacity="0" name="Logo" id="0:174">
-                <Shape name="Ring" id="0:176">
-                    <Ellipse width="34" height="34" name="Path"/>
-                    <Stroke thickness="7" name="Stroke">
-                        <SolidColor colorValue="FFFFFFFF" name="Color"/>
-                    </Stroke>
+                <Image scaleX="0.4062" scaleY="0.4062" assetId="0:99" name="Icon"/>
+                <Shape name="Icon Mask" id="0:176">
+                    <Rectangle width="78" height="78" cornerRadiusTL="17.16" name="Path"/>
                 </Shape>
-                <Shape name="Tile" id="0:177">
-                    <Rectangle width="78" height="78" cornerRadiusTL="22" name="Path"/>
-                    <Fill name="Fill">
-                        <LinearGradient startX="-39" startY="-39" endX="39" endY="39" name="Gradient">
-                            <GradientStop colorValue="FF8B5CF6" position="0" name="A"/>
-                            <GradientStop colorValue="FF6D4AE0" position="1" name="B"/>
-                        </LinearGradient>
-                    </Fill>
-                </Shape>
+                <ClippingShape sourceId="0:176" name="Clip"/>
             </Node>
             <Shape opacity="0" name="Screen Glow" id="0:175">
                 <Rectangle width="136" height="276" cornerRadiusTL="20" name="Path"/>
@@ -414,19 +405,19 @@
                     </RadialGradient>
                 </Fill>
             </Shape>
-            <Shape name="Speaker" id="0:178">
+            <Shape name="Speaker" id="0:177">
                 <Rectangle y="-124" width="38" height="8" cornerRadiusTL="4" name="Path"/>
                 <Fill name="Fill">
                     <SolidColor colorValue="FF44403C" name="Color"/>
                 </Fill>
             </Shape>
-            <Shape name="Screen" id="0:179">
+            <Shape name="Screen" id="0:178">
                 <Rectangle width="136" height="276" cornerRadiusTL="20" name="Path"/>
                 <Fill name="Fill">
                     <SolidColor colorValue="FF1C1917" name="Color"/>
                 </Fill>
             </Shape>
-            <Shape name="Body" id="0:180">
+            <Shape name="Body" id="0:179">
                 <Rectangle width="158" height="300" cornerRadiusTL="30" name="Path"/>
                 <Fill name="Fill">
                     <SolidColor colorValue="FFE7E5E4" name="Color"/>
@@ -435,7 +426,7 @@
                     <SolidColor colorValue="FFD6D3D1" name="Color"/>
                 </Stroke>
             </Shape>
-            <Shape x="8" y="10" name="Shadow" id="0:181">
+            <Shape x="8" y="10" name="Shadow" id="0:180">
                 <Rectangle width="158" height="300" cornerRadiusTL="30" name="Path"/>
                 <Fill fillRule="clockwise" name="Soft">
                     <SolidColor colorValue="59000000" name="Color"/>
@@ -454,7 +445,7 @@
             </StateMachineListenerSingle>
             <StateMachineLayer name="Toss">
                 <AnyState x="160" y="-120">
-                    <StateTransition stateToId="0:190">
+                    <StateTransition stateToId="0:189">
                         <TransitionViewModelCondition>
                             <TransitionPropertyViewModelComparator>
                                 <BindablePropertyTrigger>
@@ -467,11 +458,11 @@
                 </AnyState>
                 <ExitState x="640" y="-120"/>
                 <EntryState x="0" y="0">
-                    <StateTransition stateToId="0:189"/>
+                    <StateTransition stateToId="0:188"/>
                 </EntryState>
                 <!-- Idle: the hold pose, until the page fires `play` -->
-                <AnimationState x="160" y="0" animationId="0:182" id="0:189">
-                    <StateTransition stateToId="0:191">
+                <AnimationState x="160" y="0" animationId="0:181" id="0:188">
+                    <StateTransition stateToId="0:190">
                         <TransitionViewModelCondition>
                             <TransitionPropertyViewModelComparator>
                                 <BindablePropertyTrigger>
@@ -483,12 +474,12 @@
                     </StateTransition>
                 </AnimationState>
                 <!-- Toss: the whole joke, 5.5 s; `joke` fires at 1.7 s -->
-                <AnimationState x="320" y="0" animationId="0:188" id="0:191">
-                    <StateTransition stateToId="0:190" enableExitTime="true" exitTimeIsPercetange="true" exitTime="100"/>
+                <AnimationState x="320" y="0" animationId="0:187" id="0:190">
+                    <StateTransition stateToId="0:189" enableExitTime="true" exitTimeIsPercetange="true" exitTime="100"/>
                 </AnimationState>
                 <!-- End: the payoff, held. Also the reduced-motion still. `play` replays from the top -->
-                <AnimationState x="480" y="0" animationId="0:187" id="0:190">
-                    <StateTransition stateToId="0:191">
+                <AnimationState x="480" y="0" animationId="0:186" id="0:189">
+                    <StateTransition stateToId="0:190">
                         <TransitionViewModelCondition>
                             <TransitionPropertyViewModelComparator>
                                 <BindablePropertyTrigger>
@@ -501,7 +492,7 @@
                 </AnimationState>
             </StateMachineLayer>
         </StateMachine>
-        <LinearAnimation fps="60" duration="1" name="Pose 1 Hold" id="0:182">
+        <LinearAnimation fps="60" duration="1" name="Pose 1 Hold" id="0:181">
             <!-- heart.x, heart.y, heart.op, heart.s, heart.sy -->
             <KeyedObject objectId="0:118">
                 <KeyedProperty property="x">
@@ -740,7 +731,7 @@
                 </KeyedProperty>
             </KeyedObject>
         </LinearAnimation>
-        <LinearAnimation fps="60" duration="1" name="Pose 2 Windup" id="0:183">
+        <LinearAnimation fps="60" duration="1" name="Pose 2 Windup" id="0:182">
             <!-- heart.x, heart.y, heart.op, heart.s, heart.sy -->
             <KeyedObject objectId="0:118">
                 <KeyedProperty property="x">
@@ -979,7 +970,7 @@
                 </KeyedProperty>
             </KeyedObject>
         </LinearAnimation>
-        <LinearAnimation fps="60" duration="1" name="Pose 3 Thrown" id="0:184">
+        <LinearAnimation fps="60" duration="1" name="Pose 3 Thrown" id="0:183">
             <!-- heart.x, heart.y, heart.op, heart.s, heart.sy -->
             <KeyedObject objectId="0:118">
                 <KeyedProperty property="x">
@@ -1218,7 +1209,7 @@
                 </KeyedProperty>
             </KeyedObject>
         </LinearAnimation>
-        <LinearAnimation fps="60" duration="1" name="Pose 4 Catch" id="0:185">
+        <LinearAnimation fps="60" duration="1" name="Pose 4 Catch" id="0:184">
             <!-- heart.x, heart.y, heart.op, heart.s, heart.sy -->
             <KeyedObject objectId="0:118">
                 <KeyedProperty property="x">
@@ -1457,7 +1448,7 @@
                 </KeyedProperty>
             </KeyedObject>
         </LinearAnimation>
-        <LinearAnimation fps="60" duration="1" name="Pose 5 Pat" id="0:186">
+        <LinearAnimation fps="60" duration="1" name="Pose 5 Pat" id="0:185">
             <!-- heart.x, heart.y, heart.op, heart.s, heart.sy -->
             <KeyedObject objectId="0:118">
                 <KeyedProperty property="x">
@@ -1696,7 +1687,7 @@
                 </KeyedProperty>
             </KeyedObject>
         </LinearAnimation>
-        <LinearAnimation fps="60" duration="1" name="Pose 6 Payoff" id="0:187">
+        <LinearAnimation fps="60" duration="1" name="Pose 6 Payoff" id="0:186">
             <!-- heart.x, heart.y, heart.op, heart.s, heart.sy -->
             <KeyedObject objectId="0:118">
                 <KeyedProperty property="x">
@@ -1935,7 +1926,7 @@
                 </KeyedProperty>
             </KeyedObject>
         </LinearAnimation>
-        <LinearAnimation loopValue="oneShot" fps="60" duration="330" name="Toss" id="0:188">
+        <LinearAnimation loopValue="oneShot" fps="60" duration="330" name="Toss" id="0:187">
             <!-- heart.x, heart.y, heart.op, heart.s, heart.sy -->
             <KeyedObject objectId="0:118">
                 <KeyedProperty property="x">
