@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import AppStoreButtons from '../components/AppStoreButtons.astro';
+import StoreName from '../components/StoreName.astro';
 import HealthPlatformBadges from '../components/HealthPlatformBadges.astro';
 import Testimonials from '../components/Testimonials.astro';
 
@@ -252,8 +253,8 @@ const faqs = [
             </p>
             <div>
               <AppStoreButtons />
-              <p class="text-[12px] text-white/30 mt-4">Free to download. Premium free for a month.</p>
-              <p class="text-[11px] text-white/25 mt-1.5">Listed on the App Store &amp; Google Play as C-MyHealth.</p>
+              <StoreName bold class="justify-center mt-5" />
+              <p class="text-[12px] text-white/30 mt-2">Free to download. Premium free for a month.</p>
             </div>
           </div>
         </div>
@@ -623,6 +624,7 @@ const faqs = [
       <div data-cta-buttons>
         <AppStoreButtons class="justify-center" />
       </div>
+      <StoreName class="justify-center mt-5" />
       <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600 mt-8">iOS &amp; Android · Apple Health · Health Connect</p>
     </div>
     <!-- A Rive thumb that has been scrolling all page taps the first button. Only the thumb is
