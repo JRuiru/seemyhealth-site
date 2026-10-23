@@ -5,8 +5,6 @@ The thumb on the app page's "Still scrolling?" section (`src/pages/app.astro`), 
 - Linked to the Rive file `cta-thumb` (Drafts project, file 2675900; see `push:` in `rive.yaml`).
   `scene.rml` now carries the ids that tie each object to that file, so it is the source. Edit it,
   or edit in the Rive editor and `rive pull` it back, then `rive push`.
-- `gen.py` wrote the first draft. Running it again writes a scene with no ids, and the next push
-  would replace every object in the Rive file rather than update it.
 - Check: `rive . --verify` and `rive inspect . --summary`
 - Build: `rive . --publish`, then copy `build/cta-thumb.riv` to `public/media/cta-thumb.riv`.
 
