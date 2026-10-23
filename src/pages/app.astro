@@ -328,13 +328,14 @@ const faqs = [
       <div class="grid sm:grid-cols-3 gap-4 sm:gap-6" data-scroll-stagger>
         {pillars.map((pillar, i) => (
           <div class="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
-            <div class="relative aspect-[4/3] bg-brand-gray-900">
+            <div class="relative aspect-[16/10] sm:aspect-[4/3] bg-brand-gray-900">
               <img src={pillar.image} alt={pillar.alt} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
               <span class="absolute top-4 left-4 text-[11px] uppercase tracking-[3px] text-white/80 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full">0{i + 1}</span>
               {pillar.premium && <span class="absolute top-4 right-4 text-[10px] uppercase tracking-[1.5px] text-amber-200 bg-black/50 backdrop-blur-md border border-amber-300/30 px-2.5 py-1 rounded-full">Premium</span>}
+              <!-- The title sits on the photo in glass, so the card is only as tall as its photo and a line or two -->
+              <h3 class="absolute left-3 bottom-3 px-4 py-2 rounded-xl bg-black/35 backdrop-blur-xl border border-white/15 font-display text-xl sm:text-2xl font-400 uppercase leading-tight">{pillar.title}</h3>
             </div>
-            <div class="p-6 sm:p-8">
-              <h3 class="font-display text-2xl sm:text-3xl font-400 uppercase leading-tight mb-3">{pillar.title}</h3>
+            <div class="px-5 py-4 sm:px-6 sm:py-5">
               <p class="text-sm text-brand-gray-400 leading-relaxed text-pretty">{pillar.text}</p>
             </div>
           </div>
