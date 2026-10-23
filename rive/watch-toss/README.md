@@ -14,6 +14,7 @@ built with the Rive CLI. It replaces the photo in that section's 4:3 dark card.
 
 The page relies on these names: artboard and state machine `WatchToss`; view model `WatchToss` with
 triggers `play` (page to file; from Idle or End it plays the Toss from the top) and `skip` (page
-to file; from anywhere to End), and `joke` (file to page, at 1.70 s, when "Just kidding."
-appears). The artboard is 800 x 600 and transparent; "Just kidding." is HTML, never text in the
-file.
+to file; from anywhere to End), and `joke` (file to page, at 1.70 s, when the page swaps
+"We've already been through this…" for "JK."). The artboard is 800 x 600 and transparent; both lines are HTML, never text in the
+file. `public/media/watch-toss-still.webp` is the End frame, shown until the file loads and for
+good with reduced motion or Data Saver; render it again after changing the payoff.
