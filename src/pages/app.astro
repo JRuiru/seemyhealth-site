@@ -58,7 +58,12 @@ const waysIn = [
 // family data), so this list follows Features/Subscription in the iOS app. Each tab wears the app's
 // own tab icon for that area: the Rive files in public/media/app-icons are copied unchanged from the
 // iOS app's Resources/Icons.
-const themes = [
+type ThemeItem = { label: string; phone?: string | null; premium?: boolean };
+type Theme = {
+  key: string; icon: string; label: string; title: string; bold: string;
+  text: string; short?: string; items: ThemeItem[]; image: string; alt: string;
+};
+const themes: Theme[] = [
   {
     key: "eat",
     icon: "nutrition",
@@ -68,13 +73,15 @@ const themes = [
     text: "Search it or scan it, and it's logged. Add your allergies and we'll flag any food or recipe that contains one, before it's on your plate. Browse recipes you'll actually cook, plan the week, and yes, water counts too.",
     // On a phone the words sit on the photo, so a long paragraph gets a short one there
     short: "Search it or scan it, and it's logged, with a flag on anything that contains one of your allergens. Water counts too.",
+    // `phone` is the chip's label on a phone, where the chips sit under the photo and keep short; an item with
+    // `phone: null` is left off there
     items: [
-      { label: "Meal logging by search or barcode" },
-      { label: "Allergen flags on foods and recipes" },
-      { label: "Water goals and reminders" },
-      { label: "Recipes to browse" },
-      { label: "Meal plans and full recipes", premium: true },
-      { label: "Fasting schedules", premium: true },
+      { label: "Meal logging by search or barcode", phone: "Search & scan" },
+      { label: "Allergen flags on foods and recipes", phone: "Allergen flags" },
+      { label: "Water goals and reminders", phone: "Water goals" },
+      { label: "Recipes to browse", phone: null },
+      { label: "Meal plans and full recipes", phone: "Meal plans", premium: true },
+      { label: "Fasting schedules", phone: "Fasting", premium: true },
     ],
     image: `${CF_IMG}/app-meal-logging/public`,
     alt: "Logging a meal in the SeeMyHealth app",
@@ -98,9 +105,9 @@ const themes = [
     bold: "All of them.",
     text: "Build your family circle, keep tabs on Mum (she'll pretend to mind), and drag your friends into a challenge or two.",
     items: [
-      { label: "Your family circle" },
-      { label: "Groups and challenges with friends" },
-      { label: "Your family's numbers, when they share", premium: true },
+      { label: "Your family circle", phone: "Family circle" },
+      { label: "Groups and challenges with friends", phone: "Groups & challenges" },
+      { label: "Your family's numbers, when they share", phone: "Family's numbers", premium: true },
     ],
     image: `${CF_IMG}/app-family-sharing/public`,
     alt: "Family members sharing their progress in the app",
@@ -356,7 +363,10 @@ const faqs = [
         </h2>
       </div>
 
-      <div class="flex gap-2 overflow-x-auto no-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0 mb-8" role="tablist" aria-label="What's in the app">
+      <!-- Never drawn like the pill bar of the three ways in: the themes are a column of blocks down
+           the left, the one showing in white -->
+      <div class="flex gap-3 md:gap-8">
+      <div class="flex flex-col gap-1.5 md:gap-2 w-[72px] md:w-24 shrink-0" role="tablist" aria-label="What's in the app">
         {themes.map((t, i) => (
           <button
             type="button"
@@ -365,20 +375,20 @@ const faqs = [
             aria-controls={`panel-${t.key}`}
             aria-selected={i === 0 ? "true" : "false"}
             data-theme-tab={t.key}
-            class="relative overflow-hidden shrink-0 px-5 py-2.5 text-[12px] uppercase tracking-[1.5px] font-medium rounded-full border transition-colors aria-selected:bg-white aria-selected:text-brand-black aria-selected:border-white text-white border-white/20 hover:border-white/40"
+            class="group relative overflow-hidden flex flex-col items-center justify-center gap-1.5 md:gap-2 h-[74px] md:h-24 px-1 rounded-xl md:rounded-2xl border border-white/10 bg-white/[0.04] text-[9px] md:text-[10px] uppercase tracking-[1px] md:tracking-[1.2px] font-medium leading-tight text-center text-white/60 hover:border-white/25 aria-selected:bg-white aria-selected:border-white aria-selected:text-brand-black transition-colors"
           >
-            <span class="flex items-center gap-2">
-              <canvas class="w-[18px] h-[18px] -my-1 -ml-1" width="36" height="36" data-tab-icon={t.icon} hidden aria-hidden="true"></canvas>
-              {t.label}
+            <span class="w-7 h-7 opacity-80 group-aria-selected:opacity-100 transition-opacity" aria-hidden="true">
+              <canvas class="w-7 h-7" width="56" height="56" data-tab-icon={t.icon} hidden></canvas>
             </span>
-            <span class="absolute left-0 bottom-0 h-[2px] w-full bg-current opacity-40 origin-left scale-x-0" data-tab-progress aria-hidden="true"></span>
+            {t.label}
+            <span class="absolute inset-x-0 bottom-0 h-[3px] bg-current opacity-40 origin-left scale-x-0" data-tab-progress aria-hidden="true"></span>
           </button>
         ))}
       </div>
 
       <!-- The panels share one grid cell, so the section keeps the tallest one's height and nothing
            below it jumps when a theme changes -->
-      <div class="grid">
+      <div class="grid flex-1 min-w-0">
       {themes.map((t, i) => (
         <div
           id={`panel-${t.key}`}
@@ -390,14 +400,14 @@ const faqs = [
         >
           <!-- On a phone the words sit on the photo in a glass panel and the list becomes chips, so a
                theme fits about one screen; from a tablet up the words sit beside the photo -->
-          <div class="relative aspect-[4/5] max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5">
+          <div class="relative aspect-[4/5] min-h-[314px] md:min-h-0 max-w-full rounded-3xl overflow-hidden bg-brand-gray-900 border border-white/5">
             <img src={t.image} alt={t.alt} class="absolute inset-0 w-full h-full object-cover" loading={i === 0 ? "eager" : "lazy"} />
             <div class="md:hidden absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 to-transparent" aria-hidden="true"></div>
-            <div class="md:hidden absolute inset-x-3 bottom-3 p-5 rounded-2xl bg-black/35 backdrop-blur-xl border border-white/15">
-              <h3 class="font-display text-2xl font-300 uppercase leading-[0.95] mb-2 text-balance">
+            <div class="md:hidden absolute inset-x-2 bottom-2 p-3.5 rounded-2xl bg-black/35 backdrop-blur-xl border border-white/15">
+              <h3 class="font-display text-xl font-300 uppercase leading-[0.95] mb-1.5 text-balance">
                 {t.title} <span class="font-500">{t.bold}</span>
               </h3>
-              <p class="text-sm text-white/75 leading-relaxed text-pretty">{t.short ?? t.text}</p>
+              <p class="text-[13px] text-white/75 leading-snug text-pretty">{t.short ?? t.text}</p>
             </div>
           </div>
           <div class="min-w-0">
@@ -407,21 +417,25 @@ const faqs = [
               </h3>
               <p class="text-brand-gray-400 leading-relaxed mb-6 text-pretty">{t.text}</p>
             </div>
-            <ul class="flex flex-wrap gap-2 md:flex-col md:flex-nowrap md:gap-3">
+            <ul class="flex flex-wrap gap-1.5 md:flex-col md:flex-nowrap md:gap-3">
               {t.items.map((item) => (
                 <li class:list={[
-                  "flex items-center gap-2 md:gap-3 text-[13px] md:text-sm text-brand-gray-300 rounded-full border px-3 py-1.5 md:p-0 md:border-0 md:rounded-none",
+                  item.phone === null && "hidden md:flex",
+                  "flex items-center gap-1.5 md:gap-3 text-[12px] md:text-sm text-brand-gray-300 rounded-full border px-2.5 py-1 md:p-0 md:border-0 md:rounded-none",
                   item.premium ? "border-amber-300/30" : "border-white/10",
                 ]}>
                   <span class="hidden md:block w-1.5 h-1.5 rounded-full bg-white/60 shrink-0"></span>
-                  {item.label}
-                  {item.premium && <span class="text-[10px] uppercase tracking-[1.5px] text-amber-300/90 md:border md:border-amber-300/30 md:rounded-full md:px-2 md:py-0.5">Premium</span>}
+                  {item.phone ? <><span class="md:hidden">{item.phone}</span><span class="hidden md:inline">{item.label}</span></> : item.label}
+                  {/* On a phone a Premium chip says so with its gold edge and a star, so the chips stay short */}
+                  {item.premium && <span class="md:hidden text-[11px] leading-none text-amber-300/90"><span aria-hidden="true">★</span><span class="sr-only">Premium</span></span>}
+                  {item.premium && <span class="hidden md:inline text-[10px] uppercase tracking-[1.5px] text-amber-300/90 border border-amber-300/30 rounded-full px-2 py-0.5">Premium</span>}
                 </li>
               ))}
             </ul>
           </div>
         </div>
       ))}
+      </div>
       </div>
     </div>
   </section>
@@ -832,8 +846,9 @@ const faqs = [
   const themePanels = Array.from(document.querySelectorAll<HTMLElement>('[data-theme-panel]'));
   const THEME_SECONDS = 5;
   let themeTimer = 0;
-  // The tab icons: the app's own, black on the white tab that is showing and white on the rest, and
-  // the one that comes up plays its moment, as it does when that tab is picked in the app. They load
+  // The tab icons: the app's own, black on the white block of the theme showing and white on the
+  // rest; the one that comes up
+  // plays its moment, as it does when that tab is picked in the app. They load
   // only when the section is near, never with Data Saver, and hold still with reduced motion.
   type TabIcon = { tab: HTMLButtonElement; show: (selected: boolean) => void };
   const tabIcons: TabIcon[] = [];
@@ -856,9 +871,10 @@ const faqs = [
           onLoad: () => {
             icon.resizeDrawingSurfaceToCanvas();
             let selected = false;
+            const ink = icon.viewModelInstance?.boolean('isLightMode');
+            const inkFor = (now: boolean) => { if (ink) ink.value = now; };
             const show = (now: boolean) => {
-              const ink = icon.viewModelInstance?.boolean('isLightMode');
-              if (ink) ink.value = now;
+              inkFor(now);
               if (now && !selected && !reducedMotion) icon.viewModelInstance?.trigger('play')?.trigger();
               selected = now;
             };
