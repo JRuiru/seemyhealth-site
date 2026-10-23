@@ -89,8 +89,14 @@ export default function CountrySelector({ className = "" }: Props) {
         </svg>
       </button>
 
+      {/* On a phone the list is a sheet from the bottom of the screen over a dimmed page, since the
+          button sits off-centre and a dropdown the screen's width hung off its edge; from sm up it
+          is a dropdown above the button */}
       {open && countries.length > 0 && (
-        <div data-lenis-prevent className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-0 w-[calc(100vw-3rem)] sm:w-64 max-h-72 overflow-y-auto overscroll-contain bg-brand-gray-900 border border-white/10 rounded-xl shadow-2xl z-50">
+        <div className="fixed inset-0 z-50 bg-black/60 sm:hidden" onClick={() => setOpen(false)} aria-hidden="true" />
+      )}
+      {open && countries.length > 0 && (
+        <div data-lenis-prevent className="fixed inset-x-3 bottom-[max(12px,env(safe-area-inset-bottom))] max-h-[60vh] sm:absolute sm:inset-x-auto sm:bottom-full sm:right-0 sm:mb-2 sm:w-64 sm:max-h-72 overflow-y-auto overscroll-contain bg-brand-gray-900 border border-white/10 rounded-2xl sm:rounded-xl shadow-2xl z-50">
           {countries.map((c) => (
             <button
               key={c.isoCode}
