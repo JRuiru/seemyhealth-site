@@ -51,12 +51,12 @@
                     <Stroke thickness="2" cap="round" name="Stroke" id="0:75"><SolidColor colorValue="FFD6D3D1" name="Color" id="0:76"/></Stroke>
                 </Shape>
                 <Shape x="0" y="0" name="Body" id="0:77">
-                    <Rectangle originX="0.5" originY="0" width="60" height="250"
+                    <Rectangle originX="0.5" originY="0" width="60" height="420"
                                cornerRadiusTL="30" name="Path" id="0:78"/>
                     <Fill name="Fill" id="0:79"><SolidColor colorValue="FFE7E5E4" name="Color" id="0:80"/></Fill>
                 </Shape>
                 <Shape x="8" y="10" name="Shadow" id="0:11">
-                    <Rectangle originX="0.5" originY="0" width="60" height="250"
+                    <Rectangle originX="0.5" originY="0" width="60" height="420"
                                cornerRadiusTL="30" name="Path" id="0:81"/>
                     <Fill fillRule="clockwise" name="Fill" id="0:82">
                         <SolidColor colorValue="59000000" name="Color" id="0:83"/>
