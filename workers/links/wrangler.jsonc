@@ -33,8 +33,9 @@
 	// OG_DYNAMIC "on": a public group's or challenge's invite gets a card drawn with its name (satori +
 	// resvg, about a second of CPU per new card, cached per location for each 15-minute key window).
 	// That needs Workers Paid; on the Free plan's 10 ms set it to "off" and those invites use the
-	// invite kind's static card.
-	"vars": { "API_BASE": "https://api.seemyhealth.ai", "OG_DYNAMIC": "on" },
+	// invite kind's static card. Off today: the account is on the Workers Free plan.
+	// API_BASE is dev while only dev exists (the apps' invites are minted there); prod at launch.
+	"vars": { "API_BASE": "https://api.dev.seemyhealth.ai", "OG_DYNAMIC": "off" },
 
 	"rules": [{ "type": "CompiledWasm", "globs": ["**/*.wasm"], "fallthrough": true }],
 
