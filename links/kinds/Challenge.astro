@@ -1,0 +1,41 @@
+---
+// A challenge: a photo beside a progress ring that has not started (Day -- of --) and a leaderboard
+// of empty places. How far anyone has got is for the people taking part.
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import { CF_IMG, KIND_COPY } from '../../workers/links/src/catalogue';
+const c = KIND_COPY.challenge;
+---
+
+<section class="pt-32 pb-20 sm:pt-40 sm:pb-28">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid md:grid-cols-[1.1fr_1fr] gap-10 md:gap-14 items-center">
+    <div class="relative rounded-3xl overflow-hidden aspect-[4/5] md:aspect-auto md:h-[560px] link-rise">
+      <img src={`${CF_IMG}/${c.photo}/public`} alt="A runner mid-stride, ready for the challenge" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-transparent to-transparent"></div>
+      <div class="absolute left-5 bottom-5 right-5 flex items-center gap-4 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/15 p-4" aria-hidden="true">
+        <svg class="w-16 h-16 -rotate-90 shrink-0" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="6" />
+          <circle cx="32" cy="32" r="27" fill="none" stroke="#22C55E" stroke-width="6" stroke-linecap="round" stroke-dasharray="170" stroke-dashoffset="160" />
+        </svg>
+        <div>
+          <p class="text-[11px] uppercase tracking-[2px] text-white/60">Progress</p>
+          <p class="font-display text-2xl font-400 uppercase">Day -- of --</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} icon="community" align="left" />
+      <ol class="mt-8 mb-10 space-y-2" aria-label="Leaderboard">
+        {[1, 2, 3].map((place) => (
+          <li class="flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
+            <span class="font-display text-xl font-500 w-6 text-white/60">{place}</span>
+            <span class="w-8 h-8 rounded-full bg-white/10" aria-hidden="true"></span>
+            <span class="flex-1 h-2 rounded-full bg-white/[0.06]" aria-hidden="true"></span>
+            <span class="font-display text-lg text-white/40 tabular-nums">--</span>
+          </li>
+        ))}
+      </ol>
+      <OpenInApp align="left" />
+    </div>
+  </div>
+</section>

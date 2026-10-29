@@ -1,0 +1,51 @@
+---
+// links.seemyhealth.ai/get-the-app: where every links page sends somebody without the app, and a page
+// in its own right. The app page's hero (src/pages/app.astro): the phones full-bleed under a glass
+// card, the store buttons from src/data/app-stores.ts, the visitor's own store first.
+import LinkLayout from '../../layouts/LinkLayout.astro';
+import AppStoreButtons from '../../../src/components/AppStoreButtons.astro';
+import StoreName from '../../../src/components/StoreName.astro';
+import { CF_IMG, GET_THE_APP_COPY as c } from '../../../workers/links/src/catalogue';
+const steps = [
+  { n: '01', title: 'Get the app', text: "It's free, and you'll find it as C-MyHealth." },
+  { n: '02', title: 'Sign in', text: 'Or make an account. It takes a minute.' },
+  { n: '03', title: 'Tap the link again', text: 'It opens right where it should.' },
+];
+---
+
+<LinkLayout title={c.pageTitle} description={c.sentence} ogImage="/og/default.jpg" ogImageAlt="The SeeMyHealth app on three phones" getAppPanel={false}>
+  <section id="get" class="relative min-h-screen overflow-hidden">
+    <div class="absolute inset-0">
+      <img src={`${CF_IMG}/${c.photo}/public`} alt="The SeeMyHealth app on three phones" class="w-full h-full object-cover" fetchpriority="high" />
+      <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/40 to-brand-black/30"></div>
+    </div>
+    <div class="relative min-h-screen flex items-end pb-16 sm:pb-20 pt-28">
+      <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center w-full">
+        <div class="backdrop-blur-xl bg-white/[0.04] border border-white/[0.08] rounded-2xl sm:rounded-3xl px-5 py-8 sm:px-12 sm:py-14 shadow-2xl shadow-black/20 link-rise">
+          <p class="text-[10px] sm:text-[11px] uppercase tracking-[4px] text-white/50 mb-3 sm:mb-5">{c.eyebrow}</p>
+          <h1 class="font-display text-4xl sm:text-6xl lg:text-7xl font-300 uppercase leading-[0.95] mb-4 sm:mb-6">
+            {c.title} <br class="hidden sm:block" /><span class="font-500">{c.bold}</span>
+          </h1>
+          <p class="text-sm sm:text-lg text-white/60 leading-relaxed mb-6 sm:mb-8 max-w-2xl mx-auto">{c.sentence}</p>
+          <AppStoreButtons class="justify-center" />
+          <StoreName bold class="justify-center mt-5" />
+          <p class="text-[12px] text-white/30 mt-2">Free to download. Premium free for a month.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="py-16 sm:py-24 bg-brand-dark border-t border-white/5">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      <p class="text-center text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-10">Three steps, then you're in</p>
+      <ol class="grid sm:grid-cols-3 gap-4">
+        {steps.map((s) => (
+          <li class="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+            <span class="font-display text-3xl font-300 text-accent-light">{s.n}</span>
+            <h2 class="font-display text-2xl uppercase font-400 mt-3 mb-2">{s.title}</h2>
+            <p class="text-sm text-brand-gray-400 leading-relaxed">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+</LinkLayout>

@@ -1,0 +1,40 @@
+---
+// Health: three rings with nothing in them yet. A figure the page never read is --, never 0, as it
+// is in the app before a source has answered.
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import { KIND_COPY } from '../../workers/links/src/catalogue';
+const c = KIND_COPY.health;
+const rings = [
+  { label: 'Sleep', hue: '#A855F7', r: 92 },
+  { label: 'Heart', hue: '#EF4444', r: 72 },
+  { label: 'Steps', hue: '#F97316', r: 52 },
+];
+---
+
+<section class="pt-32 pb-20 sm:pt-40 sm:pb-28">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+    <div class="flex flex-col items-center gap-8 link-rise" aria-hidden="true">
+      <svg class="w-64 h-64 sm:w-72 sm:h-72 -rotate-90" viewBox="0 0 220 220">
+        {rings.map((ring) => (
+          <>
+            <circle cx="110" cy="110" r={ring.r} fill="none" stroke={`${ring.hue}26`} stroke-width="14" />
+            <circle cx="110" cy="110" r={ring.r} fill="none" stroke={ring.hue} stroke-width="14" stroke-linecap="round" stroke-dasharray={`2 ${2 * Math.PI * ring.r}`} />
+          </>
+        ))}
+      </svg>
+      <div class="flex gap-8">
+        {rings.map((ring) => (
+          <div class="text-center">
+            <p class="font-display text-3xl font-300 tabular-nums text-white/60">--</p>
+            <p class="text-[11px] uppercase tracking-[2px]" style={`color:${ring.hue}`}>{ring.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div>
+      <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} icon="my-health" align="left" />
+      <OpenInApp align="left" class="mt-10" />
+    </div>
+  </div>
+</section>

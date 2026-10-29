@@ -1,0 +1,40 @@
+---
+// A friend invite: person to person. Two cards facing each other: the sender's is blank (the
+// restricted preview never names them: who it is from shows in the app), and yours waits.
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import { CF_IMG, INVITE_COPY, INVITE_STATE_COPY } from '../../workers/links/src/catalogue';
+import { isState, type InviteVariant } from './variants';
+interface Props { variant: InviteVariant }
+const { variant } = Astro.props;
+const c = INVITE_COPY.friend;
+const state = isState(variant) ? INVITE_STATE_COPY[variant] : undefined;
+---
+
+<section class="pt-32 pb-20 sm:pt-40 sm:pb-28 relative overflow-hidden">
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <img src={`${CF_IMG}/${c.photo}/public`} alt="" class:list={['w-full h-full object-cover opacity-[0.12] blur-sm', state && 'grayscale']} />
+    <div class="absolute inset-0 bg-gradient-to-b from-brand-black via-brand-black/70 to-brand-black"></div>
+  </div>
+  <div class="relative max-w-3xl mx-auto px-6 lg:px-8">
+    <div class:list={['flex items-center justify-center gap-4 sm:gap-6 mb-12 link-rise', state && 'opacity-40 grayscale']} aria-hidden="true">
+      <div class="w-36 sm:w-44 rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-5 text-center -rotate-3">
+        <span class="mx-auto mb-3 w-16 h-16 rounded-full bg-gradient-to-br from-ring-one/60 to-amber-300/30 flex items-center justify-center font-display text-2xl">?</span>
+        <span class="block h-2.5 w-20 mx-auto rounded-full bg-white/15 mb-2"></span>
+        <span class="block text-[10px] uppercase tracking-[2px] text-white/45">Sent you this</span>
+      </div>
+      <span class="w-12 h-12 rounded-full bg-ring-one text-brand-black flex items-center justify-center shrink-0 z-10">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" /></svg>
+      </span>
+      <div class="w-36 sm:w-44 rounded-3xl border border-dashed border-white/20 bg-white/[0.02] p-5 text-center rotate-3">
+        <span class="mx-auto mb-3 w-16 h-16 rounded-full border-2 border-dashed border-white/25 flex items-center justify-center font-display text-lg text-white/60">You</span>
+        <span class="block h-2.5 w-20 mx-auto rounded-full bg-white/[0.07] mb-2"></span>
+        <span class="block text-[10px] uppercase tracking-[2px] text-white/45">Say yes in the app</span>
+      </div>
+    </div>
+    {state
+      ? <KindIntro eyebrow={c.eyebrow} title={state.title} sentence={state.sentence} icon="community" />
+      : <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} icon="community" />}
+    <OpenInApp class="mt-10" />
+  </div>
+</section>

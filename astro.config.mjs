@@ -14,8 +14,6 @@ export default defineConfig({
       filter: (page) =>
         ![
           '/privacy/', '/terms/', '/terms/sale/', '/account/', '/account/orders/', '/404/',
-          // App-handoff pages: universal-link fallbacks, not content.
-          '/practice-handoff/', '/payments/return/',
         ].some(
           (path) => page.includes(path)
         ),

@@ -1,0 +1,81 @@
+---
+// Every links.seemyhealth.ai page: the site's look (its global.css tokens, Inter and Oswald, the
+// near-black page) without its commerce islands or analytics. A links page can carry an invite
+// token in its address, and nothing on it may send that address anywhere: no GA, no cart, and
+// the Worker serves every page with Referrer-Policy: no-referrer.
+//
+// Open Graph tags are server-rendered here from the catalogue. Paths are relative; the Worker makes
+// og:image and og:url absolute on its own origin and, for a public invite, swaps in the entity's.
+import '../../src/styles/global.css';
+import LinkHeader from '../components/LinkHeader.astro';
+import LinkFooter from '../components/LinkFooter.astro';
+import GetAppPanel from '../components/GetAppPanel.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage: string;      // a path under /og/
+  ogImageAlt: string;
+  getAppPanel?: boolean;
+}
+
+const { title, description, ogImage, ogImageAlt, getAppPanel = true } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" content={description} data-og-text="description" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SeeMyHealth" />
+    <meta property="og:title" content={title} data-og-text="title" />
+    <meta property="og:description" content={description} data-og-text="description" />
+    <meta property="og:url" content="/" data-og-url />
+    <meta property="og:image" content={ogImage} data-og-image />
+    <meta property="og:image:secure_url" content={ogImage} data-og-image />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} data-og-text="imageAlt" />
+    <meta property="og:locale" content="en_GB" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} data-og-text="title" />
+    <meta name="twitter:description" content={description} data-og-text="description" />
+    <meta name="twitter:image" content={ogImage} data-og-image />
+    <meta name="twitter:image:alt" content={ogImageAlt} data-og-text="imageAlt" />
+
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0A0A0A" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <title data-og-text="title">{title}</title>
+    <style is:global>
+      /* The visitor's own store first: the Worker sets html[data-platform] from the request. */
+      html[data-platform="android"] [data-store="android"] { order: -1; }
+      @keyframes link-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+      .link-rise { animation: link-rise 0.7s ease-out both; }
+      .link-rise-2 { animation-delay: 0.12s; }
+      .link-rise-3 { animation-delay: 0.24s; }
+      @media (prefers-reduced-motion: reduce) { .link-rise { animation: none; } }
+    </style>
+  </head>
+  <body class="bg-brand-black text-white font-sans antialiased overflow-x-hidden min-h-screen flex flex-col">
+    <LinkHeader />
+    <main class="flex-1">
+      <slot />
+    </main>
+    {getAppPanel && <GetAppPanel />}
+    <LinkFooter />
+  </body>
+</html>

@@ -1,0 +1,49 @@
+---
+// A challenge invite: the challenge's picture, its name and how many are taking part (a PUBLIC
+// challenge only), beside its starting line. The restricted preview carries no goal or dates, so the
+// start and end read -- here and are shown in the app; nothing is guessed.
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import { CF_IMG, INVITE_COPY, INVITE_STATE_COPY } from '../../workers/links/src/catalogue';
+import { isState, type InviteVariant } from './variants';
+interface Props { variant: InviteVariant }
+const { variant } = Astro.props;
+const c = INVITE_COPY.challenge;
+const state = isState(variant) ? INVITE_STATE_COPY[variant] : undefined;
+---
+
+<section class="pt-32 pb-20 sm:pt-40 sm:pb-28">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-10 md:gap-14 items-center">
+    <div class="relative rounded-3xl overflow-hidden aspect-square link-rise">
+      <img src={`${CF_IMG}/${c.photo}/public`} alt="" data-slot="cover" class:list={['w-full h-full object-cover', state && 'grayscale opacity-40']} />
+      <div class="absolute inset-0 bg-gradient-to-t from-brand-black/70 to-transparent"></div>
+      <span class="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur border border-white/15 text-[11px] uppercase tracking-[2px] text-green-400">Challenge</span>
+    </div>
+    <div>
+      {state ? (
+        <KindIntro eyebrow={c.eyebrow} title={state.title} sentence={state.sentence} icon="community" align="left" />
+      ) : variant === 'public' ? (
+        <>
+          <p class="text-[11px] uppercase tracking-[4px] text-white/55 mb-4 link-rise">{c.eyebrow}</p>
+          <p class="font-display text-xl sm:text-2xl font-300 uppercase text-white/70 mb-2 link-rise">{c.title} {c.bold}</p>
+          <h1 class="font-display text-4xl sm:text-6xl font-500 uppercase leading-[0.95] mb-6 text-balance break-words link-rise link-rise-2" data-slot="name">A Challenge</h1>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="px-4 py-1.5 rounded-full bg-white/10 border border-white/15 text-[11px] uppercase tracking-[2px]" data-slot="count"></span>
+            <span class="px-4 py-1.5 rounded-full bg-green-500/15 border border-green-500/30 text-green-400 text-[11px] uppercase tracking-[2px]">Public challenge</span>
+          </div>
+          <p class="text-brand-gray-400 sm:text-lg leading-relaxed max-w-lg text-pretty">{c.sentence}</p>
+        </>
+      ) : (
+        <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} icon="community" align="left" />
+      )}
+      {!state && (
+        <div class="mt-8 grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4" aria-label="When it runs, shown in the app">
+          <div><p class="text-[10px] uppercase tracking-[2px] text-white/45">Starts</p><p class="font-display text-xl tabular-nums">--</p></div>
+          <div class="relative h-1.5 rounded-full bg-white/10" aria-hidden="true"><span class="absolute left-0 -top-1 w-3.5 h-3.5 rounded-full bg-green-400"></span></div>
+          <div class="text-right"><p class="text-[10px] uppercase tracking-[2px] text-white/45">Ends</p><p class="font-display text-xl tabular-nums">--</p></div>
+        </div>
+      )}
+      <OpenInApp align="left" class="mt-10" />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,16 @@
+---
+// A slim footer: the website's pages live on www.seemyhealth.ai, not here.
+const SITE = 'https://www.seemyhealth.ai';
+---
+
+<footer class="border-t border-white/5 bg-brand-black">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-600">iOS &amp; Android · Apple Health · Health Connect</p>
+    <nav class="flex gap-6">
+      <a href={`${SITE}/`} class="text-[11px] text-brand-gray-600 hover:text-brand-gray-400 transition-colors">seemyhealth.ai</a>
+      <a href={`${SITE}/support`} class="text-[11px] text-brand-gray-600 hover:text-brand-gray-400 transition-colors">Help</a>
+      <a href={`${SITE}/privacy`} class="text-[11px] text-brand-gray-600 hover:text-brand-gray-400 transition-colors">Privacy</a>
+      <a href={`${SITE}/terms`} class="text-[11px] text-brand-gray-600 hover:text-brand-gray-400 transition-colors">Terms</a>
+    </nav>
+  </div>
+</footer>

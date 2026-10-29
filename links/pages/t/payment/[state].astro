@@ -1,0 +1,15 @@
+---
+import LinkLayout from '../../../layouts/LinkLayout.astro';
+import Payment from '../../../kinds/Payment.astro';
+import { PAYMENT_COPY, type PaymentState } from '../../../../workers/links/src/catalogue';
+
+export function getStaticPaths() {
+  return Object.keys(PAYMENT_COPY).map((state) => ({ params: { state } }));
+}
+const state = Astro.params.state as PaymentState;
+const copy = PAYMENT_COPY[state];
+---
+
+<LinkLayout title={copy.pageTitle} description={copy.sentence} ogImage={`/og/payment-${state}.jpg`} ogImageAlt={`${copy.title} ${copy.bold}`}>
+  <Payment state={state} />
+</LinkLayout>

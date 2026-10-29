@@ -1,0 +1,20 @@
+---
+// Any path on links.seemyhealth.ai that link-paths.json does not list, or one whose ids are not the
+// shape the backend makes. Served with 404.
+import LinkLayout from '../../layouts/LinkLayout.astro';
+import KindIntro from '../../components/KindIntro.astro';
+import { NOT_FOUND_COPY as c } from '../../../workers/links/src/catalogue';
+---
+
+<LinkLayout title={c.pageTitle} description={c.sentence} ogImage="/og/not-found.jpg" ogImageAlt={`${c.title} ${c.bold}`}>
+  <section class="min-h-[80vh] flex items-center pt-32 pb-20">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+      <p class="font-display text-[120px] sm:text-[180px] font-200 leading-none text-white/[0.06] mb-2" aria-hidden="true">404</p>
+      <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} />
+      <div class="flex flex-wrap justify-center gap-4 mt-10">
+        <a href="/get-the-app" class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors">Get the App</a>
+        <a href="https://www.seemyhealth.ai/" class="inline-flex items-center px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-white border border-white/20 rounded-full hover:border-white/40 transition-colors">SeeMyHealth Home</a>
+      </div>
+    </div>
+  </section>
+</LinkLayout>

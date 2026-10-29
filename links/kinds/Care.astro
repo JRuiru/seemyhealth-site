@@ -1,0 +1,31 @@
+---
+// Appointments and practice messages: a calendar card with one day ringed and its time at --. The
+// page never knows which appointment, so it never shows one.
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import { CF_IMG, KIND_COPY } from '../../workers/links/src/catalogue';
+const c = KIND_COPY.care;
+const days = Array.from({ length: 28 }, (_, i) => i + 1);
+---
+
+<section class="pt-32 pb-20 sm:pt-40 sm:pb-28">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+    <div>
+      <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} icon="providers" align="left" />
+      <OpenInApp align="left" class="mt-10" />
+    </div>
+    <div class="relative link-rise">
+      <img src={`${CF_IMG}/${c.photo}/public`} alt="A practitioner checking the day's appointments" class="rounded-[28px] w-full aspect-[4/3] object-cover opacity-80" />
+      <div class="absolute -bottom-8 -left-2 sm:-left-8 w-64 rounded-2xl bg-brand-black/85 backdrop-blur-xl border border-white/10 p-4 shadow-2xl" aria-hidden="true">
+        <p class="text-[11px] uppercase tracking-[2px] text-white/50 mb-3">Your appointments</p>
+        <div class="grid grid-cols-7 gap-1.5 mb-3">
+          {days.map((d) => <span class:list={['h-6 rounded-md', d === 17 ? 'bg-green-500/80' : 'bg-white/[0.06]']}></span>)}
+        </div>
+        <div class="flex items-center gap-3 rounded-xl bg-white/[0.05] px-3 py-2">
+          <span class="font-display text-lg font-500 tabular-nums">--:--</span>
+          <span class="flex-1 h-2 rounded-full bg-white/10"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+---
+// The words every kind leads with, in the site's heading voice: a small tracked eyebrow (with the
+// area's Rive tab icon, as the app page draws them), a light line and a bold line, one sentence.
+import KindIcon from './KindIcon.astro';
+import type { KindIcon as Icon } from '../../workers/links/src/page-kinds';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  bold?: string;
+  sentence: string;
+  icon?: Icon;
+  align?: 'center' | 'left';
+  level?: 'h1' | 'h2';
+}
+const { eyebrow, title, bold, sentence, icon, align = 'center', level = 'h1' } = Astro.props;
+const Heading = level;
+---
+
+<div class:list={[align === 'center' ? 'text-center' : 'text-left']}>
+  <p class:list={['flex items-center gap-2.5 text-[11px] uppercase tracking-[4px] text-white/55 mb-5 link-rise', align === 'center' ? 'justify-center' : 'justify-start']}>
+    {icon && <KindIcon icon={icon} />}
+    <span>{eyebrow}</span>
+  </p>
+  <Heading class="font-display text-4xl sm:text-6xl font-300 uppercase leading-[0.95] mb-5 text-balance link-rise link-rise-2">
+    <span data-slot="title">{title}</span>{bold && <><br /> <span class="font-500" data-slot="bold">{bold}</span></>}
+  </Heading>
+  <p class:list={['text-brand-gray-400 sm:text-lg leading-relaxed text-pretty link-rise link-rise-3', align === 'center' ? 'max-w-xl mx-auto' : 'max-w-lg']} data-slot="sentence">
+    {sentence}
+  </p>
+</div>

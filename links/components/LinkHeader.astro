@@ -1,0 +1,14 @@
+---
+// The links pages' bar: the logo home to the website, and the way to the app.
+import { LOGO } from '../../workers/links/src/catalogue';
+---
+
+<header class="absolute top-0 inset-x-0 z-30">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 h-[72px] sm:h-[88px] flex items-center justify-between">
+    <a href="https://www.seemyhealth.ai/" class="flex items-center gap-3">
+      <img src={LOGO} alt="" class="w-9 h-9 rounded-[10px]" width="36" height="36" />
+      <span class="font-display text-lg uppercase tracking-[2px] font-500">SeeMyHealth</span>
+    </a>
+    <a href="/get-the-app" class="px-5 py-2.5 text-[12px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors">Get the app</a>
+  </div>
+</header>

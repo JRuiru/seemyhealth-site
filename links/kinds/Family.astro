@@ -1,0 +1,26 @@
+---
+// Family: warm and personal. A portrait in amber light, and what family on SeeMyHealth means, said
+// plainly: being family shares nothing about anybody's health until they choose to share it.
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import FamilyPromises from '../components/FamilyPromises.astro';
+import { CF_IMG, KIND_COPY } from '../../workers/links/src/catalogue';
+const c = KIND_COPY.family;
+---
+
+<section class="pt-32 pb-20 sm:pt-40 sm:pb-28 relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-b from-amber-500/[0.07] via-transparent to-transparent pointer-events-none" aria-hidden="true"></div>
+  <div class="relative max-w-6xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+    <div class="relative link-rise">
+      <div class="rounded-[32px] overflow-hidden aspect-[4/5] border border-amber-200/10">
+        <img src={`${CF_IMG}/${c.photo}/public`} alt="A smiling woman at home" class="w-full h-full object-cover" />
+      </div>
+      <span class="absolute -bottom-5 left-6 px-4 py-2.5 rounded-2xl bg-brand-black/70 backdrop-blur-xl border border-amber-200/20 text-sm text-amber-100/90">Family, on your terms</span>
+    </div>
+    <div>
+      <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} icon="community" align="left" />
+      <FamilyPromises class="mt-8 mb-10" />
+      <OpenInApp align="left" />
+    </div>
+  </div>
+</section>

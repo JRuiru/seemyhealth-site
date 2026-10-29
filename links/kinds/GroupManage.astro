@@ -1,0 +1,36 @@
+---
+// A manager's queue: the words on the left, the queue on the right as glass rows with nothing in
+// them. What is waiting, and from whom, is only for the group's managers, in the app.
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import { KIND_COPY } from '../../workers/links/src/catalogue';
+const c = KIND_COPY.groupManage;
+const rows = [
+  { label: 'Join requests', icon: 'M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM3 20a6 6 0 0 1 12 0v1H3v-1z' },
+  { label: 'Reported posts', icon: 'M3 3v18M3 4h13l-2 4 2 4H3' },
+  { label: 'Waiting for approval', icon: 'M12 6v6l3.75 2.25M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+];
+---
+
+<section class="pt-32 pb-20 sm:pt-40 sm:pb-28">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+    <div>
+      <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} icon="community" align="left" />
+      <OpenInApp align="left" class="mt-10" />
+    </div>
+    <ol class="space-y-3" aria-label="What a manager's queue holds">
+      {rows.map((r, i) => (
+        <li class="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 link-rise" style={`animation-delay:${0.15 + i * 0.12}s`}>
+          <span class="w-10 h-10 rounded-xl bg-ring-one/15 text-ring-one flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={r.icon} /></svg>
+          </span>
+          <span class="flex-1 min-w-0">
+            <span class="block text-[13px] uppercase tracking-[1.5px] text-white/80">{r.label}</span>
+            <span class="block h-2 mt-2 rounded-full bg-white/[0.06] w-3/4" aria-hidden="true"></span>
+          </span>
+          <span class="font-display text-2xl font-300 text-white/40 tabular-nums">--</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

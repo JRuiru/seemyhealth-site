@@ -1,0 +1,37 @@
+---
+// A family invite: warm and personal, and it never names or shows anybody. The restricted preview is
+// always generic for family, so this page has no slots at all: it says what joining means instead.
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import FamilyPromises from '../components/FamilyPromises.astro';
+import { CF_IMG, INVITE_COPY, INVITE_STATE_COPY } from '../../workers/links/src/catalogue';
+import { isState, type InviteVariant } from './variants';
+interface Props { variant: InviteVariant }
+const { variant } = Astro.props;
+const c = INVITE_COPY.family;
+const state = isState(variant) ? INVITE_STATE_COPY[variant] : undefined;
+---
+
+<section class="pt-32 pb-20 sm:pt-40 sm:pb-28 relative overflow-hidden">
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.12),transparent_60%)] pointer-events-none" aria-hidden="true"></div>
+  <div class="relative max-w-5xl mx-auto px-6 lg:px-8 grid md:grid-cols-[0.9fr_1.1fr] gap-12 items-center">
+    <div class:list={['relative link-rise', state && 'opacity-40 grayscale']}>
+      <div class="rounded-[40px] overflow-hidden aspect-[4/5] border border-amber-200/15 shadow-2xl shadow-amber-900/20">
+        <img src={`${CF_IMG}/${c.photo}/public`} alt="A smiling woman at home" class="w-full h-full object-cover" />
+      </div>
+      <span class="absolute -top-4 -right-2 w-14 h-14 rounded-full bg-amber-300 text-brand-black flex items-center justify-center shadow-lg" aria-hidden="true">
+        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M11.65 20.91l-.01-.01C7.1 16.8 3 13.1 3 8.8 3 6.1 5.1 4 7.7 4c1.5 0 3 .7 4.3 1.9C13.3 4.7 14.8 4 16.3 4 18.9 4 21 6.1 21 8.8c0 4.3-4.1 8-8.64 12.1l-.01.01a.5.5 0 01-.7 0z"/></svg>
+      </span>
+    </div>
+    <div>
+      {state
+        ? <KindIntro eyebrow={c.eyebrow} title={state.title} sentence={state.sentence} icon="community" align="left" />
+        : <>
+            <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} icon="community" align="left" />
+            <p class="mt-8 mb-4 text-[11px] uppercase tracking-[3px] text-amber-200/70">What joining means</p>
+            <FamilyPromises class="mb-2" />
+          </>}
+      <OpenInApp align="left" class="mt-10" />
+    </div>
+  </div>
+</section>

@@ -25,6 +25,13 @@ cd workers/bff
 npm run dev           # Local dev (port 8787)
 npx wrangler deploy --config wrangler.jsonc  # Deploy worker
 
+# links.seemyhealth.ai Worker (app links: association files, /i/{token}, fallback pages, OG cards)
+npm run links:generate   # path table + Apple association file from cmh-golang's link-paths.json
+npm run links:check      # fails on drift, or a link path with no page kind
+npm run links:test       # builds the pages and cards, runs the Worker locally against a stub backend
+npm run links:dev        # wrangler dev --local (needs --var API_BASE / LINKS_PREVIEW_SECRET for /i/)
+npx wrangler deploy -c workers/links/wrangler.jsonc --env=""   # deploy (go-live step only)
+
 # Shopify product seed (one-time)
 SHOPIFY_STORE_DOMAIN=shop.seemyhealth.ai SHOPIFY_ADMIN_TOKEN=shpat_xxx npx tsx scripts/seed-products.ts
 ```
@@ -49,6 +56,8 @@ src/
   styles/         # global.css — Tailwind theme + custom properties
 workers/
   bff/            # Cloudflare Worker BFF — API proxy for Shopify cart/webhooks
+  links/          # links.seemyhealth.ai Worker: app-link association files, invite previews, fallback pages
+links/            # the links pages' Astro source (astro.links.config.mjs builds it into workers/links/dist)
 scripts/
   seed-products.ts  # One-time Shopify product creation via Admin API
 ```
@@ -63,6 +72,16 @@ scripts/
 | BP Monitor | bp-monitor | #EF4444 | Carbon Black / Opal White | 7643547009137 | 1d73637dabb39e29daa4e516a616da0e |
 | Hydra One | hydra-one | #06B6D4 | Abyss Black / Glacier White | 7643547041905 | 09fe15a09d3e2ad17189fbc7d758bc52 |
 | Hema One | hema-one | #A855F7 | Single variant | 7643547074673 | 8f576ad01105f0b3c8ff5495c066906e |
+
+## App Links (links.seemyhealth.ai)
+
+Every URL the backend hands out (invites, push taps, a practice's QR, the payment return) is on
+`links.seemyhealth.ai`, served by its own Worker (`workers/links`), never by this site's Pages project:
+seemyhealth.ai claims no app links and has no association files. The 36 paths come from cmh-golang's
+`link-paths.json` (vendored as `workers/links/link-paths.json`); `src/page-kinds.ts` maps each to a
+page kind, and `npm run links:check` fails a path with no kind. The pages reuse this site's tokens and
+components (`links/`), and the store buttons on both come from `src/data/app-stores.ts`. Nothing on a
+links page may log or forward its address: an `/i/` URL carries an invitation's token.
 
 ## Key Patterns
 

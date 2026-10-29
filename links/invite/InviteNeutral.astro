@@ -1,0 +1,21 @@
+---
+// An invite the page knows nothing about: an unknown token, or a preview that could not be read.
+// No kind, no art, no name: the apps' words and the way back.
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import { INVITE_STATE_COPY } from '../../workers/links/src/catalogue';
+interface Props { state: 'not_found' | 'unavailable' }
+const { state } = Astro.props;
+const c = INVITE_STATE_COPY[state];
+---
+
+<section class="min-h-[80vh] flex items-center pt-32 pb-20">
+  <div class="max-w-2xl mx-auto px-6 text-center">
+    <svg class="w-full max-w-md mx-auto h-16 mb-8 opacity-20" viewBox="0 0 400 60" fill="none" aria-hidden="true">
+      <path d="M0 30 L80 30 L100 30 L120 10 L140 50 L160 5 L180 55 L200 30 L220 30 L400 30" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    <KindIntro eyebrow="Invite" title={c.title} sentence={c.sentence} />
+    {state === 'unavailable' && <a href="" class="inline-flex mt-10 px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors">Try Again</a>}
+    {state === 'not_found' && <OpenInApp class="mt-10" />}
+  </div>
+</section>

@@ -1,0 +1,33 @@
+---
+// Billing: a receipt. Its lines are the kinds of thing billing holds, and every figure reads --,
+// because a page that knew an amount would be a page that knew whose it was.
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import { KIND_COPY } from '../../workers/links/src/catalogue';
+const c = KIND_COPY.billing;
+const lines = ['Payments', 'Packages and credits', 'Refunds'];
+---
+
+<section class="pt-32 pb-20 sm:pt-40 sm:pb-28">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+    <div class="max-w-sm w-full mx-auto link-rise" aria-hidden="true">
+      <div class="rounded-t-3xl bg-white text-brand-black px-7 pt-8 pb-6">
+        <p class="font-display text-2xl uppercase font-500 mb-1">Receipt</p>
+        <p class="text-[11px] uppercase tracking-[2px] text-brand-gray-500 mb-6">SeeMyHealth</p>
+        {lines.map((l) => (
+          <div class="flex items-center justify-between py-3 border-b border-dashed border-black/15 text-sm">
+            <span>{l}</span><span class="font-display text-lg tabular-nums">--</span>
+          </div>
+        ))}
+        <div class="flex items-center justify-between pt-4">
+          <span class="text-[11px] uppercase tracking-[2px]">Total</span><span class="font-display text-2xl font-500 tabular-nums">--</span>
+        </div>
+      </div>
+      <div class="h-4 bg-[radial-gradient(circle_at_8px_0,transparent_8px,#ffffff_8.5px)] bg-[length:16px_16px] bg-repeat-x"></div>
+    </div>
+    <div>
+      <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} icon="providers" align="left" />
+      <OpenInApp align="left" class="mt-10" />
+    </div>
+  </div>
+</section>

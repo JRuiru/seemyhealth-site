@@ -1,0 +1,29 @@
+---
+// People: two people and the line between them. Both circles are blank: who it is, and what their
+// profile shows, is theirs to share in the app.
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import { CF_IMG, KIND_COPY } from '../../workers/links/src/catalogue';
+const c = KIND_COPY.people;
+---
+
+<section class="pt-32 pb-20 sm:pt-40 sm:pb-28 relative overflow-hidden">
+  <div class="absolute top-24 left-1/2 -translate-x-1/2 w-[520px] h-[520px] rounded-full bg-ring-one/[0.06] blur-[100px] pointer-events-none" aria-hidden="true"></div>
+  <div class="relative max-w-3xl mx-auto px-6 lg:px-8">
+    <div class="flex items-center justify-center gap-3 sm:gap-5 mb-12 link-rise" aria-hidden="true">
+      <span class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/15">
+        <img src={`${CF_IMG}/${c.photo}/public`} alt="" class="w-full h-full object-cover" />
+      </span>
+      <span class="flex items-center gap-1.5">
+        {[0, 1, 2].map(() => <span class="w-1.5 h-1.5 rounded-full bg-white/30"></span>)}
+        <span class="w-11 h-11 rounded-full bg-ring-one/20 text-ring-one flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+        </span>
+        {[0, 1, 2].map(() => <span class="w-1.5 h-1.5 rounded-full bg-white/30"></span>)}
+      </span>
+      <span class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-dashed border-white/25 bg-white/[0.03] flex items-center justify-center font-display text-3xl text-white/40">?</span>
+    </div>
+    <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} icon="community" />
+    <OpenInApp class="mt-10" />
+  </div>
+</section>

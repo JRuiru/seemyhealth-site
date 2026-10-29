@@ -1,0 +1,51 @@
+{
+	// links.seemyhealth.ai: the website half of the app link system (src/index.ts says what it serves).
+	// Its own Worker, beside the BFF: the site's Pages project is fully static and never answers here.
+	"$schema": "../../node_modules/wrangler/config-schema.json",
+	"name": "seemyhealth-links",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-09-01",
+	"compatibility_flags": ["nodejs_compat"],
+
+	// Pages prerendered by astro.links.config.mjs, plus the static Open Graph cards. The Worker runs
+	// first for every request, so a template under /t/ is never served at its own address.
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS",
+		"run_worker_first": true,
+		"not_found_handling": "none"
+	},
+
+	// The custom domain is the go-live step: deploying with this creates the links.seemyhealth.ai
+	// DNS record and certificate in the seemyhealth.ai zone.
+	"routes": [{ "pattern": "links.seemyhealth.ai", "custom_domain": true }],
+	"workers_dev": false,
+
+	// Off on purpose: an /i/ address carries an invitation's bearer token, and invocation logs record
+	// request URLs. The Worker itself never writes to the console.
+	"observability": { "enabled": false },
+	"logpush": false,
+
+	// The backend that minted the invite tokens this host answers for. Secret (never in this file):
+	//   LINKS_PREVIEW_SECRET  the same value as the backend's Secret Manager secret
+	//                         cmh-<env>-links-preview-secret (env LINKS_PREVIEW_SECRET), sent as
+	//                         X-Links-Preview-Secret to GET /api/v2/links/invites/{token}.
+	// OG_DYNAMIC "on": a public group's or challenge's invite gets a card drawn with its name (satori +
+	// resvg, about a second of CPU per new card, cached per location for each 15-minute key window).
+	// That needs Workers Paid; on the Free plan's 10 ms set it to "off" and those invites use the
+	// invite kind's static card.
+	"vars": { "API_BASE": "https://api.seemyhealth.ai", "OG_DYNAMIC": "on" },
+
+	"rules": [{ "type": "CompiledWasm", "globs": ["**/*.wasm"], "fallthrough": true }],
+
+	"env": {
+		// A preview of this Worker against the dev backend, on workers.dev only: no custom domain, so
+		// it never answers for links.seemyhealth.ai and the apps never verify against it.
+		"staging": {
+			"name": "seemyhealth-links-staging",
+			"routes": [],
+			"workers_dev": true,
+			"vars": { "API_BASE": "https://api.dev.seemyhealth.ai", "OG_DYNAMIC": "on" }
+		}
+	}
+}

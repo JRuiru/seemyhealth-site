@@ -1,0 +1,22 @@
+---
+// What being family on SeeMyHealth means, for the family page and the family invite alike. Each line
+// is what the backend does: joining is membership only, and every sharing category starts off.
+interface Props { class?: string }
+const { class: className = '' } = Astro.props;
+const promises = [
+  "You'll see each other in Family.",
+  'Joining shares nothing about your health.',
+  'You choose what to share, one thing at a time, whenever you like.',
+];
+---
+
+<ul class:list={['space-y-3', className]}>
+  {promises.map((p) => (
+    <li class="flex items-start gap-3 text-[15px] text-white/80">
+      <span class="mt-0.5 w-6 h-6 rounded-full bg-amber-300/15 text-amber-200 flex items-center justify-center shrink-0">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+      </span>
+      {p}
+    </li>
+  ))}
+</ul>

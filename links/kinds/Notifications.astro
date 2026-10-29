@@ -1,0 +1,27 @@
+---
+// Notifications: the app page's notification stack (src/pages/app.astro), with every line blank. What
+// they say is for the person they were sent to, in the app.
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import { KIND_COPY, LOGO } from '../../workers/links/src/catalogue';
+const c = KIND_COPY.notifications;
+---
+
+<section class="pt-32 pb-20 sm:pt-40 sm:pb-28">
+  <div class="max-w-3xl mx-auto px-6 lg:px-8">
+    <div class="relative mx-auto max-w-sm mb-14 h-44" aria-hidden="true">
+      {[2, 1, 0].map((i) => (
+        <div class="absolute inset-x-0 flex items-center gap-3 rounded-2xl bg-white/[0.07] backdrop-blur-xl border border-white/10 px-4 py-3 link-rise"
+             style={`top:${i * 22}px; transform: scale(${1 - i * 0.05}); opacity:${1 - i * 0.28}; z-index:${10 - i}; animation-delay:${0.1 + (2 - i) * 0.15}s`}>
+          <img src={LOGO} alt="" class="w-9 h-9 rounded-[10px] shrink-0" />
+          <span class="min-w-0 flex-1">
+            <span class="flex items-center justify-between text-[11px] uppercase tracking-[1px] text-white/50 mb-1.5"><span>SeeMyHealth</span><span class="normal-case tracking-normal">now</span></span>
+            <span class="block h-2.5 rounded-full bg-white/15 w-4/5"></span>
+          </span>
+        </div>
+      ))}
+    </div>
+    <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} />
+    <OpenInApp class="mt-10" />
+  </div>
+</section>

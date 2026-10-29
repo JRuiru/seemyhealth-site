@@ -1,0 +1,48 @@
+---
+// A group invite: the group's cover full-bleed, its name, its member count, and that it is public.
+// Only a public, non-sensitive group's preview carries any of that (the Worker fills the slots from
+// the restricted preview); every other group invite draws the generic version, which names nothing
+// and says only that a group's details are for its members. The states keep the scene, muted.
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import { CF_IMG, INVITE_COPY, INVITE_GROUP_GENERIC_LINE, INVITE_STATE_COPY } from '../../workers/links/src/catalogue';
+import { isState, type InviteVariant } from './variants';
+interface Props { variant: InviteVariant }
+const { variant } = Astro.props;
+const c = INVITE_COPY.group;
+const state = isState(variant) ? INVITE_STATE_COPY[variant] : undefined;
+---
+
+<section class="relative min-h-[92vh] flex items-end pb-16 sm:pb-20 pt-28 overflow-hidden">
+  <div class="absolute inset-0">
+    <img src={`${CF_IMG}/${c.photo}/public`} alt="" data-slot="cover" class:list={['w-full h-full object-cover', state && 'grayscale opacity-40']} fetchpriority="high" />
+    <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/60 to-brand-black/10"></div>
+  </div>
+  <div class="relative max-w-3xl mx-auto px-6 lg:px-8 w-full">
+    <div class="backdrop-blur-xl bg-white/[0.04] border border-white/[0.08] rounded-3xl px-6 py-8 sm:px-12 sm:py-12 shadow-2xl shadow-black/20 text-center">
+      {state ? (
+        <KindIntro eyebrow={c.eyebrow} title={state.title} sentence={state.sentence} icon="community" />
+      ) : variant === 'public' ? (
+        <>
+          <p class="flex items-center justify-center gap-2.5 text-[11px] uppercase tracking-[4px] text-white/55 mb-5 link-rise">{c.eyebrow}</p>
+          <p class="font-display text-xl sm:text-2xl font-300 uppercase text-white/70 mb-2 link-rise">{c.title} {c.bold}</p>
+          <h1 class="font-display text-4xl sm:text-6xl font-500 uppercase leading-[0.95] mb-6 text-balance break-words link-rise link-rise-2" data-slot="name">A Group</h1>
+          <div class="flex flex-wrap items-center justify-center gap-2 mb-6 link-rise link-rise-3">
+            <span class="px-4 py-1.5 rounded-full bg-white/10 border border-white/15 text-[11px] uppercase tracking-[2px]" data-slot="count"></span>
+            <span class="px-4 py-1.5 rounded-full bg-ring-one/15 border border-ring-one/30 text-ring-one text-[11px] uppercase tracking-[2px]">Public group</span>
+          </div>
+          <p class="text-brand-gray-400 sm:text-lg leading-relaxed max-w-xl mx-auto text-pretty">{c.sentence}</p>
+        </>
+      ) : (
+        <>
+          <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} icon="community" />
+          <p class="inline-flex items-center gap-2 mt-6 px-4 py-2 rounded-full bg-white/[0.06] border border-white/10 text-[13px] text-white/70">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+            {INVITE_GROUP_GENERIC_LINE}
+          </p>
+        </>
+      )}
+      <OpenInApp class="mt-8" />
+    </div>
+  </div>
+</section>

@@ -44,11 +44,24 @@ jobs:
         run: npx wrangler deploy -c wrangler.jsonc --dry-run
         working-directory: workers/bff
 
+      # ---- links.seemyhealth.ai Worker (workers/links) ----
+      - name: Links paths and page kinds match link-paths.json
+        run: npm run links:check
+
+      - name: Typecheck links Worker
+        run: npm run links:typecheck
+
+      - name: Build and test links Worker
+        run: npm run links:test
+
+      - name: Dry-run links Worker deploy
+        run: npm run links:dry-run
+
       - name: Assert no source maps in client bundle
         run: |
-          if find dist -name '*.map' | grep -q .; then
+          if find dist workers/links/dist -name '*.map' | grep -q .; then
             echo "::error::Source maps found in dist — see CLAUDE.md (Client Bundle Security)"
-            find dist -name '*.map'
+            find dist workers/links/dist -name '*.map'
             exit 1
           fi
           echo "No source maps in client bundle."

@@ -1,0 +1,15 @@
+---
+// The app's own tab icon for an area, in Rive (public/media/app-icons, as the app page uses them):
+// it plays its moment once on arrival, holds still with reduced motion or Data Saver, and stays
+// hidden until it has loaded, so a page without script loses nothing.
+import type { KindIcon } from '../../workers/links/src/page-kinds';
+interface Props { icon: KindIcon }
+const { icon } = Astro.props;
+---
+
+<canvas class="w-6 h-6" width="48" height="48" data-kind-icon={icon} hidden aria-hidden="true"></canvas>
+
+<script>
+  import { startKindIcons } from '../scripts/kind-icons';
+  startKindIcons();
+</script>

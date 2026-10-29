@@ -1,0 +1,426 @@
+{
+  "schemaVersion": 1,
+  "host": "links.seemyhealth.ai",
+  "paramTypes": {
+    "documentId": "^[A-Za-z0-9_.:-]{1,200}$",
+    "flag": "^$",
+    "identityId": "^usr_[0-9a-f]{32}$",
+    "inviteToken": "^[A-Za-z0-9_-]{43}$",
+    "practiceCode": "^[a-z0-9]([a-z0-9-]{1,48}[a-z0-9])$",
+    "uuid": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+  },
+  "paths": [
+    {
+      "name": "invite",
+      "template": "/i/{inviteToken}",
+      "opens": "the invitation's preview, then its confirmation (group, challenge, friend or family)",
+      "web": true,
+      "params": [
+        {
+          "name": "inviteToken",
+          "type": "inviteToken"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "feed",
+      "template": "/feed",
+      "opens": "Community, Feed",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "post",
+      "template": "/posts/{postId}",
+      "opens": "a feed post",
+      "web": false,
+      "params": [
+        {
+          "name": "postId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "postComments",
+      "template": "/posts/{postId}/comments",
+      "opens": "a feed post with its comments open",
+      "web": false,
+      "params": [
+        {
+          "name": "postId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "groups",
+      "template": "/groups",
+      "opens": "Community, Groups",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "group",
+      "template": "/groups/{groupId}",
+      "opens": "the group, subject to access",
+      "web": false,
+      "params": [
+        {
+          "name": "groupId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "groupPost",
+      "template": "/groups/{groupId}/posts/{postId}",
+      "opens": "a group post",
+      "web": false,
+      "params": [
+        {
+          "name": "groupId",
+          "type": "uuid"
+        },
+        {
+          "name": "postId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "groupPostComments",
+      "template": "/groups/{groupId}/posts/{postId}/comments",
+      "opens": "a group post with its comments open",
+      "web": false,
+      "params": [
+        {
+          "name": "groupId",
+          "type": "uuid"
+        },
+        {
+          "name": "postId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "groupEvent",
+      "template": "/groups/{groupId}/events/{eventId}",
+      "opens": "a group event",
+      "web": false,
+      "params": [
+        {
+          "name": "groupId",
+          "type": "uuid"
+        },
+        {
+          "name": "eventId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "groupJoinRequests",
+      "template": "/groups/{groupId}/join-requests",
+      "opens": "a manager's join request queue",
+      "web": false,
+      "params": [
+        {
+          "name": "groupId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "groupReports",
+      "template": "/groups/{groupId}/reports",
+      "opens": "a manager's review queue: reported posts and events, posts awaiting approval",
+      "web": false,
+      "params": [
+        {
+          "name": "groupId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "challenges",
+      "template": "/challenges",
+      "opens": "Community, Challenges",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "challenge",
+      "template": "/challenges/{challengeId}",
+      "opens": "a challenge",
+      "web": false,
+      "params": [
+        {
+          "name": "challengeId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "trophies",
+      "template": "/trophies",
+      "opens": "the trophy cabinet",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "friends",
+      "template": "/friends",
+      "opens": "friends",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "friendRequest",
+      "template": "/friend-requests/{requestId}",
+      "opens": "a friend request to accept or decline",
+      "web": false,
+      "params": [
+        {
+          "name": "requestId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "userProfile",
+      "template": "/users/{publicProfileId}",
+      "opens": "the profile, as far as the viewer may see it",
+      "web": false,
+      "params": [
+        {
+          "name": "publicProfileId",
+          "type": "identityId"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "family",
+      "template": "/family",
+      "opens": "family",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "familyInvitation",
+      "template": "/family-invitations/{invitationId}",
+      "opens": "the relationship and consent screen for a family request",
+      "web": false,
+      "params": [
+        {
+          "name": "invitationId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "familyInvitations",
+      "template": "/family-invitations",
+      "opens": "family invitations received",
+      "web": false,
+      "params": [],
+      "query": [
+        {
+          "name": "sent",
+          "type": "flag",
+          "means": "the ones the viewer sent instead"
+        }
+      ]
+    },
+    {
+      "name": "messages",
+      "template": "/messages",
+      "opens": "the conversation list",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "conversation",
+      "template": "/messages/{conversationId}",
+      "opens": "a conversation",
+      "web": false,
+      "params": [
+        {
+          "name": "conversationId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "call",
+      "template": "/calls/{sessionId}",
+      "opens": "joining a video call",
+      "web": false,
+      "params": [
+        {
+          "name": "sessionId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "appointments",
+      "template": "/appointments",
+      "opens": "appointments",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "appointment",
+      "template": "/appointments/{appointmentId}",
+      "opens": "an appointment",
+      "web": false,
+      "params": [
+        {
+          "name": "appointmentId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "practice",
+      "template": "/practices/{code}",
+      "opens": "the arrival and check-in flow (a practice's printed QR code)",
+      "web": false,
+      "params": [
+        {
+          "name": "code",
+          "type": "practiceCode"
+        }
+      ],
+      "query": [
+        {
+          "name": "location",
+          "type": "uuid",
+          "means": "the location the code was printed for"
+        }
+      ]
+    },
+    {
+      "name": "paymentsReturn",
+      "template": "/payments/return",
+      "opens": "the return from a hosted checkout (the payment itself is settled by webhook)",
+      "web": true,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "enquiry",
+      "template": "/enquiries/{enquiryId}",
+      "opens": "an enquiry thread",
+      "web": false,
+      "params": [
+        {
+          "name": "enquiryId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "billing",
+      "template": "/billing",
+      "opens": "billing",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "home",
+      "template": "/home",
+      "opens": "Home",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "mood",
+      "template": "/mood",
+      "opens": "the mood check-in",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "health",
+      "template": "/health",
+      "opens": "the health hub",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "healthReport",
+      "template": "/health/reports/{reportId}",
+      "opens": "a health report",
+      "web": false,
+      "params": [
+        {
+          "name": "reportId",
+          "type": "documentId"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "goal",
+      "template": "/goals/{goalId}",
+      "opens": "a goal",
+      "web": false,
+      "params": [
+        {
+          "name": "goalId",
+          "type": "documentId"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "devices",
+      "template": "/devices",
+      "opens": "devices",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "notifications",
+      "template": "/notifications",
+      "opens": "the notification list",
+      "web": false,
+      "params": [],
+      "query": []
+    }
+  ]
+}

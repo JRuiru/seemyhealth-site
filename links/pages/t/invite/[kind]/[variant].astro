@@ -1,0 +1,31 @@
+---
+// One page per invite kind and variant. `public` only for a group or a challenge; the Worker fills
+// its name, count and cover from the restricted preview and points og:image at the signed card.
+import LinkLayout from '../../../../layouts/LinkLayout.astro';
+import InviteGroup from '../../../../invite/InviteGroup.astro';
+import InviteChallenge from '../../../../invite/InviteChallenge.astro';
+import InviteFriend from '../../../../invite/InviteFriend.astro';
+import InviteFamily from '../../../../invite/InviteFamily.astro';
+import { INVITE_VARIANTS, isState, type InviteVariant } from '../../../../invite/variants';
+import { INVITE_COPY, INVITE_STATE_COPY, type InviteKind } from '../../../../../workers/links/src/catalogue';
+
+export function getStaticPaths() {
+  return (Object.keys(INVITE_COPY) as InviteKind[]).flatMap((kind) =>
+    INVITE_VARIANTS.filter((v) => v !== 'public' || kind === 'group' || kind === 'challenge').map((variant) => ({ params: { kind, variant } })),
+  );
+}
+
+const kind = Astro.params.kind as InviteKind;
+const variant = Astro.params.variant as InviteVariant;
+const DESIGNS = { group: InviteGroup, challenge: InviteChallenge, friend: InviteFriend, family: InviteFamily };
+const Design = DESIGNS[kind];
+const copy = INVITE_COPY[kind];
+const state = isState(variant) ? INVITE_STATE_COPY[variant] : undefined;
+const title = state ? `${state.title} | SeeMyHealth` : copy.pageTitle;
+const description = state ? state.sentence : copy.sentence;
+const ogImage = state ? `/og/invite-${variant.replace('_', '-')}.jpg` : `/og/invite-${kind}.jpg`;
+---
+
+<LinkLayout title={title} description={description} ogImage={ogImage} ogImageAlt={state ? state.title : `${copy.title} ${copy.bold}`}>
+  <Design variant={variant} />
+</LinkLayout>

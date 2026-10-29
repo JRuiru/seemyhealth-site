@@ -1,0 +1,10 @@
+---
+import LinkLayout from '../../../layouts/LinkLayout.astro';
+import InviteNeutral from '../../../invite/InviteNeutral.astro';
+import { INVITE_STATE_COPY } from '../../../../workers/links/src/catalogue';
+const c = INVITE_STATE_COPY.not_found;
+---
+
+<LinkLayout title={`${c.title} | SeeMyHealth`} description={c.sentence} ogImage="/og/invite-not-found.jpg" ogImageAlt={c.title}>
+  <InviteNeutral state="not_found" />
+</LinkLayout>

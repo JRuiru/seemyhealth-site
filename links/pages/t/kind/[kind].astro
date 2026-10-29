@@ -1,0 +1,42 @@
+---
+// One page per fallback kind (workers/links/src/page-kinds.ts): what the Worker serves for a link
+// path when the app is not installed. Prerendered; the Worker fills og:url and the platform.
+import LinkLayout from '../../../layouts/LinkLayout.astro';
+import { FALLBACK_KINDS, type PageKind } from '../../../../workers/links/src/page-kinds';
+import { KIND_COPY, type FallbackKind } from '../../../../workers/links/src/catalogue';
+import Group from '../../../kinds/Group.astro';
+import GroupManage from '../../../kinds/GroupManage.astro';
+import Event from '../../../kinds/Event.astro';
+import Challenge from '../../../kinds/Challenge.astro';
+import Trophies from '../../../kinds/Trophies.astro';
+import Post from '../../../kinds/Post.astro';
+import People from '../../../kinds/People.astro';
+import Family from '../../../kinds/Family.astro';
+import Messages from '../../../kinds/Messages.astro';
+import Call from '../../../kinds/Call.astro';
+import Care from '../../../kinds/Care.astro';
+import CheckIn from '../../../kinds/CheckIn.astro';
+import Billing from '../../../kinds/Billing.astro';
+import Health from '../../../kinds/Health.astro';
+import Mood from '../../../kinds/Mood.astro';
+import Devices from '../../../kinds/Devices.astro';
+import Notifications from '../../../kinds/Notifications.astro';
+
+export function getStaticPaths() {
+  return FALLBACK_KINDS.map((kind) => ({ params: { kind } }));
+}
+
+const DESIGNS: Record<FallbackKind, typeof Group> = {
+  group: Group, groupManage: GroupManage, event: Event, challenge: Challenge, trophies: Trophies, post: Post,
+  people: People, family: Family, messages: Messages, call: Call, care: Care, checkIn: CheckIn, billing: Billing,
+  health: Health, mood: Mood, devices: Devices, notifications: Notifications,
+};
+
+const kind = Astro.params.kind as Exclude<PageKind, 'invite' | 'payment'>;
+const copy = KIND_COPY[kind];
+const Design = DESIGNS[kind];
+---
+
+<LinkLayout title={copy.pageTitle} description={copy.sentence} ogImage={`/og/kind-${kind}.jpg`} ogImageAlt={`${copy.title} ${copy.bold}`}>
+  <Design />
+</LinkLayout>
