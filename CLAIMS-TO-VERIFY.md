@@ -59,7 +59,7 @@ claim is confirmed, note the source beside it in the code (a comment in `src/dat
 ## Site-wide
 
 - [ ] **Store links:** every App Store and Google Play button points to `#` until the listings are live.
-- [ ] **Prices and the Premium trial** ($8 a month, $70 a year, first month free) are hard-coded on
+- [ ] **Prices and the Premium trial** ($7.99 a month, $69.99 a year, the first two weeks free on both) are hard-coded on
       the app page and the shop; check them against the store listings at launch.
 - [ ] **Data:** "encrypted in transit (TLS 1.3) and at rest (AES-256)" on the app page FAQ. The iOS
       app's own notes say the on-device Couchbase file is not encrypted at rest (it is kept out of

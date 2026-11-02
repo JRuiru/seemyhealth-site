@@ -62,7 +62,9 @@ before(async () => {
   worker = await unstable_dev(join(WORKER, 'src', 'index.ts'), {
     config: join(WORKER, 'wrangler.jsonc'),
     env: '',
-    vars: { API_BASE: `http://127.0.0.1:${stub.address().port}`, LINKS_PREVIEW_SECRET: SECRET },
+    // OG_DYNAMIC on: production keeps it off on the Workers Free plan, but the drawn card is still the
+    // path these tests hold to, and the static fallback is covered by the tampered-key test.
+    vars: { API_BASE: `http://127.0.0.1:${stub.address().port}`, LINKS_PREVIEW_SECRET: SECRET, OG_DYNAMIC: 'on' },
     local: true,
     logLevel: 'error',
     experimental: { disableExperimentalWarning: true },
@@ -94,14 +96,23 @@ describe('association files', () => {
     assert.ok(detail.components.some((c) => c['/'] === '/family-invitations' && !c['?']), 'and so does the bare list');
   });
 
-  test('the Android file lists the dev app with its full fingerprint, and no placeholder for prod', async () => {
+  test('the Android file lists each app with the key that signs what Play installs, in full', async () => {
     const res = await get('/.well-known/assetlinks.json');
     assert.equal(res.status, 200);
     assert.equal(res.headers.get('content-type'), 'application/json');
     const body = await res.json();
-    assert.equal(body.length, 1);
-    assert.equal(body[0].target.package_name, 'ai.seemyhealth.app.dev');
-    assert.equal(body[0].target.sha256_cert_fingerprints[0], '96:F2:9A:52:78:30:39:B9:64:9B:D3:13:1B:BD:3C:29:E0:F5:09:64:A5:EA:74:9F:82:27:CA:61:C0:A7:46:78');
+    const byPackage = Object.fromEntries(body.map((s) => [s.target.package_name, s.target.sha256_cert_fingerprints]));
+    assert.deepEqual(byPackage, {
+      'ai.seemyhealth.app': ['5B:37:4A:19:1D:C0:63:E9:04:59:83:0F:D2:BB:39:09:17:1B:E3:4D:98:D6:61:64:AE:55:A8:09:A7:66:E0:06'],
+      'ai.seemyhealth.app.dev': [
+        '30:5B:BB:15:76:E8:F1:69:7D:E4:82:C8:B5:02:67:32:86:83:CF:95:A7:CF:4C:A9:B0:B7:1E:4C:B1:58:B2:8D',
+        '96:F2:9A:52:78:30:39:B9:64:9B:D3:13:1B:BD:3C:29:E0:F5:09:64:A5:EA:74:9F:82:27:CA:61:C0:A7:46:78',
+      ],
+    });
+    // A fingerprint Android cannot match is a refusal of every link: whole, upper case, 32 bytes.
+    for (const f of Object.values(byPackage).flat()) assert.match(f, /^([0-9A-F]{2}:){31}[0-9A-F]{2}$/);
+    // The upload key signs nothing a phone installs, so listing it would claim nothing.
+    assert.ok(!Object.values(byPackage).flat().includes('9D:6D:83:45:5E:E7:F1:8F:59:FD:11:CE:2C:CB:F7:FB:FE:DF:ED:0C:1E:68:98:A5:2F:4D:46:9A:A8:2F:55:BC'));
   });
 });
 
@@ -139,6 +150,14 @@ describe('every link path', () => {
       assert.equal(res.status, 404, path);
       assert.match(await res.text(), /Nothing/);
     }
+  });
+
+  test('every kind of response says https only, for a year', async () => {
+    const paths = ['/.well-known/apple-app-site-association', '/.well-known/assetlinks.json', '/feed', '/nope', `/i/${TOKENS.publicGroup}`, '/og/default.jpg', '/get-the-app'];
+    for (const path of paths) {
+      assert.equal((await get(path)).headers.get('strict-transport-security'), 'max-age=31536000; includeSubDomains', path);
+    }
+    assert.equal((await get('/feed', { method: 'POST' })).headers.get('strict-transport-security'), 'max-age=31536000; includeSubDomains', 'a 405');
   });
 
   test('anything but GET or HEAD is refused', async () => {

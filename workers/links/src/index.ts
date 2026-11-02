@@ -53,32 +53,46 @@ const SECURITY_HEADERS: Record<string, string> = {
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    if (request.method !== 'GET' && request.method !== 'HEAD') {
-      return new Response('Method Not Allowed', { status: 405, headers: { Allow: 'GET, HEAD' } });
-    }
-    const url = new URL(request.url);
-    const path = url.pathname;
-
-    if (path === '/.well-known/apple-app-site-association') return json(APPLE_APP_SITE_ASSOCIATION);
-    if (path === '/.well-known/assetlinks.json') return json(ASSET_LINKS);
-
-    // The build's own files: hashed bundles, fonts, icons, Rive files and the static cards.
-    if (/^\/(_astro|images|media|fonts)\//.test(path) || /^\/og\/[a-zA-Z-]+\.jpg$/.test(path)) {
-      return env.ASSETS.fetch(request);
-    }
-    if (path.startsWith('/og/invite/')) return dynamicCard(request, env, ctx);
-
-    if (path === '/get-the-app') return page(request, env, '/t/get-the-app/', 200, 'public');
-
-    const match = matchLinkPath(path);
-    if (!match) return page(request, env, '/t/not-found/', 404, 'public');
-
-    if (match.spec.name === 'invite') return invitePage(request, env, match.params.inviteToken);
-    if (match.spec.name === 'paymentsReturn') return page(request, env, `/t/payment/${paymentState(url.searchParams.get('status'))}/`, 200, 'private');
-
-    return page(request, env, `/t/kind/${PAGE_KIND_BY_PATH[match.spec.name]}/`, 200, 'public');
+    const res = await route(request, env, ctx);
+    const headers = new Headers(res.headers);
+    headers.set('Strict-Transport-Security', HSTS);
+    return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
   },
 } satisfies ExportedHandler<Env>;
+
+// On every response, the association files and assets included: a browser that has been here once
+// goes straight to https, so an old http:// invite link never sends its token in the clear again.
+// The http-to-https redirect itself is Cloudflare's, before this Worker runs. Not preloaded: preload
+// is decided for the whole seemyhealth.ai zone, not for this host. Not exported: the Worker's main
+// module may export only handlers and functions.
+const HSTS = 'max-age=31536000; includeSubDomains';
+
+async function route(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    return new Response('Method Not Allowed', { status: 405, headers: { Allow: 'GET, HEAD' } });
+  }
+  const url = new URL(request.url);
+  const path = url.pathname;
+
+  if (path === '/.well-known/apple-app-site-association') return json(APPLE_APP_SITE_ASSOCIATION);
+  if (path === '/.well-known/assetlinks.json') return json(ASSET_LINKS);
+
+  // The build's own files: hashed bundles, fonts, icons, Rive files and the static cards.
+  if (/^\/(_astro|images|media|fonts)\//.test(path) || /^\/og\/[a-zA-Z-]+\.jpg$/.test(path)) {
+    return env.ASSETS.fetch(request);
+  }
+  if (path.startsWith('/og/invite/')) return dynamicCard(request, env, ctx);
+
+  if (path === '/get-the-app') return page(request, env, '/t/get-the-app/', 200, 'public');
+
+  const match = matchLinkPath(path);
+  if (!match) return page(request, env, '/t/not-found/', 404, 'public');
+
+  if (match.spec.name === 'invite') return invitePage(request, env, match.params.inviteToken);
+  if (match.spec.name === 'paymentsReturn') return page(request, env, `/t/payment/${paymentState(url.searchParams.get('status'))}/`, 200, 'private');
+
+  return page(request, env, `/t/kind/${PAGE_KIND_BY_PATH[match.spec.name]}/`, 200, 'public');
+}
 
 // ---- Paths ---------------------------------------------------------------------------------------
 
