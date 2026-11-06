@@ -4,12 +4,19 @@
 export interface CustomerAuthConfig {
   clientId: string;
   shopId: string;
-  customerAccountDomain: string; // e.g. account.seemyhealth.ai
-  redirectUri: string; // https://www.seemyhealth.ai/api/auth/callback
+  // The store's OAuth base, no trailing slash: https://account.seemyhealth.ai/authentication with a
+  // custom account domain (prod), https://shopify.com/authentication/<shop_id> without one. The
+  // store's /.well-known/openid-configuration names it.
+  authBaseUrl: string;
+  // The Customer Account API's GraphQL base, before the version: https://account.seemyhealth.ai/customer/api
+  // (prod), https://shopify.com/<shop_id>/account/customer/api without a custom domain. The store's
+  // /.well-known/customer-account-api names it.
+  apiBaseUrl: string;
+  redirectUri: string; // {SITE_ORIGIN}/api/auth/callback
+  // The site's origin (SITE_ORIGIN): the Origin header the token endpoint expects, and where a
+  // sign-out lands.
+  siteOrigin: string;
 }
-
-const AUTH_BASE = (domain: string) =>
-  `https://${domain}/authentication`;
 
 // --- PKCE helpers ---
 
@@ -56,7 +63,7 @@ export async function buildAuthorizationUrl(
     code_challenge_method: "S256",
   });
 
-  const url = `${AUTH_BASE(config.customerAccountDomain)}/oauth/authorize?${params}`;
+  const url = `${config.authBaseUrl}/oauth/authorize?${params}`;
   return { url, codeVerifier, nonce };
 }
 
@@ -71,7 +78,7 @@ export async function exchangeCodeForTokens(
   expires_in: number;
   token_type: string;
 }> {
-  const tokenUrl = `${AUTH_BASE(config.customerAccountDomain)}/oauth/token`;
+  const tokenUrl = `${config.authBaseUrl}/oauth/token`;
 
   const body = new URLSearchParams({
     grant_type: "authorization_code",
@@ -85,7 +92,7 @@ export async function exchangeCodeForTokens(
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      "Origin": "https://www.seemyhealth.ai",
+      "Origin": config.siteOrigin,
       "User-Agent": "SeeMyHealth-BFF/1.0",
     },
     body: body.toString(),
@@ -113,7 +120,7 @@ export async function refreshAccessToken(
   refresh_token: string;
   expires_in: number;
 }> {
-  const tokenUrl = `${AUTH_BASE(config.customerAccountDomain)}/oauth/token`;
+  const tokenUrl = `${config.authBaseUrl}/oauth/token`;
 
   const body = new URLSearchParams({
     grant_type: "refresh_token",
@@ -125,7 +132,7 @@ export async function refreshAccessToken(
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      "Origin": "https://www.seemyhealth.ai",
+      "Origin": config.siteOrigin,
       "User-Agent": "SeeMyHealth-BFF/1.0",
     },
     body: body.toString(),
@@ -146,8 +153,8 @@ export async function refreshAccessToken(
 export function buildLogoutUrl(config: CustomerAuthConfig, idToken: string): string {
   const params = new URLSearchParams({
     id_token_hint: idToken,
-    post_logout_redirect_uri: "https://www.seemyhealth.ai",
+    post_logout_redirect_uri: config.siteOrigin,
   });
 
-  return `${AUTH_BASE(config.customerAccountDomain)}/logout?${params}`;
+  return `${config.authBaseUrl}/logout?${params}`;
 }

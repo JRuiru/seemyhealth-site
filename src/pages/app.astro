@@ -1,4 +1,5 @@
 ---
+import { SITE_ORIGIN } from '../lib/site';
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
@@ -25,7 +26,7 @@ const appSchema = {
   author: {
     "@type": "Organization",
     name: "SeeMyHealth",
-    url: "https://www.seemyhealth.ai",
+    url: SITE_ORIGIN,
   },
 };
 

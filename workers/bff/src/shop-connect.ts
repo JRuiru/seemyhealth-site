@@ -1,8 +1,9 @@
 // Connect a store (Shopify) account to a SeeMyHealth app account.
 //
 // The app mints a single-use connect token (POST /api/v2/client/shop/account/connect on the
-// backend) and opens https://seemyhealth.ai/account/connect?t=<token>. The page signs the visitor in
-// to the store, then POSTs { t } to /api/shop/connect here. This module:
+// backend) and opens {site}/account/connect?t=<token> (https://seemyhealth.ai in prod,
+// https://dev.seemyhealth.ai in dev). The page signs the visitor in to the store, then POSTs { t } to
+// /api/shop/connect here. This module:
 //
 //   1. reads the signed-in customer from the SESSION (the httpOnly access token cookie, asked of the
 //      Customer Account API): their id and email. Nothing about the customer comes from the browser.
@@ -33,8 +34,8 @@ export interface ShopConnectConfig {
   backendApiBase: string | undefined;
   /** Shared bearer secret, the same value as the backend's SHOP_CONNECT_WEBHOOK_TOKEN. */
   webhookToken: string | undefined;
-  /** Customer Account API host, e.g. account.seemyhealth.ai. */
-  customerAccountDomain: string;
+  /** Customer Account API GraphQL base before the version, e.g. https://account.seemyhealth.ai/customer/api. */
+  customerAccountApiUrl: string;
   /** Origin header the Customer Account API expects. */
   siteOrigin: string;
 }
@@ -65,13 +66,13 @@ function result(httpStatus: number, status: ConnectOutcome, email?: string): Con
  */
 export async function getSessionCustomer(
   accessToken: string | null,
-  config: Pick<ShopConnectConfig, "customerAccountDomain" | "siteOrigin">,
+  config: Pick<ShopConnectConfig, "customerAccountApiUrl" | "siteOrigin">,
   fetchImpl: Fetch = fetch
 ): Promise<SessionCustomer | null> {
   if (!accessToken) return null;
 
   const res = await fetchImpl(
-    `https://${config.customerAccountDomain}/customer/api/2026-04/graphql`,
+    `${config.customerAccountApiUrl.replace(/\/+$/, "")}/2026-04/graphql`,
     {
       method: "POST",
       headers: {

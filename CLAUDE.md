@@ -17,13 +17,15 @@ Premium medical-grade health monitoring device ecommerce site. See `ARCHITECTURE
 ```bash
 # Astro frontend (Cloudflare Pages)
 npm run dev          # Dev server
-npm run build        # Production build
+npm run build        # Production build (prod line: www.seemyhealth.ai)
+npm run build:dev    # Dev-line build (dev.seemyhealth.ai): noindex, no GA, dev-store variant ids
 npx wrangler pages deploy dist --project-name seemyhealth-site  # Deploy frontend
 
 # BFF Worker (Cloudflare Worker)
 cd workers/bff
 npm run dev           # Local dev (port 8787)
-npx wrangler deploy --config wrangler.jsonc  # Deploy worker
+npx wrangler deploy --config wrangler.jsonc  # Deploy worker (prod)
+npx wrangler deploy --config wrangler.jsonc --env dev  # Deploy worker (dev line)
 
 # links.seemyhealth.ai Worker (app links: association files, /i/{token}, fallback pages, OG cards)
 npm run links:generate   # path table + Apple association file from cmh-golang's link-paths.json
@@ -97,11 +99,108 @@ reads the customer's id and email from the SESSION (Customer Account API), never
 calls the backend's `POST /webhooks/shop/connect` with `Authorization: Bearer <SHOP_CONNECT_WEBHOOK_TOKEN>`.
 
 - `BACKEND_API_BASE` (var, `workers/bff/wrangler.jsonc`): the backend's base URL.
-- `SHOP_CONNECT_WEBHOOK_TOKEN` (secret): `cd workers/bff && npx wrangler secret put SHOP_CONNECT_WEBHOOK_TOKEN`,
-  the same value as the backend's. Unset, the route answers 503 and the page offers Try again.
+- `SHOP_CONNECT_WEBHOOK_TOKEN` (secret): `cd workers/bff && npx wrangler secret put SHOP_CONNECT_WEBHOOK_TOKEN`
+  (`--env dev` for the dev line), the same value as that line's backend. Unset, the route answers 503
+  and the page offers Try again. Prod's stays unset until `api.seemyhealth.ai` is live (below).
 
 The token is a bearer secret: nothing logs it, it leaves the address bar once the answer is final, and
 the page tells analytics its address without the query (`Layout`'s `secretQuery`).
+
+## Prod and dev
+
+Two full lines, each its own site, BFF, Shopify store and backend:
+
+| | prod | dev |
+|---|---|---|
+| Site | `www.seemyhealth.ai` / `seemyhealth.ai`, Pages project `seemyhealth-site` | `dev.seemyhealth.ai`, Pages project `seemyhealth-site-dev` (production branch `dev`) |
+| BFF | Worker `seemyhealth-bff` (top level of `workers/bff/wrangler.jsonc`) | Worker `seemyhealth-bff-dev` (`env.dev`), route `dev.seemyhealth.ai/api/*`, no workers.dev URL |
+| Store | `hxcim0-mb.myshopify.com` (`shop.seemyhealth.ai`, accounts on `account.seemyhealth.ai`) | `ddwngw-ra.myshopify.com` |
+| Backend | `api.seemyhealth.ai` (not live yet: `BACKEND_API_BASE` is still the dev API) | `api.dev.seemyhealth.ai` |
+| Build | `npm run build` | `npm run build:dev` (`PUBLIC_SITE_ENV=dev`) |
+| Deploys on | push to `main` | push to `dev` (or Actions > Deploy > Run workflow on `dev`) |
+
+**What differs in a dev build** (`astro.config.mjs`, `src/lib/site.ts`): `site` is `https://dev.seemyhealth.ai`
+(canonicals, Open Graph, JSON-LD); every page carries `noindex, nofollow`; `robots.txt` disallows
+everything and `_headers` adds `X-Robots-Tag: noindex, nofollow` to every response; no sitemap; no GA4
+tag; and each real-store ProductVariant id in `src/data/variants.ts` is swapped for the dev store's from
+`src/data/dev-store-variant-ids.json` (a variant id belongs to one store). Fill that file with
+`DEV_SHOPIFY_STORE_DOMAIN=ddwngw-ra.myshopify.com DEV_SHOPIFY_STOREFRONT_TOKEN=… npm run dev-store:variant-ids`
+(matches by handle and options; re-run when a variant is added). A prod build reads none of this and
+is byte-for-byte what it was. The BFF takes its site from `SITE_ORIGIN` and the store's Customer
+Account API from `CUSTOMER_ACCOUNT_AUTH_URL` / `CUSTOMER_ACCOUNT_API_URL`, per env.
+
+**Why a second Pages project rather than a `dev` branch deployment of `seemyhealth-site`:** the
+custom domain attaches to a project's production deployment the normal way (Cloudflare writes the
+CNAME and certificate; a branch alias needs the CNAME hand-edited to `dev.seemyhealth-site.pages.dev`),
+the dev job never names the prod project, so no flag typo can publish a dev build to
+`www.seemyhealth.ai`, and each line's deployment history and rollback are its own.
+
+### Setting up dev (owner, once)
+
+1. **Pages project:** `npx wrangler pages project create seemyhealth-site-dev --production-branch=dev`,
+   then dashboard > Workers & Pages > seemyhealth-site-dev > Custom domains > add `dev.seemyhealth.ai`.
+2. **Cloudflare Access** (Zero Trust > Access > Applications > Self-hosted): one application for
+   `dev.seemyhealth.ai` (whole host, so `/api/*` is covered too) plus `seemyhealth-site-dev.pages.dev`
+   and `*.seemyhealth-site-dev.pages.dev`, with an Allow policy for the team's and testers' emails.
+   - The Shopify sign-in callback (`/api/auth/callback`) needs **no** exclusion: it is a top-level
+     browser redirect from Shopify for somebody already through Access, so their `CF_Authorization`
+     cookie goes with it. Leave the application's cookie SameSite at its default (Lax or None), never
+     Strict, or that cross-site redirect arrives without it. The token exchange is Worker to Shopify
+     and never meets Access.
+   - **`/api/webhooks/shopify` does need one:** Shopify's servers cannot pass Access. Add a second
+     self-hosted application for `dev.seemyhealth.ai/api/webhooks/shopify` with a **Bypass** policy
+     (Everyone); the route verifies Shopify's HMAC itself.
+   - For the CI smoke test: Access > Service Auth > create a service token, add a Service Auth policy
+     for it to the dev application, and store it as repository secrets `DEV_ACCESS_CLIENT_ID` and
+     `DEV_ACCESS_CLIENT_SECRET`. Without them the dev smoke test is skipped with a notice.
+3. **Dev store, Customer Account API** (Shopify admin of ddwngw-ra > Settings > Customer accounts >
+   the Headless / Customer Account API client, public client like prod's): Callback URI
+   `https://dev.seemyhealth.ai/api/auth/callback`, JavaScript origin `https://dev.seemyhealth.ai`,
+   Logout URI `https://dev.seemyhealth.ai`. Its client id is the `SHOPIFY_CUSTOMER_CLIENT_ID` secret.
+4. **Fill the placeholders** in `env.dev.vars` (`workers/bff/wrangler.jsonc`, marked FILL-IN): the
+   dev shop id, and `CUSTOMER_ACCOUNT_AUTH_URL` / `CUSTOMER_ACCOUNT_API_URL` read from
+   `https://ddwngw-ra.myshopify.com/.well-known/openid-configuration` and `/.well-known/customer-account-api`.
+5. **Dev store webhook:** subscribe `customers/email_marketing_consent_update` to
+   `https://dev.seemyhealth.ai/api/webhooks/shopify`; its signing secret is `WEBHOOK_SECRET`.
+6. **Secrets**, from `workers/bff`, each with the DEV store's / dev services' value:
+   ```bash
+   npx wrangler secret put SHOPIFY_STOREFRONT_TOKEN   --env dev   # dev store Storefront API token
+   npx wrangler secret put SHOPIFY_ADMIN_TOKEN        --env dev   # dev store Admin API token (consent webhook)
+   npx wrangler secret put SHOPIFY_CUSTOMER_CLIENT_ID --env dev   # dev Customer Account API client id
+   npx wrangler secret put WEBHOOK_SECRET             --env dev   # dev store webhook HMAC secret
+   npx wrangler secret put SENDGRID_API_KEY           --env dev
+   npx wrangler secret put SALES_EMAIL                --env dev   # a team inbox: dev enquiries are real emails
+   npx wrangler secret put SENDGRID_SALES_TEMPLATE_ID --env dev
+   npx wrangler secret put SENDGRID_ACK_TEMPLATE_ID   --env dev
+   npx wrangler secret put JUDGEME_PUBLIC_TOKEN       --env dev   # Judge.me on the DEV store, never prod's:
+   npx wrangler secret put JUDGEME_PRIVATE_TOKEN      --env dev   #   POST /api/reviews would publish to it
+   npx wrangler secret put SHOP_CONNECT_WEBHOOK_TOKEN --env dev   # the dev backend's value
+   npx wrangler secret list --env dev                             # check
+   ```
+   `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_MYSHOPIFY_DOMAIN`, `SHOPIFY_SHOP_ID` and `JUDGEME_SHOP_DOMAIN` are
+   secrets in prod but plain vars in dev (nothing secret about them); never `secret put` a name the
+   env declares as a var. Prod also holds `SHOPIFY_APP_CLIENT_ID` / `SHOPIFY_APP_CLIENT_SECRET`, which
+   no code reads (`admin-token.ts` is not imported); dev does not need them.
+7. **Variant ids:** fill `src/data/dev-store-variant-ids.json` (above); until then the dev build warns
+   and Add to Cart fails on dev for every unmapped variant.
+8. **Backend:** the dev backend must mint shop-connect links on `https://dev.seemyhealth.ai/account/connect`.
+9. **Branch and first deploy:** `git push origin main:dev`, then Actions > Deploy > Run workflow on
+   `dev` (a new branch's first push has nothing to diff against, so the path filters may deploy
+   nothing; the manual run deploys both halves, and is refused on any other branch).
+
+Deploy the BFF after the Pages custom domain exists: the Worker route needs the proxied
+`dev.seemyhealth.ai` record the custom domain creates.
+
+### When api.seemyhealth.ai goes live (prod)
+
+In one change: `BACKEND_API_BASE` (prod vars) becomes `https://api.seemyhealth.ai` and only then
+`npx wrangler secret put SHOP_CONNECT_WEBHOOK_TOKEN` (no `--env`) with the PROD backend's value; the
+links Worker's `API_BASE` becomes `https://api.seemyhealth.ai` and its `LINKS_PREVIEW_SECRET` is re-put
+with prod's value. Setting prod's webhook token before then would join real shop accounts to dev app
+accounts.
+
+(`wrangler deploy` for prod now prints "multiple environments are defined, no target specified";
+that is the top level, as intended. `--env=""` silences it.)
 
 ## Key Patterns
 

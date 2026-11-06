@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
 import CartDrawer from '../components/commerce/CartDrawer';
+import { IS_DEV_SITE, SITE_ORIGIN } from '../lib/site';
 
 interface Props {
   title: string;
@@ -15,7 +16,7 @@ interface Props {
   secretQuery?: boolean;
 }
 
-const SITE = "https://www.seemyhealth.ai";
+const SITE = SITE_ORIGIN;
 const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
 const DEFAULT_OG = `${CF_IMG}/og-ecosystem/public`;
 
@@ -40,7 +41,8 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {/* The dev line is never indexed (its robots.txt and X-Robots-Tag header say so too). */}
+    {(noindex || IS_DEV_SITE) && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Canonical -->
     <link rel="canonical" href={canonicalUrl} />
@@ -88,6 +90,8 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
       document.addEventListener('DOMContentLoaded', initAllAnimations);
     </script>
     <!-- Google Analytics 4 -->
+    {/* Production only: the dev line sends nothing to the production GA4 property. */}
+    {!IS_DEV_SITE && <Fragment>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHZ5MMVC1X"></script>
     {secretQuery ? (
       <script is:inline>
@@ -107,5 +111,6 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
         gtag('config', 'G-FHZ5MMVC1X');
       </script>
     )}
+    </Fragment>}
   </body>
 </html>

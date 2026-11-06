@@ -8,6 +8,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:dev": "PUBLIC_SITE_ENV=dev astro build",
+    "dev-store:variant-ids": "node --experimental-strip-types scripts/dev-store-variant-ids.mjs",
     "check": "astro check",
     "check:bff": "npm --prefix workers/bff run typecheck",
     "preview": "astro preview",

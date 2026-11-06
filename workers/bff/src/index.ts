@@ -46,14 +46,23 @@ interface Env {
   JUDGEME_PUBLIC_TOKEN: string;
   JUDGEME_PRIVATE_TOKEN: string;
   ALLOWED_ORIGINS: string;
+  // The site this Worker serves (vars, per environment in wrangler.jsonc): the origin every redirect,
+  // return path and Customer Account API Origin header uses, and the store's Customer Account API
+  // (its OAuth base and its GraphQL base, which have different shapes with and without a custom
+  // account domain).
+  SITE_ORIGIN: string;
+  CUSTOMER_ACCOUNT_AUTH_URL: string;
+  CUSTOMER_ACCOUNT_API_URL: string;
   // Shop account connect (see shop-connect.ts): the backend's base URL (var) and the shared bearer
   // secret for its POST /webhooks/shop/connect (secret).
   BACKEND_API_BASE: string;
   SHOP_CONNECT_WEBHOOK_TOKEN: string;
 }
 
-const SITE_ORIGIN = "https://www.seemyhealth.ai";
-const ACCOUNT_ORIGIN = "https://account.seemyhealth.ai";
+// No trailing slash, so `${origin}/path` is always one slash.
+function trimSlash(value: string): string {
+  return value.replace(/\/+$/, "");
+}
 
 function corsHeaders(request: Request, env: Env): HeadersInit {
   const origin = request.headers.get("Origin") || "";
@@ -167,11 +176,16 @@ export default {
       storefrontToken: env.SHOPIFY_STOREFRONT_TOKEN,
     };
 
+    // prod https://www.seemyhealth.ai, dev https://dev.seemyhealth.ai (wrangler.jsonc).
+    const SITE_ORIGIN = trimSlash(env.SITE_ORIGIN);
+
     const customerAuth: CustomerAuthConfig = {
       clientId: env.SHOPIFY_CUSTOMER_CLIENT_ID,
       shopId: env.SHOPIFY_SHOP_ID,
-      customerAccountDomain: "account.seemyhealth.ai",
+      authBaseUrl: trimSlash(env.CUSTOMER_ACCOUNT_AUTH_URL),
+      apiBaseUrl: trimSlash(env.CUSTOMER_ACCOUNT_API_URL),
       redirectUri: `${SITE_ORIGIN}/api/auth/callback`,
+      siteOrigin: SITE_ORIGIN,
     };
 
     // Detect buyer country from Cloudflare header or explicit query param
@@ -303,7 +317,7 @@ export default {
         }
 
         // Customer Account API GraphQL — discovered via /.well-known/customer-account-api
-        const graphqlUrl = `https://${customerAuth.customerAccountDomain}/customer/api/2026-04/graphql`;
+        const graphqlUrl = `${customerAuth.apiBaseUrl}/2026-04/graphql`;
         const res = await fetch(graphqlUrl, {
             method: "POST",
             headers: {
@@ -403,7 +417,7 @@ export default {
           {
             backendApiBase: env.BACKEND_API_BASE,
             webhookToken: env.SHOP_CONNECT_WEBHOOK_TOKEN,
-            customerAccountDomain: customerAuth.customerAccountDomain,
+            customerAccountApiUrl: customerAuth.apiBaseUrl,
             siteOrigin: SITE_ORIGIN,
           }
         );

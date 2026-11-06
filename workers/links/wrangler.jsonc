@@ -34,7 +34,10 @@
 	// resvg, about a second of CPU per new card, cached per location for each 15-minute key window).
 	// That needs Workers Paid, which the account is on; on the Free plan's 10 ms it would have to be
 	// "off", and those invites would use the invite kind's static card.
-	// API_BASE is dev while only dev exists (the apps' invites are minted there); prod at launch.
+	// API_BASE is dev while only dev exists (the apps' invites are minted there). When
+	// https://api.seemyhealth.ai is live it becomes https://api.seemyhealth.ai, with
+	// LINKS_PREVIEW_SECRET re-put to the PROD backend's value in the same change (the BFF's
+	// BACKEND_API_BASE and SHOP_CONNECT_WEBHOOK_TOKEN move at the same moment; CLAUDE.md "Prod and dev").
 	"vars": { "API_BASE": "https://api.dev.seemyhealth.ai", "OG_DYNAMIC": "on" },
 
 	"rules": [{ "type": "CompiledWasm", "globs": ["**/*.wasm"], "fallthrough": true }],

@@ -1,0 +1,135 @@
+{
+  "_readme": "Real-store ProductVariant id -> the dev store's id for the same variant. Read only by `npm run build:dev`; written by scripts/dev-store-variant-ids.mjs.",
+  "variants": {
+    "gid://shopify/ProductVariant/43225636470897": {
+      "product": "ring-one",
+      "title": "Phantom Black / 6",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636503665": {
+      "product": "ring-one",
+      "title": "Phantom Black / 7",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636536433": {
+      "product": "ring-one",
+      "title": "Phantom Black / 8",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636569201": {
+      "product": "ring-one",
+      "title": "Phantom Black / 9",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636601969": {
+      "product": "ring-one",
+      "title": "Phantom Black / 10",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636634737": {
+      "product": "ring-one",
+      "title": "Phantom Black / 11",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636667505": {
+      "product": "ring-one",
+      "title": "Phantom Black / 12",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636700273": {
+      "product": "ring-one",
+      "title": "Phantom Black / 13",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636733041": {
+      "product": "ring-one",
+      "title": "Aurora Gold / 6",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636765809": {
+      "product": "ring-one",
+      "title": "Aurora Gold / 7",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636798577": {
+      "product": "ring-one",
+      "title": "Aurora Gold / 8",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636831345": {
+      "product": "ring-one",
+      "title": "Aurora Gold / 9",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636864113": {
+      "product": "ring-one",
+      "title": "Aurora Gold / 10",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636896881": {
+      "product": "ring-one",
+      "title": "Aurora Gold / 11",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636929649": {
+      "product": "ring-one",
+      "title": "Aurora Gold / 12",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225636962417": {
+      "product": "ring-one",
+      "title": "Aurora Gold / 13",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225637814385": {
+      "product": "scale",
+      "title": "Obsidian Black",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225637847153": {
+      "product": "scale",
+      "title": "Frost White",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225637879921": {
+      "product": "scale-pro",
+      "title": "Obsidian Black",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225637912689": {
+      "product": "scale-pro",
+      "title": "Frost White",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225874759793": {
+      "product": "bp-monitor",
+      "title": "Carbon Black",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225874792561": {
+      "product": "bp-monitor",
+      "title": "Opal White",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225874825329": {
+      "product": "hydra-one",
+      "title": "Abyss Black",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43225874858097": {
+      "product": "hydra-one",
+      "title": "Glacier White",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43253482717297": {
+      "product": "hema-one",
+      "title": "Stealth Black",
+      "dev": ""
+    },
+    "gid://shopify/ProductVariant/43253482750065": {
+      "product": "hema-one",
+      "title": "Ember Orange",
+      "dev": ""
+    }
+  }
+}

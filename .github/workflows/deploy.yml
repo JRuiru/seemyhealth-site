@@ -1,21 +1,31 @@
 name: Deploy
 
+# Two lines (CLAUDE.md "Prod and dev"):
+#   main -> prod: www.seemyhealth.ai (Pages project seemyhealth-site, Worker seemyhealth-bff)
+#   dev  -> dev:  dev.seemyhealth.ai (Pages project seemyhealth-site-dev, Worker seemyhealth-bff-dev)
+# Each deploys only what its push changed (the same path filters on both). A manual run is for dev
+# only (its first deploy, when the new branch has nothing to compare against): it deploys both halves.
+
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
+  workflow_dispatch:
 
 concurrency:
-  group: deploy
+  group: ${{ github.ref_name == 'main' && 'deploy' || 'deploy-dev' }}
   cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      LINE: ${{ github.ref_name == 'main' && 'prod' || 'dev' }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Detect what changed
+        if: github.event_name == 'push'
         uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -32,6 +42,21 @@ jobs:
               - 'workers/bff/**'
               - '.github/workflows/deploy.yml'
 
+      - name: What to deploy
+        id: what
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ "${{ github.ref_name }}" != "dev" ]; then
+              echo "::error::A manual run deploys the dev line only; prod deploys on a push to main."
+              exit 1
+            fi
+            echo "site=true" >> "$GITHUB_OUTPUT"
+            echo "bff=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "site=${{ steps.filter.outputs.site }}" >> "$GITHUB_OUTPUT"
+            echo "bff=${{ steps.filter.outputs.bff }}" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -39,23 +64,27 @@ jobs:
 
       # ---- Site ----
       - name: Install dependencies
-        if: steps.filter.outputs.site == 'true'
+        if: steps.what.outputs.site == 'true'
         run: npm ci
 
       - name: Security audit
-        if: steps.filter.outputs.site == 'true'
+        if: steps.what.outputs.site == 'true'
         run: npm audit --audit-level=critical
 
       - name: Typecheck site
-        if: steps.filter.outputs.site == 'true'
+        if: steps.what.outputs.site == 'true'
         run: npm run check
 
       - name: Build site
-        if: steps.filter.outputs.site == 'true'
+        if: steps.what.outputs.site == 'true' && env.LINE == 'prod'
         run: npm run build
 
+      - name: Build site (dev)
+        if: steps.what.outputs.site == 'true' && env.LINE == 'dev'
+        run: npm run build:dev
+
       - name: Assert no source maps in client bundle
-        if: steps.filter.outputs.site == 'true'
+        if: steps.what.outputs.site == 'true'
         run: |
           if find dist -name '*.map' | grep -q .; then
             echo "::error::Source maps found in dist — see CLAUDE.md (Client Bundle Security)"
@@ -65,26 +94,43 @@ jobs:
           echo "No source maps in client bundle."
 
       - name: Deploy Pages
-        if: steps.filter.outputs.site == 'true'
+        if: steps.what.outputs.site == 'true' && env.LINE == 'prod'
         run: npx wrangler pages deploy dist --project-name=seemyhealth-site --commit-dirty=true
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      # Its own project, whose production branch is `dev`: this deploy is that project's production
+      # deployment, which is what the dev.seemyhealth.ai custom domain serves.
+      - name: Deploy Pages (dev)
+        if: steps.what.outputs.site == 'true' && env.LINE == 'dev'
+        run: npx wrangler pages deploy dist --project-name=seemyhealth-site-dev --branch=dev --commit-dirty=true
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       # ---- BFF Worker ----
       - name: Install BFF dependencies
-        if: steps.filter.outputs.bff == 'true'
+        if: steps.what.outputs.bff == 'true'
         run: npm ci
         working-directory: workers/bff
 
       - name: Typecheck BFF Worker
-        if: steps.filter.outputs.bff == 'true'
+        if: steps.what.outputs.bff == 'true'
         run: npm run typecheck
         working-directory: workers/bff
 
       - name: Deploy BFF Worker
-        if: steps.filter.outputs.bff == 'true'
+        if: steps.what.outputs.bff == 'true' && env.LINE == 'prod'
         run: npx wrangler deploy -c wrangler.jsonc
+        working-directory: workers/bff
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: Deploy BFF Worker (dev)
+        if: steps.what.outputs.bff == 'true' && env.LINE == 'dev'
+        run: npx wrangler deploy -c wrangler.jsonc --env dev
         working-directory: workers/bff
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -92,7 +138,7 @@ jobs:
 
       # ---- Verify ----
       - name: Smoke test
-        if: steps.filter.outputs.site == 'true' || steps.filter.outputs.bff == 'true'
+        if: (steps.what.outputs.site == 'true' || steps.what.outputs.bff == 'true') && env.LINE == 'prod'
         run: |
           set -euo pipefail
           check() {
@@ -115,6 +161,52 @@ jobs:
           check https://www.seemyhealth.ai/products/ring-one 200
           check https://www.seemyhealth.ai/api/health 200
 
+      # dev.seemyhealth.ai is behind Cloudflare Access, so the check carries an Access service token
+      # (repository secrets DEV_ACCESS_CLIENT_ID / DEV_ACCESS_CLIENT_SECRET). Without them it is
+      # skipped: an unauthenticated request lands on the Access login page, which proves nothing. A
+      # 200 counts only if it was served by dev.seemyhealth.ai itself, not a login page it redirected to.
+      - name: Smoke test (dev)
+        if: (steps.what.outputs.site == 'true' || steps.what.outputs.bff == 'true') && env.LINE == 'dev'
+        env:
+          CF_ACCESS_CLIENT_ID: ${{ secrets.DEV_ACCESS_CLIENT_ID }}
+          CF_ACCESS_CLIENT_SECRET: ${{ secrets.DEV_ACCESS_CLIENT_SECRET }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CF_ACCESS_CLIENT_ID:-}" ] || [ -z "${CF_ACCESS_CLIENT_SECRET:-}" ]; then
+            echo "::notice::No DEV_ACCESS_CLIENT_ID / DEV_ACCESS_CLIENT_SECRET; dev smoke test skipped."
+            exit 0
+          fi
+          check() {
+            local url="$1" expect="$2" attempt=1 out code final
+            while [ "$attempt" -le 6 ]; do
+              out=$(curl -sL -o /dev/null -w '%{http_code} %{url_effective}' --max-time 20 \
+                -H "CF-Access-Client-Id: $CF_ACCESS_CLIENT_ID" \
+                -H "CF-Access-Client-Secret: $CF_ACCESS_CLIENT_SECRET" "$url" || echo "000 -")
+              code="${out%% *}"; final="${out#* }"
+              if [ "$code" = "$expect" ] && [[ "$final" == https://dev.seemyhealth.ai/* ]]; then
+                echo "  ok  $url -> $code"
+                return 0
+              fi
+              echo "  ... $url -> $code at $final (attempt $attempt/6)"
+              attempt=$((attempt + 1))
+              sleep 10
+            done
+            echo "::error::Smoke test failed: $url returned $code at $final, expected $expect"
+            return 1
+          }
+          check https://dev.seemyhealth.ai/ 200
+          check https://dev.seemyhealth.ai/shop 200
+          check https://dev.seemyhealth.ai/products/ring-one 200
+          check https://dev.seemyhealth.ai/api/health 200
+          robots=$(curl -s --max-time 20 \
+            -H "CF-Access-Client-Id: $CF_ACCESS_CLIENT_ID" \
+            -H "CF-Access-Client-Secret: $CF_ACCESS_CLIENT_SECRET" https://dev.seemyhealth.ai/robots.txt)
+          if ! printf '%s\n' "$robots" | grep -qx 'Disallow: /'; then
+            echo "::error::dev.seemyhealth.ai/robots.txt does not disallow everything"
+            exit 1
+          fi
+          echo "  ok  robots.txt disallows all"
+
       - name: Skipped
-        if: steps.filter.outputs.site != 'true' && steps.filter.outputs.bff != 'true'
+        if: steps.what.outputs.site != 'true' && steps.what.outputs.bff != 'true'
         run: echo "No site or worker changes — nothing to deploy."

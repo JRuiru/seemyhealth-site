@@ -1,4 +1,9 @@
 {
+	// Two lines (CLAUDE.md "Prod and dev"): the top level is PROD (www.seemyhealth.ai, the real
+	// store), `env.dev` is DEV (dev.seemyhealth.ai, the dev store). Wrangler does not inherit `vars`
+	// or `routes` into an env, so each line declares all of its own.
+	//   prod: npx wrangler deploy -c wrangler.jsonc
+	//   dev:  npx wrangler deploy -c wrangler.jsonc --env dev
 	"name": "seemyhealth-bff",
 	"main": "src/index.ts",
 	"compatibility_date": "2026-05-09",
@@ -17,19 +22,74 @@
 			"zone_name": "seemyhealth.ai"
 		}
 	],
-	// Secrets (set via `npx wrangler secret put <NAME>`):
+	// Secrets (set via `npx wrangler secret put <NAME>`; dev's with `--env dev`, listed under it):
 	// - SHOPIFY_STORE_DOMAIN (shop.seemyhealth.ai)
 	// - SHOPIFY_STOREFRONT_TOKEN (public storefront access token)
 	// - SHOPIFY_ADMIN_TOKEN (private admin API token)
+	// - SHOPIFY_MYSHOPIFY_DOMAIN, SHOPIFY_SHOP_ID, SHOPIFY_CUSTOMER_CLIENT_ID
 	// - WEBHOOK_SECRET (Shopify webhook HMAC secret)
+	// - SENDGRID_API_KEY, SALES_EMAIL, SENDGRID_SALES_TEMPLATE_ID, SENDGRID_ACK_TEMPLATE_ID
+	// - JUDGEME_SHOP_DOMAIN, JUDGEME_PUBLIC_TOKEN, JUDGEME_PRIVATE_TOKEN
 	// - SHOP_CONNECT_WEBHOOK_TOKEN (shop account connect: the bearer token for the backend's
 	//   POST /webhooks/shop/connect; the same value as the backend's SHOP_CONNECT_WEBHOOK_TOKEN.
 	//   Unset, POST /api/shop/connect answers 503 and the page offers Try again.)
+	//   PROD: do NOT set it until https://api.seemyhealth.ai is live. Until then BACKEND_API_BASE
+	//   below is the dev API, and a token would join real shop accounts to dev app accounts.
 	"vars": {
+		"SITE_ORIGIN": "https://www.seemyhealth.ai",
 		"ALLOWED_ORIGINS": "https://www.seemyhealth.ai,https://seemyhealth.ai,https://account.seemyhealth.ai",
+		// The real store's Customer Account API, on its custom account domain (the store's
+		// /.well-known/openid-configuration and /.well-known/customer-account-api name both).
+		"CUSTOMER_ACCOUNT_AUTH_URL": "https://account.seemyhealth.ai/authentication",
+		"CUSTOMER_ACCOUNT_API_URL": "https://account.seemyhealth.ai/customer/api",
 		// The cmh-golang backend that POST /api/shop/connect calls (/webhooks/shop/connect).
 		// Dev while only dev exists (the apps mint their connect links there), as the links Worker's
-		// API_BASE; prod at launch.
+		// API_BASE. When https://api.seemyhealth.ai is live this becomes https://api.seemyhealth.ai,
+		// and only then is prod's SHOP_CONNECT_WEBHOOK_TOKEN set (to the PROD backend's value).
 		"BACKEND_API_BASE": "https://api.dev.seemyhealth.ai"
+	},
+
+	"env": {
+		// DEV: dev.seemyhealth.ai/api/*, the dev Shopify store, the dev backend. Behind Cloudflare
+		// Access with the dev site, so no workers.dev or preview URL: either would be a door around
+		// Access.
+		//
+		// Secrets (each `npx wrangler secret put <NAME> --env dev`, from workers/bff), with the dev
+		// store's values: SHOPIFY_STOREFRONT_TOKEN, SHOPIFY_ADMIN_TOKEN, SHOPIFY_CUSTOMER_CLIENT_ID,
+		// WEBHOOK_SECRET, SENDGRID_API_KEY, SALES_EMAIL, SENDGRID_SALES_TEMPLATE_ID,
+		// SENDGRID_ACK_TEMPLATE_ID, JUDGEME_PUBLIC_TOKEN, JUDGEME_PRIVATE_TOKEN,
+		// SHOP_CONNECT_WEBHOOK_TOKEN (the DEV backend's value). The store's domains and id are vars
+		// here rather than secrets (nothing about them is secret); a name is a var or a secret, never
+		// both, so do not `secret put` a name declared below.
+		"dev": {
+			"name": "seemyhealth-bff-dev",
+			"workers_dev": false,
+			"preview_urls": false,
+			"routes": [
+				{
+					"pattern": "dev.seemyhealth.ai/api/*",
+					"zone_name": "seemyhealth.ai"
+				}
+			],
+			"vars": {
+				"SITE_ORIGIN": "https://dev.seemyhealth.ai",
+				"ALLOWED_ORIGINS": "https://dev.seemyhealth.ai",
+				"BACKEND_API_BASE": "https://api.dev.seemyhealth.ai",
+				// The dev store, ddwngw-ra.myshopify.com: the Storefront and Admin APIs on its
+				// myshopify domain, and Judge.me's shop_domain (Judge.me installed on the dev store).
+				"SHOPIFY_STORE_DOMAIN": "ddwngw-ra.myshopify.com",
+				"SHOPIFY_MYSHOPIFY_DOMAIN": "ddwngw-ra.myshopify.com",
+				"JUDGEME_SHOP_DOMAIN": "ddwngw-ra.myshopify.com",
+				// FILL IN (owner): the dev store's numeric shop id, and the Customer Account API URLs
+				// that carry it. Without a custom account domain they have the shapes below. Read the
+				// real ones from https://ddwngw-ra.myshopify.com/.well-known/openid-configuration
+				// (authorization_endpoint minus /oauth/authorize) and
+				// https://ddwngw-ra.myshopify.com/.well-known/customer-account-api (graphql_api minus
+				// /<version>/graphql).
+				"SHOPIFY_SHOP_ID": "FILL-IN-DEV-SHOP-ID",
+				"CUSTOMER_ACCOUNT_AUTH_URL": "https://shopify.com/authentication/FILL-IN-DEV-SHOP-ID",
+				"CUSTOMER_ACCOUNT_API_URL": "https://shopify.com/FILL-IN-DEV-SHOP-ID/account/customer/api"
+			}
+		}
 	}
 }

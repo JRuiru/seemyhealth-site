@@ -17,7 +17,7 @@ const CUSTOMER_ID = 'gid://shopify/Customer/123';
 const CONFIG = {
   backendApiBase: 'https://api.example.test',
   webhookToken: 'webhook-secret-for-tests',
-  customerAccountDomain: 'account.example.test',
+  customerAccountApiUrl: 'https://account.example.test/customer/api',
   siteOrigin: SITE,
 };
 
