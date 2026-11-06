@@ -1,0 +1,23 @@
+---
+import { APP_STORE_URLS } from '../../data/app-stores';
+
+// The store link emails and printed material use: it never changes, so an email already sent keeps
+// working when the listing goes live. It forwards to the App Store once src/data/app-stores.ts has the
+// listing (after the next build), and to the app page until then.
+const target = APP_STORE_URLS.appStore || '/app';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={target} />
+    <title>Get SeeMyHealth</title>
+  </head>
+  <body style="background:#000;color:#fff;font-family:system-ui,sans-serif;padding:24px">
+    <a href={target} style="color:#fff">Get SeeMyHealth</a>
+  </body>
+</html>
