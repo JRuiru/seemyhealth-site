@@ -47,9 +47,16 @@ export interface Customer {
   };
 }
 
-// Redirect to Shopify's hosted login/signup page
+// Redirect to Shopify's hosted login/signup page (back to /account afterwards).
+// Takes no arguments on purpose: it is used directly as an onClick handler.
 export function login() {
   window.location.href = `${BFF_BASE}/auth/login`;
+}
+
+// The same sign-in, coming back to `returnTo` (a same-origin path with its query) afterwards.
+// The BFF keeps it only if it is one, else lands on /account.
+export function loginReturningTo(returnTo: string) {
+  window.location.href = `${BFF_BASE}/auth/login?${new URLSearchParams({ return_to: returnTo })}`;
 }
 
 // Log out — clears cookies and redirects to Shopify logout
@@ -96,6 +103,53 @@ async function refreshToken(): Promise<boolean> {
     return res.ok;
   } catch {
     return false;
+  }
+}
+
+// --- Shop account connect (POST /api/shop/connect) ---
+
+// What the BFF answers. The BFF reads who is signed in from the session; the page sends only the
+// connect token from its link.
+export type ShopConnectStatus =
+  | "linked"
+  | "already_linked"
+  | "customer_linked_elsewhere"
+  | "identity_linked_elsewhere"
+  | "expired"
+  | "signed_out"
+  | "failed";
+
+export interface ShopConnectResult {
+  status: ShopConnectStatus;
+  email?: string;
+}
+
+const SHOP_CONNECT_STATUSES: ShopConnectStatus[] = [
+  "linked", "already_linked", "customer_linked_elsewhere", "identity_linked_elsewhere", "expired", "signed_out", "failed",
+];
+
+async function postShopConnect(token: string): Promise<ShopConnectResult> {
+  const res = await fetch(`${BFF_BASE}/shop/connect`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ t: token }),
+  });
+  const data = (await res.json().catch(() => null)) as { status?: unknown; email?: unknown } | null;
+  const status = SHOP_CONNECT_STATUSES.find((s) => s === data?.status) ?? "failed";
+  return typeof data?.email === "string" ? { status, email: data.email } : { status };
+}
+
+// Connects the signed-in store account to the app account that minted `token`. A short-lived access
+// token is refreshed once before the answer counts as signed out.
+export async function connectShopAccount(token: string): Promise<ShopConnectResult> {
+  try {
+    const first = await postShopConnect(token);
+    if (first.status !== "signed_out") return first;
+    if (!(await refreshToken())) return first;
+    return await postShopConnect(token);
+  } catch {
+    return { status: "failed" };
   }
 }
 

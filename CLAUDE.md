@@ -32,6 +32,8 @@ npm run links:test       # builds the pages and cards, runs the Worker locally a
 npm run links:dev        # wrangler dev --local (needs --var API_BASE / LINKS_PREVIEW_SECRET for /i/)
 npx wrangler deploy -c workers/links/wrangler.jsonc --env=""   # deploy (go-live step only)
 
+npm test              # BFF unit tests (node:test, no network)
+
 # Shopify product seed (one-time)
 SHOPIFY_STORE_DOMAIN=shop.seemyhealth.ai SHOPIFY_ADMIN_TOKEN=shpat_xxx npx tsx scripts/seed-products.ts
 ```
@@ -82,6 +84,24 @@ seemyhealth.ai claims no app links and has no association files. The 36 paths co
 page kind, and `npm run links:check` fails a path with no kind. The pages reuse this site's tokens and
 components (`links/`), and the store buttons on both come from `src/data/app-stores.ts`. Nothing on a
 links page may log or forward its address: an `/i/` URL carries an invitation's token.
+
+## Shop Account Connect (/account/connect)
+
+The app links somebody's app account to their store account by opening
+`https://seemyhealth.ai/account/connect?t=<token>` (a single-use, 7-day token minted by cmh-golang's
+`POST /api/v2/client/shop/account/connect`). The page (`ShopConnect.tsx`) signs the visitor in to the
+store and back (`/api/auth/login?return_to=<same-origin path>`; the BFF keeps only a same-origin
+path, never `/api/…`, so it is not an open redirect), asks them to confirm the store account they are
+signed in as, then POSTs `{ t }` to the BFF's `/api/shop/connect`. The BFF (`workers/bff/src/shop-connect.ts`)
+reads the customer's id and email from the SESSION (Customer Account API), never from the browser, and
+calls the backend's `POST /webhooks/shop/connect` with `Authorization: Bearer <SHOP_CONNECT_WEBHOOK_TOKEN>`.
+
+- `BACKEND_API_BASE` (var, `workers/bff/wrangler.jsonc`): the backend's base URL.
+- `SHOP_CONNECT_WEBHOOK_TOKEN` (secret): `cd workers/bff && npx wrangler secret put SHOP_CONNECT_WEBHOOK_TOKEN`,
+  the same value as the backend's. Unset, the route answers 503 and the page offers Try again.
+
+The token is a bearer secret: nothing logs it, it leaves the address bar once the answer is final, and
+the page tells analytics its address without the query (`Layout`'s `secretQuery`).
 
 ## Key Patterns
 

@@ -1,0 +1,26 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import ShopConnect from '../../components/commerce/ShopConnect';
+
+export const prerender = true;
+---
+
+<Layout
+  title="Connect Your Shop Account | SeeMyHealth"
+  description="Connect your SeeMyHealth shop account to the SeeMyHealth app."
+  canonicalPath="/account/connect"
+  noindex
+  secretQuery
+>
+  <Navbar />
+
+  <section class="pt-32 pb-20 sm:pt-40 sm:pb-28 bg-brand-black min-h-screen">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <ShopConnect client:load />
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

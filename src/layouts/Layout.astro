@@ -10,6 +10,9 @@ interface Props {
   canonicalPath?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
+  // The address carries a secret in its query (a connect link's token): analytics records the
+  // page without it.
+  secretQuery?: boolean;
 }
 
 const SITE = "https://www.seemyhealth.ai";
@@ -24,6 +27,7 @@ const {
   canonicalPath,
   jsonLd,
   noindex = false,
+  secretQuery = false,
 } = Astro.props;
 
 const canonicalUrl = canonicalPath ? `${SITE}${canonicalPath}` : `${SITE}${Astro.url.pathname}`;
@@ -85,11 +89,23 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
     </script>
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHZ5MMVC1X"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-FHZ5MMVC1X');
-    </script>
+    {secretQuery ? (
+      <script is:inline>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FHZ5MMVC1X', {
+          page_location: location.origin + location.pathname,
+          page_referrer: document.referrer ? new URL(document.referrer).origin + '/' : '',
+        });
+      </script>
+    ) : (
+      <script is:inline>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FHZ5MMVC1X');
+      </script>
+    )}
   </body>
 </html>

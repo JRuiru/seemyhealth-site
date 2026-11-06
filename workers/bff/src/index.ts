@@ -22,6 +22,8 @@ import {
   type CustomerAuthConfig,
 } from "./customer-auth";
 
+import { connectShopAccount, safeReturnPath } from "./shop-connect";
+
 import {
   sendSalesNotification,
   sendCustomerAcknowledgment,
@@ -44,6 +46,10 @@ interface Env {
   JUDGEME_PUBLIC_TOKEN: string;
   JUDGEME_PRIVATE_TOKEN: string;
   ALLOWED_ORIGINS: string;
+  // Shop account connect (see shop-connect.ts): the backend's base URL (var) and the shared bearer
+  // secret for its POST /webhooks/shop/connect (secret).
+  BACKEND_API_BASE: string;
+  SHOP_CONNECT_WEBHOOK_TOKEN: string;
 }
 
 const SITE_ORIGIN = "https://www.seemyhealth.ai";
@@ -191,15 +197,22 @@ export default {
       // AUTH ROUTES — Shopify Customer Account API (OAuth 2.0 PKCE)
       // ============================================================
 
-      // GET /api/auth/login — Redirects to Shopify login
+      // GET /api/auth/login[?return_to=/path?query] — Redirects to Shopify login.
+      // return_to is where the callback sends the visitor once signed in. Only a same-origin path
+      // is kept (safeReturnPath), so this can never become an open redirect; anything else is
+      // dropped and the callback lands on /account as before.
       if (path === "/api/auth/login" && request.method === "GET") {
         const state = crypto.randomUUID();
         const { url: authUrl, codeVerifier, nonce } = await buildAuthorizationUrl(customerAuth, state);
+        const returnTo = safeReturnPath(url.searchParams.get("return_to"), SITE_ORIGIN);
 
         return redirect(authUrl, [
           cookie("smh_auth_state", state),
           cookie("smh_code_verifier", codeVerifier),
           cookie("smh_nonce", nonce),
+          returnTo
+            ? cookie("smh_return_to", encodeURIComponent(returnTo))
+            : clearCookie("smh_return_to"),
         ]);
       }
 
@@ -226,15 +239,21 @@ export default {
           return redirect(`${SITE_ORIGIN}/account?error=token_exchange`);
         }
 
+        // Back to where sign-in was asked from, checked again here (the cookie is ours, but a
+        // check at the point of use costs nothing), else the account page.
+        const returnTo = safeReturnPath(getCookie(request, "smh_return_to"), SITE_ORIGIN);
+        const destination = returnTo ? `${SITE_ORIGIN}${returnTo}` : `${SITE_ORIGIN}/account?welcome=1`;
+
         // Store tokens in secure httpOnly cookies
         // Access token is short-lived, refresh token is long-lived
-        return redirect(`${SITE_ORIGIN}/account?welcome=1`, [
+        return redirect(destination, [
           cookie("smh_access_token", tokens.access_token, tokens.expires_in),
           cookie("smh_refresh_token", tokens.refresh_token, 60 * 60 * 24 * 30), // 30 days
           cookie("smh_id_token", tokens.id_token, 60 * 60 * 24 * 30),
           clearCookie("smh_auth_state"),
           clearCookie("smh_code_verifier"),
           clearCookie("smh_nonce"),
+          clearCookie("smh_return_to"),
         ]);
       }
 
@@ -359,6 +378,36 @@ export default {
         // Only pass customer data to client, never raw GraphQL response
         const customer = data?.data?.customer || null;
         return json({ data: { customer } }, 200, cors);
+      }
+
+      // ============================================================
+      // SHOP ACCOUNT CONNECT — store account <-> app account (shop-connect.ts)
+      // ============================================================
+
+      // POST /api/shop/connect { t } — the customer comes from the session, never the body.
+      // JSON only: with SameSite=Lax cookies and a preflighted content type, another site cannot
+      // make a signed-in visitor's browser send this.
+      if (path === "/api/shop/connect" && request.method === "POST") {
+        const noStore = { ...cors, "Cache-Control": "no-store" };
+        if (!(request.headers.get("Content-Type") || "").toLowerCase().startsWith("application/json")) {
+          return json({ status: "failed" }, 415, noStore);
+        }
+        let body: unknown = null;
+        try {
+          body = await request.json();
+        } catch {
+          body = null;
+        }
+        const outcome = await connectShopAccount(
+          { accessToken: getCookie(request, "smh_access_token"), body },
+          {
+            backendApiBase: env.BACKEND_API_BASE,
+            webhookToken: env.SHOP_CONNECT_WEBHOOK_TOKEN,
+            customerAccountDomain: customerAuth.customerAccountDomain,
+            siteOrigin: SITE_ORIGIN,
+          }
+        );
+        return json(outcome.body, outcome.httpStatus, noStore);
       }
 
       // ============================================================

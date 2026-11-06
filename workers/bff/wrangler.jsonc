@@ -22,7 +22,14 @@
 	// - SHOPIFY_STOREFRONT_TOKEN (public storefront access token)
 	// - SHOPIFY_ADMIN_TOKEN (private admin API token)
 	// - WEBHOOK_SECRET (Shopify webhook HMAC secret)
+	// - SHOP_CONNECT_WEBHOOK_TOKEN (shop account connect: the bearer token for the backend's
+	//   POST /webhooks/shop/connect; the same value as the backend's SHOP_CONNECT_WEBHOOK_TOKEN.
+	//   Unset, POST /api/shop/connect answers 503 and the page offers Try again.)
 	"vars": {
-		"ALLOWED_ORIGINS": "https://www.seemyhealth.ai,https://seemyhealth.ai,https://account.seemyhealth.ai"
+		"ALLOWED_ORIGINS": "https://www.seemyhealth.ai,https://seemyhealth.ai,https://account.seemyhealth.ai",
+		// The cmh-golang backend that POST /api/shop/connect calls (/webhooks/shop/connect).
+		// Dev while only dev exists (the apps mint their connect links there), as the links Worker's
+		// API_BASE; prod at launch.
+		"BACKEND_API_BASE": "https://api.dev.seemyhealth.ai"
 	}
 }
