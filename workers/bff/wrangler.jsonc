@@ -75,16 +75,16 @@
 				"SITE_ORIGIN": "https://dev.seemyhealth.ai",
 				"ALLOWED_ORIGINS": "https://dev.seemyhealth.ai",
 				"BACKEND_API_BASE": "https://api.dev.seemyhealth.ai",
-				// The dev store, ddwngw-ra.myshopify.com: the Storefront and Admin APIs on its
+				// The dev store, seemyhealth-dev.myshopify.com: the Storefront and Admin APIs on its
 				// myshopify domain, and Judge.me's shop_domain (Judge.me installed on the dev store).
-				"SHOPIFY_STORE_DOMAIN": "ddwngw-ra.myshopify.com",
-				"SHOPIFY_MYSHOPIFY_DOMAIN": "ddwngw-ra.myshopify.com",
-				"JUDGEME_SHOP_DOMAIN": "ddwngw-ra.myshopify.com",
+				"SHOPIFY_STORE_DOMAIN": "seemyhealth-dev.myshopify.com",
+				"SHOPIFY_MYSHOPIFY_DOMAIN": "seemyhealth-dev.myshopify.com",
+				"JUDGEME_SHOP_DOMAIN": "seemyhealth-dev.myshopify.com",
 				// FILL IN (owner): the dev store's numeric shop id, and the Customer Account API URLs
 				// that carry it. Without a custom account domain they have the shapes below. Read the
-				// real ones from https://ddwngw-ra.myshopify.com/.well-known/openid-configuration
+				// real ones from https://seemyhealth-dev.myshopify.com/.well-known/openid-configuration
 				// (authorization_endpoint minus /oauth/authorize) and
-				// https://ddwngw-ra.myshopify.com/.well-known/customer-account-api (graphql_api minus
+				// https://seemyhealth-dev.myshopify.com/.well-known/customer-account-api (graphql_api minus
 				// /<version>/graphql).
 				"SHOPIFY_SHOP_ID": "FILL-IN-DEV-SHOP-ID",
 				"CUSTOMER_ACCOUNT_AUTH_URL": "https://shopify.com/authentication/FILL-IN-DEV-SHOP-ID",

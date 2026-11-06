@@ -22,7 +22,8 @@
     "links:build": "astro build --config astro.links.config.mjs && node --experimental-strip-types workers/links/scripts/build-og.mjs",
     "links:test": "npm run links:build && node --experimental-strip-types --test workers/links/test/*.test.mjs",
     "links:dev": "npm run links:build && wrangler dev -c workers/links/wrangler.jsonc --local",
-    "links:dry-run": "wrangler deploy -c workers/links/wrangler.jsonc --env=\"\" --dry-run"
+    "links:dry-run": "wrangler deploy -c workers/links/wrangler.jsonc --env=\"\" --dry-run",
+    "dev-store:seed": "node --experimental-strip-types scripts/seed-dev-store.mjs"
   },
   "dependencies": {
     "@astrojs/react": "6.0.5",

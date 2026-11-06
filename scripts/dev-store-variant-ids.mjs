@@ -9,7 +9,7 @@
 //       refreshes the file's entries from variants.ts (one per real-store id), keeping every dev id
 //       already filled in, and lists the ones still empty.
 //
-//   DEV_SHOPIFY_STORE_DOMAIN=ddwngw-ra.myshopify.com DEV_SHOPIFY_STOREFRONT_TOKEN=... \
+//   DEV_SHOPIFY_STORE_DOMAIN=seemyhealth-dev.myshopify.com DEV_SHOPIFY_STOREFRONT_TOKEN=... \
 //     node scripts/dev-store-variant-ids.mjs
 //       also asks the dev store's Storefront API for each product (same handle) and fills each dev
 //       id by the variant's options (Finish/Size/Color), or the product's only variant.

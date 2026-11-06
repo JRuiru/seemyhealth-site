@@ -114,7 +114,7 @@ Two full lines, each its own site, BFF, Shopify store and backend:
 |---|---|---|
 | Site | `www.seemyhealth.ai` / `seemyhealth.ai`, Pages project `seemyhealth-site` | `dev.seemyhealth.ai`, Pages project `seemyhealth-site-dev` (production branch `dev`) |
 | BFF | Worker `seemyhealth-bff` (top level of `workers/bff/wrangler.jsonc`) | Worker `seemyhealth-bff-dev` (`env.dev`), route `dev.seemyhealth.ai/api/*`, no workers.dev URL |
-| Store | `hxcim0-mb.myshopify.com` (`shop.seemyhealth.ai`, accounts on `account.seemyhealth.ai`) | `ddwngw-ra.myshopify.com` |
+| Store | `hxcim0-mb.myshopify.com` (`shop.seemyhealth.ai`, accounts on `account.seemyhealth.ai`) | `seemyhealth-dev.myshopify.com` |
 | Backend | `api.seemyhealth.ai` (not live yet: `BACKEND_API_BASE` is still the dev API) | `api.dev.seemyhealth.ai` |
 | Build | `npm run build` | `npm run build:dev` (`PUBLIC_SITE_ENV=dev`) |
 | Deploys on | push to `main` | push to `dev` (or Actions > Deploy > Run workflow on `dev`) |
@@ -124,7 +124,7 @@ Two full lines, each its own site, BFF, Shopify store and backend:
 everything and `_headers` adds `X-Robots-Tag: noindex, nofollow` to every response; no sitemap; no GA4
 tag; and each real-store ProductVariant id in `src/data/variants.ts` is swapped for the dev store's from
 `src/data/dev-store-variant-ids.json` (a variant id belongs to one store). Fill that file with
-`DEV_SHOPIFY_STORE_DOMAIN=ddwngw-ra.myshopify.com DEV_SHOPIFY_STOREFRONT_TOKEN=… npm run dev-store:variant-ids`
+`DEV_SHOPIFY_STORE_DOMAIN=seemyhealth-dev.myshopify.com DEV_SHOPIFY_STOREFRONT_TOKEN=… npm run dev-store:variant-ids`
 (matches by handle and options; re-run when a variant is added). A prod build reads none of this and
 is byte-for-byte what it was. The BFF takes its site from `SITE_ORIGIN` and the store's Customer
 Account API from `CUSTOMER_ACCOUNT_AUTH_URL` / `CUSTOMER_ACCOUNT_API_URL`, per env.
@@ -153,13 +153,13 @@ the dev job never names the prod project, so no flag typo can publish a dev buil
    - For the CI smoke test: Access > Service Auth > create a service token, add a Service Auth policy
      for it to the dev application, and store it as repository secrets `DEV_ACCESS_CLIENT_ID` and
      `DEV_ACCESS_CLIENT_SECRET`. Without them the dev smoke test is skipped with a notice.
-3. **Dev store, Customer Account API** (Shopify admin of ddwngw-ra > Settings > Customer accounts >
+3. **Dev store, Customer Account API** (Shopify admin of seemyhealth-dev > Settings > Customer accounts >
    the Headless / Customer Account API client, public client like prod's): Callback URI
    `https://dev.seemyhealth.ai/api/auth/callback`, JavaScript origin `https://dev.seemyhealth.ai`,
    Logout URI `https://dev.seemyhealth.ai`. Its client id is the `SHOPIFY_CUSTOMER_CLIENT_ID` secret.
 4. **Fill the placeholders** in `env.dev.vars` (`workers/bff/wrangler.jsonc`, marked FILL-IN): the
    dev shop id, and `CUSTOMER_ACCOUNT_AUTH_URL` / `CUSTOMER_ACCOUNT_API_URL` read from
-   `https://ddwngw-ra.myshopify.com/.well-known/openid-configuration` and `/.well-known/customer-account-api`.
+   `https://seemyhealth-dev.myshopify.com/.well-known/openid-configuration` and `/.well-known/customer-account-api`.
 5. **Dev store webhook:** subscribe `customers/email_marketing_consent_update` to
    `https://dev.seemyhealth.ai/api/webhooks/shopify`; its signing secret is `WEBHOOK_SECRET`.
 6. **Secrets**, from `workers/bff`, each with the DEV store's / dev services' value:
