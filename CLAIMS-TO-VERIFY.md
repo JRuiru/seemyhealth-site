@@ -7,10 +7,9 @@ claim is confirmed, note the source beside it in the code (a comment in `src/dat
 
 ## Ring One
 
-- [ ] **Materials:** "Non-allergenic shell, biocompatible resin" (`products.ts`, specs). Earlier copy
-      said titanium. Which is it, and does "non-allergenic" hold up?
+- [ ] **Materials:** "Non-allergenic shell, biocompatible resin" (`products.ts`, specs). Not titanium
+      (confirmed 6 Nov 2026; every titanium mention is gone). Does "non-allergenic" hold up?
 - [ ] **Weight:** "4-6g" (`products.ts`, SEO description).
-- [ ] **Battery:** "Up to 7 days".
 - [ ] **Water:** "IP68, 50m depth" and "waterproof to 50m".
 - [ ] **Bluetooth 5.2**, **sizes 6-13**, and **skin temperature** among the measures (SEO description).
 - [ ] **Prices:** Phantom Black $179, Aurora Gold $199 (SEO description, hard-coded).

@@ -58,6 +58,7 @@ export const products: Record<string, Product> = {
     ogImage: `${CF_IMG}/og-ring-one/public`,
     specs: [
       { label: "Sensors", value: "PPG, Temperature, Accelerometer" },
+      // Confirmed by the product owner, 6 Nov 2026.
       { label: "Battery", value: "Up to 7 days" },
       { label: "Water Rating", value: "IP68, 50m depth" },
       { label: "Weight", value: "4-6g depending on size" },
