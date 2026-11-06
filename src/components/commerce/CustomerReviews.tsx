@@ -15,7 +15,7 @@ interface Props {
 // Placeholder reviews — replace with real data from Judge.me / Shopify metafields
 const reviewsByProduct: Record<string, Review[]> = {
   "ring-one": [
-    { name: "James R.", rating: 5, date: "Apr 2026", title: "Replaced my Oura Ring", body: "The sleep tracking is incredibly accurate. I've been comparing it with my old Oura Ring 3 and the data is just as good — if not better on HRV. The titanium build feels premium.", verified: true },
+    { name: "James R.", rating: 5, date: "Apr 2026", title: "Replaced my Oura Ring", body: "The sleep tracking is incredibly accurate. I've been comparing it with my old Oura Ring 3 and the data is just as good — if not better on HRV.", verified: true },
     { name: "Sarah K.", rating: 5, date: "Mar 2026", title: "Forget you're wearing it", body: "It's so light I genuinely forget it's there. Battery lasts about 5 days for me. The app is clean and the stress detection nudges have been genuinely helpful.", verified: true },
     { name: "Mike T.", rating: 4, date: "Mar 2026", title: "Great ring, app needs polish", body: "Hardware is outstanding. The ring itself is beautiful and comfortable 24/7. App could use a few more customization options but data accuracy is solid.", verified: true },
   ],
