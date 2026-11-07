@@ -1,0 +1,11 @@
+---
+// A person's connection invite, /c/{handle}. One template: the Worker fills the @handle into the
+// page, its title and its description; the static card names nobody.
+import LinkLayout from '../../../layouts/LinkLayout.astro';
+import InviteConnection from '../../../invite/InviteConnection.astro';
+import { CONNECTION_INVITE_COPY as c } from '../../../../workers/links/src/catalogue';
+---
+
+<LinkLayout title={c.pageTitle} description={c.sentence} ogImage="/og/connection-invite.jpg" ogImageAlt="You're invited to connect on SeeMyHealth" getAppPanel={false}>
+  <InviteConnection />
+</LinkLayout>

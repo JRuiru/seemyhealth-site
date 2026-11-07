@@ -7,11 +7,12 @@
 
 export const PAGE_KINDS = [
   'invite',
+  'connection',
   'group',
   'groupManage',
   'event',
   'challenge',
-  'trophies',
+  'awards',
   'post',
   'people',
   'family',
@@ -24,6 +25,7 @@ export const PAGE_KINDS = [
   'health',
   'mood',
   'devices',
+  'recipe',
   'notifications',
 ] as const;
 
@@ -31,16 +33,20 @@ export type PageKind = (typeof PAGE_KINDS)[number];
 
 export const PAGE_KIND_BY_PATH: Record<string, PageKind> = {
   invite: 'invite',
+  connectionInvite: 'connection',
 
   groups: 'group',
   group: 'group',
   groupJoinRequests: 'groupManage',
   groupReports: 'groupManage',
   groupEvent: 'event',
+  groupEventPost: 'event',
+  groupEventSpots: 'event',
 
   challenges: 'challenge',
   challenge: 'challenge',
-  trophies: 'trophies',
+  challengeParticipants: 'challenge',
+  awards: 'awards',
 
   feed: 'post',
   post: 'post',
@@ -48,8 +54,7 @@ export const PAGE_KIND_BY_PATH: Record<string, PageKind> = {
   groupPost: 'post',
   groupPostComments: 'post',
 
-  friends: 'people',
-  friendRequest: 'people',
+  connectionRequests: 'people',
   userProfile: 'people',
 
   family: 'family',
@@ -73,23 +78,26 @@ export const PAGE_KIND_BY_PATH: Record<string, PageKind> = {
   goal: 'health',
   mood: 'mood',
   devices: 'devices',
+  recipe: 'recipe',
 
   notifications: 'notifications',
 };
 
-// The kinds a fallback page draws (every kind but the two the Worker answers with content of its own).
-export const FALLBACK_KINDS = PAGE_KINDS.filter((k) => k !== 'invite' && k !== 'payment');
+// The kinds a fallback page draws (every kind but the three the Worker answers with content of its
+// own: an invitation's preview, a person's connection invite with their @handle, the payment return).
+export const FALLBACK_KINDS = PAGE_KINDS.filter((k) => k !== 'invite' && k !== 'connection' && k !== 'payment');
 
 // The site's Rive tab icons (public/media/app-icons, copied from the app), one per area.
 export type KindIcon = 'community' | 'my-health' | 'providers' | 'nutrition';
 
 export const KIND_ICON: Partial<Record<PageKind, KindIcon>> = {
   invite: 'community',
+  connection: 'community',
   group: 'community',
   groupManage: 'community',
   event: 'community',
   challenge: 'community',
-  trophies: 'community',
+  awards: 'community',
   post: 'community',
   people: 'community',
   family: 'community',
@@ -102,4 +110,5 @@ export const KIND_ICON: Partial<Record<PageKind, KindIcon>> = {
   health: 'my-health',
   mood: 'my-health',
   devices: 'my-health',
+  recipe: 'nutrition',
 };

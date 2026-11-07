@@ -8,7 +8,7 @@ import Group from '../../../kinds/Group.astro';
 import GroupManage from '../../../kinds/GroupManage.astro';
 import Event from '../../../kinds/Event.astro';
 import Challenge from '../../../kinds/Challenge.astro';
-import Trophies from '../../../kinds/Trophies.astro';
+import Awards from '../../../kinds/Awards.astro';
 import Post from '../../../kinds/Post.astro';
 import People from '../../../kinds/People.astro';
 import Family from '../../../kinds/Family.astro';
@@ -20,6 +20,7 @@ import Billing from '../../../kinds/Billing.astro';
 import Health from '../../../kinds/Health.astro';
 import Mood from '../../../kinds/Mood.astro';
 import Devices from '../../../kinds/Devices.astro';
+import Recipe from '../../../kinds/Recipe.astro';
 import Notifications from '../../../kinds/Notifications.astro';
 
 export function getStaticPaths() {
@@ -27,12 +28,12 @@ export function getStaticPaths() {
 }
 
 const DESIGNS: Record<FallbackKind, typeof Group> = {
-  group: Group, groupManage: GroupManage, event: Event, challenge: Challenge, trophies: Trophies, post: Post,
+  group: Group, groupManage: GroupManage, event: Event, challenge: Challenge, awards: Awards, post: Post,
   people: People, family: Family, messages: Messages, call: Call, care: Care, checkIn: CheckIn, billing: Billing,
-  health: Health, mood: Mood, devices: Devices, notifications: Notifications,
+  health: Health, mood: Mood, devices: Devices, recipe: Recipe, notifications: Notifications,
 };
 
-const kind = Astro.params.kind as Exclude<PageKind, 'invite' | 'payment'>;
+const kind = Astro.params.kind as Exclude<PageKind, 'invite' | 'connection' | 'payment'>;
 const copy = KIND_COPY[kind];
 const Design = DESIGNS[kind];
 ---

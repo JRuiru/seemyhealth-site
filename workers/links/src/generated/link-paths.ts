@@ -6,9 +6,12 @@ export const LINK_HOST = "links.seemyhealth.ai";
 export const PARAM_TYPES = {
   "documentId": "^[A-Za-z0-9_.:-]{1,200}$",
   "flag": "^$",
+  "handle": "^[a-z0-9_](\\.?[a-z0-9_]){2,19}$",
   "identityId": "^usr_[0-9a-f]{32}$",
   "inviteToken": "^[A-Za-z0-9_-]{43}$",
   "practiceCode": "^[a-z0-9]([a-z0-9-]{1,48}[a-z0-9])$",
+  "recipeKey": "^([0-9]{1,20}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$",
+  "recipeSource": "^(catalog|user)$",
   "uuid": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
 } as const;
 
@@ -31,6 +34,18 @@ export const LINK_PATHS = [
       {
         "name": "inviteToken",
         "type": "inviteToken"
+      }
+    ],
+    "query": []
+  },
+  {
+    "name": "connectionInvite",
+    "template": "/c/{handle}",
+    "web": true,
+    "params": [
+      {
+        "name": "handle",
+        "type": "handle"
       }
     ],
     "query": []
@@ -134,6 +149,38 @@ export const LINK_PATHS = [
     "query": []
   },
   {
+    "name": "groupEventPost",
+    "template": "/groups/{groupId}/events/{eventId}/post",
+    "web": false,
+    "params": [
+      {
+        "name": "groupId",
+        "type": "uuid"
+      },
+      {
+        "name": "eventId",
+        "type": "uuid"
+      }
+    ],
+    "query": []
+  },
+  {
+    "name": "groupEventSpots",
+    "template": "/groups/{groupId}/events/{eventId}/spots",
+    "web": false,
+    "params": [
+      {
+        "name": "groupId",
+        "type": "uuid"
+      },
+      {
+        "name": "eventId",
+        "type": "uuid"
+      }
+    ],
+    "query": []
+  },
+  {
     "name": "groupJoinRequests",
     "template": "/groups/{groupId}/join-requests",
     "web": false,
@@ -177,29 +224,29 @@ export const LINK_PATHS = [
     "query": []
   },
   {
-    "name": "trophies",
-    "template": "/trophies",
-    "web": false,
-    "params": [],
-    "query": []
-  },
-  {
-    "name": "friends",
-    "template": "/friends",
-    "web": false,
-    "params": [],
-    "query": []
-  },
-  {
-    "name": "friendRequest",
-    "template": "/friend-requests/{requestId}",
+    "name": "challengeParticipants",
+    "template": "/challenges/{challengeId}/participants",
     "web": false,
     "params": [
       {
-        "name": "requestId",
+        "name": "challengeId",
         "type": "uuid"
       }
     ],
+    "query": []
+  },
+  {
+    "name": "awards",
+    "template": "/awards",
+    "web": false,
+    "params": [],
+    "query": []
+  },
+  {
+    "name": "connectionRequests",
+    "template": "/connections/requests",
+    "web": false,
+    "params": [],
     "query": []
   },
   {
@@ -388,6 +435,22 @@ export const LINK_PATHS = [
     "template": "/devices",
     "web": false,
     "params": [],
+    "query": []
+  },
+  {
+    "name": "recipe",
+    "template": "/recipes/{recipeSource}/{recipeKey}",
+    "web": false,
+    "params": [
+      {
+        "name": "recipeSource",
+        "type": "recipeSource"
+      },
+      {
+        "name": "recipeKey",
+        "type": "recipeKey"
+      }
+    ],
     "query": []
   },
   {

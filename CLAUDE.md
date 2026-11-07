@@ -81,9 +81,9 @@ scripts/
 
 Every URL the backend hands out (invites, push taps, a practice's QR, the payment return) is on
 `links.seemyhealth.ai`, served by its own Worker (`workers/links`), never by this site's Pages project:
-seemyhealth.ai claims no app links and has no association files. The 36 paths come from cmh-golang's
+seemyhealth.ai claims no app links and has no association files. The paths (40 today) come from cmh-golang's
 `link-paths.json` (vendored as `workers/links/link-paths.json`); `src/page-kinds.ts` maps each to a
-page kind, and `npm run links:check` fails a path with no kind. The pages reuse this site's tokens and
+page kind, and `npm run links:check` fails a path with no kind. `/i/{token}` (an invitation's restricted preview) and `/c/{handle}` (a person's connection invite: the Worker fills in the @handle and reads nothing else) are the two pages with content of their own; every app-only path (`web: false`) draws its kind's fallback page. The pages reuse this site's tokens and
 components (`links/`), and the store buttons on both come from `src/data/app-stores.ts`. Nothing on a
 links page may log or forward its address: an `/i/` URL carries an invitation's token.
 

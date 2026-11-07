@@ -1,8 +1,9 @@
 // links.seemyhealth.ai: the website half of the app link system.
 //
-//   /.well-known/apple-app-site-association   the 36 link templates, for both iOS app ids
+//   /.well-known/apple-app-site-association   every link template, for both iOS app ids
 //   /.well-known/assetlinks.json              Android App Links
 //   /i/{token}                                an invitation's safe preview (restricted backend read)
+//   /c/{handle}                               a person's connection invite, showing their @handle
 //   /payments/return                          back from the hosted checkout
 //   every other path in link-paths.json       its page kind's fallback page
 //   /get-the-app                              the store buttons
@@ -20,7 +21,7 @@ import { PAGE_KIND_BY_PATH } from './page-kinds.ts';
 import { APPLE_APP_SITE_ASSOCIATION, ASSET_LINKS } from './well-known.ts';
 import { countLine, readPreview, safeImageUrl, shownTarget } from './invite.ts';
 import { mintCardKey, openCardKey } from './og/card-key.ts';
-import { INVITE_COPY } from './catalogue.ts';
+import { INVITE_COPY, connectionInviteDescription, connectionInviteTitle } from './catalogue.ts';
 
 export interface Env {
   ASSETS: Fetcher;
@@ -89,6 +90,7 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
   if (!match) return page(request, env, '/t/not-found/', 404, 'public');
 
   if (match.spec.name === 'invite') return invitePage(request, env, match.params.inviteToken);
+  if (match.spec.name === 'connectionInvite') return connectionInvitePage(request, env, match.params.handle);
   if (match.spec.name === 'paymentsReturn') return page(request, env, `/t/payment/${paymentState(url.searchParams.get('status'))}/`, 200, 'private');
 
   return page(request, env, `/t/kind/${PAGE_KIND_BY_PATH[match.spec.name]}/`, 200, 'public');
@@ -236,6 +238,20 @@ async function invitePage(request: Request, env: Env, token: string): Promise<Re
     description: [count, INVITE_COPY[kind].sentence].filter(Boolean).join('. '),
     ogImage,
     imageAlt: target.name,
+  });
+}
+
+// ---- /c/{handle} --------------------------------------------------------------------------------
+
+// A person's own invite link. The handle is all the page knows (it has already matched the backend's
+// handle shape, so it is lowercase letters, digits, '_' and '.'), and nothing reads the backend for
+// it: no name, no photo. Public caching is fine: a handle is public, and the page is the same for all.
+function connectionInvitePage(request: Request, env: Env, handle: string): Promise<Response> {
+  const at = `@${handle}`;
+  return page(request, env, '/t/connection/', 200, 'public', {
+    slots: { handle: at, 'handle-card': at, sentence: connectionInviteDescription(handle) },
+    title: connectionInviteTitle(handle),
+    description: connectionInviteDescription(handle),
   });
 }
 

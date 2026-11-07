@@ -4,21 +4,37 @@
   "paramTypes": {
     "documentId": "^[A-Za-z0-9_.:-]{1,200}$",
     "flag": "^$",
+    "handle": "^[a-z0-9_](\\.?[a-z0-9_]){2,19}$",
     "identityId": "^usr_[0-9a-f]{32}$",
     "inviteToken": "^[A-Za-z0-9_-]{43}$",
     "practiceCode": "^[a-z0-9]([a-z0-9-]{1,48}[a-z0-9])$",
+    "recipeKey": "^([0-9]{1,20}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$",
+    "recipeSource": "^(catalog|user)$",
     "uuid": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
   },
   "paths": [
     {
       "name": "invite",
       "template": "/i/{inviteToken}",
-      "opens": "the invitation's preview, then its confirmation (group, challenge, friend or family)",
+      "opens": "the invitation's preview, then its confirmation (group, challenge or family)",
       "web": true,
       "params": [
         {
           "name": "inviteToken",
           "type": "inviteToken"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "connectionInvite",
+      "template": "/c/{handle}",
+      "opens": "the person's invite: sign up or sign in, then their connection request waits in Requests",
+      "web": true,
+      "params": [
+        {
+          "name": "handle",
+          "type": "handle"
         }
       ],
       "query": []
@@ -130,6 +146,40 @@
       "query": []
     },
     {
+      "name": "groupEventPost",
+      "template": "/groups/{groupId}/events/{eventId}/post",
+      "opens": "the group composer with the event linked (its album post); the event page when the reader can no longer post to it",
+      "web": false,
+      "params": [
+        {
+          "name": "groupId",
+          "type": "uuid"
+        },
+        {
+          "name": "eventId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
+      "name": "groupEventSpots",
+      "template": "/groups/{groupId}/events/{eventId}/spots",
+      "opens": "the event's Spots edit (its managers'); the event page for anyone else",
+      "web": false,
+      "params": [
+        {
+          "name": "groupId",
+          "type": "uuid"
+        },
+        {
+          "name": "eventId",
+          "type": "uuid"
+        }
+      ],
+      "query": []
+    },
+    {
       "name": "groupJoinRequests",
       "template": "/groups/{groupId}/join-requests",
       "opens": "a manager's join request queue",
@@ -177,32 +227,32 @@
       "query": []
     },
     {
-      "name": "trophies",
-      "template": "/trophies",
-      "opens": "the trophy cabinet",
-      "web": false,
-      "params": [],
-      "query": []
-    },
-    {
-      "name": "friends",
-      "template": "/friends",
-      "opens": "friends",
-      "web": false,
-      "params": [],
-      "query": []
-    },
-    {
-      "name": "friendRequest",
-      "template": "/friend-requests/{requestId}",
-      "opens": "a friend request to accept or decline",
+      "name": "challengeParticipants",
+      "template": "/challenges/{challengeId}/participants",
+      "opens": "a challenge's participants, in leaderboard order, with the managers' actions (the join-request push)",
       "web": false,
       "params": [
         {
-          "name": "requestId",
+          "name": "challengeId",
           "type": "uuid"
         }
       ],
+      "query": []
+    },
+    {
+      "name": "awards",
+      "template": "/awards",
+      "opens": "your own profile, on its Awards tab",
+      "web": false,
+      "params": [],
+      "query": []
+    },
+    {
+      "name": "connectionRequests",
+      "template": "/connections/requests",
+      "opens": "Connections, Requests (Received)",
+      "web": false,
+      "params": [],
       "query": []
     },
     {
@@ -412,6 +462,23 @@
       "opens": "devices",
       "web": false,
       "params": [],
+      "query": []
+    },
+    {
+      "name": "recipe",
+      "template": "/recipes/{recipeSource}/{recipeKey}",
+      "opens": "a recipe (a person's own only for its owner and for viewers of a feed post sharing it)",
+      "web": false,
+      "params": [
+        {
+          "name": "recipeSource",
+          "type": "recipeSource"
+        },
+        {
+          "name": "recipeKey",
+          "type": "recipeKey"
+        }
+      ],
       "query": []
     },
     {

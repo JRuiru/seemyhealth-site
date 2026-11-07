@@ -12,7 +12,11 @@ export const APPLE_APP_SITE_ASSOCIATION = {
         "components": [
           {
             "/": "/i/*",
-            "comment": "invite: the invitation's preview, then its confirmation (group, challenge, friend or family)"
+            "comment": "invite: the invitation's preview, then its confirmation (group, challenge or family)"
+          },
+          {
+            "/": "/c/*",
+            "comment": "connectionInvite: the person's invite: sign up or sign in, then their connection request waits in Requests"
           },
           {
             "/": "/feed",
@@ -47,6 +51,14 @@ export const APPLE_APP_SITE_ASSOCIATION = {
             "comment": "groupEvent: a group event"
           },
           {
+            "/": "/groups/*/events/*/post",
+            "comment": "groupEventPost: the group composer with the event linked (its album post); the event page when the reader can no longer post to it"
+          },
+          {
+            "/": "/groups/*/events/*/spots",
+            "comment": "groupEventSpots: the event's Spots edit (its managers'); the event page for anyone else"
+          },
+          {
             "/": "/groups/*/join-requests",
             "comment": "groupJoinRequests: a manager's join request queue"
           },
@@ -63,16 +75,16 @@ export const APPLE_APP_SITE_ASSOCIATION = {
             "comment": "challenge: a challenge"
           },
           {
-            "/": "/trophies",
-            "comment": "trophies: the trophy cabinet"
+            "/": "/challenges/*/participants",
+            "comment": "challengeParticipants: a challenge's participants, in leaderboard order, with the managers' actions (the join-request push)"
           },
           {
-            "/": "/friends",
-            "comment": "friends: friends"
+            "/": "/awards",
+            "comment": "awards: your own profile, on its Awards tab"
           },
           {
-            "/": "/friend-requests/*",
-            "comment": "friendRequest: a friend request to accept or decline"
+            "/": "/connections/requests",
+            "comment": "connectionRequests: Connections, Requests (Received)"
           },
           {
             "/": "/users/*",
@@ -156,6 +168,10 @@ export const APPLE_APP_SITE_ASSOCIATION = {
           {
             "/": "/devices",
             "comment": "devices: devices"
+          },
+          {
+            "/": "/recipes/*/*",
+            "comment": "recipe: a recipe (a person's own only for its owner and for viewers of a feed post sharing it)"
           },
           {
             "/": "/notifications",

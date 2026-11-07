@@ -1,0 +1,71 @@
+---
+// A person's connection invite (/c/{handle}): their own reusable link, shared from Connections. The
+// page knows the @handle in the address and nothing else, so their card shows the handle (the Worker
+// fills data-slot="handle") and no name or photo; yours waits, dashed. The way in is the app: get it,
+// tap the link again, sign up or sign in, and their request is waiting in Requests.
+import KindIcon from '../components/KindIcon.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import AppStoreButtons from '../../src/components/AppStoreButtons.astro';
+import StoreName from '../../src/components/StoreName.astro';
+import { CF_IMG, CONNECTION_INVITE_COPY as c } from '../../workers/links/src/catalogue';
+const steps = [
+  { n: '01', title: 'Get the app', text: "It's free, and you'll find it as C-MyHealth." },
+  { n: '02', title: 'Tap this link again', text: 'It opens the invite in the app.' },
+  { n: '03', title: 'Sign up or sign in', text: 'Their connection request is waiting in Requests.' },
+];
+---
+
+<section id="get" class="pt-32 pb-20 sm:pt-40 sm:pb-24 relative overflow-hidden">
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <img src={`${CF_IMG}/${c.photo}/public`} alt="" class="w-full h-full object-cover opacity-[0.14] blur-sm" fetchpriority="high" />
+    <div class="absolute inset-0 bg-gradient-to-b from-brand-black via-brand-black/70 to-brand-black"></div>
+  </div>
+  <div class="relative max-w-3xl mx-auto px-6 lg:px-8">
+    <div class="flex items-center justify-center gap-4 sm:gap-6 mb-12 link-rise" aria-hidden="true">
+      <div class="w-36 sm:w-44 rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-5 text-center -rotate-3">
+        <span class="mx-auto mb-3 w-16 h-16 rounded-full bg-gradient-to-br from-ring-one/60 to-amber-300/30 flex items-center justify-center font-display text-2xl">@</span>
+        <span class="block text-[13px] font-medium text-white/85 mb-1.5 truncate" data-slot="handle-card">@someone</span>
+        <span class="block text-[10px] uppercase tracking-[2px] text-white/45">Sent you this</span>
+      </div>
+      <span class="w-12 h-12 rounded-full bg-ring-one text-brand-black flex items-center justify-center shrink-0 z-10">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+      </span>
+      <div class="w-36 sm:w-44 rounded-3xl border border-dashed border-white/20 bg-white/[0.02] p-5 text-center rotate-3">
+        <span class="mx-auto mb-3 w-16 h-16 rounded-full border-2 border-dashed border-white/25 flex items-center justify-center font-display text-lg text-white/60">You</span>
+        <span class="block h-2.5 w-20 mx-auto rounded-full bg-white/[0.07] mb-2"></span>
+        <span class="block text-[10px] uppercase tracking-[2px] text-white/45">Waits in Requests</span>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <p class="flex items-center justify-center gap-2.5 text-[11px] uppercase tracking-[4px] text-white/55 mb-5 link-rise">
+        <KindIcon icon="community" />
+        <span>{c.eyebrow}</span>
+      </p>
+      <h1 class="font-display text-4xl sm:text-6xl font-300 uppercase leading-[0.95] mb-5 text-balance link-rise link-rise-2">
+        <span class="font-500 normal-case break-words" data-slot="handle">@someone</span><br /> {c.title} <span class="font-500">{c.bold}</span>
+      </h1>
+      <p class="text-brand-gray-400 sm:text-lg leading-relaxed text-pretty max-w-xl mx-auto mb-8 link-rise link-rise-3" data-slot="sentence">{c.sentence}</p>
+      <AppStoreButtons class="justify-center" />
+      <StoreName class="justify-center mt-5" />
+      <p class="text-[12px] text-white/30 mt-2">Free to download. Premium free for two weeks.</p>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 sm:py-20 bg-brand-dark border-t border-white/5">
+  <div class="max-w-5xl mx-auto px-6 lg:px-8">
+    <p class="text-center text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-10">Three steps, then you're connected</p>
+    <ol class="grid sm:grid-cols-3 gap-4 mb-12">
+      {steps.map((s) => (
+        <li class="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+          <span class="font-display text-3xl font-300 text-accent-light">{s.n}</span>
+          <h2 class="font-display text-2xl uppercase font-400 mt-3 mb-2">{s.title}</h2>
+          <p class="text-sm text-brand-gray-400 leading-relaxed">{s.text}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="text-center text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-5">Already have it?</p>
+    <OpenInApp />
+  </div>
+</section>

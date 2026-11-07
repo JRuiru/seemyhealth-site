@@ -43,6 +43,9 @@ const EXAMPLE = {
   documentId: 'usr_x_2026-10-29_steps',
   practiceCode: 'green-valley-clinic',
   inviteToken: TOKENS.privateGroup,
+  handle: 'sam.runs_42',
+  recipeSource: 'catalog',
+  recipeKey: '1234567',
 };
 const examplePath = (p) => p.template.replace(/\{([^}]+)\}/g, (_m, name) => EXAMPLE[p.params.find((x) => x.name === name).type]);
 
@@ -80,7 +83,7 @@ const get = (path, init = {}) => worker.fetch(path, { redirect: 'manual', ...ini
 const meta = (html, prop) => new RegExp(`<meta (?:property|name)="${prop}" content="([^"]*)"`).exec(html)?.[1];
 
 describe('association files', () => {
-  test('the Apple file claims exactly the 36 templates, for both app ids, as JSON with no redirect', async () => {
+  test(`the Apple file claims exactly the ${LINK_PATHS.paths.length} templates, for both app ids, as JSON with no redirect`, async () => {
     const res = await get('/.well-known/apple-app-site-association');
     assert.equal(res.status, 200);
     assert.equal(res.headers.get('content-type'), 'application/json');
@@ -91,7 +94,7 @@ describe('association files', () => {
     const claimed = new Set(detail.components.map((c) => c['/']));
     const expected = new Set(LINK_PATHS.paths.map((p) => p.template.replace(/\{[^}]+\}/g, '*')));
     assert.deepEqual(claimed, expected);
-    assert.equal(detail.components.length, 37);
+    assert.equal(detail.components.length, LINK_PATHS.paths.length + 1); // + ?sent
     assert.ok(detail.components.some((c) => c['/'] === '/family-invitations' && c['?']?.sent === ''), '?sent has its own component');
     assert.ok(detail.components.some((c) => c['/'] === '/family-invitations' && !c['?']), 'and so does the bare list');
   });
@@ -131,7 +134,7 @@ describe('every link path', () => {
       assert.equal(res.headers.get('referrer-policy'), 'no-referrer');
       const html = await res.text();
       const kind = PAGE_KIND_BY_PATH[p.name];
-      const card = kind === 'payment' ? '/og/payment-pending.jpg' : `/og/kind-${kind}.jpg`;
+      const card = kind === 'payment' ? '/og/payment-pending.jpg' : kind === 'connection' ? '/og/connection-invite.jpg' : `/og/kind-${kind}.jpg`;
       assert.match(meta(html, 'og:image'), new RegExp(`^http://[^/]+${card.replace(/\./g, '\\.')}$`));
       assert.equal(new URL(meta(html, 'og:url')).pathname, path);
       for (const tag of ['og:title', 'og:description', 'og:type', 'og:site_name', 'twitter:card', 'twitter:title', 'twitter:description', 'twitter:image']) {
@@ -145,7 +148,8 @@ describe('every link path', () => {
   }
 
   test('an id of the wrong shape, a trailing slash, an unknown path and a template address are 404s', async () => {
-    for (const path of ['/groups/not-a-uuid', '/feed/', '/nope', '/t/kind/group/', '/users/123', '/practices/A_B']) {
+    for (const path of ['/groups/not-a-uuid', '/feed/', '/nope', '/t/kind/group/', '/t/connection/', '/users/123', '/practices/A_B',
+      '/c/ab', '/c/Sam', '/c/sam..runs', '/c/.sam', '/recipes/mine/123', '/recipes/catalog/not-a-key']) {
       const res = await get(path);
       assert.equal(res.status, 404, path);
       assert.match(await res.text(), /Nothing/);
@@ -285,6 +289,44 @@ describe('/i/{token}', () => {
   });
 });
 
+describe('/c/{handle}', () => {
+  test('shows the @handle, says the request waits in Requests, and offers the stores', async () => {
+    const res = await get('/c/sam.runs_42');
+    assert.equal(res.status, 200);
+    assert.equal(res.headers.get('x-robots-tag'), 'noindex');
+    const html = await res.text();
+    assert.match(html, /data-slot="handle"[^>]*>@sam\.runs_42</);
+    assert.match(html, /Invited You/);
+    assert.match(html, /waiting in Requests/);
+    assert.equal(meta(html, 'og:title'), '@sam.runs_42 invited you to connect on SeeMyHealth');
+    assert.match(meta(html, 'og:description'), /@sam\.runs_42&#39;s connection request|@sam\.runs_42's connection request/);
+    assert.match(meta(html, 'og:image'), /\/og\/connection-invite\.jpg$/);
+    assert.doesNotMatch(html, /@someone/, 'every placeholder is filled');
+    assert.match(html, /data-store="ios"/);
+    assert.match(html, /data-store="android"/);
+  });
+
+  test('never reads the backend', async () => {
+    const before = stubCalls.length;
+    await get('/c/sam.runs_42');
+    assert.equal(stubCalls.length, before);
+  });
+});
+
+describe('a recipe (app only)', () => {
+  test('draws the recipe page, never the backend', async () => {
+    const before = stubCalls.length;
+    for (const path of ['/recipes/catalog/1234567', '/recipes/user/3f1c2a4e-8b7d-4c1e-9a2b-1c2d3e4f5a6b']) {
+      const res = await get(path);
+      assert.equal(res.status, 200, path);
+      const html = await res.text();
+      assert.match(html, /Is Cooking/);
+      assert.match(meta(html, 'og:image'), /\/og\/kind-recipe\.jpg$/);
+    }
+    assert.equal(stubCalls.length, before);
+  });
+});
+
 describe('Open Graph cards', () => {
   test('a public group\'s card renders as a 1200 x 630 JPEG from its key', async () => {
     const html = await (await get(`/i/${TOKENS.publicGroup}`)).text();
@@ -314,7 +356,7 @@ describe('Open Graph cards', () => {
   });
 
   test('every static card is served as a JPEG', async () => {
-    for (const name of ['default', 'not-found', 'kind-messages', 'invite-family', 'invite-revoked', 'payment-pending']) {
+    for (const name of ['default', 'not-found', 'kind-messages', 'kind-recipe', 'kind-awards', 'invite-family', 'invite-revoked', 'connection-invite', 'payment-pending']) {
       const res = await get(`/og/${name}.jpg`);
       assert.equal(res.status, 200, name);
       assert.equal(res.headers.get('content-type'), 'image/jpeg', name);

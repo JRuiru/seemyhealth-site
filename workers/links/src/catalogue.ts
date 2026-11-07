@@ -49,10 +49,10 @@ export const KIND_COPY = {
     sentence: "Open SeeMyHealth to see the challenge, the leaderboard and how far everyone's got.",
     pageTitle: 'A Challenge on SeeMyHealth', layout: 'fullBleed', photo: 'challenge-accepted', accent: GREEN,
   },
-  trophies: {
-    eyebrow: 'Trophies', title: 'Your Trophy', bold: 'Cabinet',
-    sentence: "Every badge you've earned is polished and waiting in the app. Go on, have a look.",
-    pageTitle: 'Trophies on SeeMyHealth', layout: 'split', photo: 'app-goals-achieved', accent: AMBER,
+  awards: {
+    eyebrow: 'Awards', title: 'Every Award,', bold: 'On Show',
+    sentence: "Every award you've earned is polished and waiting on your profile in the app. Go on, have a look.",
+    pageTitle: 'Awards on SeeMyHealth', layout: 'split', photo: 'app-goals-achieved', accent: AMBER,
   },
   post: {
     eyebrow: 'Community', title: 'Someone Has', bold: 'Something to Say',
@@ -60,9 +60,9 @@ export const KIND_COPY = {
     pageTitle: 'A Post on SeeMyHealth', layout: 'split', photo: 'app-couch-download', accent: VIOLET,
   },
   people: {
-    eyebrow: 'Friends', title: 'Friends Make It', bold: 'Easier',
+    eyebrow: 'Connections', title: 'Better', bold: 'Together',
     sentence: 'Open SeeMyHealth to see who it is and say hello. Profiles only show what each person chooses to share.',
-    pageTitle: 'Friends on SeeMyHealth', layout: 'split', photo: 'ring-man-smiling-lifestyle', accent: ORANGE,
+    pageTitle: 'Connections on SeeMyHealth', layout: 'split', photo: 'ring-man-smiling-lifestyle', accent: ORANGE,
   },
   family: {
     eyebrow: 'Family', title: 'Family,', bold: 'Kept Close',
@@ -108,6 +108,11 @@ export const KIND_COPY = {
     eyebrow: 'Devices', title: 'Your Devices', bold: 'Are Waiting',
     sentence: 'Open SeeMyHealth to see your devices and how each one is syncing.',
     pageTitle: 'Devices on SeeMyHealth', layout: 'split', photo: 'ring-aurora-phantom-multi', accent: ORANGE,
+  },
+  recipe: {
+    eyebrow: 'Recipes', title: "Something Good", bold: 'Is Cooking',
+    sentence: 'Open SeeMyHealth to see the recipe, what goes in it and any allergens we spot along the way.',
+    pageTitle: 'A Recipe on SeeMyHealth', layout: 'split', photo: 'logging-food', accent: GREEN,
   },
   notifications: {
     eyebrow: 'Notifications', title: "You've Got", bold: 'Updates',
@@ -169,6 +174,22 @@ export const INVITE_COPY = {
 
 export type InviteKind = keyof typeof INVITE_COPY;
 
+// ---- A person's connection invite: /c/{handle} ----------------------------------------------------
+// Their own reusable link, shared from Connections (cmh-golang social/friendship, AcceptConnectionInvite):
+// whoever opens it signs up or signs in, and the person's connection request then waits in Requests.
+// The page knows only the @handle in the address: never their name or photo (nothing previews a handle).
+
+export const CONNECTION_INVITE_COPY = {
+  eyebrow: 'Connection invite', title: 'Invited You', bold: 'to Connect',
+  sentence: "Get SeeMyHealth, then tap this link again. Once you've signed up or signed in, their connection request will be waiting in Requests.",
+  pageTitle: "You're Invited to Connect on SeeMyHealth", layout: 'split', photo: 'ring-dining', accent: ORANGE,
+} satisfies Copy;
+
+// The page's own title and description once the Worker knows the handle (shown with its "@").
+export const connectionInviteTitle = (handle: string) => `@${handle} invited you to connect on SeeMyHealth`;
+export const connectionInviteDescription = (handle: string) =>
+  `Get SeeMyHealth, then tap this link again. Once you've signed up or signed in, @${handle}'s connection request will be waiting in Requests.`;
+
 // The generic group line when the preview names nothing (a private or sensitive group, or one sent to
 // one person): it says the details are the members', never that the group is private.
 export const INVITE_GROUP_GENERIC_LINE = 'Its details are for members, so you will see them in the app.';
@@ -207,6 +228,7 @@ export const STATIC_CARDS: Record<string, Copy & { line?: string }> = {
   ...Object.fromEntries(Object.entries(KIND_COPY).map(([k, c]) => [`kind-${k}`, { ...c, line: c.sentence }])),
   ...Object.fromEntries(Object.entries(PAYMENT_COPY).map(([k, c]) => [`payment-${k}`, { ...c, line: c.sentence }])),
   ...Object.fromEntries(Object.entries(INVITE_COPY).map(([k, c]) => [`invite-${k}`, { ...c, line: c.sentence }])),
+  'connection-invite': { ...CONNECTION_INVITE_COPY, title: "You're Invited", line: CONNECTION_INVITE_COPY.sentence },
   // The states are neutral: no kind, no art, no name.
   ...Object.fromEntries(Object.entries(INVITE_STATE_COPY).map(([k, c]) => [`invite-${k.replace('_', '-')}`, {
     eyebrow: 'Invite', title: c.title, bold: '', sentence: c.sentence, line: c.sentence,

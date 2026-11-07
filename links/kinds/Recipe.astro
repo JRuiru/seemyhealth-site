@@ -1,0 +1,35 @@
+---
+// A recipe: the dish beside a card of what goes in it, every line still blank. Which recipe it is,
+// and a person's own, stay in the app (only its owner, and the people a feed post shared it with,
+// can open one of theirs).
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import { CF_IMG, KIND_COPY } from '../../workers/links/src/catalogue';
+const c = KIND_COPY.recipe;
+const lines = ['w-28', 'w-20', 'w-32', 'w-16', 'w-24'];
+---
+
+<section class="pt-32 pb-20 sm:pt-40 sm:pb-28 relative overflow-hidden">
+  <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-green-500/[0.07] blur-[110px] pointer-events-none" aria-hidden="true"></div>
+  <div class="relative max-w-3xl mx-auto px-6 lg:px-8">
+    <KindIntro eyebrow={c.eyebrow} title={c.title} bold={c.bold} sentence={c.sentence} icon="nutrition" />
+    <div class="grid grid-cols-[1fr_1fr] gap-4 sm:gap-6 my-12 link-rise" aria-hidden="true">
+      <div class="rounded-3xl overflow-hidden border border-white/10 aspect-[4/5]">
+        <img src={`${CF_IMG}/${c.photo}/public`} alt="" class="w-full h-full object-cover" loading="lazy" />
+      </div>
+      <div class="rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-5 sm:p-7 flex flex-col">
+        <span class="text-[10px] uppercase tracking-[2px] text-white/45 mb-5">Ingredients</span>
+        <ul class="flex flex-col gap-4 flex-1">
+          {lines.map((w) => (
+            <li class="flex items-center gap-3">
+              <span class="w-4 h-4 rounded-full border border-green-400/50 shrink-0"></span>
+              <span class:list={['h-2.5 rounded-full bg-white/15', w]}></span>
+            </li>
+          ))}
+        </ul>
+        <span class="mt-5 self-start px-3 py-1 rounded-full bg-green-500/15 border border-green-400/30 text-green-300 text-[10px] uppercase tracking-[2px]">Allergens checked</span>
+      </div>
+    </div>
+    <OpenInApp />
+  </div>
+</section>
