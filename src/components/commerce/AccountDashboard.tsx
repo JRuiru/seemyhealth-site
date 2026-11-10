@@ -8,7 +8,7 @@ const CF_IMG = "https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg";
 const devices = [
   { name: "Ring One", slug: "ring-one", image: `${CF_IMG}/ring-hero-hands/public`, color: "#F97316", tagline: products["ring-one"].tagline },
   { name: "The Scale", slug: "scale", image: `${CF_IMG}/scale-white-bathroom/public`, color: "#3B82F6", tagline: products["scale"].tagline },
-  { name: "Scale Pro", slug: "scale-pro", image: `${CF_IMG}/scale-pro-black-bathroom/public`, color: "#3B82F6", tagline: products["scale-pro"].tagline },
+  { name: "The Scale Pro", slug: "scale-pro", image: `${CF_IMG}/scale-pro-black-bathroom/public`, color: "#3B82F6", tagline: products["scale-pro"].tagline },
   { name: "BP Monitor", slug: "bp-monitor", image: `${CF_IMG}/bp-white-desk-display/public`, color: "#EF4444", tagline: products["bp-monitor"].tagline },
   { name: "Hydra One", slug: "hydra-one", image: `${CF_IMG}/bottle-white-kitchen/public`, color: "#06B6D4", tagline: products["hydra-one"].tagline },
   { name: "Hema One", slug: "hema-one", image: `${CF_IMG}/hema-orange-kitchen-v2/public`, color: "#A855F7", tagline: products["hema-one"].tagline },

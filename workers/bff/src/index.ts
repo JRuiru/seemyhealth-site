@@ -11,6 +11,7 @@ import {
   getProductByHandle,
   getLocalization,
   cartBuyerIdentityUpdate,
+  cartDiscountCodesUpdate,
   type ShopifyConfig,
 } from "./shopify";
 
@@ -23,6 +24,7 @@ import {
 } from "./customer-auth";
 
 import { connectShopAccount, safeReturnPath } from "./shop-connect";
+import { discountCodeList } from "./discount";
 
 import {
   sendSalesNotification,
@@ -428,11 +430,12 @@ export default {
       // CART ROUTES
       // ============================================================
 
-      // POST /api/cart/create
+      // POST /api/cart/create { lines, countryCode?, discountCodes? }
       if (path === "/api/cart/create" && request.method === "POST") {
         const body = (await request.json()) as {
           lines: { merchandiseId: string; quantity: number }[];
           countryCode?: string;
+          discountCodes?: unknown;
         };
 
         if (!body.lines?.length) {
@@ -440,7 +443,24 @@ export default {
         }
 
         const country = body.countryCode || buyerCountry;
-        const cart = await cartCreate(shopify, body.lines, country);
+        const cart = await cartCreate(shopify, body.lines, country, discountCodeList(body.discountCodes) ?? []);
+        return json({ cart }, 200, cors);
+      }
+
+      // POST /api/cart/discount { cartId, discountCodes } — a /discount/<code>/ link's code
+      if (path === "/api/cart/discount" && request.method === "POST") {
+        const body = (await request.json()) as {
+          cartId: string;
+          discountCodes?: unknown;
+          countryCode?: string;
+        };
+        const codes = discountCodeList(body.discountCodes);
+        if (!body.cartId || !codes) {
+          return error("cartId and discountCodes[] required", 400, cors);
+        }
+
+        const country = body.countryCode || buyerCountry;
+        const cart = await cartDiscountCodesUpdate(shopify, body.cartId, codes, country);
         return json({ cart }, 200, cors);
       }
 

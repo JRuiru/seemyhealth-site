@@ -92,7 +92,7 @@ export const productVariants: Record<string, ProductVariantData> = {
     handle: "scale",
     name: "The Scale",
     optionNames: ["Color"],
-    boxContents: ["Smart Scale", "3× AAA batteries", "Quick start guide"],
+    boxContents: ["The Scale", "3× AAA batteries (included)", "Quick start guide"],
     deliveryEstimate: "Estimated at checkout",
     warrantyYears: 1,
     colorSwatches: {
@@ -198,7 +198,7 @@ export const productVariants: Record<string, ProductVariantData> = {
     handle: "hydra-one",
     name: "Hydra One",
     optionNames: ["Color"],
-    boxContents: ["Hydra One bottle (500 ml)", "USB-C charging cable", "Spare lid seal", "Quick start guide"],
+    boxContents: ["Hydra One bottle (500 ml)", "USB-C charging cable", "Quick start guide"],
     deliveryEstimate: "Estimated at checkout",
     warrantyYears: 1,
     colorSwatches: {
@@ -236,7 +236,7 @@ export const productVariants: Record<string, ProductVariantData> = {
     handle: "hema-one",
     name: "Hema One",
     optionNames: ["Color"],
-    boxContents: ["Hema One analyzer", "10× test strips", "Lancet device", "10× lancets", "USB-C charging cable", "Quick start guide"],
+    boxContents: ["Hema One analyzer", "4× AAA batteries (included)", "10× test strips", "Lancet device", "10× lancets", "Quick start guide"],
     deliveryEstimate: "Estimated at checkout",
     warrantyYears: 1,
     colorSwatches: {

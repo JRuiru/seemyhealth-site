@@ -108,7 +108,7 @@ export const productContent: Record<string, ProductContent> = {
       items: [
         { title: "Counts Itself", description: "No buttons, no logging, no guessing. Just drink." },
         { title: "Gentle Reminders", description: "A soft glow when it's been a while, timed around your day." },
-        { title: "A Month a Charge", description: "Up to 30 days of daily use on one USB-C charge." },
+        { title: "Two Weeks a Charge", description: "About 2 weeks of daily use on one USB-C charge." },
         { title: "Stays Cold", description: "Double-walled to keep drinks cold for up to 12 hours. BPA-free Tritan with a stainless steel lid." },
       ],
     },

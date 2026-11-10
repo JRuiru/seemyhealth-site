@@ -4,6 +4,36 @@
 const BFF_BASE = import.meta.env.PUBLIC_BFF_URL || "/api";
 const CART_KEY = "smh-cart-id";
 const COUNTRY_KEY = "smh-country";
+// A discount code from a /discount/<code>/ link, waiting for a cart (public/_redirects sends the
+// link to /shop/?discount=<code>). Cleared once a cart carries it.
+const DISCOUNT_KEY = "smh-discount-code";
+const DISCOUNT_CODE = /^[A-Za-z0-9_-]{1,64}$/;
+
+// Takes ?discount=<code> off the address (kept, for the next cart) and answers the code waiting
+// for a cart, if any.
+function pendingDiscountCode(): string | null {
+  try {
+    const url = new URL(window.location.href);
+    const fromUrl = url.searchParams.get("discount");
+    if (fromUrl !== null) {
+      if (DISCOUNT_CODE.test(fromUrl)) localStorage.setItem(DISCOUNT_KEY, fromUrl);
+      url.searchParams.delete("discount");
+      history.replaceState(history.state, "", url.pathname + url.search + url.hash);
+    }
+    const code = localStorage.getItem(DISCOUNT_KEY);
+    return code && DISCOUNT_CODE.test(code) ? code : null;
+  } catch {
+    return null;
+  }
+}
+
+function clearPendingDiscountCode() {
+  try {
+    localStorage.removeItem(DISCOUNT_KEY);
+  } catch {
+    // localStorage unavailable
+  }
+}
 
 export function getStoredCartId(): string | null {
   try {
@@ -41,6 +71,7 @@ export interface CartResponse {
     id: string;
     checkoutUrl: string;
     totalQuantity: number;
+    discountCodes?: { code: string; applicable: boolean }[];
     cost: {
       subtotalAmount: { amount: string; currencyCode: string };
       totalAmount: { amount: string; currencyCode: string };
@@ -103,10 +134,13 @@ export async function addToCart(
       countryCode,
     });
   } else {
+    const discount = pendingDiscountCode();
     result = await bffFetch<CartResponse>("/cart/create", {
       lines,
       countryCode,
+      ...(discount ? { discountCodes: [discount] } : {}),
     });
+    if (discount) clearPendingDiscountCode();
   }
 
   storeCartId(result.cart.id);
@@ -166,8 +200,23 @@ export async function removeLineItem(
 }
 
 export async function getCart(): Promise<CartResponse["cart"] | null> {
+  const discount = pendingDiscountCode();
   const cartId = getStoredCartId();
   if (!cartId) return null;
+
+  if (discount) {
+    try {
+      const result = await bffFetch<CartResponse>("/cart/discount", {
+        cartId,
+        discountCodes: [discount],
+        countryCode: getStoredCountry() || undefined,
+      });
+      clearPendingDiscountCode();
+      return result.cart;
+    } catch {
+      // Cart expired: the code waits for the next cart (addToCart creates it with the code)
+    }
+  }
 
   try {
     const result = await bffFetch<CartResponse>(`/cart/${encodeURIComponent(cartId)}`);

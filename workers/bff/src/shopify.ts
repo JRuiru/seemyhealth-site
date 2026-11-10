@@ -44,6 +44,7 @@ const CART_FRAGMENT = `
     id
     checkoutUrl
     totalQuantity
+    discountCodes { code applicable }
     cost {
       subtotalAmount { amount currencyCode }
       totalAmount { amount currencyCode }
@@ -82,7 +83,8 @@ const CART_FRAGMENT = `
 export async function cartCreate(
   config: ShopifyConfig,
   lines: { merchandiseId: string; quantity: number }[],
-  countryCode?: string
+  countryCode?: string,
+  discountCodes: string[] = []
 ) {
   const context = countryCode ? `@inContext(country: ${countryCode})` : "";
   const data = await storefrontFetch<{
@@ -100,6 +102,7 @@ export async function cartCreate(
       input: {
         lines,
         ...(countryCode ? { buyerIdentity: { countryCode } } : {}),
+        ...(discountCodes.length ? { discountCodes } : {}),
       },
     }
   );
@@ -279,4 +282,34 @@ export async function cartBuyerIdentityUpdate(
     throw new Error(data.cartBuyerIdentityUpdate.userErrors.map((e) => e.message).join(", "));
   }
   return data.cartBuyerIdentityUpdate.cart;
+}
+
+// Puts discount codes on a cart (replacing any it had). A code Shopify does not know, or one that
+// does not apply yet (a personal code before its customer signs in at checkout), is kept with
+// applicable: false rather than refused; checkout decides.
+export async function cartDiscountCodesUpdate(
+  config: ShopifyConfig,
+  cartId: string,
+  discountCodes: string[],
+  countryCode?: string
+) {
+  const context = countryCode ? `@inContext(country: ${countryCode})` : "";
+  const data = await storefrontFetch<{
+    cartDiscountCodesUpdate: { cart: unknown; userErrors: { field: string; message: string }[] };
+  }>(
+    config,
+    `${CART_FRAGMENT}
+    mutation ($cartId: ID!, $discountCodes: [String!]!) ${context} {
+      cartDiscountCodesUpdate(cartId: $cartId, discountCodes: $discountCodes) {
+        cart { ...CartFields }
+        userErrors { field message }
+      }
+    }`,
+    { cartId, discountCodes }
+  );
+
+  if (data.cartDiscountCodesUpdate.userErrors.length) {
+    throw new Error(data.cartDiscountCodesUpdate.userErrors.map((e) => e.message).join(", "));
+  }
+  return data.cartDiscountCodesUpdate.cart;
 }

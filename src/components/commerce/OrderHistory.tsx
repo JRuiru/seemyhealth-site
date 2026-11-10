@@ -350,7 +350,7 @@ export default function OrderHistory() {
           {/* More devices row */}
           <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide pb-1">
             {[
-              { name: "Scale Pro", slug: "scale-pro", image: `${CF_IMG}/scale-pro-black-bathroom/public`, price: "$179", color: "#3B82F6" },
+              { name: "The Scale Pro", slug: "scale-pro", image: `${CF_IMG}/scale-pro-black-bathroom/public`, price: "$179", color: "#3B82F6" },
               { name: "Hydra One", slug: "hydra-one", image: `${CF_IMG}/bottle-white-kitchen/public`, price: "$79", color: "#06B6D4" },
               { name: "Hema One", slug: "hema-one", image: `${CF_IMG}/hema-orange-kitchen-v2/public`, price: "$159", color: "#A855F7" },
             ].map((device) => (

@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
+import { IS_DEV_SITE } from '../../lib/site';
 
 export const prerender = true;
 
@@ -44,14 +45,17 @@ const quickLinks = [
   },
 ];
 
-const faqSections = [
+// draft: true marks an answer waiting for review. Drafts show on the dev line only
+// (dev.seemyhealth.ai) and never on prod; take the flag off once it's approved.
+type Faq = { q: string; a: string; draft?: boolean };
+const allFaqSections: { id: string; title: string; questions: Faq[] }[] = [
   {
     id: "getting-started",
     title: "Getting started",
     questions: [
       {
         q: "How do I pair a device?",
-        a: "Open the app, go to Settings > Devices > Add Device. Make sure Bluetooth is enabled. The app will automatically detect nearby SeeMyHealth devices. Follow the on-screen instructions for your specific device. <a href='/support/setup' class='text-white underline hover:text-brand-gray-300'>View step-by-step setup guides for each device →</a>",
+        a: "Open the app, tap the ≡ menu and go to Devices, then tap Set up on your device. For Ring One you can also tap the ring icon on Home. Make sure Bluetooth is enabled, then follow the on-screen steps. <a href='/support/setup' class='text-white underline hover:text-brand-gray-300'>View step-by-step setup guides for each device →</a>",
       },
       {
         q: "Do I need an account?",
@@ -71,7 +75,23 @@ const faqSections = [
       },
       {
         q: "Are devices locked to one account?",
-        a: "Ring One and Hydra One are personal devices you wear or carry. But The Scale, The Scale Pro, BP Monitor, and Hema One are shared by design. Anyone can walk up, connect via the app, take a reading, and the data saves to their own profile. One device for a whole family, gym, or office.",
+        a: "Ring One and Hydra One are personal: each belongs to one person and syncs with one phone at a time. The Scale, The Scale Pro, BP Monitor and Hema One can be shared. Each person adds the same device in their own SeeMyHealth app and chooses Shared during setup, and their readings save to their own account. Only you use it? Choose Just me instead.",
+      },
+      {
+        q: "I got a new phone or reinstalled the app. Do I have to set my devices up again?",
+        a: "No. Sign in and your devices come back with your account, with their names and settings. The Scale, The Scale Pro, BP Monitor and Hema One work on any of your phones as soon as you use them. Ring One and Hydra One sync with one phone at a time, so link them to the new phone (see below).",
+      },
+      {
+        q: "How do I move Ring One or Hydra One to another phone?",
+        a: "Ring One and Hydra One are linked to one phone at a time. On the new phone, go to Devices › Ring One (or Hydra One) › Link to this phone. Keep the other phone nearby with the app open, and both phones online. The other phone lets go, and your device syncs with the new one. Moving back works the same way. You can't move it while a software update is running, or while one has a part left to finish.",
+      },
+      {
+        q: "How do software updates work?",
+        a: "The app checks for updates for you. To install one, open your device's page with the app open and tap Update now. No charger needed, but Ring One and Hydra One need at least 50% charge, and your phone at least 20%. Keep the app open until it's done. If it's interrupted, nothing breaks: your device keeps working as before and you can try again. If a ring or bottle update you started didn't finish, it carries on by itself next time the device is close and charged with the app open.",
+      },
+      {
+        q: "Does the app remember where my ring or bottle was?",
+        a: "Yes, if you allow location. Each time Ring One or Hydra One connects, the app saves where it was to your account, so Find my ring and Find my bottle can show it on any of your phones. It's used for nothing else, and never shared with family, providers or the feed.",
       },
     ],
   },
@@ -81,7 +101,7 @@ const faqSections = [
     questions: [
       {
         q: "How do I find my ring size?",
-        a: "We include a free sizing kit with every Ring One order. Wear the sizing ring for at least 24 hours before deciding since finger size changes throughout the day.",
+        a: "Use the size guide on the Ring One page. Measure in the evening, when fingers are largest, and if you're between sizes go smaller. Still not sure? Order a sizing kit with 8 sizer rings (sizes 6–13) and wear your best fit for a day before choosing.",
       },
       {
         q: "Can I return it if it doesn't fit?",
@@ -106,6 +126,10 @@ const faqSections = [
         a: "Up to 7 days on a single charge, depending on usage. Charging takes approximately 60 minutes.",
       },
       {
+        q: "How do I charge Ring One?",
+        a: "Pop it on its charger. A full charge takes about an hour, and tracking pauses while it charges, so charging while you shower or have breakfast means no night is missed.",
+      },
+      {
         q: "Is Ring One water-resistant?",
         a: "Yes, rated to 100 meters (10 ATM). Safe for swimming, showers, and daily wear.",
       },
@@ -125,7 +149,11 @@ const faqSections = [
       },
       {
         q: "Does the scale need Wi-Fi?",
-        a: "No. The scale connects directly to your phone via Bluetooth. We intentionally skipped Wi-Fi so the device stays account-free. Anyone can walk up and use it with their own app.",
+        a: "No. The scale connects directly to your phone via Bluetooth. We intentionally skipped Wi-Fi, so there's nothing to set up on the scale itself. Everyone in the house can add it in their own app.",
+      },
+      {
+        q: "What batteries do the scales use?",
+        a: "The Scale runs on 3 AAA batteries, included in the box. The Scale Pro is rechargeable: plug in its USB-C cable, and a full charge takes about 2 hours and lasts several weeks.",
       },
     ],
   },
@@ -142,12 +170,20 @@ const faqSections = [
         a: "Wrap the cuff snugly around your upper arm, sit relaxed for 1 minute, then press start. Results appear in about 30 seconds.",
       },
       {
+        q: "How is the BP Monitor powered?",
+        a: "With 4 AAA batteries (not included), or with USB-C power from an outlet using the included cable. It works either way.",
+      },
+      {
+        q: "My BP Monitor switched off during setup. Is something wrong?",
+        a: "No, that's normal. Once it's linked, the app switches the monitor off for you. Nothing was measured or saved. Switch it on again when you're ready for your first reading.",
+      },
+      {
         q: "Can I share readings with my doctor?",
         a: "Yes. Toggle access in Settings > Sharing. Your doctor gets authenticated, read-only access. You control it with a single switch.",
       },
       {
         q: "Can my family share one BP Monitor?",
-        a: "Absolutely. The BP Monitor isn't locked to any account. Each person opens the SeeMyHealth app, connects, takes a reading, and it saves to their own profile. Perfect for households monitoring blood pressure together.",
+        a: "Yes. Each person adds the same monitor in their own SeeMyHealth app and chooses Shared during setup. A reading then saves to whoever is measuring in the app, so everyone keeps their own history.",
       },
     ],
   },
@@ -157,11 +193,15 @@ const faqSections = [
     questions: [
       {
         q: "How does Hydra One measure water intake?",
-        a: "A precision sensor in the base measures every sip automatically. Battery lasts up to 30 days, charges via USB-C.",
+        a: "A sensor in the cap measures every sip automatically. A full charge lasts about 2 weeks, and it charges via USB-C.",
       },
       {
         q: "Is Hydra One dishwasher safe?",
         a: "The bottle body is hand-wash only to protect the sensor. The cap is dishwasher safe. The sensor base is sealed and splash-proof.",
+      },
+      {
+        q: "How do I charge Hydra One?",
+        a: "Plug it in with its USB-C cable. A full charge takes about 2 hours, so plugging it in overnight has it ready by morning. The app shows roughly how many days you have left.",
       },
     ],
   },
@@ -171,7 +211,7 @@ const faqSections = [
     questions: [
       {
         q: "What does Hema One analyze?",
-        a: "7 key biomarkers: full lipid profile (total cholesterol, HDL-C, LDL-C, triglycerides), blood glucose, uric acid, and hemoglobin. Results in 5–15 seconds from a tiny finger-prick sample (~1μL).",
+        a: "7 key biomarkers: full lipid profile (total cholesterol, HDL-C, LDL-C, triglycerides), blood glucose, uric acid, and hemoglobin. From a finger-prick drop of blood: glucose, haemoglobin and uric acid take about 5 seconds from a small drop; the cholesterol panel takes about 15 seconds and needs a bigger drop.",
       },
       {
         q: "Is Hema One a medical device?",
@@ -232,6 +272,11 @@ const faqSections = [
     ],
   },
 ];
+
+const faqSections = allFaqSections.map((section) => ({
+  ...section,
+  questions: section.questions.filter((item) => IS_DEV_SITE || !item.draft),
+}));
 
 const popularSearches = ["ring size", "pair a device", "share with doctor", "delete my data", "cancel subscription"];
 
