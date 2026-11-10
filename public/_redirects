@@ -1,9 +1,9 @@
-# Cloudflare Pages redirects (copied into dist/ as is; both lines, www and the apex alike).
+# Cloudflare Pages redirects (copied into dist/ as is; www and the apex alike).
 #
 # A store discount link, https://www.seemyhealth.ai/discount/<code>/ (cmh-golang's shop module builds
 # them; the apps open them). The store is headless, so Shopify's own /discount/<code> on the store
-# domain would not reach this site's cart: instead the shop page opens with ?discount=<code>, and the
-# cart client (src/lib/shopify/cart-client.ts) keeps the code and puts it on the cart through the BFF
-# (POST /api/cart/discount, or the next cart it creates). Shopify checks the code at checkout.
-/discount/:code/  /shop/?discount=:code  302
-/discount/:code   /shop/?discount=:code  302
+# domain would not reach this site's cart. Every /discount/* path is REWRITTEN (200, the address keeps
+# the code) to the static page src/pages/discount/index.astro, which forwards to /shop/?discount=<code>;
+# the cart client (src/lib/shopify/cart-client.ts) keeps the code and puts it on the cart through the
+# BFF. A plain 302 can't do it: Pages does not fill a placeholder inside a query string.
+/discount/*  /discount/  200

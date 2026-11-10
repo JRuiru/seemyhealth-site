@@ -1,0 +1,25 @@
+---
+// A store discount link, /discount/<code>/ (cmh-golang's shop module builds them; the apps open
+// them). public/_redirects REWRITES every /discount/* path to this one static page (a 200, so the
+// address keeps the code), and the script below forwards to /shop/?discount=<code>, where the cart
+// client keeps the code for the cart. Pages cannot put a path placeholder into a redirect's query
+// string (it sends ":code" literally), which is why this is a page and not a redirect.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SeeMyHealth</title>
+    <script is:inline>
+      (function () {
+        var match = window.location.pathname.match(/^\/discount\/([A-Za-z0-9_-]{1,64})\/?$/);
+        var target = match ? "/shop/?discount=" + encodeURIComponent(match[1]) : "/shop/";
+        window.location.replace(target);
+      })();
+    </script>
+    <noscript><meta http-equiv="refresh" content="0; url=/shop/" /></noscript>
+  </head>
+  <body></body>
+</html>

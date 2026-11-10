@@ -4,8 +4,9 @@
 const BFF_BASE = import.meta.env.PUBLIC_BFF_URL || "/api";
 const CART_KEY = "smh-cart-id";
 const COUNTRY_KEY = "smh-country";
-// A discount code from a /discount/<code>/ link, waiting for a cart (public/_redirects sends the
-// link to /shop/?discount=<code>). Cleared once a cart carries it.
+// A discount code from a /discount/<code>/ link, waiting for a cart (public/_redirects rewrites the
+// link to src/pages/discount/index.astro, which forwards to /shop/?discount=<code>). Cleared once a
+// cart carries it.
 const DISCOUNT_KEY = "smh-discount-code";
 const DISCOUNT_CODE = /^[A-Za-z0-9_-]{1,64}$/;
 
