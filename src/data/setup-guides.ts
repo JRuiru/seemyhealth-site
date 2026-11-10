@@ -126,7 +126,8 @@ export const setupData: Record<string, DeviceSetup> = {
       },
       {
         title: "It switches off",
-        description: "Once it's linked, the app switches the monitor off for you. That's normal. Nothing is measured or saved during setup.",
+        description: "Once it's linked, the app sets the monitor's date and time and switches it off for you. That's normal. Nothing is measured or saved during setup, so pair it before your first reading.",
+        tip: "Important: pair it before your first reading, so every measurement gets the right date and time. Changed the batteries or unplugged it? Open the app and press Start once on the monitor: the app sets its clock again.",
       },
       {
         title: "Fit the cuff",
@@ -136,7 +137,7 @@ export const setupData: Record<string, DeviceSetup> = {
       {
         title: "First reading",
         description: "Sit comfortably and relax for 1 minute. Tap Measure in the app: it looks for your linked monitor automatically. Then press Start on the monitor, and the app connects and starts the measurement for you. Stay still and quiet until it's done, and your blood pressure and pulse land in the app.",
-        tip: "For the best data, measure at the same time each day.",
+        tip: "Measure with the app open when you can: it picks your user on the monitor and keeps its date and time right, so there's nothing to check. And measure at the same time each day.",
       },
     ],
   },
