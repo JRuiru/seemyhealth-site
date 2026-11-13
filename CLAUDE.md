@@ -92,7 +92,13 @@ links page may log or forward its address: an `/i/` URL carries an invitation's 
 link is never written into the served page) gives the Play button `&referrer=link%3D<link>` and makes the
 App Store button copy the link to the clipboard on the tap before going to the store. The apps take it
 from there (Play Install Referrer on Android, a `UIPasteControl` on iOS). No fingerprinting, no SDK.
-Note an `/i/` link's token then reaches Google Play as the install referrer, as the plan accepts.
+**An `/i/` link never goes to Google**: its token is a secret, so for an invite page the Worker makes a
+single-use **handoff code** (`workers/links/src/handoff.ts`: `POST {API_BASE}/api/v2/links/handoffs` with
+the preview secret) and marks `<html data-deferred-link="handoff" data-handoff="<code>">`; the Play
+referrer is then `handoff=<code>`, which the Android app redeems with the backend at first launch. No code
+(backend down or refusing, an iPhone, a HEAD) means NO referrer, never `link=`; the script also refuses
+`link=` for any `/i/` address. The App Store copy is still the whole link (the clipboard stays on the
+phone).
 
 ## Shop Account Connect (/account/connect)
 

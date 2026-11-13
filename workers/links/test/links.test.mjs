@@ -19,7 +19,8 @@ const { matchLinkPath, paymentState, detectPlatform } = await import(join(WORKER
 const { parsePreview } = await import(join(WORKER, 'src', 'invite.ts'));
 const { parseRecipePreview } = await import(join(WORKER, 'src', 'recipe-share.ts'));
 const { mintCardKey, openCardKey } = await import(join(WORKER, 'src', 'og', 'card-key.ts'));
-const { playUrlWithReferrer, currentLink } = await import(join(WORKER, '..', '..', 'links', 'scripts', 'deferred-link.ts'));
+const { playUrlWithReferrer, playUrlWithHandoff, playHrefFor, currentLink } = await import(join(WORKER, '..', '..', 'links', 'scripts', 'deferred-link.ts'));
+const { parseHandoff } = await import(join(WORKER, 'src', 'handoff.ts'));
 
 const SECRET = 'test-preview-secret-not-a-real-one';
 const token = (c) => c.repeat(43);
@@ -57,10 +58,23 @@ const EXAMPLE = {
 };
 const examplePath = (p) => p.template.replace(/\{([^}]+)\}/g, (_m, name) => EXAMPLE[p.params.find((x) => x.name === name).type]);
 
-let stub, stubCalls = [], worker;
+let stub, stubCalls = [], handoffCalls = [], worker;
+// A handoff the stub makes: 24 characters, numbered so each page's is its own.
+const handoffCode = (n) => `H${String(n).padStart(23, '0')}`;
 
 before(async () => {
-  stub = createServer((req, res) => {
+  stub = createServer(async (req, res) => {
+    if (req.method === 'POST' && req.url === '/api/v2/links/handoffs') {
+      let body = '';
+      for await (const chunk of req) body += chunk;
+      const call = { secret: req.headers['x-links-preview-secret'], body: JSON.parse(body) };
+      handoffCalls.push(call);
+      if (call.secret !== SECRET) { res.writeHead(401, { 'Content-Type': 'application/json' }); return res.end('{"code":"UNAUTHORIZED"}'); }
+      // The backend refusing (or down) for the friend invite: its page must carry no referrer.
+      if (call.body.link.endsWith(TOKENS.friend)) { res.writeHead(500); return res.end('{}'); }
+      res.writeHead(201, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+      return res.end(JSON.stringify({ code: handoffCode(handoffCalls.length), expiresAt: '2026-11-20T00:00:00Z' }));
+    }
     stubCalls.push({ method: req.method, url: req.url, secret: req.headers['x-links-preview-secret'] });
     const m = /^\/api\/v2\/links\/invites\/([A-Za-z0-9_-]+)$/.exec(req.url ?? '');
     if (req.headers['x-links-preview-secret'] !== SECRET) { res.writeHead(401, { 'Content-Type': 'application/json' }); return res.end('{"code":"UNAUTHORIZED"}'); }
@@ -285,7 +299,7 @@ describe('/i/{token}', () => {
     assert.match(broken.html, /Invite Didn/);
   });
 
-  test('the backend is only ever read: GET, with the secret', () => {
+  test('the backend is only ever read (GET, with the secret), apart from making handoff codes', () => {
     assert.ok(stubCalls.length > 0);
     for (const c of stubCalls) {
       assert.equal(c.method, 'GET');
@@ -478,6 +492,76 @@ describe('deferred links', () => {
     assert.equal(currentLink('https://links.seemyhealth.ai/i/abc#get'), 'https://links.seemyhealth.ai/i/abc');
   });
 
+  test('an /i/ page swaps its link for a handoff code: the Play button carries handoff=, never the token', () => {
+    const code = handoffCode(7);
+    const out = new URL(playHrefFor(PLAY, `https://links.seemyhealth.ai/i/${TOKENS.publicGroup}`, 'handoff', code));
+    assert.equal(out.searchParams.get('referrer'), `handoff=${code}`);
+    assert.ok(!out.toString().includes(TOKENS.publicGroup));
+    assert.equal(new URL(playUrlWithHandoff(PLAY, code)).searchParams.get('referrer'), `handoff=${code}`);
+  });
+
+  test('an /i/ page with no code has no referrer at all, whatever its mark says', () => {
+    const link = `https://links.seemyhealth.ai/i/${TOKENS.publicGroup}`;
+    assert.equal(playHrefFor(PLAY, link, 'handoff', null), PLAY);
+    assert.equal(playHrefFor(PLAY, link, '', null), PLAY, 'an /i/ address never goes out as link=');
+    assert.equal(playHrefFor(PLAY, link, 'handoff', 'not-a-code'), PLAY);
+    assert.equal(playUrlWithHandoff(PLAY, `../${'x'.repeat(21)}`), PLAY);
+  });
+
+  test('every other link kind keeps link=', () => {
+    const link = 'https://links.seemyhealth.ai/r/aB3dE5fG7h';
+    assert.equal(new URL(playHrefFor(PLAY, link, '', null)).searchParams.get('referrer'), `link=${encodeURIComponent(link)}`);
+  });
+
+  test('the Worker makes the code by its secret, for the canonical link, and marks the page with it', async () => {
+    const before = handoffCalls.length;
+    const html = await (await get(`/i/${TOKENS.publicGroup}`, { headers: { 'User-Agent': 'Mozilla/5.0 (Linux; Android 15; SM-S928B)' } })).text();
+    const call = handoffCalls[handoffCalls.length - 1];
+    assert.equal(handoffCalls.length, before + 1);
+    assert.equal(call.secret, SECRET);
+    assert.deepEqual(call.body, { link: `https://links.seemyhealth.ai/i/${TOKENS.publicGroup}` });
+    assert.match(html, /<html[^>]*data-deferred-link="handoff"/);
+    assert.match(html, new RegExp(`<html[^>]*data-handoff="${handoffCode(handoffCalls.length)}"`));
+    for (const path of [`/i/${TOKENS.privateGroup}`, `/i/${TOKENS.family}`]) {
+      assert.match(await (await get(path)).text(), /<html[^>]*data-handoff="H\d{23}"/, path);
+    }
+  });
+
+  test('no code when the backend cannot make one, and none made for an iPhone, a HEAD or a closed invite', async () => {
+    const failed = await (await get(`/i/${TOKENS.friend}`)).text();
+    assert.match(failed, /<html[^>]*data-deferred-link="handoff"/);
+    assert.doesNotMatch(failed, /data-handoff=/);
+
+    const before = handoffCalls.length;
+    const iphone = await (await get(`/i/${TOKENS.publicGroup}`, { headers: { 'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 19_0 like Mac OS X)' } })).text();
+    assert.match(iphone, /<html[^>]*data-deferred-link="handoff"/);
+    assert.doesNotMatch(iphone, /data-handoff=/);
+    await get(`/i/${TOKENS.publicGroup}`, { method: 'HEAD' });
+    await get(`/i/${TOKENS.expired}`);
+    await get(`/i/${TOKENS.unknown}`);
+    const broken = await (await get(`/i/${TOKENS.broken}`)).text();
+    assert.match(broken, /<html[^>]*data-deferred-link="handoff"/);
+    assert.doesNotMatch(broken, /data-handoff=/);
+    assert.equal(handoffCalls.length, before);
+  });
+
+  test('the other link kinds keep the plain mark (link=) and never make a code', async () => {
+    const before = handoffCalls.length;
+    for (const path of ['/feed', '/c/sam.runs_42', `/r/${CODES.machboos}`]) {
+      const html = await (await get(path)).text();
+      assert.match(html, /<html[^>]*data-deferred-link=""/, path);
+      assert.doesNotMatch(html, /data-handoff=/, path);
+    }
+    assert.equal(handoffCalls.length, before);
+  });
+
+  test('the handoff answer is read strictly', () => {
+    assert.equal(parseHandoff({ code: handoffCode(1), expiresAt: 'x' }), handoffCode(1));
+    for (const bad of [null, [], {}, { code: 1 }, { code: 'short' }, { code: `${'a'.repeat(23)}!` }, { code: 'a'.repeat(25) }]) {
+      assert.equal(parseHandoff(bad), null, JSON.stringify(bad));
+    }
+  });
+
   test('every link kind marks its page, and loads the script; /get-the-app, a 404 and the payment return do not', async () => {
     const marked = [...LINK_PATHS.paths.filter((p) => p.name !== 'invite' && p.name !== 'paymentsReturn').map(examplePath),
       `/i/${TOKENS.publicGroup}`, `/i/${TOKENS.privateGroup}`, `/i/${TOKENS.friend}`, `/r/${CODES.machboos}`, '/c/sam.runs_42'];
@@ -495,6 +579,7 @@ describe('deferred links', () => {
     for (const src of scripts) js += await (await get(src)).text();
     assert.match(js, /data-deferred-link/);
     assert.match(js, /referrer/);
+    assert.match(js, /handoff=/);
     assert.match(js, /clipboard/);
   });
 

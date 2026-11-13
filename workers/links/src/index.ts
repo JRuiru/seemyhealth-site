@@ -3,6 +3,7 @@
 //   /.well-known/apple-app-site-association   every link template, for both iOS app ids
 //   /.well-known/assetlinks.json              Android App Links
 //   /i/{token}                                an invitation's safe preview (restricted backend read)
+//                                             and its handoff code for the Play referrer (handoff.ts)
 //   /c/{handle}                               a person's connection invite, showing their @handle
 //   /r/{code}                                 a shared recipe's get-the-app page (restricted backend read)
 //   /payments/return                          back from the hosted checkout
@@ -18,11 +19,12 @@
 //
 // Nothing here logs: an /i/ address carries a bearer token, and an /r/ address a share code. Observability is off in wrangler.jsonc.
 
-import { LINK_PATHS, PARAM_TYPES, type LinkPathSpec } from './generated/link-paths.ts';
+import { LINK_HOST, LINK_PATHS, PARAM_TYPES, type LinkPathSpec } from './generated/link-paths.ts';
 import { PAGE_KIND_BY_PATH } from './page-kinds.ts';
 import { APPLE_APP_SITE_ASSOCIATION, ASSET_LINKS } from './well-known.ts';
 import { countLine, readPreview, safeImageUrl, shownTarget } from './invite.ts';
 import { readRecipePreview } from './recipe-share.ts';
+import { createHandoff } from './handoff.ts';
 import { mintCardKey, openCardKey, type CardKind } from './og/card-key.ts';
 import {
   INVITE_COPY, connectionInviteDescription, connectionInviteTitle,
@@ -158,6 +160,11 @@ interface Fill {
   // its script (links/scripts/deferred-link.ts) gives the Play button the link as its install referrer
   // and has the App Store button copy it. The link itself is never written into the page.
   deferred?: boolean;
+  // An /i/ page instead: its link carries the invitation's token, which never goes to Google. The page
+  // marks <html data-deferred-link="handoff">, and with a code (handoff.ts) data-handoff="<code>": the
+  // Play button's referrer is then handoff=<code>, and with none it has no referrer at all. The App
+  // Store button still copies the link (the clipboard stays on the phone).
+  handoff?: { code: string | null };
 }
 
 async function page(request: Request, env: Env, template: string, status: number, caching: Caching, fill: Fill = {}): Promise<Response> {
@@ -172,7 +179,12 @@ async function page(request: Request, env: Env, template: string, status: number
     .on('html', {
       element: (el) => {
         if (platform) el.setAttribute('data-platform', platform);
-        if (fill.deferred) el.setAttribute('data-deferred-link', '');
+        if (fill.handoff) {
+          el.setAttribute('data-deferred-link', 'handoff');
+          if (fill.handoff.code) el.setAttribute('data-handoff', fill.handoff.code);
+        } else if (fill.deferred) {
+          el.setAttribute('data-deferred-link', '');
+        }
       },
     })
     .on('meta[data-og-url]', { element: (el) => { el.setAttribute('content', `${origin}${url.pathname}`); el.removeAttribute('data-og-url'); } })
@@ -232,13 +244,15 @@ async function invitePage(request: Request, env: Env, token: string): Promise<Re
   const preview = await readPreview(token, env.API_BASE, env.LINKS_PREVIEW_SECRET);
 
   if (preview.outcome === 'not_found') return page(request, env, '/t/invite/not-found/', 404, 'private');
-  if (preview.outcome === 'unavailable') return page(request, env, '/t/invite/unavailable/', 503, 'private', { deferred: true });
+  // The backend is down, so no code can be made either: no referrer.
+  if (preview.outcome === 'unavailable') return page(request, env, '/t/invite/unavailable/', 503, 'private', { handoff: { code: null } });
 
   const { kind, status } = preview;
   if (status !== 'active') return page(request, env, `/t/invite/${kind}/${status}/`, 410, 'private');
 
+  const handoff = await inviteHandoff(request, env, token);
   const target = shownTarget(preview);
-  if (!target || (kind !== 'group' && kind !== 'challenge')) return page(request, env, `/t/invite/${kind}/generic/`, 200, 'private', { deferred: true });
+  if (!target || (kind !== 'group' && kind !== 'challenge')) return page(request, env, `/t/invite/${kind}/generic/`, 200, 'private', { handoff });
 
   const cover = safeImageUrl(target.imageUrl);
   const count = countLine(kind, target.memberCount);
@@ -254,8 +268,16 @@ async function invitePage(request: Request, env: Env, token: string): Promise<Re
     description: [count, INVITE_COPY[kind].sentence].filter(Boolean).join('. '),
     ogImage,
     imageAlt: target.name,
-    deferred: true,
+    handoff,
   });
+}
+
+// The code an active invite's page hands the Play button in place of its link. None for a HEAD (no
+// page to put it in) or an iPhone (it has no use for the Play button), and none when the backend
+// cannot make one: the page then sends no referrer, never the token.
+async function inviteHandoff(request: Request, env: Env, token: string): Promise<{ code: string | null }> {
+  if (request.method === 'HEAD' || detectPlatform(request.headers.get('User-Agent') ?? '') === 'ios') return { code: null };
+  return { code: await createHandoff(`https://${LINK_HOST}/i/${token}`, env.API_BASE, env.LINKS_PREVIEW_SECRET) };
 }
 
 // ---- /c/{handle} --------------------------------------------------------------------------------
