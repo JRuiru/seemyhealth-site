@@ -1,8 +1,8 @@
 ---
 // A person's connection invite (/c/{handle}): their own reusable link, shared from Connections. The
 // page knows the @handle in the address and nothing else, so their card shows the handle (the Worker
-// fills data-slot="handle") and no name or photo; yours waits, dashed. The way in is the app: get it,
-// tap the link again, sign up or sign in, and their request is waiting in Requests.
+// fills data-slot="handle") and no name or photo; yours waits, dashed. The way in is the app: get it
+// (it opens the invite after install), sign up or sign in, and their request is waiting in Requests.
 import KindIcon from '../components/KindIcon.astro';
 import OpenInApp from '../components/OpenInApp.astro';
 import AppStoreButtons from '../../src/components/AppStoreButtons.astro';
@@ -10,8 +10,8 @@ import StoreName from '../../src/components/StoreName.astro';
 import { CF_IMG, CONNECTION_INVITE_COPY as c } from '../../workers/links/src/catalogue';
 const steps = [
   { n: '01', title: 'Get the app', text: "It's free, and you'll find it as C-MyHealth." },
-  { n: '02', title: 'Tap this link again', text: 'It opens the invite in the app.' },
-  { n: '03', title: 'Sign up or sign in', text: 'Their connection request is waiting in Requests.' },
+  { n: '02', title: 'Sign up or sign in', text: "We'll take you straight to the invite." },
+  { n: '03', title: 'Say yes', text: 'Their connection request is waiting in Requests.' },
 ];
 ---
 

@@ -87,6 +87,13 @@ page kind, and `npm run links:check` fails a path with no kind. `/i/{token}` (an
 components (`links/`), and the store buttons on all three come from `src/data/app-stores.ts`. Nothing on a
 links page may log or forward its address: an `/i/` URL carries an invitation's token.
 
+**Deferred links** (cmh-golang `Docs/deferred-links-plan.md`): on every link-path page the Worker marks
+`<html data-deferred-link>`, and `links/scripts/deferred-link.ts` (run at load, reading `location`, so the
+link is never written into the served page) gives the Play button `&referrer=link%3D<link>` and makes the
+App Store button copy the link to the clipboard on the tap before going to the store. The apps take it
+from there (Play Install Referrer on Android, a `UIPasteControl` on iOS). No fingerprinting, no SDK.
+Note an `/i/` link's token then reaches Google Play as the install referrer, as the plan accepts.
+
 ## Shop Account Connect (/account/connect)
 
 The app links somebody's app account to their store account by opening

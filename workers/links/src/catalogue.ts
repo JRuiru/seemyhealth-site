@@ -176,14 +176,14 @@ export type InviteKind = keyof typeof INVITE_COPY;
 
 export const CONNECTION_INVITE_COPY = {
   eyebrow: 'Connection invite', title: 'Invited You', bold: 'to Connect',
-  sentence: "Get SeeMyHealth, then tap this link again. Once you've signed up or signed in, their connection request will be waiting in Requests.",
+  sentence: "Get SeeMyHealth and we'll take you straight there after you install. Once you've signed up or signed in, their connection request will be waiting in Requests.",
   pageTitle: "You're Invited to Connect on SeeMyHealth", layout: 'split', photo: 'ring-dining', accent: ORANGE,
 } satisfies Copy;
 
 // The page's own title and description once the Worker knows the handle (shown with its "@").
 export const connectionInviteTitle = (handle: string) => `@${handle} invited you to connect on SeeMyHealth`;
 export const connectionInviteDescription = (handle: string) =>
-  `Get SeeMyHealth, then tap this link again. Once you've signed up or signed in, @${handle}'s connection request will be waiting in Requests.`;
+  `Get SeeMyHealth and we'll take you straight there after you install. Once you've signed up or signed in, @${handle}'s connection request will be waiting in Requests.`;
 
 // ---- A recipe shared by link: /r/{code} -----------------------------------------------------------
 // Shared from a recipe in the app (cmh-golang nutrition, POST /recipes/{id}/link). Without the app,
@@ -192,7 +192,7 @@ export const connectionInviteDescription = (handle: string) =>
 
 export const RECIPE_SHARE_COPY = {
   eyebrow: 'Shared recipe', title: 'This Recipe Opens', bold: 'in the SeeMyHealth App',
-  sentence: "Get the app to see it, cook it and log it. Once it's installed, tap this link again and it opens right on the recipe.",
+  sentence: "Get the app to see it, cook it and log it. We'll take you straight to the recipe after you install.",
   pageTitle: 'A Recipe Shared on SeeMyHealth', layout: 'fullBleed', photo: 'logging-food', accent: GREEN,
 } satisfies Copy;
 

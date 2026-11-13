@@ -1,7 +1,8 @@
 ---
 // The way to the app under every links page: the site's own store buttons (src/data/app-stores.ts)
 // and its "You'll find it as C-MyHealth" line. A links page never knows if the app is installed, so it
-// says what to do either way. No deferred deep linking in release 1: after installing, tap again.
+// says what to do either way. After installing, the app opens what was shared (deferred links:
+// the Play install referrer, or on iPhone the link the App Store button copied; links/scripts/deferred-link.ts).
 import AppStoreButtons from '../../src/components/AppStoreButtons.astro';
 import StoreName from '../../src/components/StoreName.astro';
 ---
@@ -10,10 +11,10 @@ import StoreName from '../../src/components/StoreName.astro';
   <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
     <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-4">Don't have it yet?</p>
     <h2 class="font-display text-3xl sm:text-4xl font-300 uppercase leading-[0.95] mb-4">
-      Get the App. <span class="font-500">Then Tap Again.</span>
+      Get the App. <span class="font-500">We'll Take You There.</span>
     </h2>
     <p class="text-brand-gray-400 leading-relaxed max-w-lg mx-auto mb-8 text-pretty">
-      Installed? Tap the link again from wherever you found it, and it'll open right where it should.
+      We'll take you straight there after you install.
     </p>
     <AppStoreButtons class="justify-center" />
     <StoreName class="justify-center mt-5" />

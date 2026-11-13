@@ -100,7 +100,7 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
   if (match.spec.name === 'recipeShare') return recipeSharePage(request, env, match.params.recipeLinkCode);
   if (match.spec.name === 'paymentsReturn') return page(request, env, `/t/payment/${paymentState(url.searchParams.get('status'))}/`, 200, 'private');
 
-  return page(request, env, `/t/kind/${PAGE_KIND_BY_PATH[match.spec.name]}/`, 200, 'public');
+  return page(request, env, `/t/kind/${PAGE_KIND_BY_PATH[match.spec.name]}/`, 200, 'public', { deferred: true });
 }
 
 // ---- Paths ---------------------------------------------------------------------------------------
@@ -154,6 +154,10 @@ interface Fill {
   description?: string;
   ogImage?: string;                     // a path or an absolute URL
   imageAlt?: string;
+  // A real link path somebody may install the app for: the page marks <html data-deferred-link>, and
+  // its script (links/scripts/deferred-link.ts) gives the Play button the link as its install referrer
+  // and has the App Store button copy it. The link itself is never written into the page.
+  deferred?: boolean;
 }
 
 async function page(request: Request, env: Env, template: string, status: number, caching: Caching, fill: Fill = {}): Promise<Response> {
@@ -165,7 +169,12 @@ async function page(request: Request, env: Env, template: string, status: number
   const platform = detectPlatform(request.headers.get('User-Agent') ?? '');
 
   let rewriter = new HTMLRewriter()
-    .on('html', { element: (el) => { if (platform) el.setAttribute('data-platform', platform); } })
+    .on('html', {
+      element: (el) => {
+        if (platform) el.setAttribute('data-platform', platform);
+        if (fill.deferred) el.setAttribute('data-deferred-link', '');
+      },
+    })
     .on('meta[data-og-url]', { element: (el) => { el.setAttribute('content', `${origin}${url.pathname}`); el.removeAttribute('data-og-url'); } })
     .on('meta[data-og-image]', {
       element: (el) => {
@@ -223,13 +232,13 @@ async function invitePage(request: Request, env: Env, token: string): Promise<Re
   const preview = await readPreview(token, env.API_BASE, env.LINKS_PREVIEW_SECRET);
 
   if (preview.outcome === 'not_found') return page(request, env, '/t/invite/not-found/', 404, 'private');
-  if (preview.outcome === 'unavailable') return page(request, env, '/t/invite/unavailable/', 503, 'private');
+  if (preview.outcome === 'unavailable') return page(request, env, '/t/invite/unavailable/', 503, 'private', { deferred: true });
 
   const { kind, status } = preview;
   if (status !== 'active') return page(request, env, `/t/invite/${kind}/${status}/`, 410, 'private');
 
   const target = shownTarget(preview);
-  if (!target || (kind !== 'group' && kind !== 'challenge')) return page(request, env, `/t/invite/${kind}/generic/`, 200, 'private');
+  if (!target || (kind !== 'group' && kind !== 'challenge')) return page(request, env, `/t/invite/${kind}/generic/`, 200, 'private', { deferred: true });
 
   const cover = safeImageUrl(target.imageUrl);
   const count = countLine(kind, target.memberCount);
@@ -245,6 +254,7 @@ async function invitePage(request: Request, env: Env, token: string): Promise<Re
     description: [count, INVITE_COPY[kind].sentence].filter(Boolean).join('. '),
     ogImage,
     imageAlt: target.name,
+    deferred: true,
   });
 }
 
@@ -259,6 +269,7 @@ function connectionInvitePage(request: Request, env: Env, handle: string): Promi
     slots: { handle: at, 'handle-card': at, sentence: connectionInviteDescription(handle) },
     title: connectionInviteTitle(handle),
     description: connectionInviteDescription(handle),
+    deferred: true,
   });
 }
 
@@ -272,7 +283,7 @@ function connectionInvitePage(request: Request, env: Env, handle: string): Promi
 async function recipeSharePage(request: Request, env: Env, code: string): Promise<Response> {
   const preview = await readRecipePreview(code, env.API_BASE, env.LINKS_PREVIEW_SECRET);
   if (preview.outcome === 'not_found') return page(request, env, '/t/recipe-share/not-found/', 404, 'private');
-  if (preview.outcome === 'unavailable') return page(request, env, '/t/recipe-share/unavailable/', 503, 'private');
+  if (preview.outcome === 'unavailable') return page(request, env, '/t/recipe-share/unavailable/', 503, 'private', { deferred: true });
 
   const r = preview.recipe;
   const cover = safeImageUrl(r.coverPhotoUrl);
@@ -288,6 +299,7 @@ async function recipeSharePage(request: Request, env: Env, code: string): Promis
     description: recipeShareDescription(r.sharedByName, r.kcalPerServing, r.totalMinutes),
     ogImage,
     imageAlt: r.name,
+    deferred: true,
   });
 }
 

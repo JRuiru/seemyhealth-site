@@ -19,6 +19,7 @@ const { matchLinkPath, paymentState, detectPlatform } = await import(join(WORKER
 const { parsePreview } = await import(join(WORKER, 'src', 'invite.ts'));
 const { parseRecipePreview } = await import(join(WORKER, 'src', 'recipe-share.ts'));
 const { mintCardKey, openCardKey } = await import(join(WORKER, 'src', 'og', 'card-key.ts'));
+const { playUrlWithReferrer, currentLink } = await import(join(WORKER, '..', '..', 'links', 'scripts', 'deferred-link.ts'));
 
 const SECRET = 'test-preview-secret-not-a-real-one';
 const token = (c) => c.repeat(43);
@@ -455,6 +456,60 @@ describe('Open Graph cards', () => {
       const res = await get(`/og/${name}.jpg`);
       assert.equal(res.status, 200, name);
       assert.equal(res.headers.get('content-type'), 'image/jpeg', name);
+    }
+  });
+});
+
+describe('deferred links', () => {
+  const PLAY = 'https://play.google.com/store/apps/details?id=ai.seemyhealth.app';
+
+  test('the Play button carries the link as its install referrer, encoded once more inside', () => {
+    const link = 'https://links.seemyhealth.ai/r/aB3dE5fG7h?from=x&y=1';
+    const out = new URL(playUrlWithReferrer(PLAY, link));
+    assert.equal(out.searchParams.get('id'), 'ai.seemyhealth.app');
+    const referrer = out.searchParams.get('referrer');
+    assert.equal(referrer, `link=${encodeURIComponent(link)}`);
+    assert.equal(new URLSearchParams(referrer).get('link'), link, 'the app reads link= back exactly');
+  });
+
+  test('an empty or foreign listing is left alone, and the link drops its fragment', () => {
+    assert.equal(playUrlWithReferrer('#', 'https://links.seemyhealth.ai/feed'), '#');
+    assert.equal(playUrlWithReferrer('https://example.com/x', 'https://links.seemyhealth.ai/feed'), 'https://example.com/x');
+    assert.equal(currentLink('https://links.seemyhealth.ai/i/abc#get'), 'https://links.seemyhealth.ai/i/abc');
+  });
+
+  test('every link kind marks its page, and loads the script; /get-the-app, a 404 and the payment return do not', async () => {
+    const marked = [...LINK_PATHS.paths.filter((p) => p.name !== 'invite' && p.name !== 'paymentsReturn').map(examplePath),
+      `/i/${TOKENS.publicGroup}`, `/i/${TOKENS.privateGroup}`, `/i/${TOKENS.friend}`, `/r/${CODES.machboos}`, '/c/sam.runs_42'];
+    const scripts = new Set();
+    for (const path of marked) {
+      const html = await (await get(path)).text();
+      assert.match(html, /<html[^>]*data-deferred-link/, path);
+      for (const m of html.matchAll(/<script type="module" src="(\/_astro\/[^"]+\.js)"/g)) scripts.add(m[1]);
+    }
+    for (const path of ['/get-the-app', '/nope', '/payments/return?status=failed']) {
+      assert.doesNotMatch(await (await get(path)).text(), /<html[^>]*data-deferred-link/, path);
+    }
+    assert.ok(scripts.size, 'the deferred-link script is its own file (the CSP allows no inline script)');
+    let js = '';
+    for (const src of scripts) js += await (await get(src)).text();
+    assert.match(js, /data-deferred-link/);
+    assert.match(js, /referrer/);
+    assert.match(js, /clipboard/);
+  });
+
+  test('the token and the code are still only in og:url', async () => {
+    for (const [path, secret] of [[`/i/${TOKENS.publicGroup}`, TOKENS.publicGroup], [`/r/${CODES.machboos}`, CODES.machboos]]) {
+      const html = (await (await get(path)).text()).replace(/<meta property="og:url"[^>]*>/, '');
+      assert.ok(!html.includes(secret), path);
+    }
+  });
+
+  test('the get-the-app note says the app takes them there; no page says to tap again', async () => {
+    const feed = await (await get('/feed')).text();
+    assert.match(feed, /take you straight there after you install/);
+    for (const path of ['/feed', '/c/sam.runs_42', `/r/${CODES.machboos}`, `/i/${TOKENS.publicGroup}`]) {
+      assert.doesNotMatch(await (await get(path)).text(), /tap (this|the) link again/i, path);
     }
   });
 });
