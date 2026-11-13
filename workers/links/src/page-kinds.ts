@@ -25,7 +25,7 @@ export const PAGE_KINDS = [
   'health',
   'mood',
   'devices',
-  'recipe',
+  'recipeShare',
   'notifications',
 ] as const;
 
@@ -78,14 +78,15 @@ export const PAGE_KIND_BY_PATH: Record<string, PageKind> = {
   goal: 'health',
   mood: 'mood',
   devices: 'devices',
-  recipe: 'recipe',
+  recipeShare: 'recipeShare',
 
   notifications: 'notifications',
 };
 
-// The kinds a fallback page draws (every kind but the three the Worker answers with content of its
-// own: an invitation's preview, a person's connection invite with their @handle, the payment return).
-export const FALLBACK_KINDS = PAGE_KINDS.filter((k) => k !== 'invite' && k !== 'connection' && k !== 'payment');
+// The kinds a fallback page draws (every kind but the four the Worker answers with content of its
+// own: an invitation's preview, a person's connection invite with their @handle, the payment return,
+// and a recipe shared by link with its name, photo and who shared it).
+export const FALLBACK_KINDS = PAGE_KINDS.filter((k) => k !== 'invite' && k !== 'connection' && k !== 'payment' && k !== 'recipeShare');
 
 // The site's Rive tab icons (public/media/app-icons, copied from the app), one per area.
 export type KindIcon = 'community' | 'my-health' | 'providers' | 'nutrition';
@@ -110,5 +111,5 @@ export const KIND_ICON: Partial<Record<PageKind, KindIcon>> = {
   health: 'my-health',
   mood: 'my-health',
   devices: 'my-health',
-  recipe: 'nutrition',
+  recipeShare: 'nutrition',
 };

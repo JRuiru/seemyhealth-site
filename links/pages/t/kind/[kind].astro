@@ -20,7 +20,6 @@ import Billing from '../../../kinds/Billing.astro';
 import Health from '../../../kinds/Health.astro';
 import Mood from '../../../kinds/Mood.astro';
 import Devices from '../../../kinds/Devices.astro';
-import Recipe from '../../../kinds/Recipe.astro';
 import Notifications from '../../../kinds/Notifications.astro';
 
 export function getStaticPaths() {
@@ -30,10 +29,10 @@ export function getStaticPaths() {
 const DESIGNS: Record<FallbackKind, typeof Group> = {
   group: Group, groupManage: GroupManage, event: Event, challenge: Challenge, awards: Awards, post: Post,
   people: People, family: Family, messages: Messages, call: Call, care: Care, checkIn: CheckIn, billing: Billing,
-  health: Health, mood: Mood, devices: Devices, recipe: Recipe, notifications: Notifications,
+  health: Health, mood: Mood, devices: Devices, notifications: Notifications,
 };
 
-const kind = Astro.params.kind as Exclude<PageKind, 'invite' | 'connection' | 'payment'>;
+const kind = Astro.params.kind as Exclude<PageKind, 'invite' | 'connection' | 'payment' | 'recipeShare'>;
 const copy = KIND_COPY[kind];
 const Design = DESIGNS[kind];
 ---

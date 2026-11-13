@@ -4,6 +4,7 @@
 //   /.well-known/assetlinks.json              Android App Links
 //   /i/{token}                                an invitation's safe preview (restricted backend read)
 //   /c/{handle}                               a person's connection invite, showing their @handle
+//   /r/{code}                                 a shared recipe's get-the-app page (restricted backend read)
 //   /payments/return                          back from the hosted checkout
 //   every other path in link-paths.json       its page kind's fallback page
 //   /get-the-app                              the store buttons
@@ -12,23 +13,28 @@
 //
 // The pages are prerendered by astro.links.config.mjs into ./dist (the ASSETS binding); this Worker
 // picks one per request and fills in what only the request knows: the visitor's platform (which store
-// goes first), the page's own URL for og:url, and for an invite, what the restricted preview allows.
+// goes first), the page's own URL for og:url, and for an invite or a shared recipe, what the
+// restricted preview allows.
 //
-// Nothing here logs: an /i/ address carries a bearer token. Observability is off in wrangler.jsonc.
+// Nothing here logs: an /i/ address carries a bearer token, and an /r/ address a share code. Observability is off in wrangler.jsonc.
 
 import { LINK_PATHS, PARAM_TYPES, type LinkPathSpec } from './generated/link-paths.ts';
 import { PAGE_KIND_BY_PATH } from './page-kinds.ts';
 import { APPLE_APP_SITE_ASSOCIATION, ASSET_LINKS } from './well-known.ts';
 import { countLine, readPreview, safeImageUrl, shownTarget } from './invite.ts';
-import { mintCardKey, openCardKey } from './og/card-key.ts';
-import { INVITE_COPY, connectionInviteDescription, connectionInviteTitle } from './catalogue.ts';
+import { readRecipePreview } from './recipe-share.ts';
+import { mintCardKey, openCardKey, type CardKind } from './og/card-key.ts';
+import {
+  INVITE_COPY, connectionInviteDescription, connectionInviteTitle,
+  recipeShareDescription, recipeShareSharedBy, recipeShareTitle,
+} from './catalogue.ts';
 
 export interface Env {
   ASSETS: Fetcher;
   API_BASE: string;
   LINKS_PREVIEW_SECRET?: string;
-  // "on" draws a public group's or challenge's own card (about a second of CPU per new card, so
-  // Workers Paid); anything else uses the invite kind's static card.
+  // "on" draws a public group's or challenge's own card, and a shared recipe's (about a second of CPU
+  // per new card, so Workers Paid); anything else uses the kind's static card.
   OG_DYNAMIC?: string;
 }
 
@@ -82,7 +88,7 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
   if (/^\/(_astro|images|media|fonts)\//.test(path) || /^\/og\/[a-zA-Z-]+\.jpg$/.test(path)) {
     return env.ASSETS.fetch(request);
   }
-  if (path.startsWith('/og/invite/')) return dynamicCard(request, env, ctx);
+  if (path.startsWith('/og/invite/') || path.startsWith('/og/share/')) return dynamicCard(request, env, ctx);
 
   if (path === '/get-the-app') return page(request, env, '/t/get-the-app/', 200, 'public');
 
@@ -91,6 +97,7 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
 
   if (match.spec.name === 'invite') return invitePage(request, env, match.params.inviteToken);
   if (match.spec.name === 'connectionInvite') return connectionInvitePage(request, env, match.params.handle);
+  if (match.spec.name === 'recipeShare') return recipeSharePage(request, env, match.params.recipeLinkCode);
   if (match.spec.name === 'paymentsReturn') return page(request, env, `/t/payment/${paymentState(url.searchParams.get('status'))}/`, 200, 'private');
 
   return page(request, env, `/t/kind/${PAGE_KIND_BY_PATH[match.spec.name]}/`, 200, 'public');
@@ -255,16 +262,46 @@ function connectionInvitePage(request: Request, env: Env, handle: string): Promi
   });
 }
 
+// ---- /r/{code} ----------------------------------------------------------------------------------
+
+// A recipe shared by link, for somebody without the app: its name, its photo and who shared it, from
+// the restricted preview, and one job, getting the app. The same outcomes as an invitation: an
+// unknown code (or a recipe deleted or blocked since) is 404 in the recipe's own words, a preview
+// that cannot be read is 503, and each read is never cached (the recipe can be deleted at any time).
+// The code is never written into the page but for og:url, and never into the card's URL.
+async function recipeSharePage(request: Request, env: Env, code: string): Promise<Response> {
+  const preview = await readRecipePreview(code, env.API_BASE, env.LINKS_PREVIEW_SECRET);
+  if (preview.outcome === 'not_found') return page(request, env, '/t/recipe-share/not-found/', 404, 'private');
+  if (preview.outcome === 'unavailable') return page(request, env, '/t/recipe-share/unavailable/', 503, 'private');
+
+  const r = preview.recipe;
+  const cover = safeImageUrl(r.coverPhotoUrl);
+  const sharedBy = recipeShareSharedBy(r.sharedByName);
+  const ogImage = env.LINKS_PREVIEW_SECRET && env.OG_DYNAMIC === 'on'
+    ? `/og/share/recipe.jpg?key=${await mintCardKey({ k: 'recipe', n: r.name, c: null, i: cover, s: sharedBy }, env.LINKS_PREVIEW_SECRET)}`
+    : '/og/recipe-share.jpg';
+
+  return page(request, env, '/t/recipe-share/', 200, 'private', {
+    slots: { name: r.name, 'shared-by': sharedBy },
+    cover,
+    title: recipeShareTitle(r.name),
+    description: recipeShareDescription(r.sharedByName, r.kcalPerServing, r.totalMinutes),
+    ogImage,
+    imageAlt: r.name,
+  });
+}
+
 // ---- Dynamic cards -------------------------------------------------------------------------------
 
-// /og/invite/{group|challenge}.jpg?key=...: a public group's or challenge's card. Rendered at most
+// /og/invite/{group|challenge}.jpg?key=...: a public group's or challenge's card, and
+// /og/share/recipe.jpg?key=...: a shared recipe's. Rendered at most
 // once per key per edge location for five minutes; an expired, altered or missing key, or a render
 // that fails, is the kind's static card. Never a call to the backend.
 async function dynamicCard(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const url = new URL(request.url);
-  const kind = /^\/og\/invite\/(group|challenge)\.jpg$/.exec(url.pathname)?.[1] as 'group' | 'challenge' | undefined;
+  const kind = DYNAMIC_CARDS[url.pathname];
   if (!kind) return new Response('Not Found', { status: 404 });
-  const fallback = (why = 'key') => cardResponse(env.ASSETS.fetch(new Request(new URL(`/og/invite-${kind}.jpg`, url))), 300, why);
+  const fallback = (why = 'key') => cardResponse(env.ASSETS.fetch(new Request(new URL(STATIC_FALLBACK[kind], url))), 300, why);
 
   const key = url.searchParams.get('key');
   const payload = key && env.LINKS_PREVIEW_SECRET ? await openCardKey(key, env.LINKS_PREVIEW_SECRET) : null;
@@ -276,8 +313,8 @@ async function dynamicCard(request: Request, env: Env, ctx: ExecutionContext): P
   if (hit) return hit;
 
   try {
-    const { renderInviteCard } = await import('./og/dynamic.ts');
-    const bytes = await renderInviteCard(payload, env.ASSETS, url.origin);
+    const { renderDynamicCard } = await import('./og/dynamic.ts');
+    const bytes = await renderDynamicCard(payload, env.ASSETS, url.origin);
     const res = new Response(bytes, { headers: { 'Content-Type': 'image/jpeg', 'Cache-Control': 'public, max-age=300', 'X-Content-Type-Options': 'nosniff', 'X-Card': 'dynamic' } });
     ctx.waitUntil(cache.put(cacheKey, res.clone()));
     return res;
@@ -285,6 +322,17 @@ async function dynamicCard(request: Request, env: Env, ctx: ExecutionContext): P
     return fallback('render');
   }
 }
+
+const DYNAMIC_CARDS: Record<string, CardKind | undefined> = {
+  '/og/invite/group.jpg': 'group',
+  '/og/invite/challenge.jpg': 'challenge',
+  '/og/share/recipe.jpg': 'recipe',
+};
+const STATIC_FALLBACK: Record<CardKind, string> = {
+  group: '/og/invite-group.jpg',
+  challenge: '/og/invite-challenge.jpg',
+  recipe: '/og/recipe-share.jpg',
+};
 
 // X-Card says which card was drawn (dynamic, or the static fallback and why), never what is on it.
 async function cardResponse(asset: Promise<Response>, maxAge: number, why: string): Promise<Response> {

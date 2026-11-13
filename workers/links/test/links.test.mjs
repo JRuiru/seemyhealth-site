@@ -17,6 +17,7 @@ const LINK_PATHS = JSON.parse(readFileSync(join(WORKER, 'link-paths.json'), 'utf
 const { PAGE_KIND_BY_PATH } = await import(join(WORKER, 'src', 'page-kinds.ts'));
 const { matchLinkPath, paymentState, detectPlatform } = await import(join(WORKER, 'src', 'index.ts'));
 const { parsePreview } = await import(join(WORKER, 'src', 'invite.ts'));
+const { parseRecipePreview } = await import(join(WORKER, 'src', 'recipe-share.ts'));
 const { mintCardKey, openCardKey } = await import(join(WORKER, 'src', 'og', 'card-key.ts'));
 
 const SECRET = 'test-preview-secret-not-a-real-one';
@@ -36,6 +37,13 @@ const PREVIEWS = {
   [TOKENS.usedUp]: { kind: 'friend', status: 'used_up', target: null },
 };
 
+// Shared recipe codes and what the stub's recipe preview answers for each.
+const CODES = { machboos: 'aB3dE5fG7h', noPhoto: 'Zz9Yy8Xx7W', unknown: 'NOPEnope00', broken: 'BRKbrk0000' };
+const RECIPES = {
+  [CODES.machboos]: { name: "Mum's chicken machboos", coverPhotoUrl: 'https://imagedelivery.net/NnC2JvU8j4bgBbmedVhjJg/logging-food/public', kcalPerServing: 640.4, totalMinutes: 50, creatorName: 'John Kenyatta', sharedByName: 'John Kenyatta' },
+  [CODES.noPhoto]: { name: 'High-protein oats', coverPhotoUrl: null, kcalPerServing: 410, totalMinutes: null, creatorName: 'SeeMyHealth', sharedByName: '' },
+};
+
 // Example values for each parameter type, as the backend makes them.
 const EXAMPLE = {
   uuid: '3f1c2a4e-8b7d-4c1e-9a2b-1c2d3e4f5a6b',
@@ -44,8 +52,7 @@ const EXAMPLE = {
   practiceCode: 'green-valley-clinic',
   inviteToken: TOKENS.privateGroup,
   handle: 'sam.runs_42',
-  recipeSource: 'catalog',
-  recipeKey: '1234567',
+  recipeLinkCode: CODES.machboos,
 };
 const examplePath = (p) => p.template.replace(/\{([^}]+)\}/g, (_m, name) => EXAMPLE[p.params.find((x) => x.name === name).type]);
 
@@ -56,6 +63,13 @@ before(async () => {
     stubCalls.push({ method: req.method, url: req.url, secret: req.headers['x-links-preview-secret'] });
     const m = /^\/api\/v2\/links\/invites\/([A-Za-z0-9_-]+)$/.exec(req.url ?? '');
     if (req.headers['x-links-preview-secret'] !== SECRET) { res.writeHead(401, { 'Content-Type': 'application/json' }); return res.end('{"code":"UNAUTHORIZED"}'); }
+    const r = /^\/api\/v2\/links\/recipes\/([A-Za-z0-9]+)$/.exec(req.url ?? '');
+    if (r) {
+      if (r[1] === CODES.broken) { res.writeHead(500); return res.end('{}'); }
+      if (!RECIPES[r[1]]) { res.writeHead(404, { 'Content-Type': 'application/json' }); return res.end('{"code":"RECIPE_LINK_NOT_FOUND","category":"not_found"}'); }
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+      return res.end(JSON.stringify(RECIPES[r[1]]));
+    }
     if (!m || m[1] === TOKENS.unknown) { res.writeHead(404, { 'Content-Type': 'application/json' }); return res.end('{"code":"INVITE_NOT_FOUND","category":"not_found"}'); }
     if (m[1] === TOKENS.broken) { res.writeHead(500); return res.end('{}'); }
     res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
@@ -125,7 +139,7 @@ describe('every link path', () => {
   });
 
   for (const p of LINK_PATHS.paths) {
-    if (p.name === 'invite') continue;
+    if (p.name === 'invite' || p.name === 'recipeShare') continue; // their own pages, below
     test(`${p.template} draws its ${PAGE_KIND_BY_PATH[p.name]} page with its Open Graph card`, async () => {
       const path = examplePath(p);
       const res = await get(path);
@@ -149,7 +163,8 @@ describe('every link path', () => {
 
   test('an id of the wrong shape, a trailing slash, an unknown path and a template address are 404s', async () => {
     for (const path of ['/groups/not-a-uuid', '/feed/', '/nope', '/t/kind/group/', '/t/connection/', '/users/123', '/practices/A_B',
-      '/c/ab', '/c/Sam', '/c/sam..runs', '/c/.sam', '/recipes/mine/123', '/recipes/catalog/not-a-key']) {
+      '/c/ab', '/c/Sam', '/c/sam..runs', '/c/.sam', '/recipes/catalog/1234567',
+      '/r/short', '/r/aB3dE5fG7h1', '/r/aB3dE-fG7h', '/r/aB3dE5fG7h/']) {
       const res = await get(path);
       assert.equal(res.status, 404, path);
       assert.match(await res.text(), /Nothing/);
@@ -274,7 +289,7 @@ describe('/i/{token}', () => {
     for (const c of stubCalls) {
       assert.equal(c.method, 'GET');
       assert.equal(c.secret, SECRET);
-      assert.match(c.url, /^\/api\/v2\/links\/invites\/[A-Za-z0-9_-]{43}$/);
+      assert.match(c.url, /^\/api\/v2\/links\/(invites\/[A-Za-z0-9_-]{43}|recipes\/[A-Za-z0-9]{10})$/);
     }
   });
 
@@ -286,6 +301,99 @@ describe('/i/{token}', () => {
       const fallback = await get('/feed', { headers: { 'User-Agent': ua } });
       assert.equal(fallback.status, 200);
     }
+  });
+});
+
+describe('/r/{code}', () => {
+  const share = async (code, ua) => {
+    const res = await get(`/r/${code}`, ua ? { headers: { 'User-Agent': ua } } : {});
+    return { res, html: await res.text() };
+  };
+
+  test('shows the recipe\'s name, its photo and who shared it, with one job: get the app', async () => {
+    const { res, html } = await share(CODES.machboos);
+    assert.equal(res.status, 200);
+    assert.equal(res.headers.get('cache-control'), 'no-store');
+    assert.equal(res.headers.get('x-robots-tag'), 'noindex');
+    assert.match(html, /data-slot="name"[^>]*>Mum(&#39;|')s chicken machboos</);
+    assert.match(html, /data-slot="shared-by"[^>]*>Shared by John Kenyatta</);
+    assert.match(html, /<img src="https:\/\/imagedelivery\.net\/NnC2JvU8j4bgBbmedVhjJg\/logging-food\/public"[^>]*data-slot="cover"/);
+    assert.match(html, /This Recipe Opens/);
+    assert.match(html, /data-store="ios"/);
+    assert.match(html, /data-store="android"/);
+    assert.match(html, /Already have it\?/);
+    assert.match(html, /Open in the App/);
+    assert.doesNotMatch(html, />A Recipe<|>Shared with you</, 'every placeholder is filled');
+  });
+
+  test('the rich preview: the recipe\'s name, "Shared by", and its drawn card, never the code', async () => {
+    const { html } = await share(CODES.machboos);
+    assert.match(meta(html, 'og:title'), /^Mum(&#39;|')s chicken machboos \| SeeMyHealth$/);
+    assert.match(meta(html, 'og:description'), /^Shared by John Kenyatta\. 640 kcal, 50 min\./);
+    assert.match(meta(html, 'og:image:alt'), /^Mum(&#39;|')s chicken machboos$/);
+    const og = new URL(meta(html, 'og:image').replace(/&amp;/g, '&'));
+    assert.equal(og.pathname, '/og/share/recipe.jpg');
+    assert.ok(!og.search.includes(CODES.machboos));
+    assert.equal(new URL(meta(html, 'og:url')).pathname, `/r/${CODES.machboos}`);
+    const withoutOgUrl = html.replace(/<meta property="og:url"[^>]*>/, '');
+    assert.ok(!withoutOgUrl.includes(CODES.machboos), 'the code is nowhere else in the page');
+
+    const card = await get(`${og.pathname}${og.search}`);
+    assert.equal(card.status, 200);
+    assert.equal(card.headers.get('content-type'), 'image/jpeg');
+    assert.equal(card.headers.get('x-card'), 'dynamic');
+  });
+
+  test('no photo and no sharer name: the art stays and it says it was shared with you', async () => {
+    const { res, html } = await share(CODES.noPhoto);
+    assert.equal(res.status, 200);
+    assert.match(html, /High-protein oats/);
+    assert.match(html, /data-slot="shared-by"[^>]*>Shared with you</);
+    assert.match(meta(html, 'og:description'), /^Shared with you\. 410 kcal\./);
+  });
+
+  test('an unknown code is 404 in the recipe\'s words, a failed read is 503, a malformed code never reaches the backend', async () => {
+    const unknown = await share(CODES.unknown);
+    assert.equal(unknown.res.status, 404);
+    assert.equal(unknown.res.headers.get('cache-control'), 'no-store');
+    assert.match(unknown.html, /Recipe Not Found/);
+    assert.match(meta(unknown.html, 'og:image'), /\/og\/recipe-share-not-found\.jpg$/);
+    const broken = await share(CODES.broken);
+    assert.equal(broken.res.status, 503);
+    assert.match(broken.html, /Recipe Didn/);
+    const before = stubCalls.length;
+    const bad = await share('short');
+    assert.equal(bad.res.status, 404);
+    assert.match(bad.html, /Nothing/);
+    assert.equal(stubCalls.length, before);
+  });
+
+  test('a crawler gets the tags straight away, with no redirect', async () => {
+    for (const ua of ['WhatsApp/2.24.20.80 A', 'facebookexternalhit/1.1 Facebot Twitterbot/1.0']) {
+      const { res, html } = await share(CODES.machboos, ua);
+      assert.equal(res.status, 200);
+      assert.match(meta(html, 'og:image'), /\/og\/share\/recipe\.jpg\?key=/);
+    }
+  });
+
+  test('a tampered key draws the static recipe card, and an invite key never draws a recipe', async () => {
+    const stat = new Uint8Array(await (await get('/og/recipe-share.jpg')).arrayBuffer());
+    const groupKey = await mintCardKey({ k: 'group', n: 'Morning Runners', c: 1, i: null }, SECRET);
+    for (const q of ['?key=abc.def', `?key=${groupKey}`, '']) {
+      const res = await get(`/og/share/recipe.jpg${q}`);
+      assert.match(res.headers.get('x-card'), /^fallback/);
+      assert.deepEqual(new Uint8Array(await res.arrayBuffer()), stat);
+    }
+  });
+
+  test('the recipe preview is read strictly', () => {
+    const ok = RECIPES[CODES.machboos];
+    assert.equal(parseRecipePreview(ok).outcome, 'found');
+    assert.equal(parseRecipePreview({ ...ok, extra: 1 }).outcome, 'unavailable');
+    assert.equal(parseRecipePreview({ ...ok, name: ' ' }).outcome, 'unavailable');
+    assert.equal(parseRecipePreview({ ...ok, totalMinutes: 1.5 }).outcome, 'unavailable');
+    const { sharedByName, ...missing } = ok;
+    assert.equal(parseRecipePreview(missing).outcome, 'unavailable');
   });
 });
 
@@ -309,20 +417,6 @@ describe('/c/{handle}', () => {
   test('never reads the backend', async () => {
     const before = stubCalls.length;
     await get('/c/sam.runs_42');
-    assert.equal(stubCalls.length, before);
-  });
-});
-
-describe('a recipe (app only)', () => {
-  test('draws the recipe page, never the backend', async () => {
-    const before = stubCalls.length;
-    for (const path of ['/recipes/catalog/1234567', '/recipes/user/3f1c2a4e-8b7d-4c1e-9a2b-1c2d3e4f5a6b']) {
-      const res = await get(path);
-      assert.equal(res.status, 200, path);
-      const html = await res.text();
-      assert.match(html, /Is Cooking/);
-      assert.match(meta(html, 'og:image'), /\/og\/kind-recipe\.jpg$/);
-    }
     assert.equal(stubCalls.length, before);
   });
 });
@@ -356,7 +450,8 @@ describe('Open Graph cards', () => {
   });
 
   test('every static card is served as a JPEG', async () => {
-    for (const name of ['default', 'not-found', 'kind-messages', 'kind-recipe', 'kind-awards', 'invite-family', 'invite-revoked', 'connection-invite', 'payment-pending']) {
+    for (const name of ['default', 'not-found', 'kind-messages', 'kind-awards', 'invite-family', 'invite-revoked', 'connection-invite', 'payment-pending',
+      'recipe-share', 'recipe-share-not-found', 'recipe-share-unavailable']) {
       const res = await get(`/og/${name}.jpg`);
       assert.equal(res.status, 200, name);
       assert.equal(res.headers.get('content-type'), 'image/jpeg', name);
@@ -367,7 +462,7 @@ describe('Open Graph cards', () => {
 describe('copy', () => {
   test('no page has an em or en dash, or a coming-soon store button', async () => {
     const paths = [...LINK_PATHS.paths.filter((p) => p.name !== 'invite').map(examplePath), '/get-the-app', '/nope',
-      ...Object.values(TOKENS).map((t) => `/i/${t}`), '/payments/return?status=failed'];
+      ...Object.values(TOKENS).map((t) => `/i/${t}`), ...Object.values(CODES).map((c) => `/r/${c}`), '/payments/return?status=failed'];
     for (const path of paths) {
       const html = await (await get(path)).text();
       const text = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '');

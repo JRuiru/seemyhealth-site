@@ -109,11 +109,6 @@ export const KIND_COPY = {
     sentence: 'Open SeeMyHealth to see your devices and how each one is syncing.',
     pageTitle: 'Devices on SeeMyHealth', layout: 'split', photo: 'ring-aurora-phantom-multi', accent: ORANGE,
   },
-  recipe: {
-    eyebrow: 'Recipes', title: "Something Good", bold: 'Is Cooking',
-    sentence: 'Open SeeMyHealth to see the recipe, what goes in it and any allergens we spot along the way.',
-    pageTitle: 'A Recipe on SeeMyHealth', layout: 'split', photo: 'logging-food', accent: GREEN,
-  },
   notifications: {
     eyebrow: 'Notifications', title: "You've Got", bold: 'Updates',
     sentence: 'Open SeeMyHealth to catch up. Your notifications only show in the app.',
@@ -190,6 +185,38 @@ export const connectionInviteTitle = (handle: string) => `@${handle} invited you
 export const connectionInviteDescription = (handle: string) =>
   `Get SeeMyHealth, then tap this link again. Once you've signed up or signed in, @${handle}'s connection request will be waiting in Requests.`;
 
+// ---- A recipe shared by link: /r/{code} -----------------------------------------------------------
+// Shared from a recipe in the app (cmh-golang nutrition, POST /recipes/{id}/link). Without the app,
+// the page shows the recipe's name, its photo and who shared it (the backend's restricted preview,
+// GET /api/v2/links/recipes/{code}) and does one job: get the app. There is no web version of a recipe.
+
+export const RECIPE_SHARE_COPY = {
+  eyebrow: 'Shared recipe', title: 'This Recipe Opens', bold: 'in the SeeMyHealth App',
+  sentence: "Get the app to see it, cook it and log it. Once it's installed, tap this link again and it opens right on the recipe.",
+  pageTitle: 'A Recipe Shared on SeeMyHealth', layout: 'fullBleed', photo: 'logging-food', accent: GREEN,
+} satisfies Copy;
+
+// The page's title and description once the Worker has the preview. The title is the recipe's name,
+// as the message's preview card shows it; the description says who shared it, and the kcal and time.
+export const recipeShareTitle = (name: string) => `${name} | SeeMyHealth`;
+export const recipeShareSharedBy = (sharedByName: string) => (sharedByName ? `Shared by ${sharedByName}` : 'Shared with you');
+function recipeShareStats(kcalPerServing: number, totalMinutes: number | null): string {
+  const parts = [`${Math.round(kcalPerServing).toLocaleString('en-GB')} kcal`];
+  if (totalMinutes !== null) parts.push(`${totalMinutes} min`);
+  return parts.join(', ');
+}
+export const recipeShareDescription = (sharedByName: string, kcalPerServing: number, totalMinutes: number | null) =>
+  `${recipeShareSharedBy(sharedByName)}. ${recipeShareStats(kcalPerServing, totalMinutes)}. Open it in SeeMyHealth to cook it and log it.`;
+
+// An unknown code, a deleted recipe or one blocked from the sharer: the backend answers 404 for all
+// three, and the page never says which. Unavailable: the preview could not be read, a genuine failure.
+export const RECIPE_SHARE_STATE_COPY = {
+  not_found: { title: 'Recipe Not Found', sentence: "This recipe link doesn't lead anywhere any more. Ask whoever sent it to share it again." },
+  unavailable: { title: "Recipe Didn't Load", sentence: 'Oops, something went wrong. Give it another go.' },
+} as const;
+
+export type RecipeShareState = keyof typeof RECIPE_SHARE_STATE_COPY;
+
 // The generic group line when the preview names nothing (a private or sensitive group, or one sent to
 // one person): it says the details are the members', never that the group is private.
 export const INVITE_GROUP_GENERIC_LINE = 'Its details are for members, so you will see them in the app.';
@@ -232,6 +259,12 @@ export const STATIC_CARDS: Record<string, Copy & { line?: string }> = {
   // The states are neutral: no kind, no art, no name.
   ...Object.fromEntries(Object.entries(INVITE_STATE_COPY).map(([k, c]) => [`invite-${k.replace('_', '-')}`, {
     eyebrow: 'Invite', title: c.title, bold: '', sentence: c.sentence, line: c.sentence,
+    pageTitle: `${c.title} | SeeMyHealth`, layout: 'quiet' as const, accent: '#737373',
+  }])),
+  // A shared recipe's card when no drawn card can be (no secret, or OG_DYNAMIC off), and its states.
+  'recipe-share': { ...RECIPE_SHARE_COPY, title: 'A Recipe', bold: 'Shared with You', line: RECIPE_SHARE_COPY.sentence },
+  ...Object.fromEntries(Object.entries(RECIPE_SHARE_STATE_COPY).map(([k, c]) => [`recipe-share-${k.replace('_', '-')}`, {
+    eyebrow: 'Shared recipe', title: c.title, bold: '', sentence: c.sentence, line: c.sentence,
     pageTitle: `${c.title} | SeeMyHealth`, layout: 'quiet' as const, accent: '#737373',
   }])),
 };

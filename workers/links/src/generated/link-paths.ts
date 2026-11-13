@@ -10,8 +10,7 @@ export const PARAM_TYPES = {
   "identityId": "^usr_[0-9a-f]{32}$",
   "inviteToken": "^[A-Za-z0-9_-]{43}$",
   "practiceCode": "^[a-z0-9]([a-z0-9-]{1,48}[a-z0-9])$",
-  "recipeKey": "^([0-9]{1,20}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$",
-  "recipeSource": "^(catalog|user)$",
+  "recipeLinkCode": "^[A-Za-z0-9]{10}$",
   "uuid": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
 } as const;
 
@@ -438,17 +437,13 @@ export const LINK_PATHS = [
     "query": []
   },
   {
-    "name": "recipe",
-    "template": "/recipes/{recipeSource}/{recipeKey}",
-    "web": false,
+    "name": "recipeShare",
+    "template": "/r/{recipeLinkCode}",
+    "web": true,
     "params": [
       {
-        "name": "recipeSource",
-        "type": "recipeSource"
-      },
-      {
-        "name": "recipeKey",
-        "type": "recipeKey"
+        "name": "recipeLinkCode",
+        "type": "recipeLinkCode"
       }
     ],
     "query": []

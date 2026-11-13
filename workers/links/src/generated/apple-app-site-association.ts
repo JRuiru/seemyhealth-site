@@ -170,8 +170,8 @@ export const APPLE_APP_SITE_ASSOCIATION = {
             "comment": "devices: devices"
           },
           {
-            "/": "/recipes/*/*",
-            "comment": "recipe: a recipe (a person's own only for its owner and for viewers of a feed post sharing it)"
+            "/": "/r/*",
+            "comment": "recipeShare: a recipe someone shared by link, with who shared it; the website's get-the-app page without the app"
           },
           {
             "/": "/notifications",

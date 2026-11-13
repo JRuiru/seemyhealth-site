@@ -1,0 +1,56 @@
+---
+// A recipe shared by link (/r/{code}), opened without the app (wireframe PL9r). Just the recipe's
+// name, its photo and who shared it, which the Worker fills from the restricted preview
+// (data-slot="name", "shared-by", "cover"), and one job: get the app. There is no web version of a
+// recipe, so nothing else of it is ever drawn here. "Already have it? Open in the app" is the same
+// same-address link every links page has (OpenInApp).
+//
+// The states (an unknown code, or a recipe deleted or blocked since; a preview that could not be
+// read) name nothing, as an invitation's do.
+import KindIcon from '../components/KindIcon.astro';
+import KindIntro from '../components/KindIntro.astro';
+import OpenInApp from '../components/OpenInApp.astro';
+import AppStoreButtons from '../../src/components/AppStoreButtons.astro';
+import StoreName from '../../src/components/StoreName.astro';
+import { CF_IMG, RECIPE_SHARE_COPY as c, RECIPE_SHARE_STATE_COPY, type RecipeShareState } from '../../workers/links/src/catalogue';
+interface Props { state?: RecipeShareState }
+const { state } = Astro.props;
+const s = state ? RECIPE_SHARE_STATE_COPY[state] : undefined;
+---
+
+{s ? (
+  <section class="min-h-[80vh] flex items-center pt-32 pb-20">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+      <svg class="w-full max-w-md mx-auto h-16 mb-8 opacity-20" viewBox="0 0 400 60" fill="none" aria-hidden="true">
+        <path d="M0 30 L80 30 L100 30 L120 10 L140 50 L160 5 L180 55 L200 30 L220 30 L400 30" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <KindIntro eyebrow={c.eyebrow} title={s.title} sentence={s.sentence} icon="nutrition" />
+      {state === 'unavailable' && <a href="" class="inline-flex mt-10 px-8 py-4 text-[13px] uppercase tracking-[1.5px] font-medium text-brand-black bg-white rounded-full hover:bg-brand-gray-200 transition-colors">Try Again</a>}
+      {state === 'not_found' && <OpenInApp class="mt-10" />}
+    </div>
+  </section>
+) : (
+  <section id="get" class="relative min-h-[92vh] flex items-end pb-16 sm:pb-20 pt-28 overflow-hidden">
+    <div class="absolute inset-0">
+      <img src={`${CF_IMG}/${c.photo}/public`} alt="" data-slot="cover" class="w-full h-full object-cover" fetchpriority="high" />
+      <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/60 to-brand-black/10"></div>
+    </div>
+    <div class="relative max-w-3xl mx-auto px-6 lg:px-8 w-full">
+      <div class="backdrop-blur-xl bg-white/[0.04] border border-white/[0.08] rounded-3xl px-6 py-8 sm:px-12 sm:py-12 shadow-2xl shadow-black/20 text-center">
+        <p class="flex items-center justify-center gap-2.5 text-[11px] uppercase tracking-[4px] text-white/55 mb-5 link-rise">
+          <KindIcon icon="nutrition" />
+          <span>{c.eyebrow}</span>
+        </p>
+        <h1 class="font-display text-4xl sm:text-6xl font-500 uppercase leading-[0.95] mb-4 text-balance break-words link-rise link-rise-2" data-slot="name">A Recipe</h1>
+        <p class="inline-flex px-4 py-1.5 mb-8 rounded-full bg-green-500/15 border border-green-400/30 text-green-300 text-[11px] uppercase tracking-[2px] link-rise link-rise-2" data-slot="shared-by">Shared with you</p>
+        <p class="font-display text-xl sm:text-2xl font-300 uppercase text-white/80 mb-3 link-rise link-rise-3">{c.title} <span class="font-500">{c.bold}</span></p>
+        <p class="text-brand-gray-400 sm:text-lg leading-relaxed max-w-xl mx-auto mb-8 text-pretty link-rise link-rise-3">{c.sentence}</p>
+        <AppStoreButtons class="justify-center" />
+        <StoreName class="justify-center mt-5" />
+        <p class="text-[12px] text-white/30 mt-2 mb-10">Free to download. Premium free for two weeks.</p>
+        <p class="text-[11px] uppercase tracking-[4px] text-brand-gray-500 mb-5">Already have it?</p>
+        <OpenInApp />
+      </div>
+    </div>
+  </section>
+)}

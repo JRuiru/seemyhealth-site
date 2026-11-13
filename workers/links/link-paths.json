@@ -8,8 +8,7 @@
     "identityId": "^usr_[0-9a-f]{32}$",
     "inviteToken": "^[A-Za-z0-9_-]{43}$",
     "practiceCode": "^[a-z0-9]([a-z0-9-]{1,48}[a-z0-9])$",
-    "recipeKey": "^([0-9]{1,20}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$",
-    "recipeSource": "^(catalog|user)$",
+    "recipeLinkCode": "^[A-Za-z0-9]{10}$",
     "uuid": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
   },
   "paths": [
@@ -465,18 +464,14 @@
       "query": []
     },
     {
-      "name": "recipe",
-      "template": "/recipes/{recipeSource}/{recipeKey}",
-      "opens": "a recipe (a person's own only for its owner and for viewers of a feed post sharing it)",
-      "web": false,
+      "name": "recipeShare",
+      "template": "/r/{recipeLinkCode}",
+      "opens": "a recipe someone shared by link, with who shared it; the website's get-the-app page without the app",
+      "web": true,
       "params": [
         {
-          "name": "recipeSource",
-          "type": "recipeSource"
-        },
-        {
-          "name": "recipeKey",
-          "type": "recipeKey"
+          "name": "recipeLinkCode",
+          "type": "recipeLinkCode"
         }
       ],
       "query": []

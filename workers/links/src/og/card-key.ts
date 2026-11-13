@@ -13,11 +13,17 @@
 
 export const CARD_KEY_TTL_SECONDS = 15 * 60;
 
+// The same holds for a shared recipe's card (/r/{code}): the key carries the recipe's name, its cover
+// and who shared it, as the restricted preview gave them, never the link's code.
+export type CardKind = 'group' | 'challenge' | 'recipe';
+const CARD_KINDS: readonly CardKind[] = ['group', 'challenge', 'recipe'];
+
 export interface CardPayload {
-  k: 'group' | 'challenge';
+  k: CardKind;
   n: string;          // name
-  c: number | null;   // member or participant count
+  c: number | null;   // member or participant count (null for a recipe)
   i: string | null;   // https image URL
+  s?: string;         // a recipe's "Shared by" line
   e: number;          // expiry, unix seconds
 }
 
@@ -58,7 +64,8 @@ export async function openCardKey(key: string, secret: string, now = Date.now())
     const ok = await crypto.subtle.verify('HMAC', await signingKey(secret), fromB64url(sig), enc.encode(body));
     if (!ok) return null;
     const p = JSON.parse(new TextDecoder().decode(fromB64url(body))) as CardPayload;
-    if ((p.k !== 'group' && p.k !== 'challenge') || typeof p.n !== 'string' || typeof p.e !== 'number') return null;
+    if (!CARD_KINDS.includes(p.k) || typeof p.n !== 'string' || typeof p.e !== 'number') return null;
+    if (p.s !== undefined && typeof p.s !== 'string') return null;
     if (p.e < Math.floor(now / 1000)) return null;
     return p;
   } catch {

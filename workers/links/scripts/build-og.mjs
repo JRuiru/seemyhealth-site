@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Renders every static Open Graph card (src/catalogue.ts STATIC_CARDS) into the links build, as
 // /og/<name>.jpg: each kind's card, the payment states, the invite kinds' generic cards, the neutral
-// invite states and the default. Runs after `astro build --config astro.links.config.mjs`, with the
+// invite states, the shared recipe's card and its states, and the default. Runs after `astro build --config astro.links.config.mjs`, with the
 // same card code the Worker uses for the dynamic ones. Fetches the site's own Cloudflare photos.
 //
 // Run under `node --experimental-strip-types` (Node 22); Node 24 needs no flag.

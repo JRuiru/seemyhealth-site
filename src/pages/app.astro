@@ -72,7 +72,7 @@ const themes: Theme[] = [
     label: "Eat",
     title: "Eat.",
     bold: "Then tell us about it.",
-    text: "Search it or scan it, and it's logged. Add your allergies and we'll flag any food or recipe that contains one, before it's on your plate. Browse recipes you'll actually cook, plan the week, and yes, water counts too.",
+    text: "Search it or scan it, and it's logged. Add your allergies and we'll flag any food or recipe that contains one, before it's on your plate. Browse recipes you'll actually cook, or turn your own dishes into recipes and log them in a tap: they show up first when you search. Plan the week, and yes, water counts too.",
     // On a phone the words sit on the photo, so a long paragraph gets a short one there
     short: "Search it or scan it, and it's logged, with a flag on anything that contains one of your allergens. Water counts too.",
     // `phone` is the chip's label on a phone, where the chips sit under the photo and keep short; an item with
@@ -81,8 +81,8 @@ const themes: Theme[] = [
       { label: "Meal logging by search or barcode", phone: "Search & scan" },
       { label: "Allergen flags on foods and recipes", phone: "Allergen flags" },
       { label: "Water goals and reminders", phone: "Water goals" },
-      { label: "Recipes to browse", phone: null },
-      { label: "Meal plans and full recipes", phone: "Meal plans", premium: true },
+      { label: "Recipes to browse, and your own logged in a tap", phone: null },
+      { label: "Meal plans", phone: "Meal plans", premium: true },
       { label: "Fasting schedules", phone: "Fasting", premium: true },
     ],
     image: `${CF_IMG}/app-meal-logging/public`,
@@ -135,7 +135,7 @@ const tiers = [
     price: "$0, always",
     items: [
       "Log meals, water, mood and your journal",
-      "Food search and recipes to browse",
+      "Food search, recipes to browse, and your own recipes",
       "Today's sleep, steps and calories",
       "Every device's readings, and Apple Health or Health Connect",
       "Your family circle, groups and challenges",
@@ -147,7 +147,7 @@ const tiers = [
     premium: true,
     items: [
       "Trends and history for every measure",
-      "Meal plans and full recipes",
+      "Meal plans",
       "Fasting schedules",
       "Cycle tracking",
       "Your family's numbers, when they share",
@@ -214,7 +214,7 @@ const faqs = [
   },
   {
     q: "What's free, and what's Premium?",
-    a: "Everything you log is free, and stays free: meals, water, mood, your journal, today's sleep, steps and calories, every device's readings, groups and challenges. Premium is for the long view: trends and history, meal plans and full recipes, fasting, cycle tracking and your family's numbers. Your first two weeks of Premium are on us, no strings.",
+    a: "Everything you log is free, and stays free: meals, your own recipes, water, mood, your journal, today's sleep, steps and calories, every device's readings, groups and challenges. Premium is for the long view: trends and history, meal plans, fasting, cycle tracking and your family's numbers. Your first two weeks of Premium are on us, no strings.",
   },
   {
     q: "Is the app useful without a device?",

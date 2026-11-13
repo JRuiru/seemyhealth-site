@@ -1,0 +1,12 @@
+---
+// A recipe shared by link, /r/{code}: one template. The Worker fills the recipe's name, photo and who
+// shared it from the restricted preview, sets the title and description, and points og:image at the
+// recipe's drawn card (or this static one).
+import LinkLayout from '../../../layouts/LinkLayout.astro';
+import RecipeShare from '../../../share/RecipeShare.astro';
+import { RECIPE_SHARE_COPY as c } from '../../../../workers/links/src/catalogue';
+---
+
+<LinkLayout title={c.pageTitle} description={c.sentence} ogImage="/og/recipe-share.jpg" ogImageAlt="A recipe shared on SeeMyHealth" getAppPanel={false}>
+  <RecipeShare />
+</LinkLayout>

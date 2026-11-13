@@ -27,7 +27,7 @@ npm run dev           # Local dev (port 8787)
 npx wrangler deploy --config wrangler.jsonc  # Deploy worker (prod)
 npx wrangler deploy --config wrangler.jsonc --env dev  # Deploy worker (dev line)
 
-# links.seemyhealth.ai Worker (app links: association files, /i/{token}, fallback pages, OG cards)
+# links.seemyhealth.ai Worker (app links: association files, /i/{token}, /r/{code}, fallback pages, OG cards)
 npm run links:generate   # path table + Apple association file from cmh-golang's link-paths.json
 npm run links:check      # fails on drift, or a link path with no page kind
 npm run links:test       # builds the pages and cards, runs the Worker locally against a stub backend
@@ -83,8 +83,8 @@ Every URL the backend hands out (invites, push taps, a practice's QR, the paymen
 `links.seemyhealth.ai`, served by its own Worker (`workers/links`), never by this site's Pages project:
 seemyhealth.ai claims no app links and has no association files. The paths (40 today) come from cmh-golang's
 `link-paths.json` (vendored as `workers/links/link-paths.json`); `src/page-kinds.ts` maps each to a
-page kind, and `npm run links:check` fails a path with no kind. `/i/{token}` (an invitation's restricted preview) and `/c/{handle}` (a person's connection invite: the Worker fills in the @handle and reads nothing else) are the two pages with content of their own; every app-only path (`web: false`) draws its kind's fallback page. The pages reuse this site's tokens and
-components (`links/`), and the store buttons on both come from `src/data/app-stores.ts`. Nothing on a
+page kind, and `npm run links:check` fails a path with no kind. `/i/{token}` (an invitation's restricted preview), `/c/{handle}` (a person's connection invite: the Worker fills in the @handle and reads nothing else) and `/r/{code}` (a recipe shared by link: the restricted recipe preview gives its name, photo and who shared it, and the page's one job is getting the app) are the three pages with content of their own; every app-only path (`web: false`) draws its kind's fallback page. The pages reuse this site's tokens and
+components (`links/`), and the store buttons on all three come from `src/data/app-stores.ts`. Nothing on a
 links page may log or forward its address: an `/i/` URL carries an invitation's token.
 
 ## Shop Account Connect (/account/connect)

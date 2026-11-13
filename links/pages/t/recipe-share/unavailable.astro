@@ -1,0 +1,10 @@
+---
+import LinkLayout from '../../../layouts/LinkLayout.astro';
+import RecipeShare from '../../../share/RecipeShare.astro';
+import { RECIPE_SHARE_STATE_COPY } from '../../../../workers/links/src/catalogue';
+const c = RECIPE_SHARE_STATE_COPY.unavailable;
+---
+
+<LinkLayout title={`${c.title} | SeeMyHealth`} description={c.sentence} ogImage="/og/recipe-share-unavailable.jpg" ogImageAlt={c.title}>
+  <RecipeShare state="unavailable" />
+</LinkLayout>

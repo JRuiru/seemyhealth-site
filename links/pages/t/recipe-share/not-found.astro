@@ -1,0 +1,10 @@
+---
+import LinkLayout from '../../../layouts/LinkLayout.astro';
+import RecipeShare from '../../../share/RecipeShare.astro';
+import { RECIPE_SHARE_STATE_COPY } from '../../../../workers/links/src/catalogue';
+const c = RECIPE_SHARE_STATE_COPY.not_found;
+---
+
+<LinkLayout title={`${c.title} | SeeMyHealth`} description={c.sentence} ogImage="/og/recipe-share-not-found.jpg" ogImageAlt={c.title}>
+  <RecipeShare state="not_found" />
+</LinkLayout>

@@ -21,19 +21,21 @@
 	"routes": [{ "pattern": "links.seemyhealth.ai", "custom_domain": true }],
 	"workers_dev": false,
 
-	// Off on purpose: an /i/ address carries an invitation's bearer token, and invocation logs record
-	// request URLs. The Worker itself never writes to the console.
+	// Off on purpose: an /i/ address carries an invitation's bearer token (and an /r/ address a recipe
+	// share code), and invocation logs record request URLs. The Worker itself never writes to the console.
 	"observability": { "enabled": false },
 	"logpush": false,
 
-	// The backend that minted the invite tokens this host answers for. Secret (never in this file):
+	// The backend that minted the invite tokens and recipe share codes this host answers for. Secret
+	// (never in this file):
 	//   LINKS_PREVIEW_SECRET  the same value as the backend's Secret Manager secret
 	//                         cmh-<env>-links-preview-secret (env LINKS_PREVIEW_SECRET), sent as
-	//                         X-Links-Preview-Secret to GET /api/v2/links/invites/{token}.
-	// OG_DYNAMIC "on": a public group's or challenge's invite gets a card drawn with its name (satori +
-	// resvg, about a second of CPU per new card, cached per location for each 15-minute key window).
-	// That needs Workers Paid, which the account is on; on the Free plan's 10 ms it would have to be
-	// "off", and those invites would use the invite kind's static card.
+	//                         X-Links-Preview-Secret to GET /api/v2/links/invites/{token} and
+	//                         GET /api/v2/links/recipes/{code}.
+	// OG_DYNAMIC "on": a public group's or challenge's invite, and a shared recipe, gets a card drawn
+	// with its name (satori + resvg, about a second of CPU per new card, cached per location for each
+	// 15-minute key window). That needs Workers Paid, which the account is on; on the Free plan's 10 ms
+	// it would have to be "off", and those pages would use their kind's static card.
 	// API_BASE is dev while only dev exists (the apps' invites are minted there). When
 	// https://api.seemyhealth.ai is live it becomes https://api.seemyhealth.ai, with
 	// LINKS_PREVIEW_SECRET re-put to the PROD backend's value in the same change (the BFF's
